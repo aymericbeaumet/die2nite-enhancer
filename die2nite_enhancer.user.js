@@ -202,11 +202,11 @@ window.addEventListener('load', function d2n_enhancer(undefined) {
             '<div>' +
             '<br />' +
             '<form>' +
-                '<input type="checkbox" id="d2n_helpers.config_enable_shortcuts" /><label for="d2n_helpers.config_enable_shortcuts">Enable shortcuts</label>' + d2n_helpers.help_popup('Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).') +
+                '<input type="checkbox" id="d2n_config_enable_shortcuts" /><label for="d2n_config_enable_shortcuts">Enable shortcuts</label>' + d2n_helpers.help_popup('Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).') +
                 '<br />' +
-                '<input type="checkbox" id="d2n_helpers.config_hide_hero_adds" /><label for="d2n_helpers.config_hide_hero_adds">Hide hero adds</label>' + d2n_helpers.help_popup('Hide hero adds all over the site.') +
+                '<input type="checkbox" id="d2n_config_hide_hero_adds" /><label for="d2n_config_hide_hero_adds">Hide hero adds</label>' + d2n_helpers.help_popup('Hide hero adds all over the site.') +
                 '<br />' +
-                '<input type="button" id="d2n_helpers.config_save" value="Save" />' +
+                '<input type="button" id="d2n_config_save" value="Save" />' +
             '</form>' +
             '<div class="clear"></div>' +
             '<br />' +
@@ -271,14 +271,14 @@ window.addEventListener('load', function d2n_enhancer(undefined) {
                 'margin:0 0 5px;' +
                 'padding:0;' +
             '}' +
-            '#d2n_helpers.config_save {' +
+            '#d2n_config_save {' +
                 'float: right;' +
             '}';
 
         // Insert panel style
         document.getElementsByTagName('head')[0].appendChild(config_panel_css);
 
-        document.getElementById('d2n_helpers.config_save').onclick = function(event) {
+        document.getElementById('d2n_config_save').onclick = function(event) {
             event.srcElement.disabled = true;
             event.srcElement.value = 'Saved!';
             //location.reload();
