@@ -3,8 +3,7 @@
 // @description Enhance your game experience!
 // @author Aymeric Beaumet <aymeric@beaumet.me>
 // @license zlib/libpng http://opensource.org/licenses/Zlib
-// @updateURL
-// https://github.com/abeaumet/die2nite_enhancer/raw/master/die2nite_enhancer.user.js
+// @updateURL https://github.com/abeaumet/die2nite_enhancer/raw/master/die2nite_enhancer.user.js
 // @match *://www.die2nite.com/*
 // @match *://www.hordes.fr/*
 // @include *://www.die2nite.com/*
