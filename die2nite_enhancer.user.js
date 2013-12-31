@@ -19,9 +19,31 @@
  * Script informations
  */
 var SCRIPT_NAME = 'Die2Nite Enhancer';
-var SCRIPT_DESCRIPTION = 'Die2Nite Enhancer allows you to enhance your game experience, every features can be controlled from this panel.';
 var SCRIPT_VERSION = '0.0.1';
 var PROJECT_PAGE = 'https://github.com/abeaumet/die2nite_enhancer';
+
+
+/**
+ * Internationalisation
+ */
+var i18n = {
+    en: {
+        script_description: 'Die2Nite Enhancer allows you to enhance your game experience, every features can be controlled from this panel.',
+        help_image_url: 'http://www.die2nite.com/gfx/loc/en/helpLink.gif',
+        configuration_title: 'Die2Nite Enhancer - Settings',
+        enable_shortcuts: 'Enable shortcuts',
+        enable_shortcuts_help: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
+        save_button: 'Save'
+    },
+    fr: {
+        script_description: 'Die2Nite Enhancer vous permet d\'améliorer votre expérience de jeu, toutes ces fonctionalités peuvent être configurées depuis ce panneau.',
+        help_image_url: 'http://data.hordes.fr/gfx/loc/fr/helpLink.gif',
+        configuration_title: 'Die2Nite Enhancer - Paramètres',
+        enable_shortcuts: 'Activer les raccourcis',
+        enable_shortcuts_help: 'Vous permet d\'utiliser des raccourcis pour accéder rapidement aux places importants (e.g.: la banque, les portes).',
+        save_button: 'Sauvegarder'
+    }
+};
 
 
 /**
@@ -34,6 +56,9 @@ var D2NE = (function() {
      * The default configuration.
      */
     var _default_configuration = {
+        // script language
+        language: 'en',
+
         // Set to false to disable the binds
         enable_binds: true,
         // Longest elapsed time between two binds (ms)
@@ -72,20 +97,28 @@ var D2NE = (function() {
     };
 
     /**
+     * The script strings.
+     */
+    var _i18n = null;
+
+    var _load_internationalisation = function() {
+        _i18n = i18n[_configuration.language];
+    };
+
+    /**
      * Create the configuration panel.
      */
-    var _init_configuration_panel = function() {
+    var _load_configuration_panel = function() {
         // Create panel
         var config_panel_div = document.createElement('div');
         config_panel_div.id = 'd2n_config_panel';
         config_panel_div.innerHTML =
-            '<h1><img src="/gfx/forum/smiley/h_city_up.gif" alt=""><span style="display:none"> Die2Nite Enhancer - Configuration</span></h1>' +
+            '<h1><img src="/gfx/forum/smiley/h_city_up.gif" alt=""><span style="display:none"> ' + _i18n.configuration_title + '</span></h1>' +
             '<div style="display:none">' +
-            '<p style="border-bottom: 1px dashed #ddab76;padding-bottom: 6px;">' + SCRIPT_DESCRIPTION + '</p>' +
+            '<p style="border-bottom: 1px dashed #ddab76;padding-bottom: 6px;">' + _i18n.script_description + '</p>' +
             '<table>' +
-                '<tr><td><input type="checkbox" id="d2n_config_enable_shortcuts" /><label for="d2n_config_enable_shortcuts">Enable shortcuts</label></td><td>' + d2n_helpers.help_popup('Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).') + '</td></tr>' +
-                '<tr><td><input type="checkbox" id="d2n_config_enable_shortcuts" /><label for="d2n_config_enable_shortcuts">Enable shortcuts</label></td><td>' + d2n_helpers.help_popup('Local towns are towns for beginners which feature some simplified settings to allow players to discover the game without suffering too much.') + '</td></tr>' +
-                '<tr><td colspan="2"><a href="#" id="d2n_config_save" class="button">Save</a></td></tr>' +
+                '<tr><td><input type="checkbox" id="d2n_config_enable_shortcuts" /><label for="d2n_config_enable_shortcuts">' + _i18n.enable_shortcuts + '</label></td><td>' + d2n_helpers.help_popup(_i18n.enable_shortcuts_help) + '</td></tr>' +
+                '<tr><td colspan="2"><a href="#" id="d2n_config_save" class="button">' + _i18n.save_button + '</a></td></tr>' +
             '</table>' +
             '<div class="clear"></div>' +
             '<p style="text-align:center;border-top: 1px dashed #ddab76;padding-top: 6px;"><a href="' + PROJECT_PAGE + '" target="_blank">' + SCRIPT_NAME +' v' + SCRIPT_VERSION + '</a></p>' +
@@ -134,8 +167,9 @@ var D2NE = (function() {
                 'text-align: justify;' +
             '}' +
             '#d2n_config_panel a.button {' +
-                'width: 43px;' +
+                'width: auto;' +
                 'text-align: center;' +
+                'padding: 0;' +
             '}' +
             'a.d2n_tooltip {' +
                 'display: inline;' +
@@ -198,7 +232,8 @@ var D2NE = (function() {
      */
     self.init = function() {
         _load_configuration();
-        _init_configuration_panel();
+        _load_internationalisation();
+        _load_configuration_panel();
     };
 
     /**
