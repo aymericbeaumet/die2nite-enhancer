@@ -14,13 +14,13 @@
 
 "use strict";
 
-window.addEventListener('load', function() {
+window.addEventListener('load', function d2n_enhancer(undefined) {
 
     /*****************
      * Configuration *
      *****************/
 
-    window.d2n_enhancer = {
+    var default_config = {
         // Set to false to disable the binds
         enable_binds: true,
         // Longest elapsed time between two binds (ms)
@@ -46,77 +46,91 @@ window.addEventListener('load', function() {
         remove_hero_adds: true
     };
 
-    /*******************
-     * Generic helpers *
-     *******************/
+    var config = JSON.parse(JSON.stringify(default_config));
 
-    // Return true if a variable is defined
-    function is_defined(v)
-    {
-        return (typeof v !== 'undefined' && v !== null);
-    }
+    /*****************
+     * About *
+     *****************/
 
-    // Catch a keydown event, abort if the cursor is in an input field.
-    // Call the callback `f` with the keycodes
-    function keydown_event(f, time_limit)
-    {
-        // defaut 1000ms between two key strokes
-        time_limit = (is_defined(time_limit)) ? time_limit : 1000;
+    var _version = '0.0.1';
 
-        document.addEventListener('keydown', function(event) {
-            // Cancel event if the cursor is in an input field
-            if (event.target.nodeName === 'INPUT') {
-                return;
-            }
+    /***********
+     * Helpers *
+     ***********/
 
-            // Cancel event if elapsed time is too long between two key strokes
-            if (event.timeStamp - window.keydown_event.previous_keycode_timestamp > time_limit) {
-                window.keydown_event.previous_keycode = null;
-            }
+    var helpers = (function() {
+        var self = {};
 
-            // Invoke callback
-            f(event.keyCode, window.keydown_event.previous_keycode);
-
-            // Save keycode
-            window.keydown_event.previous_keycode = event.keyCode;
-            window.keydown_event.previous_keycode_timestamp = event.timeStamp;
-        }, false);
-    }
-    window.keydown_event = {
-        previous_keycode: 0,
-        previous_keycode_timestamp: 0,
-    };
-
-    // From: http://stackoverflow.com/a/14901197/1071486
-    // Inject and execute a function in the page context
-    function injectJS(a)
-    {
-        var b, c;
-
-        if (typeof a === 'function') {
-            b = '(' + a + ')();';
-        } else {
-            b = a;
+        // Return true if a variable is defined
+        self.is_defined = function(v)
+        {
+            return (typeof v !== 'undefined' && v !== null);
         }
-        c = document.createElement('script');
-        c.textContent = b;
-        document.body.appendChild(c);
-        return c;
-    };
 
-    // From: http://stackoverflow.com/a/14782/1071486
-    function removeElement(node) {
-        node.parentNode.removeChild(node);
-    }
+        // Catch a keydown event, abort if the cursor is in an input field.
+        // Call the callback `f` with the keycodes
+        var _keydown_event = {
+            previous_keycode: 0,
+            previous_keycode_timestamp: 0,
+        };
+        self.keydown_event = function(f, time_limit)
+        {
+            // defaut 1000ms between two key strokes
+            time_limit = (self.is_defined(time_limit)) ? time_limit : 1000;
+
+            document.addEventListener('keydown', function(event) {
+                // Cancel event if the cursor is in an input field
+                if (event.target.nodeName === 'INPUT') {
+                    return;
+                }
+
+                // Cancel event if elapsed time is too long between two key strokes
+                if (event.timeStamp - _keydown_event.previous_keycode_timestamp > time_limit) {
+                    _keydown_event.previous_keycode = null;
+                }
+
+                // Invoke callback
+                f(event.keyCode, _keydown_event.previous_keycode);
+
+                // Save keycode
+                _keydown_event.previous_keycode = event.keyCode;
+                _keydown_event.previous_keycode_timestamp = event.timeStamp;
+            }, false);
+        }
+
+        // From: http://stackoverflow.com/a/14901197/1071486
+        // Inject and execute a function in the page context
+        self.injectJS = function(a)
+        {
+            var b, c;
+
+            if (typeof a === 'function') {
+                b = '(' + a + ')();';
+            } else {
+                b = a;
+            }
+            c = document.createElement('script');
+            c.textContent = b;
+            document.body.appendChild(c);
+            return c;
+        };
+
+        // From: http://stackoverflow.com/a/14782/1071486
+        self.removeElement = function(node) {
+            node.parentNode.removeChild(node);
+        }
+
+        return self;
+    }()); // !helpers
 
     /*********************
      * Die2Night helpers *
      *********************/
 
-    var d2n = (function() {
-        var module = {};
+    var d2n_helpers = (function() {
+        var self = {};
 
-        var pages_url = {
+        var _pages_url = {
             overview: 'city/enter',
             home: 'home',
             well: 'city/well',
@@ -131,51 +145,50 @@ window.addEventListener('load', function() {
         };
 
         // Return true if inside the city, false otherwise
-        module.in_city = function()
+        self.in_city = function()
         {
             return /^#city/.test(window.location.hash);
         };
 
         // Return true if on the selected city page
-        module.on_city_page = function(page)
+        self.on_city_page = function(page)
         {
-            var r = new RegExp('^#city\/enter\?go=' + pages_url[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$');
+            var r = new RegExp('^#city\/enter\?go=' + _pages_url[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$');
             return r.test(window.location.hash);
         };
 
         // Go to a specific city page
-        module.go_to_city_page = function(page)
+        self.go_to_city_page = function(page)
         {
-            var url = pages_url[page] + '?sk=' + module.get_sk();
-            injectJS('js.XmlHttp.get(\'' + url + '\');');
+            var url = _pages_url[page] + '?sk=' + self.get_sk();
+            helpers.injectJS('js.XmlHttp.get(\'' + url + '\');');
         };
 
         // Return the sk (session/secret key?)
-        module.get_sk = function()
+        self.get_sk = function()
         {
             var matches = /sk=([a-z0-9]{5})$/.exec(window.location.hash);
             return matches[1];
         };
 
         // Return a HTML string displaying a help popup
-        module.help_popup = function(message)
+        self.help_popup = function(message)
         {
             // defaut empty message
-            message = (is_defined(message)) ? message : '';
+            message = (helpers.is_defined(message)) ? message : '';
 
             return '<a href="#" onclick="return false;" onmouseover="js.HordeTip.showHelp(this,\'' + message + '\')" onmouseout="js.HordeTip.hide()" class="helpLink"><img src="http://data.die2nite.com/gfx/loc/en/helpLink.gif" alt=""></a>';
         }
 
-        return module;
-    }());
+        return self;
+    }()); // !d2n_helpers
 
 
     /*************************
      * Script initialisation *
      *************************/
 
-    // Initialise the script
-    (function init(){
+    return (function __construct(){
 
         /*
          * Create configuration panel
@@ -189,15 +202,15 @@ window.addEventListener('load', function() {
             '<div>' +
             '<br />' +
             '<form>' +
-                '<input type="checkbox" id="d2n_config_enable_shortcuts" /><label for="d2n_config_enable_shortcuts">Enable shortcuts</label>' + d2n.help_popup('Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).') +
+                '<input type="checkbox" id="d2n_helpers.config_enable_shortcuts" /><label for="d2n_helpers.config_enable_shortcuts">Enable shortcuts</label>' + d2n_helpers.help_popup('Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).') +
                 '<br />' +
-                '<input type="checkbox" id="d2n_config_hide_hero_adds" /><label for="d2n_config_hide_hero_adds">Hide hero adds</label>' + d2n.help_popup('Hide hero adds all over the site.') +
+                '<input type="checkbox" id="d2n_helpers.config_hide_hero_adds" /><label for="d2n_helpers.config_hide_hero_adds">Hide hero adds</label>' + d2n_helpers.help_popup('Hide hero adds all over the site.') +
                 '<br />' +
-                '<input type="button" id="d2n_config_save" value="Save" />' +
+                '<input type="button" id="d2n_helpers.config_save" value="Save" />' +
             '</form>' +
             '<div class="clear"></div>' +
             '<br />' +
-            '<p style="text-align:center"><a href="https://github.com/abeaumet/die2nite_enhancer" target="_blank">Die2Nite Enhancer v0.0.1</a></p>' +
+            '<p style="text-align:center"><a href="https://github.com/abeaumet/die2nite_enhancer" target="_blank">Die2Nite Enhancer v' + _version + '</a></p>' +
             '</div>';
 
         // Insert panel
@@ -258,14 +271,14 @@ window.addEventListener('load', function() {
                 'margin:0 0 5px;' +
                 'padding:0;' +
             '}' +
-            '#d2n_config_save {' +
+            '#d2n_helpers.config_save {' +
                 'float: right;' +
             '}';
 
         // Insert panel style
-        document.head.appendChild(config_panel_css);
+        document.getElementsByTagName('head')[0].appendChild(config_panel_css);
 
-        document.getElementById('d2n_config_save').onclick = function(event) {
+        document.getElementById('d2n_helpers.config_save').onclick = function(event) {
             event.srcElement.disabled = true;
             event.srcElement.value = 'Saved!';
             //location.reload();
@@ -277,14 +290,14 @@ window.addEventListener('load', function() {
 
         // Show panel on hover
         config_panel_div.onmouseover = function(event) {
-            for (var i = 0; i < _show_hide_config_panel_cache_length; i++) {
+            for (var i = 0; i < _show_hide_config_panel_cache_length; ++i) {
                 _show_hide_config_panel_cache[i].style.display = 'inline';
             }
         };
 
         // Hide panel on mouse out
         config_panel_div.onmouseout = function(event) {
-            for (var i = 0; i < _show_hide_config_panel_cache_length; i++) {
+            for (var i = 0; i < _show_hide_config_panel_cache_length; ++i) {
                 _show_hide_config_panel_cache[i].style.display = 'none';
             }
         };
@@ -293,13 +306,13 @@ window.addEventListener('load', function() {
         /*
          * Binds
          */
-        if (window.d2n_enhancer.enable_binds === true) {
-            keydown_event(function(keycode, previous_keycode) {
-                if (d2n.in_city()) {
-                    if (previous_keycode === window.d2n_enhancer.go_bind) {
-                        for (var bind in window.d2n_enhancer.binds) {
-                            if (window.d2n_enhancer.binds[bind] === keycode) {
-                                d2n.go_to_city_page(bind);
+        if (config.enable_binds === true) {
+            helpers.keydown_event(function(keycode, previous_keycode) {
+                if (d2n_helpers.in_city()) {
+                    if (previous_keycode === config.go_bind) {
+                        for (var bind in config.binds) {
+                            if (config.binds[bind] === keycode) {
+                                d2n_helpers.go_to_city_page(bind);
                             }
                         }
                     }
@@ -311,19 +324,20 @@ window.addEventListener('load', function() {
         /*
          * Hero adds
          */
-        if (window.d2n_enhancer.remove_hero_adds === true) {
+        if (config.remove_hero_adds === true) {
             var adds = [
                 document.getElementById('heroContainer'),
                 document.getElementById('ghostHeroAd'),
                 document.querySelectorAll('div.heroMode')[0]
             ];
 
-            for (var length = adds.length, i = 0; i < length; i++) {
-                if (is_defined(adds[i])) {
-                    removeElement(adds[i]);
+            for (var i = 0, length = adds.length; i < length; i++) {
+                if (helpers.is_defined(adds[i])) {
+                    helpers.removeElement(adds[i]);
                 }
             }
         }
-    }());
 
-});
+    }()); // !__construct
+
+}, false); // !addEventListener
