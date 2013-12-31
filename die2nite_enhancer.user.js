@@ -15,13 +15,21 @@
 
 (function() {
 
-window.addEventListener('load', function d2n_enhancer(undefined) {
+/**
+ * Script informations
+ */
+var SCRIPT_NAME = 'Die2Nite Enhancer';
+var SCRIPT_VERSION = '0.0.1';
+var PROJECT_PAGE = 'https://github.com/abeaumet/die2nite_enhancer';
 
-    /*****************
-     * Configuration *
-     *****************/
 
-    var default_config = {
+/**
+ * Die2Nite Enhancer
+ */
+var D2NE = (function() {
+    var self = {};
+
+    var _default_config = {
         // Set to false to disable the binds
         enable_binds: true,
         // Longest elapsed time between two binds (ms)
@@ -47,150 +55,9 @@ window.addEventListener('load', function d2n_enhancer(undefined) {
         remove_hero_adds: true
     };
 
-    var config = JSON.parse(JSON.stringify(default_config));
+    self.config = JSON.parse(JSON.stringify(_default_config));
 
-    /*****************
-     * About *
-     *****************/
-
-    var _version = '0.0.1';
-
-    /***********
-     * Helpers *
-     ***********/
-
-    var helpers = (function() {
-        var self = {};
-
-        // Return true if a variable is defined
-        self.is_defined = function(v)
-        {
-            return (typeof v !== 'undefined' && v !== null);
-        }
-
-        // Catch a keydown event, abort if the cursor is in an input field.
-        // Call the callback `f` with the keycodes
-        var _keydown_event = {
-            previous_keycode: 0,
-            previous_keycode_timestamp: 0,
-        };
-        self.keydown_event = function(f, time_limit)
-        {
-            // defaut 1000ms between two key strokes
-            time_limit = (self.is_defined(time_limit)) ? time_limit : 1000;
-
-            document.addEventListener('keydown', function(event) {
-                // Cancel event if the cursor is in an input field
-                if (event.target.nodeName === 'INPUT') {
-                    return;
-                }
-
-                // Cancel event if elapsed time is too long between two key strokes
-                if (event.timeStamp - _keydown_event.previous_keycode_timestamp > time_limit) {
-                    _keydown_event.previous_keycode = null;
-                }
-
-                // Invoke callback
-                f(event.keyCode, _keydown_event.previous_keycode);
-
-                // Save keycode
-                _keydown_event.previous_keycode = event.keyCode;
-                _keydown_event.previous_keycode_timestamp = event.timeStamp;
-            }, false);
-        }
-
-        // From: http://stackoverflow.com/a/14901197/1071486
-        // Inject and execute a function in the page context
-        self.injectJS = function(a)
-        {
-            var b, c;
-
-            if (typeof a === 'function') {
-                b = '(' + a + ')();';
-            } else {
-                b = a;
-            }
-            c = document.createElement('script');
-            c.textContent = b;
-            document.body.appendChild(c);
-            return c;
-        };
-
-        // From: http://stackoverflow.com/a/14782/1071486
-        self.removeElement = function(node) {
-            node.parentNode.removeChild(node);
-        }
-
-        return self;
-    })(); // !helpers
-
-    /*********************
-     * Die2Night helpers *
-     *********************/
-
-    var d2n_helpers = (function() {
-        var self = {};
-
-        var _pages_url = {
-            overview: 'city/enter',
-            home: 'home',
-            well: 'city/well',
-            bank: 'city/bank',
-            citizens: 'city/co',
-            buildings: 'city/buildings',
-            doors: 'city/door',
-            upgrades: 'city/upgrades',
-            tower: 'city/tower',
-            refine: 'city/refine',
-            guard: 'city/guard'
-        };
-
-        // Return true if inside the city, false otherwise
-        self.in_city = function()
-        {
-            return /^#city/.test(window.location.hash);
-        };
-
-        // Return true if on the selected city page
-        self.on_city_page = function(page)
-        {
-            var r = new RegExp('^#city\/enter\?go=' + _pages_url[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$');
-            return r.test(window.location.hash);
-        };
-
-        // Go to a specific city page
-        self.go_to_city_page = function(page)
-        {
-            var url = _pages_url[page] + '?sk=' + self.get_sk();
-            helpers.injectJS('js.XmlHttp.get(\'' + url + '\');');
-        };
-
-        // Return the sk (session/secret key?)
-        self.get_sk = function()
-        {
-            var matches = /sk=([a-z0-9]{5})$/.exec(window.location.hash);
-            return matches[1];
-        };
-
-        // Return a HTML string of an image displaying a help popup with the
-        // given message
-        self.help_popup = function(message)
-        {
-            // defaut empty message
-            message = (helpers.is_defined(message)) ? message : '';
-
-            return '<a href="#" onclick="return false;" tooltip="' + message + '" class="d2n_tooltip"><img src="http://data.die2nite.com/gfx/loc/en/helpLink.gif" alt="" /></a>';
-        }
-
-        return self;
-    })(); // !d2n_helpers
-
-
-    /*************************
-     * Script initialisation *
-     *************************/
-
-    return (function __construct(){
+    self.init = function() {
 
         /*
          * Create configuration panel
@@ -210,7 +77,7 @@ window.addEventListener('load', function d2n_enhancer(undefined) {
             '</table></form>' +
             '<div class="clear"></div>' +
             '<br />' +
-            '<p style="text-align:center"><a href="https://github.com/abeaumet/die2nite_enhancer" target="_blank">Die2Nite Enhancer v' + _version + '</a></p>' +
+            '<p style="text-align:center"><a href="' + PROJECT_PAGE + '" target="_blank">' + SCRIPT_NAME +' v' + SCRIPT_VERSION + '</a></p>' +
             '</div>';
 
         // Insert panel
@@ -306,7 +173,7 @@ window.addEventListener('load', function d2n_enhancer(undefined) {
         /*
          * Binds
          */
-        if (config.enable_binds === true) {
+        if (self.config.enable_binds === true) {
             helpers.keydown_event(function(keycode, previous_keycode) {
                 if (d2n_helpers.in_city()) {
                     if (previous_keycode === config.go_bind) {
@@ -320,8 +187,144 @@ window.addEventListener('load', function d2n_enhancer(undefined) {
             });
         }
 
-    })(); // !__construct
+    }; // !init
 
-}, false); // !addEventListener
+    return self;
+})();
+
+
+/**
+ * Generic JavaScript helpers
+ */
+var helpers = (function() {
+    var self = {};
+
+    // Return true if a variable is defined
+    self.is_defined = function(v)
+    {
+        return (typeof v !== 'undefined' && v !== null);
+    }
+
+    // Catch a keydown event, abort if the cursor is in an input field.
+    // Call the callback `f` with the keycodes
+    var _keydown_event = {
+        previous_keycode: 0,
+        previous_keycode_timestamp: 0,
+    };
+    self.keydown_event = function(f, time_limit)
+    {
+        // defaut 1000ms between two key strokes
+        time_limit = (self.is_defined(time_limit)) ? time_limit : 1000;
+
+        document.addEventListener('keydown', function(event) {
+            // Cancel event if the cursor is in an input field
+            if (event.target.nodeName === 'INPUT') {
+                return;
+            }
+
+            // Cancel event if elapsed time is too long between two key strokes
+            if (event.timeStamp - _keydown_event.previous_keycode_timestamp > time_limit) {
+                _keydown_event.previous_keycode = null;
+            }
+
+            // Invoke callback
+            f(event.keyCode, _keydown_event.previous_keycode);
+
+            // Save keycode
+            _keydown_event.previous_keycode = event.keyCode;
+            _keydown_event.previous_keycode_timestamp = event.timeStamp;
+        }, false);
+    }
+
+    // From: http://stackoverflow.com/a/14901197/1071486
+    // Inject and execute a function in the page context
+    self.injectJS = function(a)
+    {
+        var b, c;
+
+        if (typeof a === 'function') {
+            b = '(' + a + ')();';
+        } else {
+            b = a;
+        }
+        c = document.createElement('script');
+        c.textContent = b;
+        document.body.appendChild(c);
+        return c;
+    };
+
+    // From: http://stackoverflow.com/a/14782/1071486
+    self.removeElement = function(node) {
+        node.parentNode.removeChild(node);
+    }
+
+    return self;
+})(); // !helpers
+
+
+/**
+ * Die2Nite specific helpers
+ */
+var d2n_helpers = (function() {
+    var self = {};
+
+    var _pages_url = {
+        overview: 'city/enter',
+        home: 'home',
+        well: 'city/well',
+        bank: 'city/bank',
+        citizens: 'city/co',
+        buildings: 'city/buildings',
+        doors: 'city/door',
+        upgrades: 'city/upgrades',
+        tower: 'city/tower',
+        refine: 'city/refine',
+        guard: 'city/guard'
+    };
+
+    // Return true if inside the city, false otherwise
+    self.in_city = function()
+    {
+        return /^#city/.test(window.location.hash);
+    };
+
+    // Return true if on the selected city page
+    self.on_city_page = function(page)
+    {
+        var r = new RegExp('^#city\/enter\?go=' + _pages_url[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$');
+        return r.test(window.location.hash);
+    };
+
+    // Go to a specific city page
+    self.go_to_city_page = function(page)
+    {
+        var url = _pages_url[page] + '?sk=' + self.get_sk();
+        helpers.injectJS('js.XmlHttp.get(\'' + url + '\');');
+    };
+
+    // Return the sk (session/secret key?)
+    self.get_sk = function()
+    {
+        var matches = /sk=([a-z0-9]{5})$/.exec(window.location.hash);
+        return matches[1];
+    };
+
+    // Return a HTML string of an image displaying a help popup with the
+    // given message
+    self.help_popup = function(message)
+    {
+        // defaut empty message
+        message = (helpers.is_defined(message)) ? message : '';
+
+        return '<a href="#" onclick="return false;" tooltip="' + message + '" class="d2n_tooltip"><img src="http://data.die2nite.com/gfx/loc/en/helpLink.gif" alt="" /></a>';
+    }
+
+    return self;
+})(); // !d2n_helpers
+
+
+window.addEventListener('load', function() {
+    D2NE.init();
+}, false);
 
 })();
