@@ -14,7 +14,7 @@
 
 "use strict";
 
-;(function(undefined){
+window.addEventListener('load', function() {
 
     /*****************
      * Configuration *
@@ -157,6 +157,15 @@
             return matches[1];
         };
 
+        // Return a HTML string displaying a help popup
+        module.help_popup = function(message)
+        {
+            // defaut empty message
+            message = (is_defined(message)) ? message : '';
+
+            return '<a href="#" onclick="return false;" onmouseover="js.HordeTip.showHelp(this,\'' + message + '\')" onmouseout="js.HordeTip.hide()" class="helpLink"><img src="http://data.die2nite.com/gfx/loc/en/helpLink.gif" alt=""></a>';
+        }
+
         return module;
     }());
 
@@ -165,34 +174,156 @@
      * Script initialisation *
      *************************/
 
-    // Binds
-    if (window.d2n_enhancer.enable_binds === true) {
-        keydown_event(function(keycode, previous_keycode) {
-            if (d2n.in_city()) {
-                if (previous_keycode === window.d2n_enhancer.go_bind) {
-                    for (var bind in window.d2n_enhancer.binds) {
-                        if (window.d2n_enhancer.binds[bind] === keycode) {
-                            d2n.go_to_city_page(bind);
+    // Initialise the script
+    (function init(){
+
+        /*
+         * Create configuration panel
+         */
+
+        // Create panel
+        var config_panel_div = document.createElement('div');
+        config_panel_div.id = 'd2n_config_panel';
+        config_panel_div.innerHTML =
+            '<h1><img src="http://data.hordes.fr/gfx/forum/smiley/h_city_up.gif" alt=""> <span>Die2Nite Enhancer - Configuration</span></h1>' +
+            '<div>' +
+            '<br />' +
+            '<form>' +
+                '<input type="checkbox" id="d2n_config_enable_shortcuts" /><label for="d2n_config_enable_shortcuts">Enable shortcuts</label>' + d2n.help_popup('Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).') +
+                '<br />' +
+                '<input type="checkbox" id="d2n_config_hide_hero_adds" /><label for="d2n_config_hide_hero_adds">Hide hero adds</label>' + d2n.help_popup('Hide hero adds all over the site.') +
+                '<br />' +
+                '<input type="button" id="d2n_config_save" value="Save" />' +
+            '</form>' +
+            '<div class="clear"></div>' +
+            '<br />' +
+            '<p style="text-align:center"><a href="https://github.com/abeaumet/die2nite_enhancer" target="_blank">Die2Nite Enhancer v0.0.1</a></p>' +
+            '</div>';
+
+        // Insert panel
+        var main_div = document.getElementById('main');
+        main_div.insertBefore(config_panel_div, main.firstChild);
+
+        // Create panel style
+        var config_panel_css = document.createElement('style');
+        config_panel_css.type = 'text/css';
+        config_panel_css.innerHTML =
+            '#d2n_config_panel {' +
+                'margin-top:6px;' +
+                'position:absolute;' +
+                'margin-left:44px;' +
+                'z-index:9;' +
+                'padding-left:5px;' +
+                'padding-right:5px;' +
+                'background-color:#5c2b20;' +
+                '-moz-border-radius:0;' +
+                'outline:1px solid #000;' +
+                'border:1px solid #f0d79e;' +
+            '}' +
+            '#d2n_config_panel > h1 > span, #d2n_config_panel > div {' +
+                'display: none;' +
+            '}' +
+            '#d2n_config_panel > div {' +
+                'width: 480px;' +
+            '}' +
+            '#d2n_config_panel a.helpLink img {' +
+                'margin-bottom: -0.4em;' +
+                'margin-left: 0.6em;' +
+            '}' +
+            '#d2n_config_panel h1 {' +
+                'height:auto;' +
+                'font-size:8pt;' +
+                'text-transform:none;' +
+                'font-variant:small-caps;' +
+                'background:none;' +
+                'cursor:help;' +
+                'margin:0;' +
+                'padding:0;' +
+            '}' +
+            '#d2n_config_panel:hover h1 {' +
+                'border-bottom:1px solid #b37c4a;' +
+                'margin-bottom:5px;' +
+            '}' +
+            '#d2n_config_panel a.link {' +
+                'display:block;' +
+                'width:160px;' +
+                'height:18px;' +
+                'overflow:hidden;' +
+                'text-decoration:none;' +
+            '}' +
+            '#d2n_config_panel p {' +
+                'font-size:9pt;' +
+                'line-height:11pt;' +
+                'text-align:justify;' +
+                'margin:0 0 5px;' +
+                'padding:0;' +
+            '}' +
+            '#d2n_config_save {' +
+                'float: right;' +
+            '}';
+
+        // Insert panel style
+        document.head.appendChild(config_panel_css);
+
+        document.getElementById('d2n_config_save').onclick = function(event) {
+            event.srcElement.disabled = true;
+            event.srcElement.value = 'Saved!';
+            //location.reload();
+        };
+
+        // Show/Hide config panel cache
+        var _show_hide_config_panel_cache = document.querySelectorAll('#d2n_config_panel > h1 > span, #d2n_config_panel > div');
+        var _show_hide_config_panel_cache_length = _show_hide_config_panel_cache.length;
+
+        // Show panel on hover
+        config_panel_div.onmouseover = function(event) {
+            for (var i = 0; i < _show_hide_config_panel_cache_length; i++) {
+                _show_hide_config_panel_cache[i].style.display = 'inline';
+            }
+        };
+
+        // Hide panel on mouse out
+        config_panel_div.onmouseout = function(event) {
+            for (var i = 0; i < _show_hide_config_panel_cache_length; i++) {
+                _show_hide_config_panel_cache[i].style.display = 'none';
+            }
+        };
+
+
+        /*
+         * Binds
+         */
+        if (window.d2n_enhancer.enable_binds === true) {
+            keydown_event(function(keycode, previous_keycode) {
+                if (d2n.in_city()) {
+                    if (previous_keycode === window.d2n_enhancer.go_bind) {
+                        for (var bind in window.d2n_enhancer.binds) {
+                            if (window.d2n_enhancer.binds[bind] === keycode) {
+                                d2n.go_to_city_page(bind);
+                            }
                         }
                     }
                 }
-            }
-        });
-    }
+            });
+        }
 
-    // Hero adds
-    if (window.d2n_enhancer.remove_hero_adds === true) {
-        var adds = [
-            document.getElementById('heroContainer'),
-            document.getElementById('ghostHeroAd'),
-            document.querySelectorAll('div.heroMode')[0]
-        ];
 
-        for (var length = adds.length, i = 0; i < length; i++) {
-            if (is_defined(adds[i])) {
-                removeElement(adds[i]);
+        /*
+         * Hero adds
+         */
+        if (window.d2n_enhancer.remove_hero_adds === true) {
+            var adds = [
+                document.getElementById('heroContainer'),
+                document.getElementById('ghostHeroAd'),
+                document.querySelectorAll('div.heroMode')[0]
+            ];
+
+            for (var length = adds.length, i = 0; i < length; i++) {
+                if (is_defined(adds[i])) {
+                    removeElement(adds[i]);
+                }
             }
         }
-    }
+    }());
 
-})();
+});
