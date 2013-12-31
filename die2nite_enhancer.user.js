@@ -13,6 +13,8 @@
 
 "use strict";
 
+(function() {
+
 window.addEventListener('load', function d2n_enhancer(undefined) {
 
     /*****************
@@ -120,7 +122,7 @@ window.addEventListener('load', function d2n_enhancer(undefined) {
         }
 
         return self;
-    }()); // !helpers
+    })(); // !helpers
 
     /*********************
      * Die2Night helpers *
@@ -181,7 +183,7 @@ window.addEventListener('load', function d2n_enhancer(undefined) {
         }
 
         return self;
-    }()); // !d2n_helpers
+    })(); // !d2n_helpers
 
 
     /*************************
@@ -318,6 +320,8 @@ window.addEventListener('load', function d2n_enhancer(undefined) {
             });
         }
 
-    }()); // !__construct
+    })(); // !__construct
 
 }, false); // !addEventListener
+
+})();
