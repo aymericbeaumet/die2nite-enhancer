@@ -171,13 +171,14 @@ window.addEventListener('load', function d2n_enhancer(undefined) {
             return matches[1];
         };
 
-        // Return a HTML string displaying a help popup
+        // Return a HTML string of an image displaying a help popup with the
+        // given message
         self.help_popup = function(message)
         {
             // defaut empty message
             message = (helpers.is_defined(message)) ? message : '';
 
-            return '<a href="#" onclick="return false;" onmouseover="js.HordeTip.showHelp(this,\'' + message + '\')" onmouseout="js.HordeTip.hide()" class="helpLink"><img src="http://data.die2nite.com/gfx/loc/en/helpLink.gif" alt=""></a>';
+            return '<a href="#" onclick="return false;" tooltip="' + message + '" class="d2n_tooltip"><img src="http://data.die2nite.com/gfx/loc/en/helpLink.gif" alt="" /></a>';
         }
 
         return self;
@@ -198,16 +199,14 @@ window.addEventListener('load', function d2n_enhancer(undefined) {
         var config_panel_div = document.createElement('div');
         config_panel_div.id = 'd2n_config_panel';
         config_panel_div.innerHTML =
-            '<h1><img src="http://data.hordes.fr/gfx/forum/smiley/h_city_up.gif" alt=""> <span>Die2Nite Enhancer - Configuration</span></h1>' +
-            '<div>' +
+            '<h1><img src="http://data.hordes.fr/gfx/forum/smiley/h_city_up.gif" alt=""><span style="display:none"> Die2Nite Enhancer - Configuration</span></h1>' +
+            '<div style="display:none">' +
             '<br />' +
-            '<form>' +
-                '<input type="checkbox" id="d2n_config_enable_shortcuts" /><label for="d2n_config_enable_shortcuts">Enable shortcuts</label>' + d2n_helpers.help_popup('Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).') +
-                '<br />' +
-                '<input type="checkbox" id="d2n_config_hide_hero_adds" /><label for="d2n_config_hide_hero_adds">Hide hero adds</label>' + d2n_helpers.help_popup('Hide hero adds all over the site.') +
-                '<br />' +
-                '<input type="button" id="d2n_config_save" value="Save" />' +
-            '</form>' +
+            '<form><table>' +
+                '<tr><td><input type="checkbox" id="d2n_config_enable_shortcuts" /><label for="d2n_config_enable_shortcuts">Enable shortcuts</label></td><td>' + d2n_helpers.help_popup('Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).') + '</td></tr>' +
+                '<tr><td><input type="checkbox" id="d2n_config_enable_shortcuts" /><label for="d2n_config_enable_shortcuts">Enable shortcuts</label></td><td>' + d2n_helpers.help_popup('Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).') + '</td></tr>' +
+                '<tr><td colspan="2"><input type="button" id="d2n_config_save" value="Save" /></td></tr>' +
+            '</table></form>' +
             '<div class="clear"></div>' +
             '<br />' +
             '<p style="text-align:center"><a href="https://github.com/abeaumet/die2nite_enhancer" target="_blank">Die2Nite Enhancer v' + _version + '</a></p>' +
@@ -233,16 +232,6 @@ window.addEventListener('load', function d2n_enhancer(undefined) {
                 'outline:1px solid #000;' +
                 'border:1px solid #f0d79e;' +
             '}' +
-            '#d2n_config_panel > h1 > span, #d2n_config_panel > div {' +
-                'display: none;' +
-            '}' +
-            '#d2n_config_panel > div {' +
-                'width: 480px;' +
-            '}' +
-            '#d2n_config_panel a.helpLink img {' +
-                'margin-bottom: -0.4em;' +
-                'margin-left: 0.6em;' +
-            '}' +
             '#d2n_config_panel h1 {' +
                 'height:auto;' +
                 'font-size:8pt;' +
@@ -257,22 +246,32 @@ window.addEventListener('load', function d2n_enhancer(undefined) {
                 'border-bottom:1px solid #b37c4a;' +
                 'margin-bottom:5px;' +
             '}' +
-            '#d2n_config_panel a.link {' +
-                'display:block;' +
-                'width:160px;' +
-                'height:18px;' +
-                'overflow:hidden;' +
-                'text-decoration:none;' +
+            '#d2n_config_panel input[type="button"] {' +
+                'text-align: center;' +
             '}' +
-            '#d2n_config_panel p {' +
-                'font-size:9pt;' +
-                'line-height:11pt;' +
-                'text-align:justify;' +
-                'margin:0 0 5px;' +
-                'padding:0;' +
+            'a.d2n_tooltip {' +
+                'display: inline;' +
+                'position: relative;' +
+                'cursor: help' +
             '}' +
-            '#d2n_config_save {' +
-                'float: right;' +
+            'a.d2n_tooltip img {' +
+                'margin-left: 10px;' +
+                'margin-top: 2px;' +
+                'border: 1px solid #5c2b20;' +
+            '}' +
+            'a.d2n_tooltip img:hover {' +
+                'border: 1px solid #ffffff;' +
+            '}' +
+            'a.d2n_tooltip:hover:after {' +
+                'background: #333;' +
+                'background: rgba(0,0,0,.8);' +
+                'left: 60px;' +
+                'color: #fff;' +
+                'content: attr(tooltip);' +
+                'padding: 5px 15px;' +
+                'position: absolute;' +
+                'z-index: 98;' +
+                'width: 220px;' +
             '}';
 
         // Insert panel style
