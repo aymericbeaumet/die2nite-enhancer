@@ -320,24 +320,6 @@ window.addEventListener('load', function d2n_enhancer(undefined) {
             });
         }
 
-
-        /*
-         * Hero adds
-         */
-        if (config.remove_hero_adds === true) {
-            var adds = [
-                document.getElementById('heroContainer'),
-                document.getElementById('ghostHeroAd'),
-                document.querySelectorAll('div.heroMode')[0]
-            ];
-
-            for (var i = 0, length = adds.length; i < length; i++) {
-                if (helpers.is_defined(adds[i])) {
-                    helpers.removeElement(adds[i]);
-                }
-            }
-        }
-
     }()); // !__construct
 
 }, false); // !addEventListener
