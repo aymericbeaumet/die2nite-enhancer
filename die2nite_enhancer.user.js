@@ -34,42 +34,53 @@ var PROJECT_PAGE = 'https://github.com/abeaumet/die2nite_enhancer';
 var i18n = {
     en: {
         script_description: 'Die2Nite Enhancer allows you to enhance your game experience, every features can be controlled from this panel.',
-        help_image_url: 'http://www.die2nite.com/gfx/loc/en/helpLink.gif',
+        help_image_url: '/gfx/loc/en/helpLink.gif',
         configuration_panel_title: 'Die2Nite Enhancer - Settings',
         configuration_panel_enable_shortcuts: 'Enable shortcuts',
         configuration_panel_enable_shortcuts_help: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
         configuration_panel_hide_hero_adds: 'Hide hero adds',
         configuration_panel_hide_hero_adds_help: 'Hide the adds for the hero mode on all the website. Can be useful if you are already hero or don\'t want to be one.',
+        configuration_panel_highlight_ap: 'Highlight AP',
+        configuration_panel_highlight_ap_help: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
         configuration_panel_save_button: 'Save'
     },
+
     fr: {
         script_description: 'Die2Nite Enhancer vous permet d\'améliorer votre expérience de jeu, toutes ces fonctionalités peuvent être configurées depuis ce panneau.',
-        help_image_url: 'http://data.hordes.fr/gfx/loc/fr/helpLink.gif',
+        help_image_url: '/gfx/loc/fr/helpLink.gif',
         configuration_panel_title: 'Die2Nite Enhancer - Paramètres',
         configuration_panel_enable_shortcuts: 'Activer les raccourcis',
         configuration_panel_enable_shortcuts_help: 'Vous permet d\'utiliser des raccourcis pour accéder rapidement aux places importants (e.g.: la banque, les portes).',
         configuration_panel_hide_hero_adds: 'Hide hero adds',
         configuration_panel_hide_hero_adds_help: 'Hide the adds for the hero mode on all the website. Can be useful if you are already hero or don\'t want to be one.',
+        configuration_panel_highlight_ap: 'Highlight AP',
+        configuration_panel_highlight_ap_help: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
         configuration_panel_save_button: 'Sauvegarder'
     },
+
     es: {
         script_description: 'Die2Nite Enhancer allows you to enhance your game experience, every features can be controlled from this panel.',
-        help_image_url: 'http://data.zombinoia.com/gfx/loc/es/helpLink.gif',
+        help_image_url: '/gfx/loc/es/helpLink.gif',
         configuration_panel_title: 'Die2Nite Enhancer - Settings',
         configuration_panel_enable_shortcuts: 'Enable shortcuts',
         configuration_panel_enable_shortcuts_help: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
         configuration_panel_hide_hero_adds: 'Hide hero adds',
         configuration_panel_hide_hero_adds_help: 'Hide the adds for the hero mode on all the website. Can be useful if you are already hero or don\'t want to be one.',
+        configuration_panel_highlight_ap: 'Highlight AP',
+        configuration_panel_highlight_ap_help: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
         configuration_panel_save_button: 'Save'
     },
+
     de: {
         script_description: 'Die2Nite Enhancer allows you to enhance your game experience, every features can be controlled from this panel.',
-        help_image_url: 'http://data.dieverdammten.de/gfx/loc/de/helpLink.gif',
+        help_image_url: '/gfx/loc/de/helpLink.gif',
         configuration_panel_title: 'Die2Nite Enhancer - Settings',
         configuration_panel_enable_shortcuts: 'Enable shortcuts',
         configuration_panel_enable_shortcuts_help: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
         configuration_panel_hide_hero_adds: 'Hide hero adds',
         configuration_panel_hide_hero_adds_help: 'Hide the adds for the hero mode on all the website. Can be useful if you are already hero or don\'t want to be one.',
+        configuration_panel_highlight_ap: 'Highlight AP',
+        configuration_panel_highlight_ap_help: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
         configuration_panel_save_button: 'Save'
     }
 };
@@ -109,7 +120,10 @@ var D2NE = (function() {
         },
 
         // Set to false to show hero adds
-        hide_hero_adds: true
+        hide_hero_adds: true,
+
+        // Set to false to disable AP color border
+        highlight_ap: true
     };
 
     /**
@@ -138,6 +152,7 @@ var D2NE = (function() {
     var _save_configuration = function() {
         _configuration.enable_shortcuts = document.getElementById('d2ne_configuration_enable_shortcuts').checked;
         _configuration.hide_hero_adds = document.getElementById('d2ne_configuration_hide_hero_adds').checked;
+        _configuration.highlight_ap = document.getElementById('d2ne_configuration_highlight_ap').checked;
 
         localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY] = JSON.stringify(_configuration);
     }
@@ -175,14 +190,15 @@ var D2NE = (function() {
         config_panel_div.innerHTML =
             '<h1><img src="/gfx/forum/smiley/h_city_up.gif" alt=""><span style="display:none"> ' + _i18n.configuration_panel_title + '</span></h1>' +
             '<div style="display:none">' +
-            '<p style="border-bottom: 1px dashed #ddab76;padding-bottom: 6px;">' + _i18n.script_description + '</p>' +
+            '<p>' + _i18n.script_description + '</p>' +
             '<table>' +
                 '<tr><td><input type="checkbox" id="d2ne_configuration_enable_shortcuts" ' + helpers.check_checkbox(_configuration.enable_shortcuts) + '/><label for="d2ne_configuration_enable_shortcuts">' + _i18n.configuration_panel_enable_shortcuts + '</label></td><td>' + _help_popup(_i18n.configuration_panel_enable_shortcuts_help) + '</td></tr>' +
                 '<tr><td><input type="checkbox" id="d2ne_configuration_hide_hero_adds" ' + helpers.check_checkbox(_configuration.hide_hero_adds) + '/><label for="d2ne_configuration_hide_hero_adds">' + _i18n.configuration_panel_hide_hero_adds + '</label></td><td>' + _help_popup(_i18n.configuration_panel_hide_hero_adds_help) + '</td></tr>' +
+                '<tr><td><input type="checkbox" id="d2ne_configuration_highlight_ap" ' + helpers.check_checkbox(_configuration.highlight_ap) + '/><label for="d2ne_configuration_highlight_ap">' + _i18n.configuration_panel_highlight_ap + '</label></td><td>' + _help_popup(_i18n.configuration_panel_highlight_ap_help) + '</td></tr>' +
                 '<tr><td colspan="2"><a href="#" id="d2ne_configuration_save" class="button">' + _i18n.configuration_panel_save_button + '</a></td></tr>' +
             '</table>' +
             '<div class="clear"></div>' +
-            '<p style="text-align:center;border-top: 1px dashed #ddab76;padding-top: 6px;"><a href="' + PROJECT_PAGE + '" target="_blank">' + SCRIPT_NAME +' v' + SCRIPT_VERSION + '</a></p>' +
+            '<p><a href="' + PROJECT_PAGE + '" target="_blank">' + SCRIPT_NAME +' v' + SCRIPT_VERSION + '</a></p>' +
             '</div>';
 
         // Insert panel
@@ -190,7 +206,8 @@ var D2NE = (function() {
         main_div.insertBefore(config_panel_div, main.firstChild);
 
         // Create panel style
-        helpers.injectCSS('#d2ne_configuration_panel {' +
+        helpers.injectCSS(
+            '#d2ne_configuration_panel {' +
                 'margin-top:6px;' +
                 'position:absolute;' +
                 'margin-left:44px;' +
@@ -219,13 +236,28 @@ var D2NE = (function() {
                 'margin: 0px;' +
                 'padding: 0px;' +
                 'width: 430px;' +
-                'margin-bottom: 5px;' +
+                'margin-bottom: 4px;' +
                 'font-size: 9pt;' +
                 'line-height: 11pt;' +
                 'text-align: justify;' +
             '}' +
+            '#d2ne_configuration_panel p:first-of-type {' +
+                'border-bottom: 1px dashed #ddab76;' +
+                'padding-bottom: 4px;' +
+            '}' +
+            '#d2ne_configuration_panel table {' +
+                'margin: 0 auto;' +
+            '}' +
+            '#d2ne_configuration_panel p:last-of-type {' +
+                'text-align: right;' +
+                'border-top: 1px dashed #ddab76;' +
+                'padding-top: 4px;' +
+            '}' +
             '#d2ne_configuration_panel a.button {' +
                 'width: auto;' +
+                'margin: 0 auto;' +
+                'margin-top: 2px;' +
+                'margin-bottom: 3px;' +
                 'text-align: center;' +
                 'padding: 0;' +
             '}' +
@@ -257,7 +289,8 @@ var D2NE = (function() {
                 'background-repeat: no-repeat;' +
                 'width: 250px;' +
                 'padding: 4px 10px 9px 30px;' +
-            '}');
+            '}'
+        );
 
         document.getElementById('d2ne_configuration_save').onclick = function(event) {
             _save_configuration();
@@ -311,6 +344,25 @@ var D2NE = (function() {
                         'display: none;' +
                     '}'
                 );
+            },
+
+            highlight_ap: function() {
+                helpers.wait_for_id('movesCounter', function(node) {
+                    var ap = d2n_helpers.get_number_of_ap();
+                    var colors = [
+                        'ff0000', // 0 AP
+                        'ff4700', // 1 AP
+                        'ff8e00', // 2 AP
+                        'ffd500', // 3 AP
+                        'e3ff00', // 4 AP
+                        '9cff00', // 5 AP
+                        '55ff00', // 6 AP
+                        '00ff00', // 7 AP
+                        '00ff00'  // 8 AP
+                    ];
+
+                    node.style.border = '1px solid #' + colors[ap];
+                });
             }
         };
 
@@ -329,9 +381,7 @@ var D2NE = (function() {
         _load_configuration();
         _load_internationalisation();
         _load_features();
-        window.addEventListener('load', function() { // wait for the #main div
-            _load_configuration_panel();
-        }, false);
+        helpers.wait_for_id('main', _load_configuration_panel);
     };
 
     return self;
@@ -419,6 +469,20 @@ var d2n_helpers = (function() {
 
         return 'en';
     };
+
+    /**
+     * Give the number of remaining AP. The div 'movesCounter' must be loaded.
+     * @return integer The number of AP
+     * @return null if an error occurs
+     */
+    self.get_number_of_ap = function() {
+        var el = document.querySelector('#movesCounter > div');
+
+        if (helpers.is_defined(el)) {
+            return el.innerHTML.split('>')[1].split('<')[0];
+        }
+        return null;
+    }
 
     return self;
 })(); // !die2nite specific helpers
@@ -558,21 +622,20 @@ var helpers = (function() {
     };
 
     /**
-     * Execute a function from its name.
-     * @link http://stackoverflow.com/a/359910/1071486
-     * @param string functionName The function name to execute
-     * @param string context The context in which the function should be executed
-     * @param mixed... args The function arguments
+     * Execute a callback when a node with the given $id is found.
+     * @param string id The id to search
+     * @param callback callback The function to call when a result is found
      */
-    self.execute_function_by_name = function(functionName, context) {
-        var args = Array.prototype.slice.call(arguments).splice(2);
-        var namespaces = functionName.split(".");
-        var func = namespaces.pop();
-        for(var i = 0; i < namespaces.length; i++) {
-            context = context[namespaces[i]];
+    self.wait_for_id = function(id, callback) {
+        var el;
+
+        if (helpers.is_defined(el = document.getElementById(id))) {
+            return callback(el);
         }
-        return context[func].apply(this, args);
-    }
+        setTimeout(function() {
+            self.wait_for_id(id, callback);
+        }, 50);
+    };
 
     return self;
 })(); // !generic javascript helpers
