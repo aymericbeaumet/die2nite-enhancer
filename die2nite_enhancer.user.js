@@ -11,6 +11,8 @@
 // @updateURL https://github.com/abeaumet/die2nite_enhancer/raw/master/die2nite_enhancer.user.js
 // @match *://www.die2nite.com/*
 // @match *://www.hordes.fr/*
+// @match *://www.zombinoia.com/*
+// @match *://www.dieverdammten.de/*
 // @version 0.0.1
 // ==/UserScript==
 
@@ -45,6 +47,22 @@ var i18n = {
         enable_shortcuts: 'Activer les raccourcis',
         enable_shortcuts_help: 'Vous permet d\'utiliser des raccourcis pour accéder rapidement aux places importants (e.g.: la banque, les portes).',
         save_button: 'Sauvegarder'
+    },
+    es: {
+        script_description: 'Die2Nite Enhancer allows you to enhance your game experience, every features can be controlled from this panel.',
+        help_image_url: 'http://data.zombinoia.com/gfx/loc/es/helpLink.gif',
+        configuration_title: 'Die2Nite Enhancer - Settings',
+        enable_shortcuts: 'Enable shortcuts',
+        enable_shortcuts_help: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
+        save_button: 'Save'
+    },
+    de: {
+        script_description: 'Die2Nite Enhancer allows you to enhance your game experience, every features can be controlled from this panel.',
+        help_image_url: 'http://data.dieverdammten.de/gfx/loc/de/helpLink.gif',
+        configuration_title: 'Die2Nite Enhancer - Settings',
+        enable_shortcuts: 'Enable shortcuts',
+        enable_shortcuts_help: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
+        save_button: 'Save'
     }
 };
 
@@ -223,21 +241,24 @@ var D2NE = (function() {
         };
 
         // Show/Hide config panel cache
-        var show_hide_config_panel_cache = document.querySelectorAll('#d2n_config_panel > h1 > span, #d2n_config_panel > div');
-        var show_hide_config_panel_cache_length = show_hide_config_panel_cache.length;
+        var _config_panel_cache = document.getElementById('d2n_config_panel');
+        var _config_panel_toggled_elements_cache = document.querySelectorAll('#d2n_config_panel > h1 > span, #d2n_config_panel > div');
+        var _config_panel_toggled_elements_cache_length = _config_panel_toggled_elements_cache.length;
 
         // Show panel on hover
         config_panel_div.onmouseover = function(event) {
-            for (var i = 0; i < show_hide_config_panel_cache_length; ++i) {
-                show_hide_config_panel_cache[i].style.display = 'inline';
+            _config_panel_cache.style['z-index'] = '11'; // This fix is needed for the spanish version, as the hero adds has a z-index of 10
+            for (var i = 0; i < _config_panel_toggled_elements_cache_length; ++i) {
+                _config_panel_toggled_elements_cache[i].style.display = 'inline';
             }
         };
 
         // Hide panel on mouse out
         config_panel_div.onmouseout = function(event) {
-            for (var i = 0; i < show_hide_config_panel_cache_length; ++i) {
-                show_hide_config_panel_cache[i].style.display = 'none';
+            for (var i = 0; i < _config_panel_toggled_elements_cache_length; ++i) {
+                _config_panel_toggled_elements_cache[i].style.display = 'none';
             }
+            _config_panel_cache.style['z-index'] = '9'; // See previous function comment
         };
     };
 
@@ -433,12 +454,12 @@ var d2n_helpers = (function() {
      */
     self.get_website_language = function() {
         var websites_language = {
+            'www.die2nite.com': 'en',
             'www.hordes.fr': 'fr',
-            'www.die2nite.com': 'en'
+            'www.zombinoia.com': 'es',
+            'www.dieverdammten.de': 'de'
         }
-        var hostname;
-
-        hostname = window.location.hostname;
+        var hostname = window.location.hostname;
 
         if (helpers.is_defined(hostname) &&
             helpers.is_defined(websites_language[hostname])) {
