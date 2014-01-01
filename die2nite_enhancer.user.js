@@ -18,7 +18,7 @@
 
 "use strict";
 
-(function() {
+;(function(undefined) {
 
 /**
  * Script informations
@@ -73,12 +73,14 @@ var i18n = {
 var D2NE = (function() {
     var self = {};
 
+    var LOCAL_STORAGE_D2NE_CONFIGURATION_KEY = 'd2ne_configuration';
+
     /**
      * The default configuration.
      */
     var _default_configuration = {
         // Set to false to disable the binds
-        enable_binds: true,
+        enable_shortcuts: true,
         // Longest elapsed time between two binds (ms)
         bind_elapsed_time_limit: 1000,
         // The global bind (e.g.: to go to the bank `gb`)
@@ -98,7 +100,7 @@ var D2NE = (function() {
             guard: 76 // 'L'
         },
 
-        // See to false to show hero adds
+        // Set to false to show hero adds
         remove_hero_adds: true
     };
 
@@ -108,11 +110,28 @@ var D2NE = (function() {
     var _configuration = null;
 
     /**
-     * Load the configuration from the default one.
+     * Load the configuration by merging the one found in the local storage (if
+     * any) into the default one.
      */
     var _load_configuration = function() {
-        _configuration = JSON.parse(JSON.stringify(_default_configuration));
+        var saved_configuration = localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY];
+
+        if (helpers.is_defined(saved_configuration)) {
+            _configuration = helpers.merge(_default_configuration, JSON.parse(saved_configuration));
+        } else {
+            _configuration = _default_configuration;
+        }
     };
+
+    /**
+     * Save the configuration found in the configuration panel into the local
+     * storage.
+     */
+    var _save_configuration = function() {
+        _configuration.enable_shortcuts = document.getElementById('d2ne_configuration_enable_shortcuts').checked;
+
+        localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY] = JSON.stringify(_configuration);
+    }
 
     /**
      * The script strings.
@@ -143,14 +162,14 @@ var D2NE = (function() {
     var _load_configuration_panel = function() {
         // Create panel
         var config_panel_div = document.createElement('div');
-        config_panel_div.id = 'd2n_config_panel';
+        config_panel_div.id = 'd2ne_configuration_panel';
         config_panel_div.innerHTML =
             '<h1><img src="/gfx/forum/smiley/h_city_up.gif" alt=""><span style="display:none"> ' + _i18n.configuration_title + '</span></h1>' +
             '<div style="display:none">' +
             '<p style="border-bottom: 1px dashed #ddab76;padding-bottom: 6px;">' + _i18n.script_description + '</p>' +
             '<table>' +
-                '<tr><td><input type="checkbox" id="d2n_config_enable_shortcuts" /><label for="d2n_config_enable_shortcuts">' + _i18n.enable_shortcuts + '</label></td><td>' + _help_popup(_i18n.enable_shortcuts_help) + '</td></tr>' +
-                '<tr><td colspan="2"><a href="#" id="d2n_config_save" class="button">' + _i18n.save_button + '</a></td></tr>' +
+                '<tr><td><input type="checkbox" id="d2ne_configuration_enable_shortcuts" ' + helpers.check_checkbox(_configuration.enable_shortcuts) + '/><label for="d2ne_configuration_enable_shortcuts">' + _i18n.enable_shortcuts + '</label></td><td>' + _help_popup(_i18n.enable_shortcuts_help) + '</td></tr>' +
+                '<tr><td colspan="2"><a href="#" id="d2ne_configuration_save" class="button">' + _i18n.save_button + '</a></td></tr>' +
             '</table>' +
             '<div class="clear"></div>' +
             '<p style="text-align:center;border-top: 1px dashed #ddab76;padding-top: 6px;"><a href="' + PROJECT_PAGE + '" target="_blank">' + SCRIPT_NAME +' v' + SCRIPT_VERSION + '</a></p>' +
@@ -164,7 +183,7 @@ var D2NE = (function() {
         var config_panel_css = document.createElement('style');
         config_panel_css.type = 'text/css';
         config_panel_css.innerHTML =
-            '#d2n_config_panel {' +
+            '#d2ne_configuration_panel {' +
                 'margin-top:6px;' +
                 'position:absolute;' +
                 'margin-left:44px;' +
@@ -175,7 +194,7 @@ var D2NE = (function() {
                 'outline:1px solid #000000;' +
                 'border:1px solid #f0d79e;' +
             '}' +
-            '#d2n_config_panel h1 {' +
+            '#d2ne_configuration_panel h1 {' +
                 'height:auto;' +
                 'font-size:8pt;' +
                 'text-transform:none;' +
@@ -185,11 +204,11 @@ var D2NE = (function() {
                 'margin:0;' +
                 'padding:0;' +
             '}' +
-            '#d2n_config_panel:hover h1 {' +
+            '#d2ne_configuration_panel:hover h1 {' +
                 'border-bottom:1px solid #b37c4a;' +
                 'margin-bottom:5px;' +
             '}' +
-            '#d2n_config_panel p {' +
+            '#d2ne_configuration_panel p {' +
                 'margin: 0px;' +
                 'padding: 0px;' +
                 'width: 430px;' +
@@ -198,7 +217,7 @@ var D2NE = (function() {
                 'line-height: 11pt;' +
                 'text-align: justify;' +
             '}' +
-            '#d2n_config_panel a.button {' +
+            '#d2ne_configuration_panel a.button {' +
                 'width: auto;' +
                 'text-align: center;' +
                 'padding: 0;' +
@@ -236,13 +255,14 @@ var D2NE = (function() {
         // Insert panel style
         document.getElementsByTagName('head')[0].appendChild(config_panel_css);
 
-        document.getElementById('d2n_config_save').onclick = function(event) {
+        document.getElementById('d2ne_configuration_save').onclick = function(event) {
+            _save_configuration();
             location.reload();
         };
 
         // Show/Hide config panel cache
-        var _config_panel_cache = document.getElementById('d2n_config_panel');
-        var _config_panel_toggled_elements_cache = document.querySelectorAll('#d2n_config_panel > h1 > span, #d2n_config_panel > div');
+        var _config_panel_cache = document.getElementById('d2ne_configuration_panel');
+        var _config_panel_toggled_elements_cache = document.querySelectorAll('#d2ne_configuration_panel > h1 > span, #d2ne_configuration_panel > div');
         var _config_panel_toggled_elements_cache_length = _config_panel_toggled_elements_cache.length;
 
         // Show panel on hover
@@ -274,7 +294,7 @@ var D2NE = (function() {
     /**
      * Enable the binds feature.
      */
-    var _enable_binds = function() {
+    var _enable_shortcuts = function() {
         helpers.keydown_event(function(keycode, previous_keycode) {
             if (d2n_helpers.in_city()) {
                 if (previous_keycode === _configuration.go_bind) {
@@ -292,99 +312,13 @@ var D2NE = (function() {
      * Run the script features.
      */
     self.run = function() {
-        if (_configuration.enable_binds === true) {
-            _enable_binds();
+        if (_configuration.enable_shortcuts === true) {
+            _enable_shortcuts();
         }
     }
 
     return self;
 })(); // !D2NE
-
-
-/**
- * Generic JavaScript helpers
- */
-var helpers = (function() {
-    var self = {};
-
-    /**
-     * Check if a given variable is defined and is not null.
-     * @param mixed variable The variable to check
-     * @return bool true if the variable is defined and is not null, otherwise
-     * false
-     */
-    self.is_defined = function(variable)
-    {
-        return (typeof variable !== 'undefined' && variable !== null);
-    }
-
-    /**
-     * Catch a keydown event (abort if the cursor is in an input field). Call
-     * the callback `callback` with the current keycode and the last one (if it
-     * exists).
-     * @param callback callback The function to call, should look like the
-     * following prototype: `function(keycode, previous_keycode){};`.
-     * previous_keycode will be null if it doesn't exists.
-     */
-    self.keydown_event = function(callback, time_limit)
-    {
-        // defaut 1000ms between two key strokes
-        time_limit = (self.is_defined(time_limit)) ? time_limit : 1000;
-
-        document.addEventListener('keydown', function(event) {
-            // Cancel event if the cursor is in an input field
-            if (event.target.nodeName === 'INPUT') {
-                return;
-            }
-
-            // Cancel event if elapsed time is too long between two key strokes
-            if (event.timeStamp - _keydown_event.previous_keycode_timestamp > time_limit) {
-                _keydown_event.previous_keycode = null;
-            }
-
-            // Invoke callback
-            callback(event.keyCode, _keydown_event.previous_keycode);
-
-            // Save keycode
-            _keydown_event.previous_keycode = event.keyCode;
-            _keydown_event.previous_keycode_timestamp = event.timeStamp;
-        }, false);
-    }
-    var _keydown_event = {
-        previous_keycode: 0,
-        previous_keycode_timestamp: 0,
-    };
-
-    /**
-     * Inject and execute JavaScript code in the page context.
-     * @link http://stackoverflow.com/a/14901197/1071486
-     * @param string/callback code The code to inject
-     */
-    self.injectJS = function(code)
-    {
-        var encapsuled_code, html_encapsuled_code;
-
-        if (typeof code === 'function') {
-            encapsuled_code = '(' + code + ')();';
-        } else {
-            encapsuled_code = code;
-        }
-        html_encapsuled_code = document.createElement('script');
-        html_encapsuled_code.textContent = encapsuled_code;
-        document.body.appendChild(html_encapsuled_code);
-    };
-
-    /**
-     * Remove an DOM node.
-     * @link http://stackoverflow.com/a/14782/1071486
-     * @param DOMNode node The DOM node to delete
-     */
-    self.removeElement = function(node) {
-        node.parentNode.removeChild(node);
-    }
-
-    return self;
-})(); // !generic javascript helpers
 
 
 /**
@@ -471,6 +405,130 @@ var d2n_helpers = (function() {
 
     return self;
 })(); // !die2nite specific helpers
+
+
+/**
+ * Generic JavaScript helpers
+ */
+var helpers = (function() {
+    var self = {};
+
+    /**
+     * Check if a given variable is defined and is not null.
+     * @param mixed variable The variable to check
+     * @return bool true if the variable is defined and is not null, otherwise
+     * false
+     */
+    self.is_defined = function(variable)
+    {
+        return (typeof variable !== 'undefined' && variable !== null);
+    }
+
+    /**
+     * Catch a keydown event (abort if the cursor is in an input field). Call
+     * the callback `callback` with the current keycode and the last one (if it
+     * exists).
+     * @param callback callback The function to call, should look like the
+     * following prototype: `function(keycode, previous_keycode){};`.
+     * previous_keycode will be null if it doesn't exists.
+     */
+    self.keydown_event = function(callback, time_limit)
+    {
+        // defaut 1000ms between two key strokes
+        time_limit = (self.is_defined(time_limit)) ? time_limit : 1000;
+
+        document.addEventListener('keydown', function(event) {
+            // Cancel event if the cursor is in an input field
+            if (event.target.nodeName === 'INPUT') {
+                return;
+            }
+
+            // Cancel event if elapsed time is too long between two key strokes
+            if (event.timeStamp - _keydown_event.previous_keycode_timestamp > time_limit) {
+                _keydown_event.previous_keycode = null;
+            }
+
+            // Invoke callback
+            callback(event.keyCode, _keydown_event.previous_keycode);
+
+            // Save keycode
+            _keydown_event.previous_keycode = event.keyCode;
+            _keydown_event.previous_keycode_timestamp = event.timeStamp;
+        }, false);
+    }
+    var _keydown_event = {
+        previous_keycode: 0,
+        previous_keycode_timestamp: 0,
+    };
+
+    /**
+     * Inject and execute JavaScript code in the page context.
+     * @link http://stackoverflow.com/a/14901197/1071486
+     * @param string/callback code The code to inject
+     */
+    self.injectJS = function(code)
+    {
+        var encapsuled_code, html_encapsuled_code;
+
+        if (typeof code === 'function') {
+            encapsuled_code = '(' + code + ')();';
+        } else {
+            encapsuled_code = code;
+        }
+        html_encapsuled_code = document.createElement('script');
+        html_encapsuled_code.textContent = encapsuled_code;
+        document.body.appendChild(html_encapsuled_code);
+    };
+
+    /**
+     * Remove an DOM node.
+     * @link http://stackoverflow.com/a/14782/1071486
+     * @param DOMNode node The DOM node to delete
+     */
+    self.removeElement = function(node) {
+        node.parentNode.removeChild(node);
+    };
+
+    /*
+     * Recursively merge properties of n objects. The first object properties
+     * will be erased by the following one's.
+     * @link http://stackoverflow.com/a/8625261/1071486
+     * @param object... Some object. to merge.
+     * @return object A new merged object
+     */
+    self.merge = function() {
+        var obj = {};
+        var il = arguments.length;
+        var key;
+
+        if (il === 0) {
+            return obj;
+        }
+        for (var i = 0; i < il; ++i) {
+            for (key in arguments[i]) {
+                if (arguments[i].hasOwnProperty(key)) {
+                    obj[key] = arguments[i][key];
+                }
+            }
+        }
+
+        return obj;
+    };
+
+    /**
+     * Return a string containig either 'checked' or an empty string, depending
+     * of the value of $test
+     * @return string
+     */
+    self.check_checkbox = function(test) {
+        if (self.is_defined(test) && test === true) {
+            return 'checked';
+        }
+        return '';
+    };
+
+    return self;
+})(); // !generic javascript helpers
 
 
 window.addEventListener('load', function() {
