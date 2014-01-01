@@ -1,3 +1,8 @@
+/*
+ * You need Google Chrome 4+ or Mozilla Firefox with Greasemonkey 0.9.8+ to use
+ * this script.
+ */
+
 // ==UserScript==
 // @name Die2Nite Enhancer
 // @description Enhance your game experience!
@@ -6,8 +11,6 @@
 // @updateURL https://github.com/abeaumet/die2nite_enhancer/raw/master/die2nite_enhancer.user.js
 // @match *://www.die2nite.com/*
 // @match *://www.hordes.fr/*
-// @include *://www.die2nite.com/*
-// @include *://www.hordes.fr/*
 // @version 0.0.1
 // ==/UserScript==
 
@@ -56,9 +59,6 @@ var D2NE = (function() {
      * The default configuration.
      */
     var _default_configuration = {
-        // script language
-        language: 'en',
-
         // Set to false to disable the binds
         enable_binds: true,
         // Longest elapsed time between two binds (ms)
@@ -102,8 +102,22 @@ var D2NE = (function() {
     var _i18n = null;
 
     var _load_internationalisation = function() {
-        _i18n = i18n[_configuration.language];
+        var language = d2n_helpers.get_website_language();
+
+        _i18n = i18n[language];
     };
+
+    /**
+     * Return a HTML string of an image displaying a help popup with the given
+     * message.
+     */
+    var _help_popup = function(message)
+    {
+        // defaut empty message
+        message = (helpers.is_defined(message)) ? message : '';
+
+        return '<a href="#" onclick="return false;" tooltip="' + message + '" class="d2n_tooltip"><img src="' + _i18n.help_image_url + '" alt="" /></a>';
+    }
 
     /**
      * Create the configuration panel.
@@ -117,7 +131,7 @@ var D2NE = (function() {
             '<div style="display:none">' +
             '<p style="border-bottom: 1px dashed #ddab76;padding-bottom: 6px;">' + _i18n.script_description + '</p>' +
             '<table>' +
-                '<tr><td><input type="checkbox" id="d2n_config_enable_shortcuts" /><label for="d2n_config_enable_shortcuts">' + _i18n.enable_shortcuts + '</label></td><td>' + d2n_helpers.help_popup(_i18n.enable_shortcuts_help) + '</td></tr>' +
+                '<tr><td><input type="checkbox" id="d2n_config_enable_shortcuts" /><label for="d2n_config_enable_shortcuts">' + _i18n.enable_shortcuts + '</label></td><td>' + _help_popup(_i18n.enable_shortcuts_help) + '</td></tr>' +
                 '<tr><td colspan="2"><a href="#" id="d2n_config_save" class="button">' + _i18n.save_button + '</a></td></tr>' +
             '</table>' +
             '<div class="clear"></div>' +
@@ -372,42 +386,67 @@ var d2n_helpers = (function() {
         guard: 'city/guard'
     };
 
-    // Return true if inside the city, false otherwise
+    /**
+     * Check if the user is in the city.
+     * @return bool true if inside the city, false otherwise
+     */
     self.in_city = function()
     {
         return /^#city/.test(window.location.hash);
     };
 
-    // Return true if on the selected city page
+    /**
+     * Check if the given city page is loaded.
+     * @param string page The page to check (a key from _pages_url)
+     * @return string true if on the selected city page
+     */
     self.on_city_page = function(page)
     {
         var r = new RegExp('^#city\/enter\?go=' + _pages_url[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$');
         return r.test(window.location.hash);
     };
 
-    // Go to a specific city page
+    /**
+     * Load a specific city page.
+     * @param string page The page to go (a key from _pages_url)
+     */
     self.go_to_city_page = function(page)
     {
         var url = _pages_url[page] + '?sk=' + self.get_sk();
         helpers.injectJS('js.XmlHttp.get(\'' + url + '\');');
     };
 
-    // Return the sk (session/secret key?)
+    /**
+     * Return the sk (session/secret key?), return null if nothing can be found.
+     * @return string The key
+     */
     self.get_sk = function()
     {
         var matches = /sk=([a-z0-9]{5})$/.exec(window.location.hash);
         return matches[1];
     };
 
-    // Return a HTML string of an image displaying a help popup with the
-    // given message
-    self.help_popup = function(message)
-    {
-        // defaut empty message
-        message = (helpers.is_defined(message)) ? message : '';
+    /**
+     * Give the website language (specific to D2N/Hordes). Return 'en' by
+     * default.
+     * @return string The language of the current page ('en' / 'fr')
+     */
+    self.get_website_language = function() {
+        var websites_language = {
+            'www.hordes.fr': 'fr',
+            'www.die2nite.com': 'en'
+        }
+        var hostname;
 
-        return '<a href="#" onclick="return false;" tooltip="' + message + '" class="d2n_tooltip"><img src="http://www.die2nite.com/gfx/loc/en/helpLink.gif" alt="" /></a>';
-    }
+        hostname = window.location.hostname;
+
+        if (helpers.is_defined(hostname) &&
+            helpers.is_defined(websites_language[hostname])) {
+            return websites_language[hostname];
+        }
+
+        return 'en';
+    };
 
     return self;
 })(); // !die2nite specific helpers
