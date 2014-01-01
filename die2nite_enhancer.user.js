@@ -35,34 +35,42 @@ var i18n = {
     en: {
         script_description: 'Die2Nite Enhancer allows you to enhance your game experience, every features can be controlled from this panel.',
         help_image_url: 'http://www.die2nite.com/gfx/loc/en/helpLink.gif',
-        configuration_title: 'Die2Nite Enhancer - Settings',
-        enable_shortcuts: 'Enable shortcuts',
-        enable_shortcuts_help: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
-        save_button: 'Save'
+        configuration_panel_title: 'Die2Nite Enhancer - Settings',
+        configuration_panel_enable_shortcuts: 'Enable shortcuts',
+        configuration_panel_enable_shortcuts_help: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
+        configuration_panel_hide_hero_adds: 'Hide hero adds',
+        configuration_panel_hide_hero_adds_help: 'Hide the adds for the hero mode on all the website. Can be useful if you are already hero or don\'t want to be one.',
+        configuration_panel_save_button: 'Save'
     },
     fr: {
         script_description: 'Die2Nite Enhancer vous permet d\'améliorer votre expérience de jeu, toutes ces fonctionalités peuvent être configurées depuis ce panneau.',
         help_image_url: 'http://data.hordes.fr/gfx/loc/fr/helpLink.gif',
-        configuration_title: 'Die2Nite Enhancer - Paramètres',
-        enable_shortcuts: 'Activer les raccourcis',
-        enable_shortcuts_help: 'Vous permet d\'utiliser des raccourcis pour accéder rapidement aux places importants (e.g.: la banque, les portes).',
-        save_button: 'Sauvegarder'
+        configuration_panel_title: 'Die2Nite Enhancer - Paramètres',
+        configuration_panel_enable_shortcuts: 'Activer les raccourcis',
+        configuration_panel_enable_shortcuts_help: 'Vous permet d\'utiliser des raccourcis pour accéder rapidement aux places importants (e.g.: la banque, les portes).',
+        configuration_panel_hide_hero_adds: 'Hide hero adds',
+        configuration_panel_hide_hero_adds_help: 'Hide the adds for the hero mode on all the website. Can be useful if you are already hero or don\'t want to be one.',
+        configuration_panel_save_button: 'Sauvegarder'
     },
     es: {
         script_description: 'Die2Nite Enhancer allows you to enhance your game experience, every features can be controlled from this panel.',
         help_image_url: 'http://data.zombinoia.com/gfx/loc/es/helpLink.gif',
-        configuration_title: 'Die2Nite Enhancer - Settings',
-        enable_shortcuts: 'Enable shortcuts',
-        enable_shortcuts_help: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
-        save_button: 'Save'
+        configuration_panel_title: 'Die2Nite Enhancer - Settings',
+        configuration_panel_enable_shortcuts: 'Enable shortcuts',
+        configuration_panel_enable_shortcuts_help: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
+        configuration_panel_hide_hero_adds: 'Hide hero adds',
+        configuration_panel_hide_hero_adds_help: 'Hide the adds for the hero mode on all the website. Can be useful if you are already hero or don\'t want to be one.',
+        configuration_panel_save_button: 'Save'
     },
     de: {
         script_description: 'Die2Nite Enhancer allows you to enhance your game experience, every features can be controlled from this panel.',
         help_image_url: 'http://data.dieverdammten.de/gfx/loc/de/helpLink.gif',
-        configuration_title: 'Die2Nite Enhancer - Settings',
-        enable_shortcuts: 'Enable shortcuts',
-        enable_shortcuts_help: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
-        save_button: 'Save'
+        configuration_panel_title: 'Die2Nite Enhancer - Settings',
+        configuration_panel_enable_shortcuts: 'Enable shortcuts',
+        configuration_panel_enable_shortcuts_help: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
+        configuration_panel_hide_hero_adds: 'Hide hero adds',
+        configuration_panel_hide_hero_adds_help: 'Hide the adds for the hero mode on all the website. Can be useful if you are already hero or don\'t want to be one.',
+        configuration_panel_save_button: 'Save'
     }
 };
 
@@ -101,7 +109,7 @@ var D2NE = (function() {
         },
 
         // Set to false to show hero adds
-        remove_hero_adds: true
+        hide_hero_adds: true
     };
 
     /**
@@ -129,6 +137,7 @@ var D2NE = (function() {
      */
     var _save_configuration = function() {
         _configuration.enable_shortcuts = document.getElementById('d2ne_configuration_enable_shortcuts').checked;
+        _configuration.hide_hero_adds = document.getElementById('d2ne_configuration_hide_hero_adds').checked;
 
         localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY] = JSON.stringify(_configuration);
     }
@@ -164,12 +173,13 @@ var D2NE = (function() {
         var config_panel_div = document.createElement('div');
         config_panel_div.id = 'd2ne_configuration_panel';
         config_panel_div.innerHTML =
-            '<h1><img src="/gfx/forum/smiley/h_city_up.gif" alt=""><span style="display:none"> ' + _i18n.configuration_title + '</span></h1>' +
+            '<h1><img src="/gfx/forum/smiley/h_city_up.gif" alt=""><span style="display:none"> ' + _i18n.configuration_panel_title + '</span></h1>' +
             '<div style="display:none">' +
             '<p style="border-bottom: 1px dashed #ddab76;padding-bottom: 6px;">' + _i18n.script_description + '</p>' +
             '<table>' +
-                '<tr><td><input type="checkbox" id="d2ne_configuration_enable_shortcuts" ' + helpers.check_checkbox(_configuration.enable_shortcuts) + '/><label for="d2ne_configuration_enable_shortcuts">' + _i18n.enable_shortcuts + '</label></td><td>' + _help_popup(_i18n.enable_shortcuts_help) + '</td></tr>' +
-                '<tr><td colspan="2"><a href="#" id="d2ne_configuration_save" class="button">' + _i18n.save_button + '</a></td></tr>' +
+                '<tr><td><input type="checkbox" id="d2ne_configuration_enable_shortcuts" ' + helpers.check_checkbox(_configuration.enable_shortcuts) + '/><label for="d2ne_configuration_enable_shortcuts">' + _i18n.configuration_panel_enable_shortcuts + '</label></td><td>' + _help_popup(_i18n.configuration_panel_enable_shortcuts_help) + '</td></tr>' +
+                '<tr><td><input type="checkbox" id="d2ne_configuration_hide_hero_adds" ' + helpers.check_checkbox(_configuration.hide_hero_adds) + '/><label for="d2ne_configuration_hide_hero_adds">' + _i18n.configuration_panel_hide_hero_adds + '</label></td><td>' + _help_popup(_i18n.configuration_panel_hide_hero_adds_help) + '</td></tr>' +
+                '<tr><td colspan="2"><a href="#" id="d2ne_configuration_save" class="button">' + _i18n.configuration_panel_save_button + '</a></td></tr>' +
             '</table>' +
             '<div class="clear"></div>' +
             '<p style="text-align:center;border-top: 1px dashed #ddab76;padding-top: 6px;"><a href="' + PROJECT_PAGE + '" target="_blank">' + SCRIPT_NAME +' v' + SCRIPT_VERSION + '</a></p>' +
@@ -180,10 +190,7 @@ var D2NE = (function() {
         main_div.insertBefore(config_panel_div, main.firstChild);
 
         // Create panel style
-        var config_panel_css = document.createElement('style');
-        config_panel_css.type = 'text/css';
-        config_panel_css.innerHTML =
-            '#d2ne_configuration_panel {' +
+        helpers.injectCSS('#d2ne_configuration_panel {' +
                 'margin-top:6px;' +
                 'position:absolute;' +
                 'margin-left:44px;' +
@@ -250,10 +257,7 @@ var D2NE = (function() {
                 'background-repeat: no-repeat;' +
                 'width: 250px;' +
                 'padding: 4px 10px 9px 30px;' +
-            '}';
-
-        // Insert panel style
-        document.getElementsByTagName('head')[0].appendChild(config_panel_css);
+            '}');
 
         document.getElementById('d2ne_configuration_save').onclick = function(event) {
             _save_configuration();
@@ -283,39 +287,52 @@ var D2NE = (function() {
     };
 
     /**
+     * Load the script features.
+     */
+    var _load_features = function() {
+        var features = {
+            enable_shortcuts: function() {
+                helpers.keydown_event(function(keycode, previous_keycode) {
+                    if (d2n_helpers.in_city()) {
+                        if (previous_keycode === _configuration.go_bind) {
+                            for (var bind in _configuration.binds) {
+                                if (_configuration.binds[bind] === keycode) {
+                                    d2n_helpers.go_to_city_page(bind);
+                                }
+                            }
+                        }
+                    }
+                });
+            },
+
+            hide_hero_adds: function() {
+                helpers.injectCSS(
+                    '.heroMode, #ghostHeroAd, #heroContainer, .promoBt, .sondageBg {' +
+                        'display: none;' +
+                    '}'
+                );
+            }
+        };
+
+        // Browse all features, and check if they have to be activated
+        for (var feature in features) {
+            if (_configuration[feature] === true) {
+                (features[feature])();
+            }
+        }
+    }
+
+    /**
      * Set up the script.
      */
     self.init = function() {
         _load_configuration();
         _load_internationalisation();
-        _load_configuration_panel();
+        _load_features();
+        window.addEventListener('load', function() { // wait for the #main div
+            _load_configuration_panel();
+        }, false);
     };
-
-    /**
-     * Enable the binds feature.
-     */
-    var _enable_shortcuts = function() {
-        helpers.keydown_event(function(keycode, previous_keycode) {
-            if (d2n_helpers.in_city()) {
-                if (previous_keycode === _configuration.go_bind) {
-                    for (var bind in _configuration.binds) {
-                        if (_configuration.binds[bind] === keycode) {
-                            d2n_helpers.go_to_city_page(bind);
-                        }
-                    }
-                }
-            }
-        });
-    };
-
-    /**
-     * Run the script features.
-     */
-    self.run = function() {
-        if (_configuration.enable_shortcuts === true) {
-            _enable_shortcuts();
-        }
-    }
 
     return self;
 })(); // !D2NE
@@ -462,22 +479,35 @@ var helpers = (function() {
     };
 
     /**
+     * Inject CSS code in the page context.
+     * @param string code The CSS code to inject
+     */
+    self.injectCSS = function(code)
+    {
+        var encapsulated_css = document.createElement('style');
+        encapsulated_css.type = 'text/css';
+
+        encapsulated_css.innerHTML = code;
+
+        document.getElementsByTagName('head')[0].appendChild(encapsulated_css);
+    }
+
+    /**
      * Inject and execute JavaScript code in the page context.
      * @link http://stackoverflow.com/a/14901197/1071486
-     * @param string/callback code The code to inject
+     * @param string/callback code The JS code to inject
      */
     self.injectJS = function(code)
     {
-        var encapsuled_code, html_encapsuled_code;
+        var encapsulated_js = document.createElement('script');
+        encapsulated_js.type = 'text/javascript';
 
         if (typeof code === 'function') {
-            encapsuled_code = '(' + code + ')();';
-        } else {
-            encapsuled_code = code;
+            code = '(' + code + ')();';
         }
-        html_encapsuled_code = document.createElement('script');
-        html_encapsuled_code.textContent = encapsuled_code;
-        document.body.appendChild(html_encapsuled_code);
+        encapsulated_js.textContent = code;
+
+        document.body.appendChild(encapsulated_js);
     };
 
     /**
@@ -527,13 +557,27 @@ var helpers = (function() {
         return '';
     };
 
+    /**
+     * Execute a function from its name.
+     * @link http://stackoverflow.com/a/359910/1071486
+     * @param string functionName The function name to execute
+     * @param string context The context in which the function should be executed
+     * @param mixed... args The function arguments
+     */
+    self.execute_function_by_name = function(functionName, context) {
+        var args = Array.prototype.slice.call(arguments).splice(2);
+        var namespaces = functionName.split(".");
+        var func = namespaces.pop();
+        for(var i = 0; i < namespaces.length; i++) {
+            context = context[namespaces[i]];
+        }
+        return context[func].apply(this, args);
+    }
+
     return self;
 })(); // !generic javascript helpers
 
 
-window.addEventListener('load', function() {
-    D2NE.init();
-    D2NE.run();
-}, false);
+D2NE.init();
 
 })();
