@@ -348,20 +348,30 @@ var D2NE = (function() {
 
             highlight_ap: function() {
                 helpers.wait_for_id('movesCounter', function(node) {
-                    var ap = d2n_helpers.get_number_of_ap();
-                    var colors = [
-                        'ff0000', // 0 AP
-                        'ff4700', // 1 AP
-                        'ff8e00', // 2 AP
-                        'ffd500', // 3 AP
-                        'e3ff00', // 4 AP
-                        '9cff00', // 5 AP
-                        '55ff00', // 6 AP
-                        '00ff00', // 7 AP
-                        '00ff00'  // 8 AP
-                    ];
+                    var highlight = function() {
+                        var ap = d2n_helpers.get_number_of_ap();
+                        var colors = [
+                            'ff0000', // 0 AP
+                            'ff4700', // 1 AP
+                            'ff8e00', // 2 AP
+                            'ffd500', // 3 AP
+                            'e3ff00', // 4 AP
+                            '9cff00', // 5 AP
+                            '55ff00', // 6 AP
+                            '00ff00', // 7 AP
+                            '00ff00'  // 8 AP
+                        ];
 
-                    node.style.border = '1px solid #' + colors[ap];
+                        node.style.border = '1px solid #' + colors[ap];
+                    };
+                    highlight();
+
+                    var observer = new MutationObserver(function(mutations) {
+                        mutations.forEach(function(mutation) {
+                            highlight();
+                        });
+                    });
+                    observer.observe(node, {childList: true});
                 });
             }
         };
