@@ -185,7 +185,7 @@ var D2NE = (function() {
         hide_help: true,
 
         // Set to true to hide the Twinoid bar
-        hide_twinoid_bar: true,
+        hide_twinoid_bar: false,
 
         // Set to true to hide the footer
         hide_footer: true,
