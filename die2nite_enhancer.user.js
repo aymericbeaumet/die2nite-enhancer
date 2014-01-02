@@ -268,9 +268,7 @@ var D2NE = (function() {
             '}' +
             '#d2ne_configuration_panel a.button {' +
                 'width: auto;' +
-                'margin: 0 auto;' +
-                'margin-top: 2px;' +
-                'margin-bottom: 3px;' +
+                'margin: 2px 0 3px 4px;' +
                 'text-align: center;' +
                 'padding: 0;' +
             '}' +
@@ -307,7 +305,7 @@ var D2NE = (function() {
 
         document.getElementById('d2ne_configuration_save').onclick = function(event) {
             _save_configuration();
-            location.reload();
+            helpers.reload();
         };
 
         // Show/Hide config panel cache
@@ -339,13 +337,15 @@ var D2NE = (function() {
         var features = {
             enable_shortcuts: function() {
                 helpers.keydown_event(function(keycode, previous_keycode) {
-                    if (d2n_helpers.in_city()) {
-                        if (previous_keycode === _configuration.go_bind) {
-                            for (var bind in _configuration.binds) {
-                                if (_configuration.binds[bind] === keycode) {
-                                    d2n_helpers.go_to_city_page(bind);
-                                }
-                            }
+                    if (d2n_helpers.is_outside()) { // abort if outside
+                        return;
+                    }
+                    if (previous_keycode !== _configuration.go_bind) {
+                        return;
+                    }
+                    for (var bind in _configuration.binds) {
+                        if (_configuration.binds[bind] === keycode) {
+                            return d2n_helpers.go_to_city_page(bind);
                         }
                     }
                 });
@@ -438,7 +438,8 @@ var d2n_helpers = (function() {
     };
 
     /**
-     * Check if the user is in the city.
+     * Check if the player is in the city. Return false if the user is in the city
+     * but on the forum.
      * @return bool true if inside the city, false otherwise
      */
     self.in_city = function()
@@ -451,10 +452,12 @@ var d2n_helpers = (function() {
      * @param string page The page to check (a key from _pages_url)
      * @return string true if on the selected city page
      */
-    self.on_city_page = function(page)
+    self.is_on_city_page = function(page)
     {
-        var r = new RegExp('^#city\/enter\?go=' + _pages_url[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$');
-        return r.test(window.location.hash);
+        return helpers.match_regex(
+            window.location.hash,
+            '^#city\/enter\?go=' + _pages_url[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$'
+        );
     };
 
     /**
@@ -463,24 +466,36 @@ var d2n_helpers = (function() {
      */
     self.go_to_city_page = function(page)
     {
-        var url = _pages_url[page] + '?sk=' + self.get_sk();
-        helpers.injectJS('js.XmlHttp.get(\'' + url + '\');');
+        var sk = self.get_sk();
+        var page_url = _pages_url[page];
+
+        if (self.is_on_forum()) { // if on the forum, redirect to the desired page
+            helpers.redirect('/#city/enter?go=' + page_url + ';sk=' + sk);
+        } else { // else just download the content with an ajax request
+            helpers.injectJS('js.XmlHttp.get(\'' + page_url + '?sk=' + sk + '\');');
+        }
     };
 
     /**
      * Return the sk (session/secret key?), return null if nothing can be found.
      * @return string The key
+     * @return null if an error occurs
      */
     self.get_sk = function()
     {
-        var matches = /sk=([a-z0-9]{5})$/.exec(window.location.hash);
-        return matches[1];
+        var el = document.querySelector('#sites > ul > li > a.link');
+
+        if (helpers.is_defined(el) && helpers.is_defined(el.href)) {
+            return el.href.split('=')[2];
+        }
+        return null;
     };
 
     /**
      * Give the website language (specific to D2N/Hordes). Return 'en' by
      * default.
      * @return string The language of the current page ('en' / 'fr')
+     * @return string 'en' if no corresponding language can be found
      */
     self.get_website_language = function() {
         var websites_language = {
@@ -512,6 +527,27 @@ var d2n_helpers = (function() {
         }
         return null;
     }
+
+    /**
+     * Check if the player is on the forum.
+     * @return bool true if on the forum, false otherwise
+     */
+    self.is_on_forum = function() {
+        return (window.location.pathname === '/tid/forum');
+    };
+
+    /**
+     * Check if the player is outside the city. Return false if the user is
+     * outside but on the forum.
+     * @return string true if outside, false otherwise
+     */
+    self.is_outside = function()
+    {
+        return self.match_regex(
+            window.location.hash,
+            '^#outside?go=outside/refresh;sk=[a-z0-9]{5}$'
+        );
+    };
 
     return self;
 })(); // !die2nite specific helpers
@@ -665,6 +701,40 @@ var helpers = (function() {
             self.wait_for_id(id, callback);
         }, 50);
     };
+
+    /**
+     * Redirect to the given url.
+     * @param string url The url to redirect to
+     */
+    self.redirect = function(url) {
+        window.location.href = url;
+    };
+
+    /**
+     * Reload the current page
+     */
+    self.reload = function() {
+        location.reload();
+    }
+
+    /**
+     * Instanciate a Regex object and test to see if the given string matches
+     * it.
+     * @param string The string to test
+     * @param string/RegExp The regex to match the string with
+     * @return bool true if the regex matches the string, false otherwise
+     */
+    self.match_regex = function(string, regex) {
+        var r;
+
+        if (typeof regex === 'RegExp') {
+            r = regex;
+        } else {
+            r = new RegExp(regex);
+        }
+
+        return r.test(string);
+    }
 
     return self;
 })(); // !generic javascript helpers
