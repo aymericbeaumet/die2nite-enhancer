@@ -745,8 +745,8 @@ var helpers = (function() {
         time_limit = (self.is_defined(time_limit)) ? time_limit : 1000;
 
         document.addEventListener('keydown', function(event) {
-            // Cancel event if the cursor is in an input field
-            if (event.target.nodeName === 'INPUT') {
+            // Cancel event if the cursor is in an input field or textarea
+            if (event.target.nodeName === 'INPUT' || event.target.nodeName === 'TEXTAREA') {
                 return;
             }
 
