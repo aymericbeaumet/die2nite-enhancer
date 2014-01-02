@@ -46,6 +46,8 @@ var i18n = {
         configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface (super-expert mode)',
         configuration_panel_hide_twinoid_bar: 'Hide Twinoid bar',
         configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen.',
+        configuration_panel_hide_footer: 'Hide footer',
+        configuration_panel_hide_footer_tooltip: 'Hide the page footer with informations about other games, Motion Twin, etc...',
         configuration_panel_save_button: 'Save'
     },
 
@@ -63,6 +65,8 @@ var i18n = {
         configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface (super-expert mode).',
         configuration_panel_hide_twinoid_bar: 'Hide Twinoid bar',
         configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen.',
+        configuration_panel_hide_footer: 'Hide footer',
+        configuration_panel_hide_footer_tooltip: 'Hide the page footer with informations about other games, Motion Twin, etc...',
         configuration_panel_save_button: 'Sauvegarder'
     },
 
@@ -80,6 +84,8 @@ var i18n = {
         configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface (super-expert mode).',
         configuration_panel_hide_twinoid_bar: 'Hide Twinoid bar',
         configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen.',
+        configuration_panel_hide_footer: 'Hide footer',
+        configuration_panel_hide_footer_tooltip: 'Hide the page footer with informations about other games, Motion Twin, etc...',
         configuration_panel_save_button: 'Save'
     },
 
@@ -97,6 +103,8 @@ var i18n = {
         configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface (super-expert mode).',
         configuration_panel_hide_twinoid_bar: 'Hide Twinoid bar',
         configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen.',
+        configuration_panel_hide_footer: 'Hide footer',
+        configuration_panel_hide_footer_tooltip: 'Hide the page footer with informations about other games, Motion Twin, etc...',
         configuration_panel_save_button: 'Save'
     }
 };
@@ -146,6 +154,9 @@ var D2NE = (function() {
 
         // Set to true to hide the Twinoid bar
         hide_twinoid_bar: true,
+
+        // Set to true to hide the footer
+        hide_footer: true,
     };
 
     /**
@@ -177,6 +188,7 @@ var D2NE = (function() {
         _configuration.highlight_ap = document.getElementById('d2ne_configuration_highlight_ap').checked;
         _configuration.hide_help = document.getElementById('d2ne_configuration_hide_help').checked;
         _configuration.hide_twinoid_bar = document.getElementById('d2ne_configuration_hide_twinoid_bar').checked;
+        _configuration.hide_footer = document.getElementById('d2ne_configuration_hide_footer').checked;
 
         localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY] = JSON.stringify(_configuration);
     }
@@ -222,6 +234,7 @@ var D2NE = (function() {
                 '<tr><td><input type="checkbox" id="d2ne_configuration_highlight_ap" ' + helpers.check_checkbox(_configuration.highlight_ap) + '/><label for="d2ne_configuration_highlight_ap">' + _i18n.configuration_panel_highlight_ap + '</label></td><td>' + _tooltip(_i18n.configuration_panel_highlight_ap_tooltip) + '</td></tr>' +
                 '<tr><td><input type="checkbox" id="d2ne_configuration_hide_help" ' + helpers.check_checkbox(_configuration.hide_help) + '/><label for="d2ne_configuration_hide_help">' + _i18n.configuration_panel_hide_help + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_help_tooltip) + '</td></tr>' +
                 '<tr><td><input type="checkbox" id="d2ne_configuration_hide_twinoid_bar" ' + helpers.check_checkbox(_configuration.hide_twinoid_bar) + '/><label for="d2ne_configuration_hide_twinoid_bar">' + _i18n.configuration_panel_hide_twinoid_bar + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_twinoid_bar_tooltip) + '</td></tr>' +
+                '<tr><td><input type="checkbox" id="d2ne_configuration_hide_footer" ' + helpers.check_checkbox(_configuration.hide_footer) + '/><label for="d2ne_configuration_hide_footer">' + _i18n.configuration_panel_hide_footer + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_footer_tooltip) + '</td></tr>' +
 
                 '<tr><td colspan="2"><a href="#" id="d2ne_configuration_save" class="button">' + _i18n.configuration_panel_save_button + '</a></td></tr>' +
             '</table>' +
@@ -403,7 +416,7 @@ var D2NE = (function() {
 
             hide_help: function() {
                 helpers.injectCSS(
-                    '#mapTips, #ghost_pages div.help {' +
+                    '#mapTips, #ghost_pages .help {' +
                         'display: none' +
                     '}'
                 );
@@ -416,6 +429,18 @@ var D2NE = (function() {
                     '}' +
                     '#gamebody div.infoBar {' +
                         'top: 111px;' +
+                    '}'
+                );
+            },
+
+            hide_footer: function() {
+                helpers.injectCSS(
+                    '#tid_bar_down {' +
+                        'display: none;' +
+                    '}' +
+                    '#fbAd {' +
+                        'height: 0;' +
+                        'overflow: hidden;' +
                     '}'
                 );
             }
