@@ -44,6 +44,8 @@ var i18n = {
         configuration_panel_highlight_ap_tooltip: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
         configuration_panel_hide_help: 'Hide help',
         configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface (super-expert mode)',
+        configuration_panel_hide_twinoid_bar: 'Hide Twinoid bar',
+        configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen.',
         configuration_panel_save_button: 'Save'
     },
 
@@ -58,7 +60,9 @@ var i18n = {
         configuration_panel_highlight_ap: 'Highlight AP',
         configuration_panel_highlight_ap_tooltip: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
         configuration_panel_hide_help: 'Hide help',
-        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface (super-expert mode)',
+        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface (super-expert mode).',
+        configuration_panel_hide_twinoid_bar: 'Hide Twinoid bar',
+        configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen.',
         configuration_panel_save_button: 'Sauvegarder'
     },
 
@@ -73,7 +77,9 @@ var i18n = {
         configuration_panel_highlight_ap: 'Highlight AP',
         configuration_panel_highlight_ap_tooltip: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
         configuration_panel_hide_help: 'Hide help',
-        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface (super-expert mode)',
+        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface (super-expert mode).',
+        configuration_panel_hide_twinoid_bar: 'Hide Twinoid bar',
+        configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen.',
         configuration_panel_save_button: 'Save'
     },
 
@@ -88,7 +94,9 @@ var i18n = {
         configuration_panel_highlight_ap: 'Highlight AP',
         configuration_panel_highlight_ap_tooltip: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
         configuration_panel_hide_help: 'Hide help',
-        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface (super-expert mode)',
+        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface (super-expert mode).',
+        configuration_panel_hide_twinoid_bar: 'Hide Twinoid bar',
+        configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen.',
         configuration_panel_save_button: 'Save'
     }
 };
@@ -135,6 +143,9 @@ var D2NE = (function() {
 
         // Set to true to hide the help
         hide_help: true,
+
+        // Set to true to hide the Twinoid bar
+        hide_twinoid_bar: true,
     };
 
     /**
@@ -165,6 +176,7 @@ var D2NE = (function() {
         _configuration.hide_hero_adds = document.getElementById('d2ne_configuration_hide_hero_adds').checked;
         _configuration.highlight_ap = document.getElementById('d2ne_configuration_highlight_ap').checked;
         _configuration.hide_help = document.getElementById('d2ne_configuration_hide_help').checked;
+        _configuration.hide_twinoid_bar = document.getElementById('d2ne_configuration_hide_twinoid_bar').checked;
 
         localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY] = JSON.stringify(_configuration);
     }
@@ -204,10 +216,13 @@ var D2NE = (function() {
             '<div style="display:none">' +
             '<p>' + _i18n.script_description + '</p>' +
             '<table>' +
-                '<tr><td><input type="checkbox" id="d2ne_configuration_enable_shortcuts" ' + helpers.check_checkbox(_configuration.enable_shortcuts) + '/><label for="d2ne_configuration_enable_shortcuts">' + _i18n.configuration_panel_enable_shortcuts + '</label></td><td>' + _tooltip(_i18n.configuration_panel_enable_shortcuts_help) + '</td></tr>' +
-                '<tr><td><input type="checkbox" id="d2ne_configuration_hide_hero_adds" ' + helpers.check_checkbox(_configuration.hide_hero_adds) + '/><label for="d2ne_configuration_hide_hero_adds">' + _i18n.configuration_panel_hide_hero_adds + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_hero_adds_help) + '</td></tr>' +
-                '<tr><td><input type="checkbox" id="d2ne_configuration_highlight_ap" ' + helpers.check_checkbox(_configuration.highlight_ap) + '/><label for="d2ne_configuration_highlight_ap">' + _i18n.configuration_panel_highlight_ap + '</label></td><td>' + _tooltip(_i18n.configuration_panel_highlight_ap_help) + '</td></tr>' +
+
+                '<tr><td><input type="checkbox" id="d2ne_configuration_enable_shortcuts" ' + helpers.check_checkbox(_configuration.enable_shortcuts) + '/><label for="d2ne_configuration_enable_shortcuts">' + _i18n.configuration_panel_enable_shortcuts + '</label></td><td>' + _tooltip(_i18n.configuration_panel_enable_shortcuts_tooltip) + '</td></tr>' +
+                '<tr><td><input type="checkbox" id="d2ne_configuration_hide_hero_adds" ' + helpers.check_checkbox(_configuration.hide_hero_adds) + '/><label for="d2ne_configuration_hide_hero_adds">' + _i18n.configuration_panel_hide_hero_adds + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_hero_adds_tooltip) + '</td></tr>' +
+                '<tr><td><input type="checkbox" id="d2ne_configuration_highlight_ap" ' + helpers.check_checkbox(_configuration.highlight_ap) + '/><label for="d2ne_configuration_highlight_ap">' + _i18n.configuration_panel_highlight_ap + '</label></td><td>' + _tooltip(_i18n.configuration_panel_highlight_ap_tooltip) + '</td></tr>' +
                 '<tr><td><input type="checkbox" id="d2ne_configuration_hide_help" ' + helpers.check_checkbox(_configuration.hide_help) + '/><label for="d2ne_configuration_hide_help">' + _i18n.configuration_panel_hide_help + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_help_tooltip) + '</td></tr>' +
+                '<tr><td><input type="checkbox" id="d2ne_configuration_hide_twinoid_bar" ' + helpers.check_checkbox(_configuration.hide_twinoid_bar) + '/><label for="d2ne_configuration_hide_twinoid_bar">' + _i18n.configuration_panel_hide_twinoid_bar + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_twinoid_bar_tooltip) + '</td></tr>' +
+
                 '<tr><td colspan="2"><a href="#" id="d2ne_configuration_save" class="button">' + _i18n.configuration_panel_save_button + '</a></td></tr>' +
             '</table>' +
             '<div class="clear"></div>' +
@@ -337,10 +352,10 @@ var D2NE = (function() {
         var features = {
             enable_shortcuts: function() {
                 helpers.keydown_event(function(keycode, previous_keycode) {
-                    if (d2n_helpers.is_outside()) { // abort if outside
+                    if (previous_keycode !== _configuration.go_bind) {
                         return;
                     }
-                    if (previous_keycode !== _configuration.go_bind) {
+                    if (d2n_helpers.is_outside()) { // abort if outside
                         return;
                     }
                     for (var bind in _configuration.binds) {
@@ -390,6 +405,17 @@ var D2NE = (function() {
                 helpers.injectCSS(
                     '#mapTips, #ghost_pages div.help {' +
                         'display: none' +
+                    '}'
+                );
+            },
+
+            hide_twinoid_bar: function() {
+                helpers.injectCSS(
+                    '#tid_bar {' +
+                        'display: none;' +
+                    '}' +
+                    '#gamebody div.infoBar {' +
+                        'top: 111px;' +
                     '}'
                 );
             }
@@ -456,7 +482,7 @@ var d2n_helpers = (function() {
     {
         return helpers.match_regex(
             window.location.hash,
-            '^#city\/enter\?go=' + _pages_url[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$'
+            '^#city\\/enter\\?go=' + _pages_url[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$'
         );
     };
 
@@ -468,6 +494,11 @@ var d2n_helpers = (function() {
     {
         var sk = self.get_sk();
         var page_url = _pages_url[page];
+
+        // if already on the page, abort
+        if (self.is_on_city_page(page)) {
+            return;
+        }
 
         if (self.is_on_forum()) { // if on the forum, redirect to the desired page
             helpers.redirect('/#city/enter?go=' + page_url + ';sk=' + sk);
@@ -543,9 +574,9 @@ var d2n_helpers = (function() {
      */
     self.is_outside = function()
     {
-        return self.match_regex(
+        return helpers.match_regex(
             window.location.hash,
-            '^#outside?go=outside/refresh;sk=[a-z0-9]{5}$'
+            '^#outside\\?go=outside\\/refresh;sk=[a-z0-9]{5}$'
         );
     };
 
@@ -727,7 +758,7 @@ var helpers = (function() {
     self.match_regex = function(string, regex) {
         var r;
 
-        if (typeof regex === 'RegExp') {
+        if (regex instanceof RegExp) {
             r = regex;
         } else {
             r = new RegExp(regex);
