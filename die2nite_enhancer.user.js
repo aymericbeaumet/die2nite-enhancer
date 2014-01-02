@@ -48,6 +48,8 @@ var i18n = {
         configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen.',
         configuration_panel_hide_footer: 'Hide footer',
         configuration_panel_hide_footer_tooltip: 'Hide the page footer with informations about other games, Motion Twin, etc...',
+        configuration_panel_hide_pegi: 'Hide PEGI',
+        configuration_panel_hide_pehi_tooltip: 'Hide the PEGI image at the bottom of each page.',
         configuration_panel_save_button: 'Save'
     },
 
@@ -67,6 +69,8 @@ var i18n = {
         configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen.',
         configuration_panel_hide_footer: 'Hide footer',
         configuration_panel_hide_footer_tooltip: 'Hide the page footer with informations about other games, Motion Twin, etc...',
+        configuration_panel_hide_pegi: 'Hide PEGI',
+        configuration_panel_hide_pehi_tooltip: 'Hide the PEGI image at the bottom of each page.',
         configuration_panel_save_button: 'Sauvegarder'
     },
 
@@ -86,6 +90,8 @@ var i18n = {
         configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen.',
         configuration_panel_hide_footer: 'Hide footer',
         configuration_panel_hide_footer_tooltip: 'Hide the page footer with informations about other games, Motion Twin, etc...',
+        configuration_panel_hide_pegi: 'Hide PEGI',
+        configuration_panel_hide_pehi_tooltip: 'Hide the PEGI image at the bottom of each page.',
         configuration_panel_save_button: 'Save'
     },
 
@@ -105,6 +111,8 @@ var i18n = {
         configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen.',
         configuration_panel_hide_footer: 'Hide footer',
         configuration_panel_hide_footer_tooltip: 'Hide the page footer with informations about other games, Motion Twin, etc...',
+        configuration_panel_hide_pegi: 'Hide PEGI',
+        configuration_panel_hide_pehi_tooltip: 'Hide the PEGI image at the bottom of each page.',
         configuration_panel_save_button: 'Save'
     }
 };
@@ -157,6 +165,9 @@ var D2NE = (function() {
 
         // Set to true to hide the footer
         hide_footer: true,
+
+        // Set to true to hide the PEGI image at the bottom of each page
+        hide_pegi: true
     };
 
     /**
@@ -189,6 +200,7 @@ var D2NE = (function() {
         _configuration.hide_help = document.getElementById('d2ne_configuration_hide_help').checked;
         _configuration.hide_twinoid_bar = document.getElementById('d2ne_configuration_hide_twinoid_bar').checked;
         _configuration.hide_footer = document.getElementById('d2ne_configuration_hide_footer').checked;
+        _configuration.hide_pegi = document.getElementById('d2ne_configuration_hide_pegi').checked;
 
         localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY] = JSON.stringify(_configuration);
     }
@@ -235,6 +247,7 @@ var D2NE = (function() {
                 '<tr><td><input type="checkbox" id="d2ne_configuration_hide_help" ' + helpers.check_checkbox(_configuration.hide_help) + '/><label for="d2ne_configuration_hide_help">' + _i18n.configuration_panel_hide_help + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_help_tooltip) + '</td></tr>' +
                 '<tr><td><input type="checkbox" id="d2ne_configuration_hide_twinoid_bar" ' + helpers.check_checkbox(_configuration.hide_twinoid_bar) + '/><label for="d2ne_configuration_hide_twinoid_bar">' + _i18n.configuration_panel_hide_twinoid_bar + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_twinoid_bar_tooltip) + '</td></tr>' +
                 '<tr><td><input type="checkbox" id="d2ne_configuration_hide_footer" ' + helpers.check_checkbox(_configuration.hide_footer) + '/><label for="d2ne_configuration_hide_footer">' + _i18n.configuration_panel_hide_footer + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_footer_tooltip) + '</td></tr>' +
+                '<tr><td><input type="checkbox" id="d2ne_configuration_hide_pegi" ' + helpers.check_checkbox(_configuration.hide_pegi) + '/><label for="d2ne_configuration_hide_pegi">' + _i18n.configuration_panel_hide_pegi + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_pegi_tooltip) + '</td></tr>' +
 
                 '<tr><td colspan="2"><a href="#" id="d2ne_configuration_save" class="button">' + _i18n.configuration_panel_save_button + '</a></td></tr>' +
             '</table>' +
@@ -429,6 +442,9 @@ var D2NE = (function() {
                     '}' +
                     '#gamebody div.infoBar {' +
                         'top: 111px;' +
+                    '}' +
+                    'a#backReboot {' +
+                        'top: 178px;' +
                     '}'
                 );
             },
@@ -441,6 +457,14 @@ var D2NE = (function() {
                     '#fbAd {' +
                         'height: 0;' +
                         'overflow: hidden;' +
+                    '}'
+                );
+            },
+
+            hide_pegi: function() {
+                helpers.injectCSS(
+                    '.pegi {' +
+                        'display: none;' +
                     '}'
                 );
             }
