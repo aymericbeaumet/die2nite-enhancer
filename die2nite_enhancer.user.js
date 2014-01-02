@@ -37,11 +37,13 @@ var i18n = {
         help_image_url: '/gfx/loc/en/helpLink.gif',
         configuration_panel_title: 'Die2Nite Enhancer - Settings',
         configuration_panel_enable_shortcuts: 'Enable shortcuts',
-        configuration_panel_enable_shortcuts_help: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
+        configuration_panel_enable_shortcuts_tooltip: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
         configuration_panel_hide_hero_adds: 'Hide hero adds',
-        configuration_panel_hide_hero_adds_help: 'Hide the adds for the hero mode on all the website. Can be useful if you are already hero or don\'t want to be one.',
+        configuration_panel_hide_hero_adds_tooltip: 'Hide the adds for the hero mode on all the website. Can be useful if you are already hero or don\'t want to be one.',
         configuration_panel_highlight_ap: 'Highlight AP',
-        configuration_panel_highlight_ap_help: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
+        configuration_panel_highlight_ap_tooltip: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
+        configuration_panel_hide_help: 'Hide help',
+        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface (super-expert mode)',
         configuration_panel_save_button: 'Save'
     },
 
@@ -50,11 +52,13 @@ var i18n = {
         help_image_url: '/gfx/loc/fr/helpLink.gif',
         configuration_panel_title: 'Die2Nite Enhancer - Paramètres',
         configuration_panel_enable_shortcuts: 'Activer les raccourcis',
-        configuration_panel_enable_shortcuts_help: 'Vous permet d\'utiliser des raccourcis pour accéder rapidement aux places importants (e.g.: la banque, les portes).',
+        configuration_panel_enable_shortcuts_tooltip: 'Vous permet d\'utiliser des raccourcis pour accéder rapidement aux places importants (e.g.: la banque, les portes).',
         configuration_panel_hide_hero_adds: 'Hide hero adds',
-        configuration_panel_hide_hero_adds_help: 'Hide the adds for the hero mode on all the website. Can be useful if you are already hero or don\'t want to be one.',
+        configuration_panel_hide_hero_adds_tooltip: 'Hide the adds for the hero mode on all the website. Can be useful if you are already hero or don\'t want to be one.',
         configuration_panel_highlight_ap: 'Highlight AP',
-        configuration_panel_highlight_ap_help: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
+        configuration_panel_highlight_ap_tooltip: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
+        configuration_panel_hide_help: 'Hide help',
+        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface (super-expert mode)',
         configuration_panel_save_button: 'Sauvegarder'
     },
 
@@ -63,11 +67,13 @@ var i18n = {
         help_image_url: '/gfx/loc/es/helpLink.gif',
         configuration_panel_title: 'Die2Nite Enhancer - Settings',
         configuration_panel_enable_shortcuts: 'Enable shortcuts',
-        configuration_panel_enable_shortcuts_help: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
+        configuration_panel_enable_shortcuts_tooltip: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
         configuration_panel_hide_hero_adds: 'Hide hero adds',
-        configuration_panel_hide_hero_adds_help: 'Hide the adds for the hero mode on all the website. Can be useful if you are already hero or don\'t want to be one.',
+        configuration_panel_hide_hero_adds_tooltip: 'Hide the adds for the hero mode on all the website. Can be useful if you are already hero or don\'t want to be one.',
         configuration_panel_highlight_ap: 'Highlight AP',
-        configuration_panel_highlight_ap_help: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
+        configuration_panel_highlight_ap_tooltip: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
+        configuration_panel_hide_help: 'Hide help',
+        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface (super-expert mode)',
         configuration_panel_save_button: 'Save'
     },
 
@@ -76,11 +82,13 @@ var i18n = {
         help_image_url: '/gfx/loc/de/helpLink.gif',
         configuration_panel_title: 'Die2Nite Enhancer - Settings',
         configuration_panel_enable_shortcuts: 'Enable shortcuts',
-        configuration_panel_enable_shortcuts_help: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
+        configuration_panel_enable_shortcuts_tooltip: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
         configuration_panel_hide_hero_adds: 'Hide hero adds',
-        configuration_panel_hide_hero_adds_help: 'Hide the adds for the hero mode on all the website. Can be useful if you are already hero or don\'t want to be one.',
+        configuration_panel_hide_hero_adds_tooltip: 'Hide the adds for the hero mode on all the website. Can be useful if you are already hero or don\'t want to be one.',
         configuration_panel_highlight_ap: 'Highlight AP',
-        configuration_panel_highlight_ap_help: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
+        configuration_panel_highlight_ap_tooltip: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
+        configuration_panel_hide_help: 'Hide help',
+        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface (super-expert mode)',
         configuration_panel_save_button: 'Save'
     }
 };
@@ -98,7 +106,7 @@ var D2NE = (function() {
      * The default configuration.
      */
     var _default_configuration = {
-        // Set to false to disable the binds
+        // Set to true to enable binds
         enable_shortcuts: true,
         // Longest elapsed time between two binds (ms)
         bind_elapsed_time_limit: 1000,
@@ -119,11 +127,14 @@ var D2NE = (function() {
             guard: 76 // 'L'
         },
 
-        // Set to false to show hero adds
+        // Set to true to hide hero adds
         hide_hero_adds: true,
 
-        // Set to false to disable AP color border
-        highlight_ap: true
+        // Set to true to enable AP color border
+        highlight_ap: true,
+
+        // Set to true to hide the help
+        hide_help: true,
     };
 
     /**
@@ -153,6 +164,7 @@ var D2NE = (function() {
         _configuration.enable_shortcuts = document.getElementById('d2ne_configuration_enable_shortcuts').checked;
         _configuration.hide_hero_adds = document.getElementById('d2ne_configuration_hide_hero_adds').checked;
         _configuration.highlight_ap = document.getElementById('d2ne_configuration_highlight_ap').checked;
+        _configuration.hide_help = document.getElementById('d2ne_configuration_hide_help').checked;
 
         localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY] = JSON.stringify(_configuration);
     }
@@ -172,7 +184,7 @@ var D2NE = (function() {
      * Return a HTML string of an image displaying a help popup with the given
      * message.
      */
-    var _help_popup = function(message)
+    var _tooltip = function(message)
     {
         // defaut empty message
         message = (helpers.is_defined(message)) ? message : '';
@@ -192,9 +204,10 @@ var D2NE = (function() {
             '<div style="display:none">' +
             '<p>' + _i18n.script_description + '</p>' +
             '<table>' +
-                '<tr><td><input type="checkbox" id="d2ne_configuration_enable_shortcuts" ' + helpers.check_checkbox(_configuration.enable_shortcuts) + '/><label for="d2ne_configuration_enable_shortcuts">' + _i18n.configuration_panel_enable_shortcuts + '</label></td><td>' + _help_popup(_i18n.configuration_panel_enable_shortcuts_help) + '</td></tr>' +
-                '<tr><td><input type="checkbox" id="d2ne_configuration_hide_hero_adds" ' + helpers.check_checkbox(_configuration.hide_hero_adds) + '/><label for="d2ne_configuration_hide_hero_adds">' + _i18n.configuration_panel_hide_hero_adds + '</label></td><td>' + _help_popup(_i18n.configuration_panel_hide_hero_adds_help) + '</td></tr>' +
-                '<tr><td><input type="checkbox" id="d2ne_configuration_highlight_ap" ' + helpers.check_checkbox(_configuration.highlight_ap) + '/><label for="d2ne_configuration_highlight_ap">' + _i18n.configuration_panel_highlight_ap + '</label></td><td>' + _help_popup(_i18n.configuration_panel_highlight_ap_help) + '</td></tr>' +
+                '<tr><td><input type="checkbox" id="d2ne_configuration_enable_shortcuts" ' + helpers.check_checkbox(_configuration.enable_shortcuts) + '/><label for="d2ne_configuration_enable_shortcuts">' + _i18n.configuration_panel_enable_shortcuts + '</label></td><td>' + _tooltip(_i18n.configuration_panel_enable_shortcuts_help) + '</td></tr>' +
+                '<tr><td><input type="checkbox" id="d2ne_configuration_hide_hero_adds" ' + helpers.check_checkbox(_configuration.hide_hero_adds) + '/><label for="d2ne_configuration_hide_hero_adds">' + _i18n.configuration_panel_hide_hero_adds + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_hero_adds_help) + '</td></tr>' +
+                '<tr><td><input type="checkbox" id="d2ne_configuration_highlight_ap" ' + helpers.check_checkbox(_configuration.highlight_ap) + '/><label for="d2ne_configuration_highlight_ap">' + _i18n.configuration_panel_highlight_ap + '</label></td><td>' + _tooltip(_i18n.configuration_panel_highlight_ap_help) + '</td></tr>' +
+                '<tr><td><input type="checkbox" id="d2ne_configuration_hide_help" ' + helpers.check_checkbox(_configuration.hide_help) + '/><label for="d2ne_configuration_hide_help">' + _i18n.configuration_panel_hide_help + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_help_tooltip) + '</td></tr>' +
                 '<tr><td colspan="2"><a href="#" id="d2ne_configuration_save" class="button">' + _i18n.configuration_panel_save_button + '</a></td></tr>' +
             '</table>' +
             '<div class="clear"></div>' +
@@ -367,12 +380,18 @@ var D2NE = (function() {
                     highlight();
 
                     var observer = new MutationObserver(function(mutations) {
-                        mutations.forEach(function(mutation) {
-                            highlight();
-                        });
+                        highlight();
                     });
                     observer.observe(node, {childList: true});
                 });
+            },
+
+            hide_help: function() {
+                helpers.injectCSS(
+                    '#mapTips, #ghost_pages div.help {' +
+                        'display: none' +
+                    '}'
+                );
             }
         };
 
