@@ -43,9 +43,9 @@ var i18n = {
         configuration_panel_highlight_ap: 'Highlight AP',
         configuration_panel_highlight_ap_tooltip: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
         configuration_panel_hide_help: 'Hide help',
-        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface',
+        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface.',
         configuration_panel_hide_twinoid_bar: 'Hide Twinoid bar',
-        configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen.',
+        configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen. Put your mouse near the top of the screen to show it again.',
         configuration_panel_hide_footer: 'Hide footer',
         configuration_panel_hide_footer_tooltip: 'Hide the page footer with informations about other games, Motion Twin, etc...',
         configuration_panel_hide_pegi: 'Hide PEGI',
@@ -55,7 +55,7 @@ var i18n = {
         configuration_panel_hide_guides: 'Hide guides',
         configuration_panel_hide_guides_tooltip: 'Hide all the guides and the help tooltips.',
         configuration_panel_hide_rp_content: 'Hide RP content',
-        configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content',
+        configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
         configuration_panel_save_button: 'Save'
     },
 
@@ -430,6 +430,56 @@ var D2NE = (function() {
      */
     var _load_features = function() {
         var features = {
+
+            ////
+            hide_twinoid_bar: function() {
+                helpers.injectCSS(
+                    '#tid_bar {' +
+                        'display: none;' +
+                        'position: fixed;' +
+                        'z-index: 15;' +
+                    '}' +
+                    '#gamebody div.infoBar {' +
+                        'top: 111px;' +
+                    '}' +
+                    'a#backReboot {' +
+                        'top: 178px;' +
+                    '}'
+                );
+
+                var _tid_cache = document.getElementById('tid_bar');
+                var _tid_hidden = true;
+                var _tid_side_panels = document.getElementsByClassName('tid_sidePanel');
+                var _tid_side_panels_length = _tid_side_panels.length;
+
+                var _show_tid = function() {
+                    _tid_cache.style.display = 'block';
+                    _tid_hidden = false;
+                };
+
+                var _hide_tid = function() {
+                    _tid_cache.style.display = 'none';
+                    _tid_hidden = true;
+                };
+
+                document.body.onmousemove = function(event) {
+                    if (_tid_hidden && event.clientY <= 5) {
+                        _show_tid();
+                    }
+                    else if (!_tid_hidden && event.clientY > 32) {
+                        for (var i = 0; i < _tid_side_panels_length; ++i) {
+                            var style = getComputedStyle(_tid_side_panels[i]);
+
+                            if (style['visibility'] === 'visible') {
+                                return;
+                            }
+                        }
+                        _hide_tid();
+                    }
+                };
+            },
+
+            ////
             enable_shortcuts: function() {
                 helpers.keydown_event(function(keycode, previous_keycode) {
                     if (previous_keycode !== _configuration.go_bind) {
@@ -446,6 +496,7 @@ var D2NE = (function() {
                 });
             },
 
+            ////
             hide_hero_adds: function() {
                 helpers.injectCSS(
                     '.heroMode, #ghostHeroAd, #heroContainer, .promoBt, .sondageBg {' +
@@ -454,6 +505,7 @@ var D2NE = (function() {
                 );
             },
 
+            ////
             highlight_ap: function() {
                 helpers.wait_for_id('movesCounter', function(node) {
                     var highlight = function() {
@@ -481,6 +533,7 @@ var D2NE = (function() {
                 });
             },
 
+            ////
             hide_help: function() {
                 helpers.injectCSS(
                     '#mapTips, #ghost_pages .help {' +
@@ -489,20 +542,7 @@ var D2NE = (function() {
                 );
             },
 
-            hide_twinoid_bar: function() {
-                helpers.injectCSS(
-                    '#tid_bar {' +
-                        'display: none;' +
-                    '}' +
-                    '#gamebody div.infoBar {' +
-                        'top: 111px;' +
-                    '}' +
-                    'a#backReboot {' +
-                        'top: 178px;' +
-                    '}'
-                );
-            },
-
+            ////
             hide_footer: function() {
                 helpers.injectCSS(
                     '#tid_bar_down {' +
@@ -515,6 +555,7 @@ var D2NE = (function() {
                 );
             },
 
+            ////
             hide_pegi: function() {
                 helpers.injectCSS(
                     '.pegi {' +
@@ -523,6 +564,7 @@ var D2NE = (function() {
                 );
             },
 
+            ////
             hide_rookie_mode: function() {
                 helpers.injectCSS(
                     'div.block.tutorialBlock, div.expertMode {' +
@@ -531,6 +573,7 @@ var D2NE = (function() {
                 );
             },
 
+            ////
             hide_guides: function() {
                 helpers.injectCSS(
                     '.helpLink {' +
@@ -542,6 +585,7 @@ var D2NE = (function() {
                 );
             },
 
+            ////
             hide_rp_content: function() {
                 helpers.injectCSS(
                     '.ambiant, .flavor {' +
