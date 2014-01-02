@@ -53,7 +53,9 @@ var i18n = {
         configuration_panel_hide_rookie_mode: 'Hide rookie mode',
         configuration_panel_hide_rookie_mode_tooltip: 'Hide all the links to enable the rookie mode.',
         configuration_panel_hide_guides: 'Hide guides',
-        configuration_panel_hide_guides_tooltip: 'Hide all the guides.',
+        configuration_panel_hide_guides_tooltip: 'Hide all the guides and the help tooltips.',
+        configuration_panel_hide_rp_content: 'Hide RP content',
+        configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content',
         configuration_panel_save_button: 'Save'
     },
 
@@ -79,6 +81,8 @@ var i18n = {
         configuration_panel_hide_rookie_mode_tooltip: 'Hide all the links to enable the rookie mode.',
         configuration_panel_hide_guides: 'Hide guides',
         configuration_panel_hide_guides_tooltip: 'Hide all the guides.',
+        configuration_panel_hide_rp_content: 'Hide RP content',
+        configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content',
         configuration_panel_save_button: 'Sauvegarder'
     },
 
@@ -104,6 +108,8 @@ var i18n = {
         configuration_panel_hide_rookie_mode_tooltip: 'Hide all the links to enable the rookie mode.',
         configuration_panel_hide_guides: 'Hide guides',
         configuration_panel_hide_guides_tooltip: 'Hide all the guides.',
+        configuration_panel_hide_rp_content: 'Hide RP content',
+        configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content',
         configuration_panel_save_button: 'Save'
     },
 
@@ -129,6 +135,8 @@ var i18n = {
         configuration_panel_hide_rookie_mode_tooltip: 'Hide all the links to enable the rookie mode.',
         configuration_panel_hide_guides: 'Hide guides',
         configuration_panel_hide_guides_tooltip: 'Hide all the guides.',
+        configuration_panel_hide_rp_content: 'Hide RP content',
+        configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content',
         configuration_panel_save_button: 'Save'
     }
 };
@@ -189,7 +197,10 @@ var D2NE = (function() {
         hide_rookie_mode: true,
 
         // Set to true to hide the guides
-        hide_guides: true
+        hide_guides: true,
+
+        // Set to true to hide the RP
+        hide_rp_content: true
     };
 
     /**
@@ -225,6 +236,7 @@ var D2NE = (function() {
         _configuration.hide_pegi = document.getElementById('d2ne_configuration_hide_pegi').checked;
         _configuration.hide_rookie_mode = document.getElementById('d2ne_configuration_hide_rookie_mode').checked;
         _configuration.hide_guides = document.getElementById('d2ne_configuration_hide_guides').checked;
+        _configuration.hide_rp_content = document.getElementById('d2ne_configuration_hide_rp_content').checked;
 
         localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY] = JSON.stringify(_configuration);
     }
@@ -280,6 +292,8 @@ var D2NE = (function() {
                 '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_rookie_mode" ' + helpers.check_checkbox(_configuration.hide_rookie_mode) + '/><label for="d2ne_configuration_hide_rookie_mode">' + _i18n.configuration_panel_hide_rookie_mode + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_rookie_mode_tooltip) + '</td></tr>' +
 
                 '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_guides" ' + helpers.check_checkbox(_configuration.hide_guides) + '/><label for="d2ne_configuration_hide_guides">' + _i18n.configuration_panel_hide_guides + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_guides_tooltip) + '</td></tr>' +
+
+                '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_rp_content" ' + helpers.check_checkbox(_configuration.hide_rp_content) + '/><label for="d2ne_configuration_hide_rp_content">' + _i18n.configuration_panel_hide_rp_content + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_rp_content_tooltip) + '</td></tr>' +
 
                 '<tr><td colspan="4"><a href="#" id="d2ne_configuration_save" class="button">' + _i18n.configuration_panel_save_button + '</a></td></tr>' +
             '</table>' +
@@ -520,6 +534,17 @@ var D2NE = (function() {
             hide_guides: function() {
                 helpers.injectCSS(
                     '.helpLink {' +
+                        'display: none;' +
+                    '}' +
+                    '#generic_section > div > em:last-of-type {' +
+                        'display: none;' +
+                    '}'
+                );
+            },
+
+            hide_rp_content: function() {
+                helpers.injectCSS(
+                    '.ambiant, .flavor {' +
                         'display: none;' +
                     '}'
                 );
