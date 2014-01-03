@@ -20,6 +20,8 @@
 // @grant GM_xmlhttpRequest
 // @match http://bbh.fred26.fr/*
 // @exclude http://bbh.fred26.fr/*
+// @match http://www.oeev-hordes.com/*
+// @exclude http://www.oeev-hordes.com/*
 //
 // ==/UserScript==
 
@@ -65,7 +67,9 @@ var i18n = {
         configuration_panel_hide_rp_content: 'Hide RP content',
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
         configuration_panel_enable_bbh_sync: 'Enable <a href="http://bbh.fred26.fr/" target="_blank">BBH</a> sync',
-        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes. If an error occurs, be sure your are logged in.',
+        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes. If an error occurs, be sure you are logged in.',
+        configuration_panel_enable_ooev_sync: 'Enable <a href="http://www.oeev-hordes.com/" target="_blank">OOEV</a> sync',
+        configuration_panel_enable_ooev_sync_tooltip: 'Add the possibility to sync with Où en êtes-vous ?. If an error occurs, be sure you are logged in.',
         configuration_panel_save_button: 'Save',
         external_tools_bar_update: 'Update external tools'
     },
@@ -95,7 +99,9 @@ var i18n = {
         configuration_panel_hide_rp_content: 'Hide RP content',
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
         configuration_panel_enable_bbh_sync: 'Enable <a href="http://bbh.fred26.fr/" target="_blank">BBH</a> sync',
-        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes. If an error occurs, be sure your are logged in.',
+        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes. If an error occurs, be sure you are logged in.',
+        configuration_panel_enable_ooev_sync: 'Enable <a href="http://www.oeev-hordes.com/" target="_blank">OOEV</a> sync',
+        configuration_panel_enable_ooev_sync_tooltip: 'Add the possibility to sync with Où en êtes-vous ?. If an error occurs, be sure you are logged in.',
         configuration_panel_save_button: 'Save',
         external_tools_bar_update: 'Update external tools'
     },
@@ -125,7 +131,9 @@ var i18n = {
         configuration_panel_hide_rp_content: 'Hide RP content',
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
         configuration_panel_enable_bbh_sync: 'Enable <a href="http://bbh.fred26.fr/" target="_blank">BBH</a> sync',
-        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes. If an error occurs, be sure your are logged in.',
+        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes. If an error occurs, be sure you are logged in.',
+        configuration_panel_enable_ooev_sync: 'Enable <a href="http://www.oeev-hordes.com/" target="_blank">OOEV</a> sync',
+        configuration_panel_enable_ooev_sync_tooltip: 'Add the possibility to sync with Où en êtes-vous ?. If an error occurs, be sure you are logged in.',
         configuration_panel_save_button: 'Save',
         external_tools_bar_update: 'Update external tools'
     },
@@ -155,7 +163,9 @@ var i18n = {
         configuration_panel_hide_rp_content: 'Hide RP content',
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
         configuration_panel_enable_bbh_sync: 'Enable <a href="http://bbh.fred26.fr/" target="_blank">BBH</a> sync',
-        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes. If an error occurs, be sure your are logged in.',
+        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes. If an error occurs, be sure you are logged in.',
+        configuration_panel_enable_ooev_sync: 'Enable <a href="http://www.oeev-hordes.com/" target="_blank">OOEV</a> sync',
+        configuration_panel_enable_ooev_sync_tooltip: 'Add the possibility to sync with Où en êtes-vous ?. If an error occurs, be sure you are logged in.',
         configuration_panel_save_button: 'Save',
         external_tools_bar_update: 'Update external tools'
     }
@@ -222,9 +232,12 @@ var D2NE = (function() {
         // Set to true to hide the RP
         hide_rp_content: true,
 
+        // Sync with external tools
         external_tools: {
             // Set to true to enable BigBroth'Hordes (http://bbh.fred26.fr/)
-            enable_bbh_sync: false
+            enable_bbh_sync: false,
+            // Set to true to enable Où en êtes-vous ? (http://www.oeev-hordes.com/)
+            enable_ooev_sync: false,
         }
     };
 
@@ -263,6 +276,7 @@ var D2NE = (function() {
         _configuration.hide_guides = document.getElementById('d2ne_configuration_hide_guides').checked;
         _configuration.hide_rp_content = document.getElementById('d2ne_configuration_hide_rp_content').checked;
         _configuration.external_tools.enable_bbh_sync = document.getElementById('d2ne_configuration_enable_bbh_sync').checked;
+        _configuration.external_tools.enable_ooev_sync = document.getElementById('d2ne_configuration_enable_ooev_sync').checked;
 
         localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY] = JSON.stringify(_configuration);
     }
@@ -295,6 +309,28 @@ var D2NE = (function() {
                         // if response is too short, it is incomplete because
                         // the user is not logged
                         if (response.responseText.length < 20000) {
+                            return callback_failure();
+                        }
+                        return callback_success();
+                    },
+                    onerror: function(response) {
+                        return callback_failure();
+                    }
+                });
+            }
+        },
+
+        ooev: {
+            update: function(callback_success, callback_failure) {
+                GM_xmlhttpRequest({
+                    method: 'POST',
+                    url: 'http://www.oeev-hordes.com/',
+                    data: 'key=c11d21a87965a867af6b1c33f18472cc4f40f3&mode=json',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    onload: function(response) {
+                        if (response.responseText !== '{ "response": "Site mis à jour" }') {
                             return callback_failure();
                         }
                         return callback_success();
@@ -446,6 +482,9 @@ var D2NE = (function() {
                 '#gameLayout td.sidePanel {' +
                     'top: 54px;' +
                     'position: relative;' +
+                '}' +
+                '#main2 {' +
+                    'padding-bottom: 70px;' +
                 '}'
             );
 
@@ -464,6 +503,23 @@ var D2NE = (function() {
             document.getElementById('d2ne_external_tools_bar_update').addEventListener('click', function(event) {
                 _update_tools(tools_number);
             }, true);
+
+            // Hide toolbar if click on Gazette/Soul/Help (because it is
+            // positionned as absolute and contained in a high-level div)
+            var links = document.querySelectorAll('a.mainButton + a');
+            for (var i = 0, length = links.length; i < length; ++i) {
+                links[i].addEventListener('click', function() {
+                    var remove = function() {
+                        if (d2n.is_in_city() || d2n.is_outside()) {
+                            return setTimeout(function() {
+                                remove();
+                            }, 50);
+                        }
+                        js.remove_element(external_tools_bar_div);
+                    };
+                    remove();
+                }, true);
+            }
 
             _external_tools_loaded = true;
         });
@@ -597,7 +653,8 @@ var D2NE = (function() {
                     '<tr><td><input type="checkbox" id="d2ne_configuration_enable_bbh_sync" ' + js.check_checkbox(_configuration.external_tools.enable_bbh_sync) + '/><label for="d2ne_configuration_enable_bbh_sync">' + _i18n.configuration_panel_enable_bbh_sync + '</label></td><td>' + _tooltip(_i18n.configuration_panel_enable_bbh_sync_tooltip) + '</td>' +
                     '<td><input type="checkbox" id="d2ne_configuration_hide_twinoid_bar" ' + js.check_checkbox(_configuration.hide_twinoid_bar) + '/><label for="d2ne_configuration_hide_twinoid_bar">' + _i18n.configuration_panel_hide_twinoid_bar + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_twinoid_bar_tooltip) + '</td></tr>' +
 
-                    '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_footer" ' + js.check_checkbox(_configuration.hide_footer) + '/><label for="d2ne_configuration_hide_footer">' + _i18n.configuration_panel_hide_footer + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_footer_tooltip) + '</td></tr>' +
+                    '<tr><td><input type="checkbox" id="d2ne_configuration_enable_ooev_sync" ' + js.check_checkbox(_configuration.external_tools.enable_ooev_sync) + '/><label for="d2ne_configuration_enable_ooev_sync">' + _i18n.configuration_panel_enable_ooev_sync + '</label></td><td>' + _tooltip(_i18n.configuration_panel_enable_ooev_sync_tooltip) + '</td>' +
+                    '<td><input type="checkbox" id="d2ne_configuration_hide_footer" ' + js.check_checkbox(_configuration.hide_footer) + '/><label for="d2ne_configuration_hide_footer">' + _i18n.configuration_panel_hide_footer + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_footer_tooltip) + '</td></tr>' +
 
                     '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_pegi" ' + js.check_checkbox(_configuration.hide_pegi) + '/><label for="d2ne_configuration_hide_pegi">' + _i18n.configuration_panel_hide_pegi + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_pegi_tooltip) + '</td></tr>' +
 
@@ -1086,7 +1143,7 @@ var js = (function() {
      * @link http://stackoverflow.com/a/14782/1071486
      * @param DOMNode node The DOM node to delete
      */
-    self.removeElement = function(node) {
+    self.remove_element = function(node) {
         node.parentNode.removeChild(node);
     };
 
