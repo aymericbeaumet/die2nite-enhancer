@@ -12,14 +12,14 @@
 // @downloadURL https://github.com/abeaumet/die2nite_enhancer/raw/master/die2nite_enhancer.user.js
 // @updateURL https://github.com/abeaumet/die2nite_enhancer/raw/master/die2nite_enhancer.user.js
 //
-// @match *://www.die2nite.com/
-// @match *://www.hordes.fr/
-// @match *://www.zombinoia.com/
-// @match *://www.dieverdammten.de/
+// @match *://www.die2nite.com/*
+// @match *://www.hordes.fr/*
+// @match *://www.zombinoia.com/*
+// @match *://www.dieverdammten.de/*
 //
 // @grant GM_xmlhttpRequest
-// @match http://bbh.fred26.fr/
-// @exclude http://bbh.fred26.fr/
+// @match http://bbh.fred26.fr/*
+// @exclude http://bbh.fred26.fr/*
 //
 // ==/UserScript==
 
@@ -390,6 +390,11 @@ var D2NE = (function() {
             return;
         }
 
+        // this function needs the window.location.hash var
+        if (window.location.hash == '') {
+            return setTimeout(function() { _load_external_tools(); }, 50);
+        }
+
         // if not any tool is enabled, abort
         var tools_number = 0;
         for (var key in _configuration.external_tools) {
@@ -511,7 +516,7 @@ var D2NE = (function() {
                 '#d2ne_configuration_panel p {' +
                     'margin: 0px;' +
                     'padding: 0px;' +
-                    'width: 430px;' +
+                    'width: 371px;' +
                     'margin-bottom: 4px;' +
                     'font-size: 9pt;' +
                     'line-height: 11pt;' +
@@ -873,7 +878,10 @@ var d2n = (function() {
      */
     self.is_in_city = function()
     {
-        return /^#city/.test(window.location.hash);
+        return js.match_regex(
+            window.location.hash,
+            '^#city'
+        );
     };
 
     /**
@@ -979,7 +987,7 @@ var d2n = (function() {
     {
         return js.match_regex(
             window.location.hash,
-            '^#outside\\?go=outside\\/refresh;sk=[a-z0-9]{5}$'
+            '^#outside\\?(?:go=outside\\/refresh;)?sk=[a-z0-9]{5}$'
         );
     };
 
