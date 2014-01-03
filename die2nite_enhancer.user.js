@@ -25,10 +25,10 @@
 //
 // ==/UserScript==
 
+;(function(undefined) {
 
 "use strict";
 
-;(function(undefined) {
 
 /**
  * Script informations
