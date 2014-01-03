@@ -66,7 +66,7 @@ var i18n = {
         configuration_panel_enable_bbh_sync: 'Enable BBH sync',
         configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
         configuration_panel_save_button: 'Save',
-        external_tools_bar_update: 'Update tools'
+        external_tools_bar_update: 'Update external tools'
     },
 
     fr: {
@@ -96,7 +96,7 @@ var i18n = {
         configuration_panel_enable_bbh_sync: 'Enable BBH sync',
         configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
         configuration_panel_save_button: 'Save',
-        external_tools_bar_update: 'Update tools'
+        external_tools_bar_update: 'Update external tools'
     },
 
     es: {
@@ -126,7 +126,7 @@ var i18n = {
         configuration_panel_enable_bbh_sync: 'Enable BBH sync',
         configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
         configuration_panel_save_button: 'Save',
-        external_tools_bar_update: 'Update tools'
+        external_tools_bar_update: 'Update external tools'
     },
 
     de: {
@@ -156,7 +156,7 @@ var i18n = {
         configuration_panel_enable_bbh_sync: 'Enable BBH sync',
         configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
         configuration_panel_save_button: 'Save',
-        external_tools_bar_update: 'Update tools'
+        external_tools_bar_update: 'Update external tools'
     }
 };
 
@@ -411,7 +411,7 @@ var D2NE = (function() {
                 '#d2ne_external_tools_bar {' +
                     'position: absolute;' +
                     'background-color: #5D321E;' +
-                    'width: 302px;' +
+                    'width: 303px;' +
                     'height: 30px;' +
                     'margin-left: 22px;' +
                     'margin-top: 222px;' +
@@ -421,7 +421,8 @@ var D2NE = (function() {
                     'padding-left: 8px;' +
                 '}' +
                 '#d2ne_external_tools_bar a.button {' +
-                    'float: right;' +
+                    'margin-right: auto;' +
+                    'margin-left: auto;' +
                 '}' +
                 '#d2ne_external_tools_bar span {' +
                     'float: left;' +
@@ -440,9 +441,6 @@ var D2NE = (function() {
                 '#d2ne_external_tools_bar a img {' +
                     'vertical-align: middle;' +
                     'margin-right: 4px;' +
-                '}' +
-                '#d2ne_external_tools_bar span, #d2ne_external_tools_bar a.button {' +
-                    'width: 133px;' +
                 '}' +
                 '#gameLayout td.sidePanel {' +
                     'top: 54px;' +
