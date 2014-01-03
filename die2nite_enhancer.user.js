@@ -1,5 +1,5 @@
 /*
- * You need Google Chrome 4+ or Mozilla Firefox with Greasemonkey 0.9.8+ to use
+ * You need Google Chrome 13+ or Mozilla Firefox with Greasemonkey 0.9.8+ to use
  * this script.
  */
 
@@ -13,6 +13,7 @@
 // @match *://www.hordes.fr/*
 // @match *://www.zombinoia.com/*
 // @match *://www.dieverdammten.de/*
+// @grant GM_xmlhttpRequest
 // @version 0.0.1
 // ==/UserScript==
 
@@ -56,6 +57,8 @@ var i18n = {
         configuration_panel_hide_guides_tooltip: 'Hide all the guides and the help tooltips.',
         configuration_panel_hide_rp_content: 'Hide RP content',
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
+        configuration_panel_enable_bbh_sync: 'Enable BBH sync',
+        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
         configuration_panel_save_button: 'Save'
     },
 
@@ -83,6 +86,8 @@ var i18n = {
         configuration_panel_hide_guides_tooltip: 'Hide all the guides.',
         configuration_panel_hide_rp_content: 'Hide RP content',
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content',
+        configuration_panel_enable_bbh_sync: 'Enable BBH sync',
+        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes',
         configuration_panel_save_button: 'Sauvegarder'
     },
 
@@ -110,6 +115,8 @@ var i18n = {
         configuration_panel_hide_guides_tooltip: 'Hide all the guides.',
         configuration_panel_hide_rp_content: 'Hide RP content',
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content',
+        configuration_panel_enable_bbh_sync: 'Enable BBH sync',
+        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes',
         configuration_panel_save_button: 'Save'
     },
 
@@ -137,6 +144,8 @@ var i18n = {
         configuration_panel_hide_guides_tooltip: 'Hide all the guides.',
         configuration_panel_hide_rp_content: 'Hide RP content',
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content',
+        configuration_panel_enable_bbh_sync: 'Enable BBH sync',
+        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes',
         configuration_panel_save_button: 'Save'
     }
 };
@@ -200,7 +209,12 @@ var D2NE = (function() {
         hide_guides: true,
 
         // Set to true to hide the RP
-        hide_rp_content: true
+        hide_rp_content: true,
+
+        external_tools: {
+            // Set to true to enable BigBroth'Hordes (http://bbh.fred26.fr/)
+            enable_bbh_sync: false
+        }
     };
 
     /**
@@ -215,8 +229,8 @@ var D2NE = (function() {
     var _load_configuration = function() {
         var saved_configuration = localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY];
 
-        if (helpers.is_defined(saved_configuration)) {
-            _configuration = helpers.merge(_default_configuration, JSON.parse(saved_configuration));
+        if (js.is_defined(saved_configuration)) {
+            _configuration = js.merge(_default_configuration, JSON.parse(saved_configuration));
         } else {
             _configuration = _default_configuration;
         }
@@ -237,6 +251,7 @@ var D2NE = (function() {
         _configuration.hide_rookie_mode = document.getElementById('d2ne_configuration_hide_rookie_mode').checked;
         _configuration.hide_guides = document.getElementById('d2ne_configuration_hide_guides').checked;
         _configuration.hide_rp_content = document.getElementById('d2ne_configuration_hide_rp_content').checked;
+        _configuration.external_tools.enable_bbh_sync = document.getElementById('d2ne_configuration_enable_bbh_sync').checked;
 
         localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY] = JSON.stringify(_configuration);
     }
@@ -247,7 +262,7 @@ var D2NE = (function() {
     var _i18n = null;
 
     var _load_internationalisation = function() {
-        var language = d2n_helpers.get_website_language();
+        var language = d2n.get_website_language();
 
         _i18n = i18n[language];
     };
@@ -259,9 +274,9 @@ var D2NE = (function() {
     var _tooltip = function(message)
     {
         // defaut empty message
-        message = (helpers.is_defined(message)) ? message : '';
+        message = (js.is_defined(message)) ? message : '';
 
-        return '<a href="#" onclick="return false;" tooltip="' + message + '" class="d2n_tooltip"><img src="' + _i18n.help_image_url + '" alt="" /></a>';
+        return '<a href="javascript:void(0)" tooltip="' + message + '" class="d2n_tooltip"><img src="' + _i18n.help_image_url + '" alt="" /></a>';
     }
 
     /**
@@ -277,25 +292,26 @@ var D2NE = (function() {
             '<p>' + _i18n.script_description + '</p>' +
             '<table>' +
 
-                '<tr><td><input type="checkbox" id="d2ne_configuration_enable_shortcuts" ' + helpers.check_checkbox(_configuration.enable_shortcuts) + '/><label for="d2ne_configuration_enable_shortcuts">' + _i18n.configuration_panel_enable_shortcuts + '</label></td><td>' + _tooltip(_i18n.configuration_panel_enable_shortcuts_tooltip) + '</td>' +
-                '<td><input type="checkbox" id="d2ne_configuration_hide_hero_adds" ' + helpers.check_checkbox(_configuration.hide_hero_adds) + '/><label for="d2ne_configuration_hide_hero_adds">' + _i18n.configuration_panel_hide_hero_adds + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_hero_adds_tooltip) + '</td></tr>' +
+                '<tr><td><input type="checkbox" id="d2ne_configuration_enable_shortcuts" ' + js.check_checkbox(_configuration.enable_shortcuts) + '/><label for="d2ne_configuration_enable_shortcuts">' + _i18n.configuration_panel_enable_shortcuts + '</label></td><td>' + _tooltip(_i18n.configuration_panel_enable_shortcuts_tooltip) + '</td>' +
+                '<td><input type="checkbox" id="d2ne_configuration_hide_hero_adds" ' + js.check_checkbox(_configuration.hide_hero_adds) + '/><label for="d2ne_configuration_hide_hero_adds">' + _i18n.configuration_panel_hide_hero_adds + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_hero_adds_tooltip) + '</td></tr>' +
 
-                '<tr><td><input type="checkbox" id="d2ne_configuration_highlight_ap" ' + helpers.check_checkbox(_configuration.highlight_ap) + '/><label for="d2ne_configuration_highlight_ap">' + _i18n.configuration_panel_highlight_ap + '</label></td><td>' + _tooltip(_i18n.configuration_panel_highlight_ap_tooltip) + '</td>' +
-                '<td><input type="checkbox" id="d2ne_configuration_hide_help" ' + helpers.check_checkbox(_configuration.hide_help) + '/><label for="d2ne_configuration_hide_help">' + _i18n.configuration_panel_hide_help + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_help_tooltip) + '</td></tr>' +
+                '<tr><td><input type="checkbox" id="d2ne_configuration_highlight_ap" ' + js.check_checkbox(_configuration.highlight_ap) + '/><label for="d2ne_configuration_highlight_ap">' + _i18n.configuration_panel_highlight_ap + '</label></td><td>' + _tooltip(_i18n.configuration_panel_highlight_ap_tooltip) + '</td>' +
+                '<td><input type="checkbox" id="d2ne_configuration_hide_help" ' + js.check_checkbox(_configuration.hide_help) + '/><label for="d2ne_configuration_hide_help">' + _i18n.configuration_panel_hide_help + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_help_tooltip) + '</td></tr>' +
 
-                '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_twinoid_bar" ' + helpers.check_checkbox(_configuration.hide_twinoid_bar) + '/><label for="d2ne_configuration_hide_twinoid_bar">' + _i18n.configuration_panel_hide_twinoid_bar + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_twinoid_bar_tooltip) + '</td></tr>' +
+                '<tr><td><input type="checkbox" id="d2ne_configuration_enable_bbh_sync" ' + js.check_checkbox(_configuration.external_tools.enable_bbh_sync) + '/><label for="d2ne_configuration_enable_bbh_sync">' + _i18n.configuration_panel_enable_bbh_sync + '</label></td><td>' + _tooltip(_i18n.configuration_panel_enable_bbh_sync_tooltip) + '</td>' +
+                '<td><input type="checkbox" id="d2ne_configuration_hide_twinoid_bar" ' + js.check_checkbox(_configuration.hide_twinoid_bar) + '/><label for="d2ne_configuration_hide_twinoid_bar">' + _i18n.configuration_panel_hide_twinoid_bar + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_twinoid_bar_tooltip) + '</td></tr>' +
 
-                '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_footer" ' + helpers.check_checkbox(_configuration.hide_footer) + '/><label for="d2ne_configuration_hide_footer">' + _i18n.configuration_panel_hide_footer + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_footer_tooltip) + '</td></tr>' +
+                '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_footer" ' + js.check_checkbox(_configuration.hide_footer) + '/><label for="d2ne_configuration_hide_footer">' + _i18n.configuration_panel_hide_footer + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_footer_tooltip) + '</td></tr>' +
 
-                '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_pegi" ' + helpers.check_checkbox(_configuration.hide_pegi) + '/><label for="d2ne_configuration_hide_pegi">' + _i18n.configuration_panel_hide_pegi + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_pegi_tooltip) + '</td></tr>' +
+                '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_pegi" ' + js.check_checkbox(_configuration.hide_pegi) + '/><label for="d2ne_configuration_hide_pegi">' + _i18n.configuration_panel_hide_pegi + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_pegi_tooltip) + '</td></tr>' +
 
-                '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_rookie_mode" ' + helpers.check_checkbox(_configuration.hide_rookie_mode) + '/><label for="d2ne_configuration_hide_rookie_mode">' + _i18n.configuration_panel_hide_rookie_mode + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_rookie_mode_tooltip) + '</td></tr>' +
+                '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_rookie_mode" ' + js.check_checkbox(_configuration.hide_rookie_mode) + '/><label for="d2ne_configuration_hide_rookie_mode">' + _i18n.configuration_panel_hide_rookie_mode + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_rookie_mode_tooltip) + '</td></tr>' +
 
-                '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_guides" ' + helpers.check_checkbox(_configuration.hide_guides) + '/><label for="d2ne_configuration_hide_guides">' + _i18n.configuration_panel_hide_guides + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_guides_tooltip) + '</td></tr>' +
+                '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_guides" ' + js.check_checkbox(_configuration.hide_guides) + '/><label for="d2ne_configuration_hide_guides">' + _i18n.configuration_panel_hide_guides + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_guides_tooltip) + '</td></tr>' +
 
-                '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_rp_content" ' + helpers.check_checkbox(_configuration.hide_rp_content) + '/><label for="d2ne_configuration_hide_rp_content">' + _i18n.configuration_panel_hide_rp_content + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_rp_content_tooltip) + '</td></tr>' +
+                '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_rp_content" ' + js.check_checkbox(_configuration.hide_rp_content) + '/><label for="d2ne_configuration_hide_rp_content">' + _i18n.configuration_panel_hide_rp_content + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_rp_content_tooltip) + '</td></tr>' +
 
-                '<tr><td colspan="4"><a href="#" id="d2ne_configuration_save" class="button">' + _i18n.configuration_panel_save_button + '</a></td></tr>' +
+                '<tr><td colspan="4"><a href="javascript:void(0)" id="d2ne_configuration_save" class="button">' + _i18n.configuration_panel_save_button + '</a></td></tr>' +
             '</table>' +
             '<div class="clear"></div>' +
             '<p><a href="' + PROJECT_PAGE + '" target="_blank">' + SCRIPT_NAME +' v' + SCRIPT_VERSION + '</a></p>' +
@@ -306,7 +322,7 @@ var D2NE = (function() {
         main_div.insertBefore(config_panel_div, main.firstChild);
 
         // Create panel style
-        helpers.injectCSS(
+        js.injectCSS(
             '#d2ne_configuration_panel {' +
                 'margin-top:6px;' +
                 'position:absolute;' +
@@ -398,10 +414,10 @@ var D2NE = (function() {
             '}'
         );
 
-        document.getElementById('d2ne_configuration_save').onclick = function(event) {
+        document.getElementById('d2ne_configuration_save').addEventListener('click', function(event) {
             _save_configuration();
-            helpers.reload();
-        };
+            js.reload();
+        }, true);
 
         // Show/Hide config panel cache
         var _config_panel_cache = document.getElementById('d2ne_configuration_panel');
@@ -409,20 +425,20 @@ var D2NE = (function() {
         var _config_panel_toggled_elements_cache_length = _config_panel_toggled_elements_cache.length;
 
         // Show panel on hover
-        config_panel_div.onmouseover = function(event) {
+        config_panel_div.addEventListener('mouseover', function(event) {
             _config_panel_cache.style['z-index'] = '11'; // This fix is needed for the spanish version, as the hero adds has a z-index of 10
             for (var i = 0; i < _config_panel_toggled_elements_cache_length; ++i) {
                 _config_panel_toggled_elements_cache[i].style.display = 'inline';
             }
-        };
+        }, true);
 
         // Hide panel on mouse out
-        config_panel_div.onmouseout = function(event) {
+        config_panel_div.addEventListener('mouseout', function(event) {
             for (var i = 0; i < _config_panel_toggled_elements_cache_length; ++i) {
                 _config_panel_toggled_elements_cache[i].style.display = 'none';
             }
             _config_panel_cache.style['z-index'] = '9'; // See previous function comment
-        };
+        }, true);
     };
 
     /**
@@ -433,7 +449,7 @@ var D2NE = (function() {
 
             ////
             hide_twinoid_bar: function() {
-                helpers.injectCSS(
+                js.injectCSS(
                     '#tid_bar {' +
                         'display: none;' +
                         'position: fixed;' +
@@ -462,10 +478,13 @@ var D2NE = (function() {
                     _tid_hidden = true;
                 };
 
-                document.body.onmousemove = function(event) {
+                document.body.addEventListener('mousemove', function(event) {
+                    // if on the top of the screen, display the bar
                     if (_tid_hidden && event.clientY <= 5) {
                         _show_tid();
                     }
+                    // if not on the top of the screen, hide the bar if the
+                    // lateral panels are not visible
                     else if (!_tid_hidden && event.clientY > 32) {
                         for (var i = 0; i < _tid_side_panels_length; ++i) {
                             var style = getComputedStyle(_tid_side_panels[i]);
@@ -476,21 +495,21 @@ var D2NE = (function() {
                         }
                         _hide_tid();
                     }
-                };
+                }, true);
             },
 
             ////
             enable_shortcuts: function() {
-                helpers.keydown_event(function(keycode, previous_keycode) {
+                js.keydown_event(function(keycode, previous_keycode) {
                     if (previous_keycode !== _configuration.go_bind) {
                         return;
                     }
-                    if (d2n_helpers.is_outside()) { // abort if outside
+                    if (d2n.is_outside()) { // abort if outside
                         return;
                     }
                     for (var bind in _configuration.binds) {
                         if (_configuration.binds[bind] === keycode) {
-                            return d2n_helpers.go_to_city_page(bind);
+                            return d2n.go_to_city_page(bind);
                         }
                     }
                 });
@@ -498,7 +517,7 @@ var D2NE = (function() {
 
             ////
             hide_hero_adds: function() {
-                helpers.injectCSS(
+                js.injectCSS(
                     '.heroMode, #ghostHeroAd, #heroContainer, .promoBt, .sondageBg {' +
                         'display: none;' +
                     '}'
@@ -507,9 +526,9 @@ var D2NE = (function() {
 
             ////
             highlight_ap: function() {
-                helpers.wait_for_id('movesCounter', function(node) {
+                js.wait_for_id('movesCounter', function(node) {
                     var highlight = function() {
-                        var ap = d2n_helpers.get_number_of_ap();
+                        var ap = d2n.get_number_of_ap();
                         var colors = [
                             'ff0000', // 0 AP
                             'ff4700', // 1 AP
@@ -535,7 +554,7 @@ var D2NE = (function() {
 
             ////
             hide_help: function() {
-                helpers.injectCSS(
+                js.injectCSS(
                     '#mapTips, #ghost_pages .help {' +
                         'display: none' +
                     '}'
@@ -544,7 +563,7 @@ var D2NE = (function() {
 
             ////
             hide_footer: function() {
-                helpers.injectCSS(
+                js.injectCSS(
                     '#tid_bar_down {' +
                         'display: none;' +
                     '}' +
@@ -557,7 +576,7 @@ var D2NE = (function() {
 
             ////
             hide_pegi: function() {
-                helpers.injectCSS(
+                js.injectCSS(
                     '.pegi {' +
                         'display: none;' +
                     '}'
@@ -566,7 +585,7 @@ var D2NE = (function() {
 
             ////
             hide_rookie_mode: function() {
-                helpers.injectCSS(
+                js.injectCSS(
                     'div.block.tutorialBlock, div.expertMode {' +
                         'display: none;' +
                     '}'
@@ -575,7 +594,7 @@ var D2NE = (function() {
 
             ////
             hide_guides: function() {
-                helpers.injectCSS(
+                js.injectCSS(
                     '.helpLink {' +
                         'display: none;' +
                     '}' +
@@ -587,7 +606,7 @@ var D2NE = (function() {
 
             ////
             hide_rp_content: function() {
-                helpers.injectCSS(
+                js.injectCSS(
                     '.ambiant, .flavor {' +
                         'display: none;' +
                     '}'
@@ -610,7 +629,7 @@ var D2NE = (function() {
         _load_configuration();
         _load_internationalisation();
         _load_features();
-        helpers.wait_for_id('main', _load_configuration_panel);
+        js.wait_for_id('main', _load_configuration_panel);
     };
 
     return self;
@@ -618,9 +637,9 @@ var D2NE = (function() {
 
 
 /**
- * Die2Nite specific helpers
+ * Die2Nite helpers
  */
-var d2n_helpers = (function() {
+var d2n = (function() {
     var self = {};
 
     var _pages_url = {
@@ -654,7 +673,7 @@ var d2n_helpers = (function() {
      */
     self.is_on_city_page = function(page)
     {
-        return helpers.match_regex(
+        return js.match_regex(
             window.location.hash,
             '^#city\\/enter\\?go=' + _pages_url[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$'
         );
@@ -675,9 +694,9 @@ var d2n_helpers = (function() {
         }
 
         if (self.is_on_forum()) { // if on the forum, redirect to the desired page
-            helpers.redirect('/#city/enter?go=' + page_url + ';sk=' + sk);
+            js.redirect('/#city/enter?go=' + page_url + ';sk=' + sk);
         } else { // else just download the content with an ajax request
-            helpers.injectJS('js.XmlHttp.get(\'' + page_url + '?sk=' + sk + '\');');
+            js.injectJS('js.XmlHttp.get(\'' + page_url + '?sk=' + sk + '\');');
         }
     };
 
@@ -690,7 +709,7 @@ var d2n_helpers = (function() {
     {
         var el = document.querySelector('#sites > ul > li > a.link');
 
-        if (helpers.is_defined(el) && helpers.is_defined(el.href)) {
+        if (js.is_defined(el) && js.is_defined(el.href)) {
             return el.href.split('=')[2];
         }
         return null;
@@ -711,8 +730,8 @@ var d2n_helpers = (function() {
         }
         var hostname = window.location.hostname;
 
-        if (helpers.is_defined(hostname) &&
-            helpers.is_defined(websites_language[hostname])) {
+        if (js.is_defined(hostname) &&
+            js.is_defined(websites_language[hostname])) {
             return websites_language[hostname];
         }
 
@@ -727,7 +746,7 @@ var d2n_helpers = (function() {
     self.get_number_of_ap = function() {
         var el = document.querySelector('#movesCounter > div');
 
-        if (helpers.is_defined(el)) {
+        if (js.is_defined(el)) {
             return el.innerHTML.split('>')[1].split('<')[0];
         }
         return null;
@@ -748,20 +767,49 @@ var d2n_helpers = (function() {
      */
     self.is_outside = function()
     {
-        return helpers.match_regex(
+        return js.match_regex(
             window.location.hash,
             '^#outside\\?go=outside\\/refresh;sk=[a-z0-9]{5}$'
         );
     };
 
     return self;
-})(); // !die2nite specific helpers
+})(); // !die2nite helpers
+
+
+/**
+ * BigBroth'hordes helpers
+ */
+var BBH = (function() {
+    var self = {};
+
+    var _update_url = 'http://bbh.fred26.fr/';
+
+    self.update = function() {
+        GM_xmlhttpRequest({
+            method: 'POST',
+            url: _update_url,
+            data: 'action=force_maj',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            onload: function(response) {
+                console.log(response);
+            },
+            onerror: function(response) {
+                console.log(response);
+            }
+        });
+    };
+
+    return self;
+})(); // !bigbroth'hordes helpers
 
 
 /**
  * Generic JavaScript helpers
  */
-var helpers = (function() {
+var js = (function() {
     var self = {};
 
     /**
@@ -805,7 +853,7 @@ var helpers = (function() {
             // Save keycode
             _keydown_event.previous_keycode = event.keyCode;
             _keydown_event.previous_keycode_timestamp = event.timeStamp;
-        }, false);
+        }, true);
     }
     var _keydown_event = {
         previous_keycode: 0,
@@ -899,7 +947,7 @@ var helpers = (function() {
     self.wait_for_id = function(id, callback) {
         var el;
 
-        if (helpers.is_defined(el = document.getElementById(id))) {
+        if (js.is_defined(el = document.getElementById(id))) {
             return callback(el);
         }
         setTimeout(function() {
