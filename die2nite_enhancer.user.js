@@ -1,21 +1,26 @@
-/*
- * You need Google Chrome 13+ or Mozilla Firefox with Greasemonkey 0.9.8+ to use
- * this script.
- */
-
 // ==UserScript==
+//
+// You need Google Chrome 13+ or Mozilla Firefox with Greasemonkey 0.9.8+ to use
+// this script.
+//
 // @name Die2Nite Enhancer
+// @version 0.0.1
 // @description Enhance your game experience!
 // @author Aymeric Beaumet <aymeric@beaumet.me>
 // @license zlib/libpng http://opensource.org/licenses/Zlib
+// @icon http://www.zombinoia.com/gfx/forum/smiley/h_city_up.gif
+// @downloadURL https://github.com/abeaumet/die2nite_enhancer/raw/master/die2nite_enhancer.user.js
 // @updateURL https://github.com/abeaumet/die2nite_enhancer/raw/master/die2nite_enhancer.user.js
-// @match *://www.die2nite.com/*
-// @match *://www.hordes.fr/*
-// @match *://www.zombinoia.com/*
-// @match *://www.dieverdammten.de/*
+//
+// @match *://www.die2nite.com/
+// @match *://www.hordes.fr/
+// @match *://www.zombinoia.com/
+// @match *://www.dieverdammten.de/
+//
 // @grant GM_xmlhttpRequest
 // @match http://bbh.fred26.fr/
-// @version 0.0.1
+// @exclude http://bbh.fred26.fr/
+//
 // ==/UserScript==
 
 "use strict";
@@ -289,8 +294,17 @@ var D2NE = (function() {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    onload: function(response) { callback_success(response); },
-                    onerror: function(response) { callback_failure(response); }
+                    onload: function(response) {
+                        // if response is too short, it is incomplete because
+                        // the user is not logged
+                        if (response.responseText.length < 20000) {
+                            return callback_failure();
+                        }
+                        return callback_success();
+                    },
+                    onerror: function(response) {
+                        return callback_failure();
+                    }
                 });
             }
         }
