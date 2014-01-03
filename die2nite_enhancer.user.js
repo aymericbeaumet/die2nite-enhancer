@@ -409,16 +409,16 @@ var D2NE = (function() {
             return;
         }
 
-        js.wait_for_selector('td.sidePanel', function(node) {
+        js.wait_for_id('main', function(node) {
             // Create and inject external tools bar style
             js.injectCSS(
                 '#d2ne_external_tools_bar {' +
+                    'position: absolute;' +
                     'background-color: #5D321E;' +
-                    'width: 303px;' +
+                    'width: 302px;' +
                     'height: 30px;' +
-                    'margin-left: 3px;' +
-                    'margin-top: 5px;' +
-                    'margin-bottom: 6px;' +
+                    'margin-left: 22px;' +
+                    'margin-top: 222px;' +
                     'border: 1px solid rgb(240, 215, 158);' +
                     'border-radius: 9px;' +
                     'padding: 5px;' +
@@ -447,6 +447,10 @@ var D2NE = (function() {
                 '}' +
                 '#d2ne_external_tools_bar span, #d2ne_external_tools_bar a.button {' +
                     'width: 133px;' +
+                '}' +
+                '#gameLayout td.sidePanel {' +
+                    'top: 54px;' +
+                    'position: relative;' +
                 '}'
             );
 
