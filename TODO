@@ -1,6 +1,9 @@
-- Auto sync with BBH, Patamap...
-- Fix reload and AP highlight
+- Sync with:
+  - BBH
+  - OOEV
+- Autosync
 - Highlight the recommended construction
 - Watch for script update
 - Show more information on the hero experience bar
 - Remove warning when taking an object in bank (keep it if anti-abuse protection)
+- Add Twinpedia link

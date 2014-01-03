@@ -63,19 +63,19 @@ var i18n = {
     },
 
     fr: {
-        script_description: 'Die2Nite Enhancer vous permet d\'améliorer votre expérience de jeu, toutes ces fonctionalités peuvent être configurées depuis ce panneau.',
+        script_description: 'Die2Nite Enhancer allows you to enhance your game experience, every features can be controlled from this panel.',
         help_image_url: '/gfx/loc/fr/helpLink.gif',
-        configuration_panel_title: 'Die2Nite Enhancer - Paramètres',
-        configuration_panel_enable_shortcuts: 'Activer les raccourcis',
-        configuration_panel_enable_shortcuts_tooltip: 'Vous permet d\'utiliser des raccourcis pour accéder rapidement aux places importants (e.g.: la banque, les portes).',
+        configuration_panel_title: 'Die2Nite Enhancer - Settings',
+        configuration_panel_enable_shortcuts: 'Enable shortcuts',
+        configuration_panel_enable_shortcuts_tooltip: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
         configuration_panel_hide_hero_adds: 'Hide hero adds',
         configuration_panel_hide_hero_adds_tooltip: 'Hide the adds for the hero mode on all the website. Can be useful if you are already hero or don\'t want to be one.',
         configuration_panel_highlight_ap: 'Highlight AP',
         configuration_panel_highlight_ap_tooltip: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
         configuration_panel_hide_help: 'Hide help',
-        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface',
+        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface.',
         configuration_panel_hide_twinoid_bar: 'Hide Twinoid bar',
-        configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen.',
+        configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen. Put your mouse near the top of the screen to show it again.',
         configuration_panel_hide_footer: 'Hide footer',
         configuration_panel_hide_footer_tooltip: 'Hide the page footer with informations about other games, Motion Twin, etc...',
         configuration_panel_hide_pegi: 'Hide PEGI',
@@ -83,12 +83,12 @@ var i18n = {
         configuration_panel_hide_rookie_mode: 'Hide rookie mode',
         configuration_panel_hide_rookie_mode_tooltip: 'Hide all the links to enable the rookie mode.',
         configuration_panel_hide_guides: 'Hide guides',
-        configuration_panel_hide_guides_tooltip: 'Hide all the guides.',
+        configuration_panel_hide_guides_tooltip: 'Hide all the guides and the help tooltips.',
         configuration_panel_hide_rp_content: 'Hide RP content',
-        configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content',
+        configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
         configuration_panel_enable_bbh_sync: 'Enable BBH sync',
-        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes',
-        configuration_panel_save_button: 'Sauvegarder'
+        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
+        configuration_panel_save_button: 'Save'
     },
 
     es: {
@@ -102,9 +102,9 @@ var i18n = {
         configuration_panel_highlight_ap: 'Highlight AP',
         configuration_panel_highlight_ap_tooltip: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
         configuration_panel_hide_help: 'Hide help',
-        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface',
+        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface.',
         configuration_panel_hide_twinoid_bar: 'Hide Twinoid bar',
-        configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen.',
+        configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen. Put your mouse near the top of the screen to show it again.',
         configuration_panel_hide_footer: 'Hide footer',
         configuration_panel_hide_footer_tooltip: 'Hide the page footer with informations about other games, Motion Twin, etc...',
         configuration_panel_hide_pegi: 'Hide PEGI',
@@ -112,11 +112,11 @@ var i18n = {
         configuration_panel_hide_rookie_mode: 'Hide rookie mode',
         configuration_panel_hide_rookie_mode_tooltip: 'Hide all the links to enable the rookie mode.',
         configuration_panel_hide_guides: 'Hide guides',
-        configuration_panel_hide_guides_tooltip: 'Hide all the guides.',
+        configuration_panel_hide_guides_tooltip: 'Hide all the guides and the help tooltips.',
         configuration_panel_hide_rp_content: 'Hide RP content',
-        configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content',
+        configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
         configuration_panel_enable_bbh_sync: 'Enable BBH sync',
-        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes',
+        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
         configuration_panel_save_button: 'Save'
     },
 
@@ -131,9 +131,9 @@ var i18n = {
         configuration_panel_highlight_ap: 'Highlight AP',
         configuration_panel_highlight_ap_tooltip: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
         configuration_panel_hide_help: 'Hide help',
-        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface',
+        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface.',
         configuration_panel_hide_twinoid_bar: 'Hide Twinoid bar',
-        configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen.',
+        configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen. Put your mouse near the top of the screen to show it again.',
         configuration_panel_hide_footer: 'Hide footer',
         configuration_panel_hide_footer_tooltip: 'Hide the page footer with informations about other games, Motion Twin, etc...',
         configuration_panel_hide_pegi: 'Hide PEGI',
@@ -141,11 +141,11 @@ var i18n = {
         configuration_panel_hide_rookie_mode: 'Hide rookie mode',
         configuration_panel_hide_rookie_mode_tooltip: 'Hide all the links to enable the rookie mode.',
         configuration_panel_hide_guides: 'Hide guides',
-        configuration_panel_hide_guides_tooltip: 'Hide all the guides.',
+        configuration_panel_hide_guides_tooltip: 'Hide all the guides and the help tooltips.',
         configuration_panel_hide_rp_content: 'Hide RP content',
-        configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content',
+        configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
         configuration_panel_enable_bbh_sync: 'Enable BBH sync',
-        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes',
+        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
         configuration_panel_save_button: 'Save'
     }
 };
@@ -442,182 +442,192 @@ var D2NE = (function() {
     };
 
     /**
+     * All features
+     */
+    var _features = {
+
+        ////
+        hide_twinoid_bar: function() {
+            js.injectCSS(
+                '#tid_bar {' +
+                'display: none;' +
+                'position: fixed;' +
+                'z-index: 15;' +
+                '}' +
+                '#gamebody div.infoBar {' +
+                'top: 111px;' +
+                '}' +
+                'a#backReboot {' +
+                'top: 178px;' +
+                '}'
+            );
+
+            var _tid_cache = document.getElementById('tid_bar');
+            var _tid_hidden = true;
+            var _tid_side_panels = document.getElementsByClassName('tid_sidePanel');
+            var _tid_side_panels_length = _tid_side_panels.length;
+
+            var _show_tid = function() {
+                _tid_cache.style.display = 'block';
+                _tid_hidden = false;
+            };
+
+            var _hide_tid = function() {
+                _tid_cache.style.display = 'none';
+                _tid_hidden = true;
+            };
+
+            document.body.addEventListener('mousemove', function(event) {
+                // if on the top of the screen, display the bar
+                if (_tid_hidden && event.clientY <= 5) {
+                    _show_tid();
+                }
+                // if not on the top of the screen, hide the bar if the
+                // lateral panels are not visible
+                else if (!_tid_hidden && event.clientY > 32) {
+                    for (var i = 0; i < _tid_side_panels_length; ++i) {
+                        var style = getComputedStyle(_tid_side_panels[i]);
+
+                        if (style['visibility'] === 'visible') {
+                            return;
+                        }
+                    }
+                    _hide_tid();
+                }
+            }, true);
+        },
+
+        ////
+        enable_shortcuts: function() {
+            js.keydown_event(function(keycode, previous_keycode) {
+                if (previous_keycode !== _configuration.go_bind) {
+                    return;
+                }
+                if (d2n.is_outside()) { // abort if outside
+                    return;
+                }
+                for (var bind in _configuration.binds) {
+                    if (_configuration.binds[bind] === keycode) {
+                        return d2n.go_to_city_page(bind);
+                    }
+                }
+            });
+        },
+
+        ////
+        hide_hero_adds: function() {
+            js.injectCSS(
+                '.heroMode, #ghostHeroAd, #heroContainer, .promoBt, .sondageBg {' +
+                'display: none;' +
+                '}'
+            );
+        },
+
+        ////
+        highlight_ap: function() {
+            js.wait_for_id('movesCounter', function(node) {
+                var highlight = function() {
+                    var ap = d2n.get_number_of_ap();
+                    var colors = [
+                        'ff0000', // 0 AP
+                        'ff4700', // 1 AP
+                        'ff8e00', // 2 AP
+                        'ffd500', // 3 AP
+                        'e3ff00', // 4 AP
+                        '9cff00', // 5 AP
+                        '55ff00', // 6 AP
+                        '00ff00', // 7 AP
+                        '00ff00'  // 8 AP
+                    ];
+
+                    js.injectCSS(
+                        '#movesCounter {' +
+                            'border: 1px solid #' + colors[ap] + ' !important;' +
+                        '}'
+                    );
+                };
+
+                // Highlight at load
+                highlight();
+
+                // Change color if AP changes
+                var observer = new MutationObserver(function(mutations) {
+                    highlight();
+                });
+                observer.observe(node, {childList: true});
+            });
+        },
+
+        ////
+        hide_help: function() {
+            js.injectCSS(
+                '#mapTips, #ghost_pages .help {' +
+                'display: none' +
+                '}'
+            );
+        },
+
+        ////
+        hide_footer: function() {
+            js.injectCSS(
+                '#tid_bar_down {' +
+                'display: none;' +
+                '}' +
+                '#fbAd {' +
+                'height: 0;' +
+                'overflow: hidden;' +
+                '}'
+            );
+        },
+
+        ////
+        hide_pegi: function() {
+            js.injectCSS(
+                '.pegi {' +
+                'display: none;' +
+                '}'
+            );
+        },
+
+        ////
+        hide_rookie_mode: function() {
+            js.injectCSS(
+                'div.block.tutorialBlock, div.expertMode {' +
+                'display: none;' +
+                '}'
+            );
+        },
+
+        ////
+        hide_guides: function() {
+            js.injectCSS(
+                '.helpLink {' +
+                'display: none;' +
+                '}' +
+                '#generic_section > div > em:last-of-type {' +
+                'display: none;' +
+                '}'
+            );
+        },
+
+        ////
+        hide_rp_content: function() {
+            js.injectCSS(
+                '.ambiant, .flavor {' +
+                'display: none;' +
+                '}'
+            );
+        }
+    };
+
+    /**
      * Load the script features.
      */
     var _load_features = function() {
-        var features = {
-
-            ////
-            hide_twinoid_bar: function() {
-                js.injectCSS(
-                    '#tid_bar {' +
-                        'display: none;' +
-                        'position: fixed;' +
-                        'z-index: 15;' +
-                    '}' +
-                    '#gamebody div.infoBar {' +
-                        'top: 111px;' +
-                    '}' +
-                    'a#backReboot {' +
-                        'top: 178px;' +
-                    '}'
-                );
-
-                var _tid_cache = document.getElementById('tid_bar');
-                var _tid_hidden = true;
-                var _tid_side_panels = document.getElementsByClassName('tid_sidePanel');
-                var _tid_side_panels_length = _tid_side_panels.length;
-
-                var _show_tid = function() {
-                    _tid_cache.style.display = 'block';
-                    _tid_hidden = false;
-                };
-
-                var _hide_tid = function() {
-                    _tid_cache.style.display = 'none';
-                    _tid_hidden = true;
-                };
-
-                document.body.addEventListener('mousemove', function(event) {
-                    // if on the top of the screen, display the bar
-                    if (_tid_hidden && event.clientY <= 5) {
-                        _show_tid();
-                    }
-                    // if not on the top of the screen, hide the bar if the
-                    // lateral panels are not visible
-                    else if (!_tid_hidden && event.clientY > 32) {
-                        for (var i = 0; i < _tid_side_panels_length; ++i) {
-                            var style = getComputedStyle(_tid_side_panels[i]);
-
-                            if (style['visibility'] === 'visible') {
-                                return;
-                            }
-                        }
-                        _hide_tid();
-                    }
-                }, true);
-            },
-
-            ////
-            enable_shortcuts: function() {
-                js.keydown_event(function(keycode, previous_keycode) {
-                    if (previous_keycode !== _configuration.go_bind) {
-                        return;
-                    }
-                    if (d2n.is_outside()) { // abort if outside
-                        return;
-                    }
-                    for (var bind in _configuration.binds) {
-                        if (_configuration.binds[bind] === keycode) {
-                            return d2n.go_to_city_page(bind);
-                        }
-                    }
-                });
-            },
-
-            ////
-            hide_hero_adds: function() {
-                js.injectCSS(
-                    '.heroMode, #ghostHeroAd, #heroContainer, .promoBt, .sondageBg {' +
-                        'display: none;' +
-                    '}'
-                );
-            },
-
-            ////
-            highlight_ap: function() {
-                js.wait_for_id('movesCounter', function(node) {
-                    var highlight = function() {
-                        var ap = d2n.get_number_of_ap();
-                        var colors = [
-                            'ff0000', // 0 AP
-                            'ff4700', // 1 AP
-                            'ff8e00', // 2 AP
-                            'ffd500', // 3 AP
-                            'e3ff00', // 4 AP
-                            '9cff00', // 5 AP
-                            '55ff00', // 6 AP
-                            '00ff00', // 7 AP
-                            '00ff00'  // 8 AP
-                        ];
-
-                        node.style.border = '1px solid #' + colors[ap];
-                    };
-                    highlight();
-
-                    var observer = new MutationObserver(function(mutations) {
-                        highlight();
-                    });
-                    observer.observe(node, {childList: true});
-                });
-            },
-
-            ////
-            hide_help: function() {
-                js.injectCSS(
-                    '#mapTips, #ghost_pages .help {' +
-                        'display: none' +
-                    '}'
-                );
-            },
-
-            ////
-            hide_footer: function() {
-                js.injectCSS(
-                    '#tid_bar_down {' +
-                        'display: none;' +
-                    '}' +
-                    '#fbAd {' +
-                        'height: 0;' +
-                        'overflow: hidden;' +
-                    '}'
-                );
-            },
-
-            ////
-            hide_pegi: function() {
-                js.injectCSS(
-                    '.pegi {' +
-                        'display: none;' +
-                    '}'
-                );
-            },
-
-            ////
-            hide_rookie_mode: function() {
-                js.injectCSS(
-                    'div.block.tutorialBlock, div.expertMode {' +
-                        'display: none;' +
-                    '}'
-                );
-            },
-
-            ////
-            hide_guides: function() {
-                js.injectCSS(
-                    '.helpLink {' +
-                        'display: none;' +
-                    '}' +
-                    '#generic_section > div > em:last-of-type {' +
-                        'display: none;' +
-                    '}'
-                );
-            },
-
-            ////
-            hide_rp_content: function() {
-                js.injectCSS(
-                    '.ambiant, .flavor {' +
-                        'display: none;' +
-                    '}'
-                );
-            }
-        };
-
         // Browse all features, and check if they have to be activated
-        for (var feature in features) {
+        for (var feature in _features) {
             if (_configuration[feature] === true) {
-                (features[feature])();
+                (_features[feature])();
             }
         }
     }
@@ -661,7 +671,7 @@ var d2n = (function() {
      * but on the forum.
      * @return bool true if inside the city, false otherwise
      */
-    self.in_city = function()
+    self.is_in_city = function()
     {
         return /^#city/.test(window.location.hash);
     };
