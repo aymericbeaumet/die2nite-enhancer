@@ -66,7 +66,6 @@ var i18n = {
         configuration_panel_enable_bbh_sync: 'Enable BBH sync',
         configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
         configuration_panel_save_button: 'Save',
-        external_tools_bar_status: 'Tools sync.:',
         external_tools_bar_update: 'Update tools'
     },
 
@@ -97,7 +96,6 @@ var i18n = {
         configuration_panel_enable_bbh_sync: 'Enable BBH sync',
         configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
         configuration_panel_save_button: 'Save',
-        external_tools_bar_status: 'Tools sync.:',
         external_tools_bar_update: 'Update tools'
     },
 
@@ -128,7 +126,6 @@ var i18n = {
         configuration_panel_enable_bbh_sync: 'Enable BBH sync',
         configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
         configuration_panel_save_button: 'Save',
-        external_tools_bar_status: 'Tools sync.:',
         external_tools_bar_update: 'Update tools'
     },
 
@@ -159,7 +156,6 @@ var i18n = {
         configuration_panel_enable_bbh_sync: 'Enable BBH sync',
         configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
         configuration_panel_save_button: 'Save',
-        external_tools_bar_status: 'Tools sync.:',
         external_tools_bar_update: 'Update tools'
     }
 };
@@ -317,7 +313,7 @@ var D2NE = (function() {
         var tools_updated = 0;
         var tools_update_aborted = 0;
 
-        var images = document.querySelectorAll('#d2ne_external_tools_bar span img');
+        var images = document.querySelectorAll('#d2ne_external_tools_bar a img');
 
         var show_calim = function() {
             images[0].style.display = 'inline';
@@ -441,9 +437,9 @@ var D2NE = (function() {
                     'padding-left: 7px;' +
                     'padding-right: 4px;' +
                 '}' +
-                '#d2ne_external_tools_bar span img {' +
+                '#d2ne_external_tools_bar a img {' +
                     'vertical-align: middle;' +
-                    'margin-left: 4px;' +
+                    'margin-right: 4px;' +
                 '}' +
                 '#d2ne_external_tools_bar span, #d2ne_external_tools_bar a.button {' +
                     'width: 133px;' +
@@ -458,8 +454,9 @@ var D2NE = (function() {
             var external_tools_bar_div = document.createElement('div');
             external_tools_bar_div.id = 'd2ne_external_tools_bar';
             external_tools_bar_div.innerHTML =
-                '<span>' + _i18n.external_tools_bar_status + '<img src="/gfx/forum/smiley/h_calim.gif"><img src="/gfx/design/loading.gif" width="19px" height="19px" style="display: none;"><img src="/gfx/forum/smiley/h_smile.gif" style="display:none;"><img src="/gfx/forum/smiley/h_death.gif" style="display:none;"></span>' +
-                '<a href="javascript:void(0)" id="d2ne_external_tools_bar_update" class="button">' + _i18n.external_tools_bar_update + '</a>';
+                '<a href="javascript:void(0)" id="d2ne_external_tools_bar_update" class="button">' +
+                '<img src="/gfx/forum/smiley/h_calim.gif" width="19px" height="19px"><img src="/gfx/design/loading.gif" width="19px" height="19px" style="display: none;"><img src="/gfx/forum/smiley/h_smile.gif" width="19px" height="19px" style="display:none;"><img src="/gfx/forum/smiley/h_death.gif" width="19px" height="19px" style="display:none;"></span>' +
+                _i18n.external_tools_bar_update + '</a>';
 
             // Insert external tools bar
             node.insertBefore(external_tools_bar_div, node.firstChild);
