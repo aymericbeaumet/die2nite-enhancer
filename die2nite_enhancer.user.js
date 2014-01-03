@@ -23,6 +23,7 @@
 //
 // ==/UserScript==
 
+
 "use strict";
 
 ;(function(undefined) {
@@ -63,8 +64,8 @@ var i18n = {
         configuration_panel_hide_guides_tooltip: 'Hide all the guides and the help tooltips.',
         configuration_panel_hide_rp_content: 'Hide RP content',
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
-        configuration_panel_enable_bbh_sync: 'Enable BBH sync',
-        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
+        configuration_panel_enable_bbh_sync: 'Enable <a href="http://bbh.fred26.fr/" target="_blank">BBH</a> sync',
+        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes. If an error occurs, be sure your are logged in.',
         configuration_panel_save_button: 'Save',
         external_tools_bar_update: 'Update external tools'
     },
@@ -93,8 +94,8 @@ var i18n = {
         configuration_panel_hide_guides_tooltip: 'Hide all the guides and the help tooltips.',
         configuration_panel_hide_rp_content: 'Hide RP content',
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
-        configuration_panel_enable_bbh_sync: 'Enable BBH sync',
-        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
+        configuration_panel_enable_bbh_sync: 'Enable <a href="http://bbh.fred26.fr/" target="_blank">BBH</a> sync',
+        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes. If an error occurs, be sure your are logged in.',
         configuration_panel_save_button: 'Save',
         external_tools_bar_update: 'Update external tools'
     },
@@ -123,8 +124,8 @@ var i18n = {
         configuration_panel_hide_guides_tooltip: 'Hide all the guides and the help tooltips.',
         configuration_panel_hide_rp_content: 'Hide RP content',
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
-        configuration_panel_enable_bbh_sync: 'Enable BBH sync',
-        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
+        configuration_panel_enable_bbh_sync: 'Enable <a href="http://bbh.fred26.fr/" target="_blank">BBH</a> sync',
+        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes. If an error occurs, be sure your are logged in.',
         configuration_panel_save_button: 'Save',
         external_tools_bar_update: 'Update external tools'
     },
@@ -153,8 +154,8 @@ var i18n = {
         configuration_panel_hide_guides_tooltip: 'Hide all the guides and the help tooltips.',
         configuration_panel_hide_rp_content: 'Hide RP content',
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
-        configuration_panel_enable_bbh_sync: 'Enable BBH sync',
-        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
+        configuration_panel_enable_bbh_sync: 'Enable <a href="http://bbh.fred26.fr/" target="_blank">BBH</a> sync',
+        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes. If an error occurs, be sure your are logged in.',
         configuration_panel_save_button: 'Save',
         external_tools_bar_update: 'Update external tools'
     }
