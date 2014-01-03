@@ -14,6 +14,7 @@
 // @match *://www.zombinoia.com/*
 // @match *://www.dieverdammten.de/*
 // @grant GM_xmlhttpRequest
+// @match http://bbh.fred26.fr/
 // @version 0.0.1
 // ==/UserScript==
 
@@ -59,7 +60,9 @@ var i18n = {
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
         configuration_panel_enable_bbh_sync: 'Enable BBH sync',
         configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
-        configuration_panel_save_button: 'Save'
+        configuration_panel_save_button: 'Save',
+        external_tools_bar_status: 'Tools sync.:',
+        external_tools_bar_update: 'Update tools'
     },
 
     fr: {
@@ -88,7 +91,9 @@ var i18n = {
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
         configuration_panel_enable_bbh_sync: 'Enable BBH sync',
         configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
-        configuration_panel_save_button: 'Save'
+        configuration_panel_save_button: 'Save',
+        external_tools_bar_status: 'Tools sync.:',
+        external_tools_bar_update: 'Update tools'
     },
 
     es: {
@@ -117,7 +122,9 @@ var i18n = {
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
         configuration_panel_enable_bbh_sync: 'Enable BBH sync',
         configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
-        configuration_panel_save_button: 'Save'
+        configuration_panel_save_button: 'Save',
+        external_tools_bar_status: 'Tools sync.:',
+        external_tools_bar_update: 'Update tools'
     },
 
     de: {
@@ -146,7 +153,9 @@ var i18n = {
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
         configuration_panel_enable_bbh_sync: 'Enable BBH sync',
         configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
-        configuration_panel_save_button: 'Save'
+        configuration_panel_save_button: 'Save',
+        external_tools_bar_status: 'Tools sync.:',
+        external_tools_bar_update: 'Update tools'
     }
 };
 
@@ -268,6 +277,180 @@ var D2NE = (function() {
     };
 
     /**
+     * The available extern tools
+     */
+    var _external_tools = {
+        bbh: {
+            update: function(callback_success, callback_failure) {
+                GM_xmlhttpRequest({
+                    method: 'POST',
+                    url: 'http://bbh.fred26.fr/',
+                    data: 'action=force_maj',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    onload: function(response) { callback_success(response); },
+                    onerror: function(response) { callback_failure(response); }
+                });
+            }
+        }
+    };
+
+    /**
+     * Update the external tools
+     */
+    var _update_tools = function(tools_number) {
+        var tools_updated = 0;
+        var tools_update_aborted = 0;
+
+        var images = document.querySelectorAll('#d2ne_external_tools_bar span img');
+
+        var show_calim = function() {
+            images[0].style.display = 'inline';
+            images[1].style.display = 'none';
+            images[2].style.display = 'none';
+            images[3].style.display = 'none';
+        }
+
+        var show_loading_wheel = function() {
+            images[0].style.display = 'none';
+            images[1].style.display = 'inline';
+            images[2].style.display = 'none';
+            images[3].style.display = 'none';
+        }
+
+        var show_smile = function() {
+            images[0].style.display = 'none';
+            images[1].style.display = 'none';
+            images[2].style.display = 'inline';
+            images[3].style.display = 'none';
+        }
+
+        var show_skull = function() {
+            images[0].style.display = 'none';
+            images[1].style.display = 'none';
+            images[2].style.display = 'none';
+            images[3].style.display = 'inline';
+        };
+
+        // Is called after each update
+        var handle_tool_update = function() {
+            // if error, show skull and abort
+            if (tools_update_aborted > 0) {
+                return show_skull();
+            }
+
+            // if all success, show happy smile and abort
+            if (tools_updated === tools_number) {
+                return show_smile();
+            }
+        };
+
+        show_loading_wheel();
+
+        for (var tool in _configuration.external_tools) {
+            // if tool isn't enabled, skip it
+            if (!(_configuration.external_tools[tool])) {
+                continue;
+            }
+
+            // else update it
+            var tool_name = tool.split('_')[1].split('_')[0];
+            _external_tools[tool_name].update(function(response) {
+                tools_updated += 1;
+                handle_tool_update();
+            }, function(response) {
+                tools_update_aborted += 1;
+                handle_tool_update();
+            });
+        }
+    };
+
+    /**
+     * Load a the external tools
+     */
+    var _external_tools_loaded = false; // set to true when loaded
+    var _load_external_tools = function() {
+        // if already loaded, abort
+        if (_external_tools_loaded) {
+            return;
+        }
+
+        // if not any tool is enabled, abort
+        var tools_number = 0;
+        for (var key in _configuration.external_tools) {
+            tools_number += (_configuration.external_tools[key]) ? 1 : 0;
+        }
+        if (tools_number < 1) {
+            return;
+        }
+
+        // if not in city or outside, abort
+        if (!(d2n.is_in_city() || d2n.is_outside())) {
+            return;
+        }
+
+        js.wait_for_selector('td.sidePanel', function(node) {
+            // Create and inject external tools bar style
+            js.injectCSS(
+                '#d2ne_external_tools_bar {' +
+                    'background-color: #5D321E;' +
+                    'width: 303px;' +
+                    'height: 30px;' +
+                    'margin-left: 3px;' +
+                    'margin-top: 5px;' +
+                    'margin-bottom: 6px;' +
+                    'border: 1px solid rgb(240, 215, 158);' +
+                    'border-radius: 9px;' +
+                    'padding: 5px;' +
+                    'padding-left: 8px;' +
+                '}' +
+                '#d2ne_external_tools_bar a.button {' +
+                    'float: right;' +
+                '}' +
+                '#d2ne_external_tools_bar span {' +
+                    'float: left;' +
+                    'display: inline-block;' +
+                    'vertical-align: middle;' +
+                    'margin-top: 3px;' +
+                    'margin-bottom: 3px;' +
+                    'padding: 2px;' +
+                    'cursor: help;' +
+                    'background-color: #5c2b20;' +
+                    'outline: 1px solid black;' +
+                    'border: 1px solid #ad8051;' +
+                    'padding-left: 7px;' +
+                    'padding-right: 4px;' +
+                '}' +
+                '#d2ne_external_tools_bar span img {' +
+                    'vertical-align: middle;' +
+                    'margin-left: 4px;' +
+                '}' +
+                '#d2ne_external_tools_bar span, #d2ne_external_tools_bar a.button {' +
+                    'width: 133px;' +
+                '}'
+            );
+
+            // Create external tools bar
+            var external_tools_bar_div = document.createElement('div');
+            external_tools_bar_div.id = 'd2ne_external_tools_bar';
+            external_tools_bar_div.innerHTML =
+                '<span>' + _i18n.external_tools_bar_status + '<img src="/gfx/forum/smiley/h_calim.gif"><img src="/gfx/design/loading.gif" width="19px" height="19px" style="display: none;"><img src="/gfx/forum/smiley/h_smile.gif" style="display:none;"><img src="/gfx/forum/smiley/h_death.gif" style="display:none;"></span>' +
+                '<a href="javascript:void(0)" id="d2ne_external_tools_bar_update" class="button">' + _i18n.external_tools_bar_update + '</a>';
+
+            // Insert external tools bar
+            node.insertBefore(external_tools_bar_div, node.firstChild);
+
+            // Set the update behaviour on click
+            document.getElementById('d2ne_external_tools_bar_update').addEventListener('click', function(event) {
+                _update_tools(tools_number);
+            }, true);
+
+            _external_tools_loaded = true;
+        });
+    };
+
+    /**
      * Return a HTML string of an image displaying a help popup with the given
      * message.
      */
@@ -283,162 +466,164 @@ var D2NE = (function() {
      * Create the configuration panel.
      */
     var _load_configuration_panel = function() {
-        // Create panel
-        var config_panel_div = document.createElement('div');
-        config_panel_div.id = 'd2ne_configuration_panel';
-        config_panel_div.innerHTML =
-            '<h1><img src="/gfx/forum/smiley/h_city_up.gif" alt=""><span style="display:none"> ' + _i18n.configuration_panel_title + '</span></h1>' +
-            '<div style="display:none">' +
-            '<p>' + _i18n.script_description + '</p>' +
-            '<table>' +
+        js.wait_for_id('main', function(node) {
+            // Create and inject panel style
+            js.injectCSS(
+                '#d2ne_configuration_panel {' +
+                    'margin-top:6px;' +
+                    'position:absolute;' +
+                    'margin-left:44px;' +
+                    'z-index:9;' +
+                    'padding-left:5px;' +
+                    'padding-right:5px;' +
+                    'background-color:#5c2b20;' +
+                    'outline:1px solid #000000;' +
+                    'border:1px solid #f0d79e;' +
+                '}' +
+                '#d2ne_configuration_panel h1 {' +
+                    'height:auto;' +
+                    'font-size:8pt;' +
+                    'text-transform:none;' +
+                    'font-variant:small-caps;' +
+                    'background:none;' +
+                    'cursor:help;' +
+                    'margin:0;' +
+                    'padding:0;' +
+                '}' +
+                '#d2ne_configuration_panel:hover h1 {' +
+                    'border-bottom:1px solid #b37c4a;' +
+                    'margin-bottom:5px;' +
+                '}' +
+                '#d2ne_configuration_panel p {' +
+                    'margin: 0px;' +
+                    'padding: 0px;' +
+                    'width: 430px;' +
+                    'margin-bottom: 4px;' +
+                    'font-size: 9pt;' +
+                    'line-height: 11pt;' +
+                    'text-align: justify;' +
+                '}' +
+                '#d2ne_configuration_panel p:first-of-type {' +
+                    'border-bottom: 1px dashed #ddab76;' +
+                    'padding-bottom: 4px;' +
+                '}' +
+                '#d2ne_configuration_panel table {' +
+                    'margin: 0 auto;' +
+                '}' +
+                '#d2ne_configuration_panel p:last-of-type {' +
+                    'text-align: right;' +
+                    'border-top: 1px dashed #ddab76;' +
+                    'padding-top: 4px;' +
+                '}' +
+                '#d2ne_configuration_panel a.button {' +
+                    'width: auto;' +
+                    'margin: 3px 0 3px 4px;' +
+                    'text-align: center;' +
+                    'padding: 0;' +
+                '}' +
+                '#d2ne_configuration_panel table tr td:nth-child(2) {' +
+                    'padding-right: 10px;' +
+                    'border-right: 1px dotted rgba(221, 171, 118, 0.5);' +
+                '}' +
+                '#d2ne_configuration_panel table tr td:nth-child(3) {' +
+                    'padding-left: 5px;' +
+                '}' +
+                'a.d2n_tooltip {' +
+                    'display: inline;' +
+                    'position: relative;' +
+                    'cursor: help' +
+                '}' +
+                'a.d2n_tooltip img {' +
+                    'margin-left: 4px;' +
+                    'margin-top: 2px;' +
+                    'border: 1px solid #5c2b20;' +
+                '}' +
+                'a.d2n_tooltip img:hover {' +
+                    'border: 1px solid #ffffff;' +
+                '}' +
+                'a.d2n_tooltip:hover:after {' +
+                    'z-index: 98;' +
+                    'position: absolute;' +
+                    'top: -3px;' +
+                    'left: 60px;' +
+                    'content: attr(tooltip);' +
+                    'font-family: Verdana;' +
+                    'font-size: 12px;' +
+                    'color: #ffffff;' +
+                    'border: 1px solid #ecb98a;' +
+                    'background-color: #5c2b20;' +
+                    'background-image: url("/gfx/design/iconHelp.gif");' +
+                    'background-position: 5px 0px;' +
+                    'background-repeat: no-repeat;' +
+                    'width: 250px;' +
+                    'padding: 4px 10px 9px 30px;' +
+                '}'
+            );
 
-                '<tr><td><input type="checkbox" id="d2ne_configuration_enable_shortcuts" ' + js.check_checkbox(_configuration.enable_shortcuts) + '/><label for="d2ne_configuration_enable_shortcuts">' + _i18n.configuration_panel_enable_shortcuts + '</label></td><td>' + _tooltip(_i18n.configuration_panel_enable_shortcuts_tooltip) + '</td>' +
-                '<td><input type="checkbox" id="d2ne_configuration_hide_hero_adds" ' + js.check_checkbox(_configuration.hide_hero_adds) + '/><label for="d2ne_configuration_hide_hero_adds">' + _i18n.configuration_panel_hide_hero_adds + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_hero_adds_tooltip) + '</td></tr>' +
+            // Create panel
+            var config_panel_div = document.createElement('div');
+            config_panel_div.id = 'd2ne_configuration_panel';
+            config_panel_div.innerHTML =
+                '<h1><img src="/gfx/forum/smiley/h_city_up.gif" alt=""><span style="display:none"> ' + _i18n.configuration_panel_title + '</span></h1>' +
+                '<div style="display:none">' +
+                '<p>' + _i18n.script_description + '</p>' +
+                '<table>' +
 
-                '<tr><td><input type="checkbox" id="d2ne_configuration_highlight_ap" ' + js.check_checkbox(_configuration.highlight_ap) + '/><label for="d2ne_configuration_highlight_ap">' + _i18n.configuration_panel_highlight_ap + '</label></td><td>' + _tooltip(_i18n.configuration_panel_highlight_ap_tooltip) + '</td>' +
-                '<td><input type="checkbox" id="d2ne_configuration_hide_help" ' + js.check_checkbox(_configuration.hide_help) + '/><label for="d2ne_configuration_hide_help">' + _i18n.configuration_panel_hide_help + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_help_tooltip) + '</td></tr>' +
+                    '<tr><td><input type="checkbox" id="d2ne_configuration_enable_shortcuts" ' + js.check_checkbox(_configuration.enable_shortcuts) + '/><label for="d2ne_configuration_enable_shortcuts">' + _i18n.configuration_panel_enable_shortcuts + '</label></td><td>' + _tooltip(_i18n.configuration_panel_enable_shortcuts_tooltip) + '</td>' +
+                    '<td><input type="checkbox" id="d2ne_configuration_hide_hero_adds" ' + js.check_checkbox(_configuration.hide_hero_adds) + '/><label for="d2ne_configuration_hide_hero_adds">' + _i18n.configuration_panel_hide_hero_adds + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_hero_adds_tooltip) + '</td></tr>' +
 
-                '<tr><td><input type="checkbox" id="d2ne_configuration_enable_bbh_sync" ' + js.check_checkbox(_configuration.external_tools.enable_bbh_sync) + '/><label for="d2ne_configuration_enable_bbh_sync">' + _i18n.configuration_panel_enable_bbh_sync + '</label></td><td>' + _tooltip(_i18n.configuration_panel_enable_bbh_sync_tooltip) + '</td>' +
-                '<td><input type="checkbox" id="d2ne_configuration_hide_twinoid_bar" ' + js.check_checkbox(_configuration.hide_twinoid_bar) + '/><label for="d2ne_configuration_hide_twinoid_bar">' + _i18n.configuration_panel_hide_twinoid_bar + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_twinoid_bar_tooltip) + '</td></tr>' +
+                    '<tr><td><input type="checkbox" id="d2ne_configuration_highlight_ap" ' + js.check_checkbox(_configuration.highlight_ap) + '/><label for="d2ne_configuration_highlight_ap">' + _i18n.configuration_panel_highlight_ap + '</label></td><td>' + _tooltip(_i18n.configuration_panel_highlight_ap_tooltip) + '</td>' +
+                    '<td><input type="checkbox" id="d2ne_configuration_hide_help" ' + js.check_checkbox(_configuration.hide_help) + '/><label for="d2ne_configuration_hide_help">' + _i18n.configuration_panel_hide_help + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_help_tooltip) + '</td></tr>' +
 
-                '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_footer" ' + js.check_checkbox(_configuration.hide_footer) + '/><label for="d2ne_configuration_hide_footer">' + _i18n.configuration_panel_hide_footer + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_footer_tooltip) + '</td></tr>' +
+                    '<tr><td><input type="checkbox" id="d2ne_configuration_enable_bbh_sync" ' + js.check_checkbox(_configuration.external_tools.enable_bbh_sync) + '/><label for="d2ne_configuration_enable_bbh_sync">' + _i18n.configuration_panel_enable_bbh_sync + '</label></td><td>' + _tooltip(_i18n.configuration_panel_enable_bbh_sync_tooltip) + '</td>' +
+                    '<td><input type="checkbox" id="d2ne_configuration_hide_twinoid_bar" ' + js.check_checkbox(_configuration.hide_twinoid_bar) + '/><label for="d2ne_configuration_hide_twinoid_bar">' + _i18n.configuration_panel_hide_twinoid_bar + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_twinoid_bar_tooltip) + '</td></tr>' +
 
-                '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_pegi" ' + js.check_checkbox(_configuration.hide_pegi) + '/><label for="d2ne_configuration_hide_pegi">' + _i18n.configuration_panel_hide_pegi + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_pegi_tooltip) + '</td></tr>' +
+                    '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_footer" ' + js.check_checkbox(_configuration.hide_footer) + '/><label for="d2ne_configuration_hide_footer">' + _i18n.configuration_panel_hide_footer + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_footer_tooltip) + '</td></tr>' +
 
-                '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_rookie_mode" ' + js.check_checkbox(_configuration.hide_rookie_mode) + '/><label for="d2ne_configuration_hide_rookie_mode">' + _i18n.configuration_panel_hide_rookie_mode + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_rookie_mode_tooltip) + '</td></tr>' +
+                    '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_pegi" ' + js.check_checkbox(_configuration.hide_pegi) + '/><label for="d2ne_configuration_hide_pegi">' + _i18n.configuration_panel_hide_pegi + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_pegi_tooltip) + '</td></tr>' +
 
-                '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_guides" ' + js.check_checkbox(_configuration.hide_guides) + '/><label for="d2ne_configuration_hide_guides">' + _i18n.configuration_panel_hide_guides + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_guides_tooltip) + '</td></tr>' +
+                    '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_rookie_mode" ' + js.check_checkbox(_configuration.hide_rookie_mode) + '/><label for="d2ne_configuration_hide_rookie_mode">' + _i18n.configuration_panel_hide_rookie_mode + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_rookie_mode_tooltip) + '</td></tr>' +
 
-                '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_rp_content" ' + js.check_checkbox(_configuration.hide_rp_content) + '/><label for="d2ne_configuration_hide_rp_content">' + _i18n.configuration_panel_hide_rp_content + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_rp_content_tooltip) + '</td></tr>' +
+                    '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_guides" ' + js.check_checkbox(_configuration.hide_guides) + '/><label for="d2ne_configuration_hide_guides">' + _i18n.configuration_panel_hide_guides + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_guides_tooltip) + '</td></tr>' +
 
-                '<tr><td colspan="4"><a href="javascript:void(0)" id="d2ne_configuration_save" class="button">' + _i18n.configuration_panel_save_button + '</a></td></tr>' +
-            '</table>' +
-            '<div class="clear"></div>' +
-            '<p><a href="' + PROJECT_PAGE + '" target="_blank">' + SCRIPT_NAME +' v' + SCRIPT_VERSION + '</a></p>' +
-            '</div>';
+                    '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_rp_content" ' + js.check_checkbox(_configuration.hide_rp_content) + '/><label for="d2ne_configuration_hide_rp_content">' + _i18n.configuration_panel_hide_rp_content + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_rp_content_tooltip) + '</td></tr>' +
 
-        // Insert panel
-        var main_div = document.getElementById('main');
-        main_div.insertBefore(config_panel_div, main.firstChild);
+                    '<tr><td colspan="4"><a href="javascript:void(0)" id="d2ne_configuration_save" class="button">' + _i18n.configuration_panel_save_button + '</a></td></tr>' +
+                '</table>' +
+                '<div class="clear"></div>' +
+                '<p><a href="' + PROJECT_PAGE + '" target="_blank">' + SCRIPT_NAME +' v' + SCRIPT_VERSION + '</a></p>' +
+                '</div>';
 
-        // Create panel style
-        js.injectCSS(
-            '#d2ne_configuration_panel {' +
-                'margin-top:6px;' +
-                'position:absolute;' +
-                'margin-left:44px;' +
-                'z-index:9;' +
-                'padding-left:5px;' +
-                'padding-right:5px;' +
-                'background-color:#5c2b20;' +
-                'outline:1px solid #000000;' +
-                'border:1px solid #f0d79e;' +
-            '}' +
-            '#d2ne_configuration_panel h1 {' +
-                'height:auto;' +
-                'font-size:8pt;' +
-                'text-transform:none;' +
-                'font-variant:small-caps;' +
-                'background:none;' +
-                'cursor:help;' +
-                'margin:0;' +
-                'padding:0;' +
-            '}' +
-            '#d2ne_configuration_panel:hover h1 {' +
-                'border-bottom:1px solid #b37c4a;' +
-                'margin-bottom:5px;' +
-            '}' +
-            '#d2ne_configuration_panel p {' +
-                'margin: 0px;' +
-                'padding: 0px;' +
-                'width: 430px;' +
-                'margin-bottom: 4px;' +
-                'font-size: 9pt;' +
-                'line-height: 11pt;' +
-                'text-align: justify;' +
-            '}' +
-            '#d2ne_configuration_panel p:first-of-type {' +
-                'border-bottom: 1px dashed #ddab76;' +
-                'padding-bottom: 4px;' +
-            '}' +
-            '#d2ne_configuration_panel table {' +
-                'margin: 0 auto;' +
-            '}' +
-            '#d2ne_configuration_panel p:last-of-type {' +
-                'text-align: right;' +
-                'border-top: 1px dashed #ddab76;' +
-                'padding-top: 4px;' +
-            '}' +
-            '#d2ne_configuration_panel a.button {' +
-                'width: auto;' +
-                'margin: 3px 0 3px 4px;' +
-                'text-align: center;' +
-                'padding: 0;' +
-            '}' +
-            '#d2ne_configuration_panel table tr td:nth-child(2) {' +
-                'padding-right: 10px;' +
-                'border-right: 1px dotted rgba(221, 171, 118, 0.5);' +
-            '}' +
-            '#d2ne_configuration_panel table tr td:nth-child(3) {' +
-                'padding-left: 5px;' +
-            '}' +
-            'a.d2n_tooltip {' +
-                'display: inline;' +
-                'position: relative;' +
-                'cursor: help' +
-            '}' +
-            'a.d2n_tooltip img {' +
-                'margin-left: 4px;' +
-                'margin-top: 2px;' +
-                'border: 1px solid #5c2b20;' +
-            '}' +
-            'a.d2n_tooltip img:hover {' +
-                'border: 1px solid #ffffff;' +
-            '}' +
-            'a.d2n_tooltip:hover:after {' +
-                'z-index: 98;' +
-                'position: absolute;' +
-                'top: -3px;' +
-                'left: 60px;' +
-                'content: attr(tooltip);' +
-                'font-family: Verdana;' +
-                'font-size: 12px;' +
-                'color: #ffffff;' +
-                'border: 1px solid #ecb98a;' +
-                'background-color: #5c2b20;' +
-                'background-image: url("/gfx/design/iconHelp.gif");' +
-                'background-position: 5px 0px;' +
-                'background-repeat: no-repeat;' +
-                'width: 250px;' +
-                'padding: 4px 10px 9px 30px;' +
-            '}'
-        );
+            // Insert panel
+            node.insertBefore(config_panel_div, main.firstChild);
 
-        document.getElementById('d2ne_configuration_save').addEventListener('click', function(event) {
-            _save_configuration();
-            js.reload();
-        }, true);
+            // Save and reload page when clicking on the save button
+            document.getElementById('d2ne_configuration_save').addEventListener('click', function(event) {
+                _save_configuration();
+                js.reload();
+            }, true);
 
-        // Show/Hide config panel cache
-        var _config_panel_cache = document.getElementById('d2ne_configuration_panel');
-        var _config_panel_toggled_elements_cache = document.querySelectorAll('#d2ne_configuration_panel > h1 > span, #d2ne_configuration_panel > div');
-        var _config_panel_toggled_elements_cache_length = _config_panel_toggled_elements_cache.length;
+            // Show/Hide config panel cache
+            var _config_panel_cache = document.getElementById('d2ne_configuration_panel');
+            var _config_panel_toggled_elements_cache = document.querySelectorAll('#d2ne_configuration_panel > h1 > span, #d2ne_configuration_panel > div');
+            var _config_panel_toggled_elements_cache_length = _config_panel_toggled_elements_cache.length;
 
-        // Show panel on hover
-        config_panel_div.addEventListener('mouseover', function(event) {
-            _config_panel_cache.style['z-index'] = '11'; // This fix is needed for the spanish version, as the hero adds has a z-index of 10
-            for (var i = 0; i < _config_panel_toggled_elements_cache_length; ++i) {
-                _config_panel_toggled_elements_cache[i].style.display = 'inline';
-            }
-        }, true);
+            // Show panel on hover
+            config_panel_div.addEventListener('mouseover', function(event) {
+                _config_panel_cache.style['z-index'] = '11'; // This fix is needed for the spanish version, as the hero adds has a z-index of 10
+                for (var i = 0; i < _config_panel_toggled_elements_cache_length; ++i) {
+                    _config_panel_toggled_elements_cache[i].style.display = 'inline';
+                }
+            }, true);
 
-        // Hide panel on mouse out
-        config_panel_div.addEventListener('mouseout', function(event) {
-            for (var i = 0; i < _config_panel_toggled_elements_cache_length; ++i) {
-                _config_panel_toggled_elements_cache[i].style.display = 'none';
-            }
-            _config_panel_cache.style['z-index'] = '9'; // See previous function comment
-        }, true);
+            // Hide panel on mouse out
+            config_panel_div.addEventListener('mouseout', function(event) {
+                for (var i = 0; i < _config_panel_toggled_elements_cache_length; ++i) {
+                    _config_panel_toggled_elements_cache[i].style.display = 'none';
+                }
+                _config_panel_cache.style['z-index'] = '9'; // See previous function comment
+            }, true);
+        });
     };
 
     /**
@@ -450,15 +635,15 @@ var D2NE = (function() {
         hide_twinoid_bar: function() {
             js.injectCSS(
                 '#tid_bar {' +
-                'display: none;' +
-                'position: fixed;' +
-                'z-index: 15;' +
+                    'display: none;' +
+                    'position: fixed;' +
+                    'z-index: 15;' +
                 '}' +
                 '#gamebody div.infoBar {' +
-                'top: 111px;' +
+                    'top: 111px;' +
                 '}' +
                 'a#backReboot {' +
-                'top: 178px;' +
+                    'top: 178px;' +
                 '}'
             );
 
@@ -639,7 +824,8 @@ var D2NE = (function() {
         _load_configuration();
         _load_internationalisation();
         _load_features();
-        js.wait_for_id('main', _load_configuration_panel);
+        _load_external_tools(); // only if at least one is enabled
+        _load_configuration_panel(); // defer loading until #main is found
     };
 
     return self;
@@ -785,35 +971,6 @@ var d2n = (function() {
 
     return self;
 })(); // !die2nite helpers
-
-
-/**
- * BigBroth'hordes helpers
- */
-var BBH = (function() {
-    var self = {};
-
-    var _update_url = 'http://bbh.fred26.fr/';
-
-    self.update = function() {
-        GM_xmlhttpRequest({
-            method: 'POST',
-            url: _update_url,
-            data: 'action=force_maj',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            onload: function(response) {
-                console.log(response);
-            },
-            onerror: function(response) {
-                console.log(response);
-            }
-        });
-    };
-
-    return self;
-})(); // !bigbroth'hordes helpers
 
 
 /**
@@ -998,6 +1155,22 @@ var js = (function() {
 
         return r.test(string);
     }
+
+    /**
+     * Execute a callback with the first node matching the given selector.
+     * @param string selector The selector to execute
+     * @param callback callback The function to call when a result is found
+     */
+    self.wait_for_selector = function(selector, callback) {
+        var el;
+
+        if (js.is_defined(el = document.querySelector(selector))) {
+            return callback(el);
+        }
+        setTimeout(function() {
+            self.wait_for_selector(selector, callback);
+        }, 50);
+    };
 
     return self;
 })(); // !generic javascript helpers
