@@ -577,7 +577,7 @@ var D2NE = (function() {
                 '#d2ne_configuration_panel p {' +
                     'margin: 0px;' +
                     'padding: 0px;' +
-                    'width: 371px;' +
+                    'width: 385px;' +
                     'margin-bottom: 4px;' +
                     'font-size: 9pt;' +
                     'line-height: 11pt;' +
