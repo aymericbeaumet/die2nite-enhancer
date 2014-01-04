@@ -823,7 +823,7 @@ var D2NE = (function() {
         hide_help: function() {
             js.injectCSS(
                 '#mapTips, #ghost_pages .help {' +
-                'display: none' +
+                    'display: none' +
                 '}'
             );
         },
@@ -832,11 +832,11 @@ var D2NE = (function() {
         hide_footer: function() {
             js.injectCSS(
                 '#tid_bar_down {' +
-                'display: none;' +
+                    'display: none;' +
                 '}' +
                 '#fbAd {' +
-                'height: 0;' +
-                'overflow: hidden;' +
+                    'height: 0;' +
+                    'overflow: hidden;' +
                 '}'
             );
         },
@@ -845,7 +845,7 @@ var D2NE = (function() {
         hide_pegi: function() {
             js.injectCSS(
                 '.pegi {' +
-                'display: none;' +
+                    'display: none;' +
                 '}'
             );
         },
@@ -854,7 +854,7 @@ var D2NE = (function() {
         hide_rookie_mode: function() {
             js.injectCSS(
                 'div.block.tutorialBlock, div.expertMode {' +
-                'display: none;' +
+                    'display: none;' +
                 '}'
             );
         },
@@ -863,10 +863,10 @@ var D2NE = (function() {
         hide_guides: function() {
             js.injectCSS(
                 '.helpLink {' +
-                'display: none;' +
+                    'display: none;' +
                 '}' +
                 '#generic_section > div > em:last-of-type {' +
-                'display: none;' +
+                    'display: none;' +
                 '}'
             );
         },
@@ -875,7 +875,7 @@ var D2NE = (function() {
         hide_rp_content: function() {
             js.injectCSS(
                 '.ambiant, .flavor {' +
-                'display: none;' +
+                    'display: none;' +
                 '}'
             );
         }
@@ -900,7 +900,7 @@ var D2NE = (function() {
         _load_configuration();
         _load_internationalisation();
         _load_features();
-        _load_external_tools(); // only if at least one is enabled
+        _load_external_tools(); // only if at least one tool is enabled
         _load_configuration_panel(); // defer loading until #main is found
     };
 
