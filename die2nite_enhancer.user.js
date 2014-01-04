@@ -504,14 +504,27 @@ var D2NE = (function() {
                 _update_tools(tools_number);
             }, true);
 
-            // Hide toolbar if click on Gazette/Soul/Help (because it is
-            // positionned as absolute and contained in a high-level div)
-            var links = document.querySelectorAll('a.mainButton + a');
-            for (var i = 0, length = links.length; i < length; ++i) {
-                links[i].addEventListener('click', function() {
-                    js.remove_element(external_tools_bar_div);
-                }, true);
-            }
+            js.injectJS(
+                // The 'js' object in the Motion Twin context has another
+                // meaning, it is not my tools object
+                // MTFunction
+                'js.BackForward.updateHash = function() {' +
+                    // Their code
+                    'var n = "#" + js.BackForward.current;' +
+                    'js.BackForward.lastHash = js.Lib.window.location.hash;' +
+                    'if(n == js.BackForward.lastHash) return;' +
+                    'js.Lib.window.location.hash = n;' +
+                    'js.BackForward.lastHash = js.Lib.window.location.hash;' +
+
+                    // My alteration
+                    // If neither in city or outside, remove the toolbar
+                    'if (!(/^#city/.test(window.location.hash) ||' +
+                          '/^#outside\\?(?:go=outside\\/refresh;)?sk=[a-z0-9]{5}$/.test(window.location.hash))) {' +
+                        'var el = document.getElementById("d2ne_external_tools_bar");' +
+                        'el && el.parentNode.removeChild(el);' +
+                    '}' +
+                '};'
+            );
 
             _external_tools_loaded = true;
         });
