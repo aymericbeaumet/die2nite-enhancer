@@ -778,7 +778,7 @@ var D2NE = (function() {
         ////
         hide_hero_adds: function() {
             js.injectCSS(
-                '.heroMode, #ghostHeroAd, #heroContainer, .promoBt, .sondageBg {' +
+                '.heroMode, #ghostHeroAd, #heroContainer, .heroAd, .promoBt, .sondageBg {' +
                 'display: none;' +
                 '}'
             );
