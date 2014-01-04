@@ -12,10 +12,10 @@
 // @downloadURL https://github.com/abeaumet/die2nite_enhancer/raw/master/die2nite_enhancer.user.js
 // @updateURL https://github.com/abeaumet/die2nite_enhancer/raw/master/die2nite_enhancer.user.js
 //
-// @match *://www.die2nite.com/*
-// @match *://www.hordes.fr/*
-// @match *://www.zombinoia.com/*
-// @match *://www.dieverdammten.de/*
+// @match http://www.die2nite.com/*
+// @match http://www.hordes.fr/*
+// @match http://www.zombinoia.com/*
+// @match http://www.dieverdammten.de/*
 //
 // @grant GM_xmlhttpRequest
 // @match http://bbh.fred26.fr/*
