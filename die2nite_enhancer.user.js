@@ -509,15 +509,7 @@ var D2NE = (function() {
             var links = document.querySelectorAll('a.mainButton + a');
             for (var i = 0, length = links.length; i < length; ++i) {
                 links[i].addEventListener('click', function() {
-                    var remove = function() {
-                        if (d2n.is_in_city() || d2n.is_outside()) {
-                            return setTimeout(function() {
-                                remove();
-                            }, 50);
-                        }
-                        js.remove_element(external_tools_bar_div);
-                    };
-                    remove();
+                    js.remove_element(external_tools_bar_div);
                 }, true);
             }
 
