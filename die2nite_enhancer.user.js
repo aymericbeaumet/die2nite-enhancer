@@ -815,7 +815,7 @@ var D2NE = (function() {
                 var observer = new MutationObserver(function(mutations) {
                     highlight();
                 });
-                observer.observe(node, {childList: true});
+                observer.observe(node, {characterData: true, childList: true, subtree: true});
             });
         },
 
