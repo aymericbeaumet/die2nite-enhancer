@@ -509,19 +509,24 @@ var D2NE = (function() {
                 // meaning, it is not my tools object
                 // MTFunction
                 'js.BackForward.updateHash = function() {' +
-                    // Their code
+                    // MT code
                     'var n = "#" + js.BackForward.current;' +
                     'js.BackForward.lastHash = js.Lib.window.location.hash;' +
                     'if(n == js.BackForward.lastHash) return;' +
                     'js.Lib.window.location.hash = n;' +
                     'js.BackForward.lastHash = js.Lib.window.location.hash;' +
 
-                    // My alteration
+                    // My code
                     // If neither in city or outside, remove the toolbar
                     'if (!(/^#city/.test(window.location.hash) ||' +
                           '/^#outside\\?(?:go=outside\\/refresh;)?sk=[a-z0-9]{5}$/.test(window.location.hash))) {' +
                         'var el = document.getElementById("d2ne_external_tools_bar");' +
                         'el && el.parentNode.removeChild(el);' +
+                        // raise side panel
+                        'var encapsulated_css = document.createElement("style");' +
+                        'encapsulated_css.type = "text/css";' +
+                        'encapsulated_css.innerHTML = "#gameLayout td.sidePanel { position: static !important; }";' +
+                        'document.getElementsByTagName("head")[0].appendChild(encapsulated_css);' +
                     '}' +
                 '};'
             );
