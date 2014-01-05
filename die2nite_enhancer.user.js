@@ -498,40 +498,24 @@ var D2NE = (function() {
 
             // Insert external tools bar
             node.insertBefore(external_tools_bar_div, node.firstChild);
+            _external_tools_loaded = true;
 
-            // Set the update behaviour on click
-            document.getElementById('d2ne_external_tools_bar_update').addEventListener('click', function(event) {
+            // Set the update behaviour on click on the update button
+            document.getElementById('d2ne_external_tools_bar_update').addEventListener('click', function() {
                 _update_tools(tools_number);
             }, true);
 
-            js.injectJS(
-                // The 'js' object in the Motion Twin context has another
-                // meaning, it is not my tools object
-                // MTFunction
-                'js.BackForward.updateHash = function() {' +
-                    // MT code
-                    'var n = "#" + js.BackForward.current;' +
-                    'js.BackForward.lastHash = js.Lib.window.location.hash;' +
-                    'if(n == js.BackForward.lastHash) return;' +
-                    'js.Lib.window.location.hash = n;' +
-                    'js.BackForward.lastHash = js.Lib.window.location.hash;' +
-
-                    // My code
-                    // If neither in city or outside, remove the toolbar
-                    'if (!(/^#city/.test(window.location.hash) ||' +
-                          '/^#outside\\?(?:go=outside\\/refresh;)?sk=[a-z0-9]{5}$/.test(window.location.hash))) {' +
-                        'var el = document.getElementById("d2ne_external_tools_bar");' +
-                        'el && el.parentNode.removeChild(el);' +
-                        // raise side panel
-                        'var encapsulated_css = document.createElement("style");' +
-                        'encapsulated_css.type = "text/css";' +
-                        'encapsulated_css.innerHTML = "#gameLayout td.sidePanel { position: static !important; }";' +
-                        'document.getElementsByTagName("head")[0].appendChild(encapsulated_css);' +
-                    '}' +
-                '};'
-            );
-
-            _external_tools_loaded = true;
+            // Remove toolbar when leaving the city/outside page
+            document.addEventListener('d2n_hashchange', function() {
+                if (!(d2n.is_in_city() || d2n.is_outside())) {
+                    js.remove_element(document.getElementById("d2ne_external_tools_bar"));
+                    js.injectCSS(
+                        '#gameLayout td.sidePanel {' +
+                            'position: static !important;' +
+                        '}'
+                    );
+                }
+            }, true);
         });
     };
 
@@ -684,7 +668,7 @@ var D2NE = (function() {
             node.insertBefore(config_panel_div, main.firstChild);
 
             // Save and reload page when clicking on the save button
-            document.getElementById('d2ne_configuration_save').addEventListener('click', function(event) {
+            document.getElementById('d2ne_configuration_save').addEventListener('click', function() {
                 _save_configuration();
                 js.reload();
             }, true);
@@ -695,7 +679,7 @@ var D2NE = (function() {
             var _config_panel_toggled_elements_cache_length = _config_panel_toggled_elements_cache.length;
 
             // Show panel on hover
-            config_panel_div.addEventListener('mouseover', function(event) {
+            config_panel_div.addEventListener('mouseover', function() {
                 _config_panel_cache.style['z-index'] = '11'; // This fix is needed for the spanish version, as the hero adds has a z-index of 10
                 for (var i = 0; i < _config_panel_toggled_elements_cache_length; ++i) {
                     _config_panel_toggled_elements_cache[i].style.display = 'inline';
@@ -703,7 +687,7 @@ var D2NE = (function() {
             }, true);
 
             // Hide panel on mouse out
-            config_panel_div.addEventListener('mouseout', function(event) {
+            config_panel_div.addEventListener('mouseout', function() {
                 for (var i = 0; i < _config_panel_toggled_elements_cache_length; ++i) {
                     _config_panel_toggled_elements_cache[i].style.display = 'none';
                 }
@@ -807,9 +791,12 @@ var D2NE = (function() {
                         'e3ff00', // 4 AP
                         '9cff00', // 5 AP
                         '55ff00', // 6 AP
-                        '00ff00', // 7 AP
-                        '00ff00'  // 8 AP
+                        '00ff00'  // 7 AP+
                     ];
+
+                    while (ap > colors.length) {
+                        --ap;
+                    }
 
                     js.injectCSS(
                         '#movesCounter {' +
@@ -821,11 +808,10 @@ var D2NE = (function() {
                 // Highlight at load
                 highlight();
 
-                // Change color if AP changes
-                var observer = new MutationObserver(function(mutations) {
+                // Highlight on change
+                document.addEventListener('d2n_apchange', function() {
                     highlight();
-                });
-                observer.observe(node, {characterData: true, childList: true, subtree: true});
+                }, true);
             });
         },
 
@@ -907,6 +893,7 @@ var D2NE = (function() {
      * Set up the script.
      */
     self.init = function() {
+        d2n.add_custom_events();
         _load_configuration();
         _load_internationalisation();
         _load_features();
@@ -1056,6 +1043,58 @@ var d2n = (function() {
             window.location.hash,
             '^#outside\\?(?:go=outside\\/refresh;)?sk=[a-z0-9]{5}$'
         );
+    };
+
+    /**
+     * Add custom events on the interface:
+     * - to watch the hash in the URL: 'hashchange'
+     * - to watch the number of AP: 'apchange'
+     */
+    self.add_custom_events= function() {
+        // Watch the hash
+        js.injectJS(
+            'js.BackForward.updateHash = function() {' +
+                'var n = "#" + js.BackForward.current;' +
+                'js.BackForward.lastHash = js.Lib.window.location.hash;' +
+                'if(n == js.BackForward.lastHash) return;' +
+                'js.Lib.window.location.hash = n;' +
+                'js.BackForward.lastHash = js.Lib.window.location.hash;' +
+
+                // Emit an event when the hash changes
+                'var event = new CustomEvent(' +
+                    '"d2n_hashchange", {' +
+                        'detail: {' +
+                            'hash: window.location.hash' +
+                        '},' +
+                        'bubbles: true,' +
+                        'cancelable: true' +
+                    '}' +
+                ');' +
+                'document.dispatchEvent(event);' +
+            '};'
+        );
+
+        // Watch the AP
+        var observer = new MutationObserver(function(mutations) {
+            for (var i = 0; i < mutations.length; ++i) {
+                console.log(mutations[i]);
+            }
+
+            // Emit an event when the ap changes
+            var event = new CustomEvent(
+                'd2n_apchange', {
+                    detail: {
+                        ap: d2n.get_number_of_ap()
+                    },
+                    bubbles: true,
+                    cancelable: true
+                }
+            );
+            document.dispatchEvent(event);
+        });
+        js.wait_for_id('movesCounter', function(node) {
+            observer.observe(node, {childList: true});
+        });
     };
 
     return self;
