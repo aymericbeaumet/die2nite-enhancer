@@ -1088,6 +1088,24 @@ var d2n = (function() {
      * - to watch the number of AP: 'apchange'
      */
     self.add_custom_events= function() {
+        // Watch for the first hash on page loading
+        var watch_for_hash = function() {
+            if (window.location.hash === '') {
+                return setTimeout(watch_for_hash, 50);
+            }
+
+            var event = new CustomEvent(
+                "d2n_hashchange", {
+                detail: {
+                    hash: window.location.hash
+                },
+                bubbles: true,
+                cancelable: true
+            }
+            );
+            document.dispatchEvent(event);
+        };
+
         // Watch the hash
         js.injectJS(
             'js.BackForward.updateHash = function() {' +
