@@ -533,7 +533,7 @@ var D2NE = (function() {
 
         document.addEventListener('d2n_hashchange', function() {
             load();
-        });
+        }, true);
     };
 
     /**
@@ -911,7 +911,7 @@ var D2NE = (function() {
 
             document.addEventListener('d2n_apchange', function() {
                 change_ap();
-            });
+            }, true);
 
             document.addEventListener('d2n_hashchange', function() {
                 change_ap();
