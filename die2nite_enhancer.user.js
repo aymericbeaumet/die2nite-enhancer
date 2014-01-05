@@ -70,6 +70,8 @@ var i18n = {
         configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes. If an error occurs, be sure you are logged in.',
         configuration_panel_enable_ooev_sync: 'Enable <a href="http://www.oeev-hordes.com/" target="_blank">OOEV</a> sync',
         configuration_panel_enable_ooev_sync_tooltip: 'Add the possibility to sync with Où en êtes-vous ?. If an error occurs, be sure you are logged in.',
+        configuration_panel_enable_construction_max_ap: 'Use max AP in constructions',
+        configuration_panel_enable_construction_max_ap_tooltip: 'While in the construction page, use your actual number of AP instead of the default 1 AP.',
         configuration_panel_save_button: 'Save',
         external_tools_bar_update: 'Update external tools'
     },
@@ -102,6 +104,8 @@ var i18n = {
         configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes. If an error occurs, be sure you are logged in.',
         configuration_panel_enable_ooev_sync: 'Enable <a href="http://www.oeev-hordes.com/" target="_blank">OOEV</a> sync',
         configuration_panel_enable_ooev_sync_tooltip: 'Add the possibility to sync with Où en êtes-vous ?. If an error occurs, be sure you are logged in.',
+        configuration_panel_enable_construction_max_ap: 'Use max AP in constructions',
+        configuration_panel_enable_construction_max_ap_tooltip: 'While in the construction page, use your actual number of AP instead of the default 1 AP.',
         configuration_panel_save_button: 'Save',
         external_tools_bar_update: 'Update external tools'
     },
@@ -134,6 +138,8 @@ var i18n = {
         configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes. If an error occurs, be sure you are logged in.',
         configuration_panel_enable_ooev_sync: 'Enable <a href="http://www.oeev-hordes.com/" target="_blank">OOEV</a> sync',
         configuration_panel_enable_ooev_sync_tooltip: 'Add the possibility to sync with Où en êtes-vous ?. If an error occurs, be sure you are logged in.',
+        configuration_panel_enable_construction_max_ap: 'Use max AP in constructions',
+        configuration_panel_enable_construction_max_ap_tooltip: 'While in the construction page, use your actual number of AP instead of the default 1 AP.',
         configuration_panel_save_button: 'Save',
         external_tools_bar_update: 'Update external tools'
     },
@@ -166,6 +172,8 @@ var i18n = {
         configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes. If an error occurs, be sure you are logged in.',
         configuration_panel_enable_ooev_sync: 'Enable <a href="http://www.oeev-hordes.com/" target="_blank">OOEV</a> sync',
         configuration_panel_enable_ooev_sync_tooltip: 'Add the possibility to sync with Où en êtes-vous ?. If an error occurs, be sure you are logged in.',
+        configuration_panel_enable_construction_max_ap: 'Use max AP in constructions',
+        configuration_panel_enable_construction_max_ap_tooltip: 'While in the construction page, use your actual number of AP instead of the default 1 AP.',
         configuration_panel_save_button: 'Save',
         external_tools_bar_update: 'Update external tools'
     }
@@ -238,7 +246,10 @@ var D2NE = (function() {
             enable_bbh_sync: false,
             // Set to true to enable Où en êtes-vous ? (http://www.oeev-hordes.com/)
             enable_ooev_sync: false,
-        }
+        },
+
+        // Set to true to enable the use of maximum AP in the constructions
+        enable_construction_max_ap: true
     };
 
     /**
@@ -277,6 +288,7 @@ var D2NE = (function() {
         _configuration.hide_rp_content = document.getElementById('d2ne_configuration_hide_rp_content').checked;
         _configuration.external_tools.enable_bbh_sync = document.getElementById('d2ne_configuration_enable_bbh_sync').checked;
         _configuration.external_tools.enable_ooev_sync = document.getElementById('d2ne_configuration_enable_ooev_sync').checked;
+        _configuration.enable_construction_max_ap = document.getElementById('d2ne_configuration_enable_construction_max_ap').checked;
 
         localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY] = JSON.stringify(_configuration);
     }
@@ -549,6 +561,7 @@ var D2NE = (function() {
                     'outline:1px solid #000000;' +
                     'border:1px solid #f0d79e;' +
                 '}' +
+
                 '#d2ne_configuration_panel h1 {' +
                     'height:auto;' +
                     'font-size:8pt;' +
@@ -563,32 +576,22 @@ var D2NE = (function() {
                     'border-bottom:1px solid #b37c4a;' +
                     'margin-bottom:5px;' +
                 '}' +
-                '#d2ne_configuration_panel p {' +
-                    'margin: 0px;' +
-                    'padding: 0px;' +
-                    'width: 385px;' +
-                    'margin-bottom: 4px;' +
+
+                '#d2ne_configuration_panel table {' +
+                    'margin: 0 auto;' +
+                    'width: 500px;' +
+                '}' +
+                '#d2ne_configuration_panel table tr:first-child td {' +
+                    'padding-bottom: 6px;' +
                     'font-size: 9pt;' +
                     'line-height: 11pt;' +
                     'text-align: justify;' +
-                '}' +
-                '#d2ne_configuration_panel p:first-of-type {' +
                     'border-bottom: 1px dashed #ddab76;' +
-                    'padding-bottom: 4px;' +
                 '}' +
-                '#d2ne_configuration_panel table {' +
-                    'margin: 0 auto;' +
-                '}' +
-                '#d2ne_configuration_panel p:last-of-type {' +
+                '#d2ne_configuration_panel table tr:last-child td {' +
+                    'padding-top: 4px;' +
                     'text-align: right;' +
                     'border-top: 1px dashed #ddab76;' +
-                    'padding-top: 4px;' +
-                '}' +
-                '#d2ne_configuration_panel a.button {' +
-                    'width: auto;' +
-                    'margin: 3px 0 3px 4px;' +
-                    'text-align: center;' +
-                    'padding: 0;' +
                 '}' +
                 '#d2ne_configuration_panel table tr td:nth-child(2) {' +
                     'padding-right: 10px;' +
@@ -597,6 +600,14 @@ var D2NE = (function() {
                 '#d2ne_configuration_panel table tr td:nth-child(3) {' +
                     'padding-left: 5px;' +
                 '}' +
+
+                '#d2ne_configuration_panel a.button {' +
+                    'width: auto;' +
+                    'margin: 3px 0 3px 4px;' +
+                    'text-align: center;' +
+                    'padding: 0;' +
+                '}' +
+
                 'a.d2n_tooltip {' +
                     'display: inline;' +
                     'position: relative;' +
@@ -634,9 +645,8 @@ var D2NE = (function() {
             config_panel_div.id = 'd2ne_configuration_panel';
             config_panel_div.innerHTML =
                 '<h1><img src="/gfx/forum/smiley/h_city_up.gif" alt=""><span style="display:none"> ' + _i18n.configuration_panel_title + '</span></h1>' +
-                '<div style="display:none">' +
-                '<p>' + _i18n.script_description + '</p>' +
-                '<table>' +
+                '<div style="display:none"><table>' +
+                    '<tr><td colspan="4">' + _i18n.script_description + '</td></tr>' +
 
                     '<tr><td><input type="checkbox" id="d2ne_configuration_enable_shortcuts" ' + js.check_checkbox(_configuration.enable_shortcuts) + '/><label for="d2ne_configuration_enable_shortcuts">' + _i18n.configuration_panel_enable_shortcuts + '</label></td><td>' + _tooltip(_i18n.configuration_panel_enable_shortcuts_tooltip) + '</td>' +
                     '<td><input type="checkbox" id="d2ne_configuration_hide_hero_adds" ' + js.check_checkbox(_configuration.hide_hero_adds) + '/><label for="d2ne_configuration_hide_hero_adds">' + _i18n.configuration_panel_hide_hero_adds + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_hero_adds_tooltip) + '</td></tr>' +
@@ -644,13 +654,14 @@ var D2NE = (function() {
                     '<tr><td><input type="checkbox" id="d2ne_configuration_highlight_ap" ' + js.check_checkbox(_configuration.highlight_ap) + '/><label for="d2ne_configuration_highlight_ap">' + _i18n.configuration_panel_highlight_ap + '</label></td><td>' + _tooltip(_i18n.configuration_panel_highlight_ap_tooltip) + '</td>' +
                     '<td><input type="checkbox" id="d2ne_configuration_hide_help" ' + js.check_checkbox(_configuration.hide_help) + '/><label for="d2ne_configuration_hide_help">' + _i18n.configuration_panel_hide_help + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_help_tooltip) + '</td></tr>' +
 
-                    '<tr><td><input type="checkbox" id="d2ne_configuration_enable_bbh_sync" ' + js.check_checkbox(_configuration.external_tools.enable_bbh_sync) + '/><label for="d2ne_configuration_enable_bbh_sync">' + _i18n.configuration_panel_enable_bbh_sync + '</label></td><td>' + _tooltip(_i18n.configuration_panel_enable_bbh_sync_tooltip) + '</td>' +
+                    '<tr><td><input type="checkbox" id="d2ne_configuration_enable_construction_max_ap" ' + js.check_checkbox(_configuration.enable_construction_max_ap) + '/><label for="d2ne_configuration_enable_construction_max_ap">' + _i18n.configuration_panel_enable_construction_max_ap + '</label></td><td>' + _tooltip(_i18n.configuration_panel_enable_construction_max_ap_tooltip) + '</td>' +
                     '<td><input type="checkbox" id="d2ne_configuration_hide_twinoid_bar" ' + js.check_checkbox(_configuration.hide_twinoid_bar) + '/><label for="d2ne_configuration_hide_twinoid_bar">' + _i18n.configuration_panel_hide_twinoid_bar + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_twinoid_bar_tooltip) + '</td></tr>' +
 
-                    '<tr><td><input type="checkbox" id="d2ne_configuration_enable_ooev_sync" ' + js.check_checkbox(_configuration.external_tools.enable_ooev_sync) + '/><label for="d2ne_configuration_enable_ooev_sync">' + _i18n.configuration_panel_enable_ooev_sync + '</label></td><td>' + _tooltip(_i18n.configuration_panel_enable_ooev_sync_tooltip) + '</td>' +
+                    '<tr><td><input type="checkbox" id="d2ne_configuration_enable_bbh_sync" ' + js.check_checkbox(_configuration.external_tools.enable_bbh_sync) + '/><label for="d2ne_configuration_enable_bbh_sync">' + _i18n.configuration_panel_enable_bbh_sync + '</label></td><td>' + _tooltip(_i18n.configuration_panel_enable_bbh_sync_tooltip) + '</td>' +
                     '<td><input type="checkbox" id="d2ne_configuration_hide_footer" ' + js.check_checkbox(_configuration.hide_footer) + '/><label for="d2ne_configuration_hide_footer">' + _i18n.configuration_panel_hide_footer + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_footer_tooltip) + '</td></tr>' +
 
-                    '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_pegi" ' + js.check_checkbox(_configuration.hide_pegi) + '/><label for="d2ne_configuration_hide_pegi">' + _i18n.configuration_panel_hide_pegi + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_pegi_tooltip) + '</td></tr>' +
+                    '<tr><td><input type="checkbox" id="d2ne_configuration_enable_ooev_sync" ' + js.check_checkbox(_configuration.external_tools.enable_ooev_sync) + '/><label for="d2ne_configuration_enable_ooev_sync">' + _i18n.configuration_panel_enable_ooev_sync + '</label></td><td>' + _tooltip(_i18n.configuration_panel_enable_ooev_sync_tooltip) + '</td>' +
+                    '<td><input type="checkbox" id="d2ne_configuration_hide_pegi" ' + js.check_checkbox(_configuration.hide_pegi) + '/><label for="d2ne_configuration_hide_pegi">' + _i18n.configuration_panel_hide_pegi + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_pegi_tooltip) + '</td></tr>' +
 
                     '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_rookie_mode" ' + js.check_checkbox(_configuration.hide_rookie_mode) + '/><label for="d2ne_configuration_hide_rookie_mode">' + _i18n.configuration_panel_hide_rookie_mode + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_rookie_mode_tooltip) + '</td></tr>' +
 
@@ -659,10 +670,8 @@ var D2NE = (function() {
                     '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_rp_content" ' + js.check_checkbox(_configuration.hide_rp_content) + '/><label for="d2ne_configuration_hide_rp_content">' + _i18n.configuration_panel_hide_rp_content + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_rp_content_tooltip) + '</td></tr>' +
 
                     '<tr><td colspan="4"><a href="javascript:void(0)" id="d2ne_configuration_save" class="button">' + _i18n.configuration_panel_save_button + '</a></td></tr>' +
-                '</table>' +
-                '<div class="clear"></div>' +
-                '<p><a href="' + PROJECT_PAGE + '" target="_blank">' + SCRIPT_NAME +' v' + SCRIPT_VERSION + '</a></p>' +
-                '</div>';
+                    '<tr><td colspan="4"><a href="' + PROJECT_PAGE + '" target="_blank">' + SCRIPT_NAME +' v' + SCRIPT_VERSION + '</a></td></tr>' +
+                '</table></div>';
 
             // Insert panel
             node.insertBefore(config_panel_div, main.firstChild);
@@ -874,6 +883,27 @@ var D2NE = (function() {
                     'display: none;' +
                 '}'
             );
+        },
+
+        ////
+        enable_construction_max_ap: function() {
+            document.addEventListener('d2n_hashchange', function() {
+                if (!d2n.is_on_city_page('buildings')) {
+                    return;
+                }
+
+                var ap = d2n.get_number_of_ap();
+
+                js.wait_for_id('moreForm_meat', function() {
+                    var fields = document.querySelectorAll('div[id^="moreForm_"] form input[type="text"]');
+                    var fields_length = fields.length;
+
+                    for (var i = 0; i < fields_length; ++i) {
+                        console.log(fields[i]);
+                        fields[i].value = ap;
+                    }
+                });
+            }, true);
         }
     };
 
@@ -1076,10 +1106,6 @@ var d2n = (function() {
 
         // Watch the AP
         var observer = new MutationObserver(function(mutations) {
-            for (var i = 0; i < mutations.length; ++i) {
-                console.log(mutations[i]);
-            }
-
             // Emit an event when the ap changes
             var event = new CustomEvent(
                 'd2n_apchange', {
