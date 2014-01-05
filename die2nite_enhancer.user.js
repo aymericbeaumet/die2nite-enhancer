@@ -245,7 +245,7 @@ var D2NE = (function() {
             // Set to true to enable BigBroth'Hordes (http://bbh.fred26.fr/)
             enable_bbh_sync: false,
             // Set to true to enable Où en êtes-vous ? (http://www.oeev-hordes.com/)
-            enable_ooev_sync: false,
+            enable_ooev_sync: false
         },
 
         // Set to true to enable the use of maximum AP in the constructions
@@ -369,21 +369,21 @@ var D2NE = (function() {
             images[1].style.display = 'none';
             images[2].style.display = 'none';
             images[3].style.display = 'none';
-        }
+        };
 
         var show_loading_wheel = function() {
             images[0].style.display = 'none';
             images[1].style.display = 'inline';
             images[2].style.display = 'none';
             images[3].style.display = 'none';
-        }
+        };
 
         var show_smile = function() {
             images[0].style.display = 'none';
             images[1].style.display = 'none';
             images[2].style.display = 'inline';
             images[3].style.display = 'none';
-        }
+        };
 
         var show_skull = function() {
             images[0].style.display = 'none';
@@ -603,7 +603,7 @@ var D2NE = (function() {
 
                 '#d2ne_configuration_panel a.button {' +
                     'width: auto;' +
-                    'margin: 3px 0 3px 4px;' +
+                    'margin: 3px 0 3px 0;' +
                     'text-align: center;' +
                     'padding: 0;' +
                 '}' +
@@ -803,7 +803,7 @@ var D2NE = (function() {
                         '00ff00'  // 7 AP+
                     ];
 
-                    while (ap > colors.length) {
+                    while (ap >= colors.length) {
                         --ap;
                     }
 
@@ -887,7 +887,7 @@ var D2NE = (function() {
 
         ////
         enable_construction_max_ap: function() {
-            document.addEventListener('d2n_hashchange', function() {
+            var change_ap = function() {
                 if (!d2n.is_on_city_page('buildings')) {
                     return;
                 }
@@ -899,10 +899,17 @@ var D2NE = (function() {
                     var fields_length = fields.length;
 
                     for (var i = 0; i < fields_length; ++i) {
-                        console.log(fields[i]);
                         fields[i].value = ap;
                     }
                 });
+            };
+
+            document.addEventListener('d2n_apchange', function() {
+                change_ap();
+            });
+
+            document.addEventListener('d2n_hashchange', function() {
+                change_ap();
             }, true);
         }
     };
