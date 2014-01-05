@@ -899,7 +899,7 @@ var D2NE = (function() {
 
                 var ap = d2n.get_number_of_ap();
 
-                js.wait_for_id('moreForm_meat', function() {
+                js.wait_for_selector('tr.banner.root_wall1', function() {
                     var fields = document.querySelectorAll('div[id^="moreForm_"] form input[type="text"]');
                     var fields_length = fields.length;
 
