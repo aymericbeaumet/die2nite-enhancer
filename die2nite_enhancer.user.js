@@ -430,7 +430,7 @@ var D2NE = (function() {
      */
     var _external_tools_loaded = false; // set to true when loaded
     var _load_external_tools = function() {
-        document.addEventListener('d2n_hashchange', function() {
+        var load = function() {
             // if already loaded, abort
             if (_external_tools_loaded) {
                 return;
@@ -525,6 +525,14 @@ var D2NE = (function() {
                     }
                 }, true);
             });
+        };
+
+        if (window.location.hash !== '') {
+            return load();
+        }
+
+        document.addEventListener('d2n_hashchange', function() {
+            load();
         });
     };
 
