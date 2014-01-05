@@ -53,7 +53,7 @@ var i18n = {
         configuration_panel_highlight_ap: 'Highlight AP',
         configuration_panel_highlight_ap_tooltip: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
         configuration_panel_hide_help: 'Hide help',
-        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface.',
+        configuration_panel_hide_help_tooltip: 'Hide all the helps in the interface.',
         configuration_panel_hide_twinoid_bar: 'Hide Twinoid bar',
         configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen. Put your mouse near the top of the screen to show it again.',
         configuration_panel_hide_footer: 'Hide footer',
@@ -62,8 +62,6 @@ var i18n = {
         configuration_panel_hide_pegi_tooltip: 'Hide the PEGI image at the bottom of each page.',
         configuration_panel_hide_rookie_mode: 'Hide rookie mode',
         configuration_panel_hide_rookie_mode_tooltip: 'Hide all the links to enable the rookie mode.',
-        configuration_panel_hide_guides: 'Hide guides',
-        configuration_panel_hide_guides_tooltip: 'Hide all the guides and the help tooltips.',
         configuration_panel_hide_rp_content: 'Hide RP content',
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
         configuration_panel_enable_bbh_sync: 'Enable <a href="http://bbh.fred26.fr/" target="_blank">BBH</a> sync',
@@ -87,7 +85,7 @@ var i18n = {
         configuration_panel_highlight_ap: 'Highlight AP',
         configuration_panel_highlight_ap_tooltip: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
         configuration_panel_hide_help: 'Hide help',
-        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface.',
+        configuration_panel_hide_help_tooltip: 'Hide all the helps in the interface.',
         configuration_panel_hide_twinoid_bar: 'Hide Twinoid bar',
         configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen. Put your mouse near the top of the screen to show it again.',
         configuration_panel_hide_footer: 'Hide footer',
@@ -96,8 +94,6 @@ var i18n = {
         configuration_panel_hide_pegi_tooltip: 'Hide the PEGI image at the bottom of each page.',
         configuration_panel_hide_rookie_mode: 'Hide rookie mode',
         configuration_panel_hide_rookie_mode_tooltip: 'Hide all the links to enable the rookie mode.',
-        configuration_panel_hide_guides: 'Hide guides',
-        configuration_panel_hide_guides_tooltip: 'Hide all the guides and the help tooltips.',
         configuration_panel_hide_rp_content: 'Hide RP content',
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
         configuration_panel_enable_bbh_sync: 'Enable <a href="http://bbh.fred26.fr/" target="_blank">BBH</a> sync',
@@ -121,7 +117,7 @@ var i18n = {
         configuration_panel_highlight_ap: 'Highlight AP',
         configuration_panel_highlight_ap_tooltip: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
         configuration_panel_hide_help: 'Hide help',
-        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface.',
+        configuration_panel_hide_help_tooltip: 'Hide all the helps in the interface.',
         configuration_panel_hide_twinoid_bar: 'Hide Twinoid bar',
         configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen. Put your mouse near the top of the screen to show it again.',
         configuration_panel_hide_footer: 'Hide footer',
@@ -130,8 +126,6 @@ var i18n = {
         configuration_panel_hide_pegi_tooltip: 'Hide the PEGI image at the bottom of each page.',
         configuration_panel_hide_rookie_mode: 'Hide rookie mode',
         configuration_panel_hide_rookie_mode_tooltip: 'Hide all the links to enable the rookie mode.',
-        configuration_panel_hide_guides: 'Hide guides',
-        configuration_panel_hide_guides_tooltip: 'Hide all the guides and the help tooltips.',
         configuration_panel_hide_rp_content: 'Hide RP content',
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
         configuration_panel_enable_bbh_sync: 'Enable <a href="http://bbh.fred26.fr/" target="_blank">BBH</a> sync',
@@ -155,7 +149,7 @@ var i18n = {
         configuration_panel_highlight_ap: 'Highlight AP',
         configuration_panel_highlight_ap_tooltip: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
         configuration_panel_hide_help: 'Hide help',
-        configuration_panel_hide_help_tooltip: 'Hide the blue help boxes in the interface.',
+        configuration_panel_hide_help_tooltip: 'Hide all the helps in the interface.',
         configuration_panel_hide_twinoid_bar: 'Hide Twinoid bar',
         configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen. Put your mouse near the top of the screen to show it again.',
         configuration_panel_hide_footer: 'Hide footer',
@@ -164,8 +158,6 @@ var i18n = {
         configuration_panel_hide_pegi_tooltip: 'Hide the PEGI image at the bottom of each page.',
         configuration_panel_hide_rookie_mode: 'Hide rookie mode',
         configuration_panel_hide_rookie_mode_tooltip: 'Hide all the links to enable the rookie mode.',
-        configuration_panel_hide_guides: 'Hide guides',
-        configuration_panel_hide_guides_tooltip: 'Hide all the guides and the help tooltips.',
         configuration_panel_hide_rp_content: 'Hide RP content',
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
         configuration_panel_enable_bbh_sync: 'Enable <a href="http://bbh.fred26.fr/" target="_blank">BBH</a> sync',
@@ -234,9 +226,6 @@ var D2NE = (function() {
         // Set to true to hide the rookie mode links
         hide_rookie_mode: true,
 
-        // Set to true to hide the guides
-        hide_guides: true,
-
         // Set to true to hide the RP
         hide_rp_content: true,
 
@@ -284,7 +273,6 @@ var D2NE = (function() {
         _configuration.hide_footer = document.getElementById('d2ne_configuration_hide_footer').checked;
         _configuration.hide_pegi = document.getElementById('d2ne_configuration_hide_pegi').checked;
         _configuration.hide_rookie_mode = document.getElementById('d2ne_configuration_hide_rookie_mode').checked;
-        _configuration.hide_guides = document.getElementById('d2ne_configuration_hide_guides').checked;
         _configuration.hide_rp_content = document.getElementById('d2ne_configuration_hide_rp_content').checked;
         _configuration.external_tools.enable_bbh_sync = document.getElementById('d2ne_configuration_enable_bbh_sync').checked;
         _configuration.external_tools.enable_ooev_sync = document.getElementById('d2ne_configuration_enable_ooev_sync').checked;
@@ -670,8 +658,6 @@ var D2NE = (function() {
 
                     '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_rookie_mode" ' + js.check_checkbox(_configuration.hide_rookie_mode) + '/><label for="d2ne_configuration_hide_rookie_mode">' + _i18n.configuration_panel_hide_rookie_mode + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_rookie_mode_tooltip) + '</td></tr>' +
 
-                    '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_guides" ' + js.check_checkbox(_configuration.hide_guides) + '/><label for="d2ne_configuration_hide_guides">' + _i18n.configuration_panel_hide_guides + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_guides_tooltip) + '</td></tr>' +
-
                     '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_rp_content" ' + js.check_checkbox(_configuration.hide_rp_content) + '/><label for="d2ne_configuration_hide_rp_content">' + _i18n.configuration_panel_hide_rp_content + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_rp_content_tooltip) + '</td></tr>' +
 
                     '<tr><td colspan="4"><a href="javascript:void(0)" id="d2ne_configuration_save" class="button">' + _i18n.configuration_panel_save_button + '</a></td></tr>' +
@@ -832,8 +818,11 @@ var D2NE = (function() {
         ////
         hide_help: function() {
             js.injectCSS(
-                '#mapTips, #ghost_pages .help {' +
+                '#mapTips, .help, a.button[href^="#city/exp?editor=1;sk="] + p, .helpLink, #generic_section > div > em:last-of-type {' +
                     'display: none' +
+                '}' +
+                'div.sectionArt[style^="background-image:url(\'/gfx/sections/city.jpg?v="] + ul + script + div.help {' +
+                    'display: block;' +
                 '}'
             );
         },
@@ -864,18 +853,6 @@ var D2NE = (function() {
         hide_rookie_mode: function() {
             js.injectCSS(
                 'div.block.tutorialBlock, div.expertMode {' +
-                    'display: none;' +
-                '}'
-            );
-        },
-
-        ////
-        hide_guides: function() {
-            js.injectCSS(
-                '.helpLink {' +
-                    'display: none;' +
-                '}' +
-                '#generic_section > div > em:last-of-type {' +
                     'display: none;' +
                 '}'
             );
