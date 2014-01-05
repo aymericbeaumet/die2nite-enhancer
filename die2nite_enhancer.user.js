@@ -430,104 +430,101 @@ var D2NE = (function() {
      */
     var _external_tools_loaded = false; // set to true when loaded
     var _load_external_tools = function() {
-        // if already loaded, abort
-        if (_external_tools_loaded) {
-            return;
-        }
+        document.addEventListener('d2n_hashchange', function() {
+            // if already loaded, abort
+            if (_external_tools_loaded) {
+                return;
+            }
 
-        // this function needs the window.location.hash var
-        if (window.location.hash == '') {
-            return setTimeout(function() { _load_external_tools(); }, 50);
-        }
+            // if not any tool is enabled, abort
+            var tools_number = 0;
+            for (var key in _configuration.external_tools) {
+                tools_number += (_configuration.external_tools[key]) ? 1 : 0;
+            }
+            if (tools_number < 1) {
+                return;
+            }
 
-        // if not any tool is enabled, abort
-        var tools_number = 0;
-        for (var key in _configuration.external_tools) {
-            tools_number += (_configuration.external_tools[key]) ? 1 : 0;
-        }
-        if (tools_number < 1) {
-            return;
-        }
+            // if not in city or outside, abort
+            if (!(d2n.is_in_city() || d2n.is_outside())) {
+                return;
+            }
 
-        // if not in city or outside, abort
-        if (!(d2n.is_in_city() || d2n.is_outside())) {
-            return;
-        }
+            js.wait_for_id('main', function(node) {
+                // Create and inject external tools bar style
+                js.injectCSS(
+                    '#d2ne_external_tools_bar {' +
+                        'position: absolute;' +
+                        'background-color: #5D321E;' +
+                        'width: 303px;' +
+                        'height: 30px;' +
+                        'margin-left: 22px;' +
+                        'margin-top: 222px;' +
+                        'border: 1px solid rgb(240, 215, 158);' +
+                        'border-radius: 9px;' +
+                        'padding: 5px;' +
+                        'padding-left: 8px;' +
+                    '}' +
+                    '#d2ne_external_tools_bar a.button {' +
+                        'margin-right: auto;' +
+                        'margin-left: auto;' +
+                    '}' +
+                    '#d2ne_external_tools_bar span {' +
+                        'float: left;' +
+                        'display: inline-block;' +
+                        'vertical-align: middle;' +
+                        'margin-top: 3px;' +
+                        'margin-bottom: 3px;' +
+                        'padding: 2px;' +
+                        'cursor: help;' +
+                        'background-color: #5c2b20;' +
+                        'outline: 1px solid black;' +
+                        'border: 1px solid #ad8051;' +
+                        'padding-left: 7px;' +
+                        'padding-right: 4px;' +
+                    '}' +
+                    '#d2ne_external_tools_bar a img {' +
+                        'vertical-align: middle;' +
+                        'margin-right: 4px;' +
+                    '}' +
+                    '#gameLayout td.sidePanel {' +
+                        'top: 54px;' +
+                        'position: relative;' +
+                    '}' +
+                    '#main2 {' +
+                        'padding-bottom: 70px;' +
+                    '}'
+                );
 
-        js.wait_for_id('main', function(node) {
-            // Create and inject external tools bar style
-            js.injectCSS(
-                '#d2ne_external_tools_bar {' +
-                    'position: absolute;' +
-                    'background-color: #5D321E;' +
-                    'width: 303px;' +
-                    'height: 30px;' +
-                    'margin-left: 22px;' +
-                    'margin-top: 222px;' +
-                    'border: 1px solid rgb(240, 215, 158);' +
-                    'border-radius: 9px;' +
-                    'padding: 5px;' +
-                    'padding-left: 8px;' +
-                '}' +
-                '#d2ne_external_tools_bar a.button {' +
-                    'margin-right: auto;' +
-                    'margin-left: auto;' +
-                '}' +
-                '#d2ne_external_tools_bar span {' +
-                    'float: left;' +
-                    'display: inline-block;' +
-                    'vertical-align: middle;' +
-                    'margin-top: 3px;' +
-                    'margin-bottom: 3px;' +
-                    'padding: 2px;' +
-                    'cursor: help;' +
-                    'background-color: #5c2b20;' +
-                    'outline: 1px solid black;' +
-                    'border: 1px solid #ad8051;' +
-                    'padding-left: 7px;' +
-                    'padding-right: 4px;' +
-                '}' +
-                '#d2ne_external_tools_bar a img {' +
-                    'vertical-align: middle;' +
-                    'margin-right: 4px;' +
-                '}' +
-                '#gameLayout td.sidePanel {' +
-                    'top: 54px;' +
-                    'position: relative;' +
-                '}' +
-                '#main2 {' +
-                    'padding-bottom: 70px;' +
-                '}'
-            );
+                // Create external tools bar
+                var external_tools_bar_div = document.createElement('div');
+                external_tools_bar_div.id = 'd2ne_external_tools_bar';
+                external_tools_bar_div.innerHTML =
+                    '<a href="javascript:void(0)" id="d2ne_external_tools_bar_update" class="button">' +
+                    '<img src="/gfx/forum/smiley/h_calim.gif" width="19px" height="19px"><img src="/gfx/design/loading.gif" width="19px" height="19px" style="display: none;"><img src="/gfx/forum/smiley/h_smile.gif" width="19px" height="19px" style="display:none;"><img src="/gfx/forum/smiley/h_death.gif" width="19px" height="19px" style="display:none;"></span>' +
+                    _i18n.external_tools_bar_update + '</a>';
 
-            // Create external tools bar
-            var external_tools_bar_div = document.createElement('div');
-            external_tools_bar_div.id = 'd2ne_external_tools_bar';
-            external_tools_bar_div.innerHTML =
-                '<a href="javascript:void(0)" id="d2ne_external_tools_bar_update" class="button">' +
-                '<img src="/gfx/forum/smiley/h_calim.gif" width="19px" height="19px"><img src="/gfx/design/loading.gif" width="19px" height="19px" style="display: none;"><img src="/gfx/forum/smiley/h_smile.gif" width="19px" height="19px" style="display:none;"><img src="/gfx/forum/smiley/h_death.gif" width="19px" height="19px" style="display:none;"></span>' +
-                _i18n.external_tools_bar_update + '</a>';
+                // Insert external tools bar
+                node.insertBefore(external_tools_bar_div, node.firstChild);
+                _external_tools_loaded = true;
 
-            // Insert external tools bar
-            node.insertBefore(external_tools_bar_div, node.firstChild);
-            _external_tools_loaded = true;
+                // Set the update behaviour on click on the update button
+                document.getElementById('d2ne_external_tools_bar_update').addEventListener('click', function() {
+                    _update_tools(tools_number);
+                }, true);
 
-            // Set the update behaviour on click on the update button
-            document.getElementById('d2ne_external_tools_bar_update').addEventListener('click', function() {
-                _update_tools(tools_number);
-            }, true);
-
-            // Remove toolbar when leaving the city/outside page
-            document.addEventListener('d2n_hashchange', function() {
-                if (!(d2n.is_in_city() || d2n.is_outside())) {
-                    js.remove_element(document.getElementById("d2ne_external_tools_bar"));
-                    js.injectCSS(
-                        '#gameLayout td.sidePanel {' +
-                            'position: static !important;' +
-                        '}'
-                    );
-                }
-            }, true);
+                // Remove toolbar when leaving the city/outside page
+                document.addEventListener('d2n_hashchange', function() {
+                    if (!(d2n.is_in_city() || d2n.is_outside())) {
+                        js.remove_element(document.getElementById("d2ne_external_tools_bar"));
+                        js.injectCSS(
+                            '#gameLayout td.sidePanel {' +
+                                'position: static !important;' +
+                            '}'
+                        );
+                    }
+                }, true);
+            });
         });
     };
 
