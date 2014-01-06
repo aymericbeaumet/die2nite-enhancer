@@ -475,7 +475,7 @@ var D2NE = (function() {
                         'vertical-align: middle;' +
                         'margin-right: 4px;' +
                     '}' +
-                    '#gameLayout td.sidePanel {' +
+                    '#gameLayout td.sidePanel > div {' +
                         'top: 54px;' +
                         'position: relative;' +
                     '}' +
