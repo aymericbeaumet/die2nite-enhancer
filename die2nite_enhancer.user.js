@@ -544,7 +544,7 @@ var D2NE = (function() {
             // Create and inject panel style
             js.injectCSS(
                 '#d2ne_configuration_panel {' +
-                    'margin-top:6px;' +
+                    'margin-top:5px;' +
                     'position:absolute;' +
                     'margin-left:44px;' +
                     'z-index:9;' +
@@ -822,11 +822,29 @@ var D2NE = (function() {
         ////
         hide_help: function() {
             js.injectCSS(
-                '#mapTips, .help, a.button[href^="#city/exp?editor=1;sk="] + p, .helpLink, #generic_section > div > em:last-of-type {' +
+                '#mapTips, a.button[href^="#city/exp?editor=1;sk="] + p, .helpLink, #generic_section > div > em:last-of-type {' +
                     'display: none' +
                 '}' +
-                'div.sectionArt[style^="background-image:url(\'/gfx/sections/city.jpg?v="] + ul + script + div.help {' +
-                    'display: block;' +
+
+                // Hide all blue help boxes, but keep the watchwen button
+                '#generic_section {' +
+                    'position: relative;' +
+                    'top: 0;' +
+                    'left: 0;' +
+                '}' +
+                '.help {' +
+                    'position: absolute;' +
+                    'top: 0;' +
+                    'left: -1500px;' +
+                    'width: 0;' +
+                '}' +
+                '.help a.button {' +
+                    'position: absolute;' +
+                    'top: 131px;' +
+                    'left: 1499px;' +
+                '}' +
+                'ul#door_menu + script + div.help + table {' +
+                    'margin-top: 60px;' +
                 '}'
             );
         },
