@@ -548,11 +548,14 @@ var D2NE = (function() {
                     'position:absolute;' +
                     'margin-left:44px;' +
                     'z-index:9;' +
+                    'background-color:#5c2b20;' +
+                    'border: 1px solid #000000;' +
+                '}' +
+
+                '#d2ne_configuration_panel > div {' +
+                    'border: 1px solid #f0d79e;' +
                     'padding-left:5px;' +
                     'padding-right:5px;' +
-                    'background-color:#5c2b20;' +
-                    'outline:1px solid #000000;' +
-                    'border:1px solid #f0d79e;' +
                 '}' +
 
                 '#d2ne_configuration_panel h1 {' +
@@ -637,6 +640,7 @@ var D2NE = (function() {
             var config_panel_div = document.createElement('div');
             config_panel_div.id = 'd2ne_configuration_panel';
             config_panel_div.innerHTML =
+                '<div>' +
                 '<h1><img src="/gfx/forum/smiley/h_city_up.gif" alt=""><span style="display:none"> ' + _i18n.configuration_panel_title + '</span></h1>' +
                 '<div style="display:none"><table>' +
                     '<tr><td colspan="4">' + _i18n.script_description + '</td></tr>' +
@@ -662,7 +666,7 @@ var D2NE = (function() {
 
                     '<tr><td colspan="4"><a href="javascript:void(0)" id="d2ne_configuration_save" class="button">' + _i18n.configuration_panel_save_button + '</a></td></tr>' +
                     '<tr><td colspan="4"><a href="' + PROJECT_PAGE + '" target="_blank">' + SCRIPT_NAME +' v' + SCRIPT_VERSION + '</a></td></tr>' +
-                '</table></div>';
+                '</table></div></div>';
 
             // Insert panel
             node.insertBefore(config_panel_div, node.firstChild);
@@ -675,7 +679,7 @@ var D2NE = (function() {
 
             // Show/Hide config panel cache
             var _config_panel_cache = document.getElementById('d2ne_configuration_panel');
-            var _config_panel_toggled_elements_cache = document.querySelectorAll('#d2ne_configuration_panel > h1 > span, #d2ne_configuration_panel > div');
+            var _config_panel_toggled_elements_cache = document.querySelectorAll('#d2ne_configuration_panel > div > h1 > span, #d2ne_configuration_panel > div > div');
             var _config_panel_toggled_elements_cache_length = _config_panel_toggled_elements_cache.length;
 
             // Show panel on hover
