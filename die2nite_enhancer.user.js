@@ -72,6 +72,8 @@ var i18n = {
         configuration_panel_enable_construction_max_ap_tooltip: 'While in the construction page, use your actual number of AP instead of the default 1 AP.',
         configuration_panel_hide_completed_constructions: 'Hide completed constructions',
         configuration_panel_hide_completed_constructions_tooltip: 'While in the construction page, hide all the completed ones.',
+        configuration_panel_enable_hero_bar_stat: 'Enable hero bar stat',
+        configuration_panel_enable_hero_bar_stat_tooltip: 'On soul page, enable days stat on the hero bar.',
         configuration_panel_save_button: 'Save',
         external_tools_bar_update: 'Update external tools'
     },
@@ -106,6 +108,8 @@ var i18n = {
         configuration_panel_enable_construction_max_ap_tooltip: 'While in the construction page, use your actual number of AP instead of the default 1 AP.',
         configuration_panel_hide_completed_constructions: 'Hide completed constructions',
         configuration_panel_hide_completed_constructions_tooltip: 'While in the construction page, hide all the completed ones.',
+        configuration_panel_enable_hero_bar_stat: 'Enable hero bar stat',
+        configuration_panel_enable_hero_bar_stat_tooltip: 'On soul page, enable days stat on the hero bar.',
         configuration_panel_save_button: 'Save',
         external_tools_bar_update: 'Update external tools'
     },
@@ -140,6 +144,8 @@ var i18n = {
         configuration_panel_enable_construction_max_ap_tooltip: 'While in the construction page, use your actual number of AP instead of the default 1 AP.',
         configuration_panel_hide_completed_constructions: 'Hide completed constructions',
         configuration_panel_hide_completed_constructions_tooltip: 'While in the construction page, hide all the completed ones.',
+        configuration_panel_enable_hero_bar_stat: 'Enable hero bar stat',
+        configuration_panel_enable_hero_bar_stat_tooltip: 'On soul page, enable days stat on the hero bar.',
         configuration_panel_save_button: 'Save',
         external_tools_bar_update: 'Update external tools'
     },
@@ -174,6 +180,8 @@ var i18n = {
         configuration_panel_enable_construction_max_ap_tooltip: 'While in the construction page, use your actual number of AP instead of the default 1 AP.',
         configuration_panel_hide_completed_constructions: 'Hide completed constructions',
         configuration_panel_hide_completed_constructions_tooltip: 'While in the construction page, hide all the completed ones.',
+        configuration_panel_enable_hero_bar_stat: 'Enable hero bar stat',
+        configuration_panel_enable_hero_bar_stat_tooltip: 'On soul page, enable days stat on the hero bar.',
         configuration_panel_save_button: 'Save',
         external_tools_bar_update: 'Update external tools'
     }
@@ -249,7 +257,10 @@ var D2NE = (function() {
         enable_construction_max_ap: true,
 
         // Set to true to hide all the completed constructions
-        hide_completed_constructions: false
+        hide_completed_constructions: false,
+
+        // Set to true to enable the stat on hero bar
+        enable_hero_bar_stat: true
     };
 
     /**
@@ -289,6 +300,7 @@ var D2NE = (function() {
         _configuration.external_tools.enable_ooev_sync = document.getElementById('d2ne_configuration_enable_ooev_sync').checked;
         _configuration.enable_construction_max_ap = document.getElementById('d2ne_configuration_enable_construction_max_ap').checked;
         _configuration.hide_completed_constructions = document.getElementById('d2ne_configuration_hide_completed_constructions').checked;
+        _configuration.enable_hero_bar_stat = document.getElementById('d2ne_configuration_enable_hero_bar_stat').checked;
 
         localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY] = JSON.stringify(_configuration);
     }
@@ -675,7 +687,8 @@ var D2NE = (function() {
                     '<tr><td><input type="checkbox" id="d2ne_configuration_hide_completed_constructions" ' + js.check_checkbox(_configuration.hide_completed_constructions) + '/><label for="d2ne_configuration_hide_completed_constructions">' + _i18n.configuration_panel_hide_completed_constructions + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_completed_constructions_tooltip) + '</td>' +
                     '<td><input type="checkbox" id="d2ne_configuration_hide_rookie_mode" ' + js.check_checkbox(_configuration.hide_rookie_mode) + '/><label for="d2ne_configuration_hide_rookie_mode">' + _i18n.configuration_panel_hide_rookie_mode + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_rookie_mode_tooltip) + '</td></tr>' +
 
-                    '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_rp_content" ' + js.check_checkbox(_configuration.hide_rp_content) + '/><label for="d2ne_configuration_hide_rp_content">' + _i18n.configuration_panel_hide_rp_content + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_rp_content_tooltip) + '</td></tr>' +
+                    '<tr><td><input type="checkbox" id="d2ne_configuration_enable_hero_bar_stat" ' + js.check_checkbox(_configuration.enable_hero_bar_stat) + '/><label for="d2ne_configuration_enable_hero_bar_stat">' + _i18n.configuration_panel_enable_hero_bar_stat + '</label></td><td>' + _tooltip(_i18n.configuration_panel_enable_hero_bar_stat_tooltip) + '</td>' +
+                    '<td><input type="checkbox" id="d2ne_configuration_hide_rp_content" ' + js.check_checkbox(_configuration.hide_rp_content) + '/><label for="d2ne_configuration_hide_rp_content">' + _i18n.configuration_panel_hide_rp_content + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_rp_content_tooltip) + '</td></tr>' +
 
                     '<tr><td colspan="4"><a href="javascript:void(0)" id="d2ne_configuration_save" class="button">' + _i18n.configuration_panel_save_button + '</a></td></tr>' +
                     '<tr><td colspan="4"><a href="' + PROJECT_PAGE + '" target="_blank">' + SCRIPT_NAME +' v' + SCRIPT_VERSION + '</a></td></tr>' +
@@ -937,6 +950,39 @@ var D2NE = (function() {
                     'display: none;' +
                 '}'
             );
+        },
+
+        ////
+        enable_hero_bar_stat: function() {
+            var add_percentage = function() {
+            };
+
+            document.addEventListener('d2n_hashchange', function() {
+                if (!(d2n.is_on_city_page('ghost') || d2n.is_on_city_page('ghost_exp'))) {
+                    return;
+                }
+
+                js.wait_for_selector('#ghost_pages img.hbar', function(node) {
+                    var width = parseFloat(node.style.width);
+                    var max_width = 655;
+                    var percent = width / max_width * 100;
+
+                    js.wait_for_selector('div.heroUpBar div.hfront', function(node) {
+                        js.injectCSS(
+                            'div.heroUpBar div.hfront {' +
+                                'padding-left: 2px;' +
+                                'text-align: center;' +
+                                'font-family: "Century Gothic", "Arial", "Trebuchet MS", Verdana, sans-serif;' +
+                                'font-size: 16pt;' +
+                                'padding-top: 10px;' +
+                                'color: #f0d79e;' +
+                                'text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;' +
+                            '}'
+                        );
+                        node.innerHTML = parseInt(percent) + '%';
+                    });
+                });
+            }, true);
         }
     };
 
@@ -985,7 +1031,9 @@ var d2n = (function() {
         upgrades: 'city/upgrades',
         tower: 'city/tower',
         refine: 'city/refine',
-        guard: 'city/guard'
+        guard: 'city/guard',
+        ghost: 'ghost/user',
+        ghost_exp: 'ghost/heroUpgrades'
     };
 
     /**
@@ -1011,6 +1059,9 @@ var d2n = (function() {
         return js.match_regex(
             window.location.hash,
             '^#city\\/enter\\?go=' + _pages_url[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$'
+        ) || js.match_regex(
+            window.location.hash,
+            '^#ghost\\/city\\?go=' + _pages_url[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$'
         );
     };
 
@@ -1117,20 +1168,21 @@ var d2n = (function() {
         // Watch for the first hash on page loading
         var watch_for_hash = function() {
             if (window.location.hash === '') {
-                return setTimeout(watch_for_hash, 50);
+                return setTimeout(function() { watch_for_hash(); }, 50);
             }
 
             var event = new CustomEvent(
                 "d2n_hashchange", {
-                detail: {
-                    hash: window.location.hash
-                },
-                bubbles: true,
-                cancelable: true
-            }
+                    detail: {
+                        hash: window.location.hash
+                    },
+                    bubbles: true,
+                    cancelable: true
+                }
             );
             document.dispatchEvent(event);
         };
+        watch_for_hash();
 
         // Watch the hash
         js.injectJS(function() {
