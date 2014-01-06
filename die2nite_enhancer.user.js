@@ -956,12 +956,12 @@ var D2NE = (function() {
      * Set up the script.
      */
     self.init = function() {
-        d2n.add_custom_events();
         _load_configuration();
         _load_internationalisation();
         _load_features();
         _load_external_tools(); // only if at least one tool is enabled
         _load_configuration_panel(); // defer loading until #main is found
+        d2n.add_custom_events(); // add and fire custom events after initialisation
     };
 
     return self;
@@ -1133,27 +1133,27 @@ var d2n = (function() {
         };
 
         // Watch the hash
-        js.injectJS(
-            'js.BackForward.updateHash = function() {' +
-                'var n = "#" + js.BackForward.current;' +
-                'js.BackForward.lastHash = js.Lib.window.location.hash;' +
-                'if(n == js.BackForward.lastHash) return;' +
-                'js.Lib.window.location.hash = n;' +
-                'js.BackForward.lastHash = js.Lib.window.location.hash;' +
+        js.injectJS(function() {
+            js.BackForward.updateHash = function() {
+                var n = '#' + js.BackForward.current;
+                js.BackForward.lastHash = js.Lib.window.location.hash;
+                if(n == js.BackForward.lastHash) return;
+                js.Lib.window.location.hash = n;
+                js.BackForward.lastHash = js.Lib.window.location.hash;
 
                 // Emit an event when the hash changes
-                'var event = new CustomEvent(' +
-                    '"d2n_hashchange", {' +
-                        'detail: {' +
-                            'hash: window.location.hash' +
-                        '},' +
-                        'bubbles: true,' +
-                        'cancelable: true' +
-                    '}' +
-                ');' +
-                'document.dispatchEvent(event);' +
-            '};'
-        );
+                var event = new CustomEvent(
+                    'd2n_hashchange', {
+                        detail: {
+                            hash: window.location.hash
+                        },
+                        bubbles: true,
+                        cancelable: true
+                    }
+                );
+                document.dispatchEvent(event);
+            };
+        });
 
         // Watch the AP
         var observer = new MutationObserver(function(mutations) {
