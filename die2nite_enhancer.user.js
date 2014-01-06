@@ -70,6 +70,8 @@ var i18n = {
         configuration_panel_enable_ooev_sync_tooltip: 'Add the possibility to sync with Où en êtes-vous ?. If an error occurs, be sure you are logged in.',
         configuration_panel_enable_construction_max_ap: 'Use max AP in constructions',
         configuration_panel_enable_construction_max_ap_tooltip: 'While in the construction page, use your actual number of AP instead of the default 1 AP.',
+        configuration_panel_hide_completed_constructions: 'Hide completed constructions',
+        configuration_panel_hide_completed_constructions_tooltip: 'While in the construction page, hide all the completed ones.',
         configuration_panel_save_button: 'Save',
         external_tools_bar_update: 'Update external tools'
     },
@@ -102,6 +104,8 @@ var i18n = {
         configuration_panel_enable_ooev_sync_tooltip: 'Add the possibility to sync with Où en êtes-vous ?. If an error occurs, be sure you are logged in.',
         configuration_panel_enable_construction_max_ap: 'Use max AP in constructions',
         configuration_panel_enable_construction_max_ap_tooltip: 'While in the construction page, use your actual number of AP instead of the default 1 AP.',
+        configuration_panel_hide_completed_constructions: 'Hide completed constructions',
+        configuration_panel_hide_completed_constructions_tooltip: 'While in the construction page, hide all the completed ones.',
         configuration_panel_save_button: 'Save',
         external_tools_bar_update: 'Update external tools'
     },
@@ -134,6 +138,8 @@ var i18n = {
         configuration_panel_enable_ooev_sync_tooltip: 'Add the possibility to sync with Où en êtes-vous ?. If an error occurs, be sure you are logged in.',
         configuration_panel_enable_construction_max_ap: 'Use max AP in constructions',
         configuration_panel_enable_construction_max_ap_tooltip: 'While in the construction page, use your actual number of AP instead of the default 1 AP.',
+        configuration_panel_hide_completed_constructions: 'Hide completed constructions',
+        configuration_panel_hide_completed_constructions_tooltip: 'While in the construction page, hide all the completed ones.',
         configuration_panel_save_button: 'Save',
         external_tools_bar_update: 'Update external tools'
     },
@@ -166,6 +172,8 @@ var i18n = {
         configuration_panel_enable_ooev_sync_tooltip: 'Add the possibility to sync with Où en êtes-vous ?. If an error occurs, be sure you are logged in.',
         configuration_panel_enable_construction_max_ap: 'Use max AP in constructions',
         configuration_panel_enable_construction_max_ap_tooltip: 'While in the construction page, use your actual number of AP instead of the default 1 AP.',
+        configuration_panel_hide_completed_constructions: 'Hide completed constructions',
+        configuration_panel_hide_completed_constructions_tooltip: 'While in the construction page, hide all the completed ones.',
         configuration_panel_save_button: 'Save',
         external_tools_bar_update: 'Update external tools'
     }
@@ -185,7 +193,7 @@ var D2NE = (function() {
      */
     var _default_configuration = {
         // Set to true to enable binds
-        enable_shortcuts: true,
+        enable_shortcuts: false,
         // Longest elapsed time between two binds (ms)
         bind_elapsed_time_limit: 1000,
         // The global bind (e.g.: to go to the bank `gb`)
@@ -238,7 +246,10 @@ var D2NE = (function() {
         },
 
         // Set to true to enable the use of maximum AP in the constructions
-        enable_construction_max_ap: true
+        enable_construction_max_ap: true,
+
+        // Set to true to hide all the completed constructions
+        hide_completed_constructions: false
     };
 
     /**
@@ -277,6 +288,7 @@ var D2NE = (function() {
         _configuration.external_tools.enable_bbh_sync = document.getElementById('d2ne_configuration_enable_bbh_sync').checked;
         _configuration.external_tools.enable_ooev_sync = document.getElementById('d2ne_configuration_enable_ooev_sync').checked;
         _configuration.enable_construction_max_ap = document.getElementById('d2ne_configuration_enable_construction_max_ap').checked;
+        _configuration.hide_completed_constructions = document.getElementById('d2ne_configuration_hide_completed_constructions').checked;
 
         localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY] = JSON.stringify(_configuration);
     }
@@ -660,7 +672,8 @@ var D2NE = (function() {
                     '<tr><td><input type="checkbox" id="d2ne_configuration_enable_ooev_sync" ' + js.check_checkbox(_configuration.external_tools.enable_ooev_sync) + '/><label for="d2ne_configuration_enable_ooev_sync">' + _i18n.configuration_panel_enable_ooev_sync + '</label></td><td>' + _tooltip(_i18n.configuration_panel_enable_ooev_sync_tooltip) + '</td>' +
                     '<td><input type="checkbox" id="d2ne_configuration_hide_pegi" ' + js.check_checkbox(_configuration.hide_pegi) + '/><label for="d2ne_configuration_hide_pegi">' + _i18n.configuration_panel_hide_pegi + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_pegi_tooltip) + '</td></tr>' +
 
-                    '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_rookie_mode" ' + js.check_checkbox(_configuration.hide_rookie_mode) + '/><label for="d2ne_configuration_hide_rookie_mode">' + _i18n.configuration_panel_hide_rookie_mode + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_rookie_mode_tooltip) + '</td></tr>' +
+                    '<tr><td><input type="checkbox" id="d2ne_configuration_hide_completed_constructions" ' + js.check_checkbox(_configuration.hide_completed_constructions) + '/><label for="d2ne_configuration_hide_completed_constructions">' + _i18n.configuration_panel_hide_completed_constructions + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_completed_constructions_tooltip) + '</td>' +
+                    '<td><input type="checkbox" id="d2ne_configuration_hide_rookie_mode" ' + js.check_checkbox(_configuration.hide_rookie_mode) + '/><label for="d2ne_configuration_hide_rookie_mode">' + _i18n.configuration_panel_hide_rookie_mode + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_rookie_mode_tooltip) + '</td></tr>' +
 
                     '<tr><td></td><td></td><td><input type="checkbox" id="d2ne_configuration_hide_rp_content" ' + js.check_checkbox(_configuration.hide_rp_content) + '/><label for="d2ne_configuration_hide_rp_content">' + _i18n.configuration_panel_hide_rp_content + '</label></td><td>' + _tooltip(_i18n.configuration_panel_hide_rp_content_tooltip) + '</td></tr>' +
 
@@ -915,6 +928,15 @@ var D2NE = (function() {
             document.addEventListener('d2n_hashchange', function() {
                 change_ap();
             }, true);
+        },
+
+        ////
+        hide_completed_constructions: function() {
+            js.injectCSS(
+                'tr.building.done {' +
+                    'display: none;' +
+                '}'
+            );
         }
     };
 
