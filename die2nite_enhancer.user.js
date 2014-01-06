@@ -1278,7 +1278,9 @@ var js = (function() {
      * @param DOMNode node The DOM node to delete
      */
     self.remove_element = function(node) {
-        node.parentNode.removeChild(node);
+        if (self.is_defined(node)) {
+            node.parentNode.removeChild(node);
+        }
     };
 
     /*
