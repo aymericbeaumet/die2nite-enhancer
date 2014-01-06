@@ -665,7 +665,7 @@ var D2NE = (function() {
                 '</table></div>';
 
             // Insert panel
-            node.insertBefore(config_panel_div, main.firstChild);
+            node.insertBefore(config_panel_div, node.firstChild);
 
             // Save and reload page when clicking on the save button
             document.getElementById('d2ne_configuration_save').addEventListener('click', function() {
@@ -1204,20 +1204,28 @@ var js = (function() {
 
     /**
      * Inject and execute JavaScript code in the page context.
-     * @link http://stackoverflow.com/a/14901197/1071486
-     * @param string/callback code The JS code to inject
+     * @link http://wiki.greasespot.net/Content_Script_Injection
+     * @param string/callback source The JS code to inject
      */
-    self.injectJS = function(code)
+    self.injectJS = function(source)
     {
-        var encapsulated_js = document.createElement('script');
-        encapsulated_js.type = 'text/javascript';
-
-        if (typeof code === 'function') {
-            code = '(' + code + ')();';
+        // Check for function input.
+        if ('function' == typeof source) {
+            // Execute this function with no arguments, by adding parentheses.
+            // One set around the function, required for valid syntax, and a
+            // second empty set calls the surrounded function.
+            source = '(' + source + ')();'
         }
-        encapsulated_js.textContent = code;
 
-        document.body.appendChild(encapsulated_js);
+        // Create a script node holding this  source code.
+        var script = document.createElement('script');
+        script.setAttribute("type", "application/javascript");
+        script.textContent = source;
+
+        // Insert the script node into the page, so it will run, and immediately
+        // remove it to clean up.
+        document.body.appendChild(script);
+        document.body.removeChild(script);
     };
 
     /**
@@ -1233,7 +1241,7 @@ var js = (function() {
      * Recursively merge properties of n objects. The first object properties
      * will be erased by the following one's.
      * @link http://stackoverflow.com/a/8625261/1071486
-     * @param object... Some object. to merge.
+     * @param object... Some objects to merge.
      * @return object A new merged object
      */
     self.merge = function() {
