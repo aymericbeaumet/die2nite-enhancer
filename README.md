@@ -44,7 +44,13 @@ Normally, GreaseMonkey automatically updates the script based on its version num
 
 ## Feedback
 
-If you find any issue or suggestion, please give me a feedback [here](https://github.com/abeaumet/die2nite_enhancer/issues).
+If you find any problem or have a suggestion, please give me a feedback [here](https://github.com/abeaumet/die2nite_enhancer/issues).
 
+In case of a problem, please be sure all your softwares (browser and extensions) are up to date. Then post a new issue using the header below:
 
-Enjoy!
+```
+- **Operating System:** OS + version
+- **Browser:** Browser + version (indicate GreaseMonkey version if relevant)
+
+Explain here how to reproduce the problem...
+```
