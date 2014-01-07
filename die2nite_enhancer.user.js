@@ -58,8 +58,8 @@ var i18n = {
         configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen. Put your mouse near the top of the screen to show it again.',
         configuration_panel_hide_footer: 'Hide footer',
         configuration_panel_hide_footer_tooltip: 'Hide the page footer with informations about other games, Motion Twin, etc...',
-        configuration_panel_hide_pegi: 'Hide PEGI',
-        configuration_panel_hide_pegi_tooltip: 'Hide the PEGI image at the bottom of each page.',
+        configuration_panel_hide_pegi: 'Hide PEGI logo',
+        configuration_panel_hide_pegi_tooltip: 'Hide the PEGI logo at the bottom of each page.',
         configuration_panel_hide_rookie_mode: 'Hide rookie mode',
         configuration_panel_hide_rookie_mode_tooltip: 'Hide all the links to enable the rookie mode.',
         configuration_panel_hide_rp_content: 'Hide RP content',
@@ -79,39 +79,39 @@ var i18n = {
     },
 
     fr: {
-        script_description: 'Die2Nite Enhancer allows you to enhance your game experience, every features can be controlled from this panel.',
+        script_description: 'Die2Nite Enhancer vous permet d\'améliorer votre expérience de jeu, toutes les fonctionalités peuvent être controlées depuis ce paneau..',
         help_image_url: '/gfx/loc/fr/helpLink.gif',
-        configuration_panel_title: 'Die2Nite Enhancer - Settings',
-        configuration_panel_enable_shortcuts: 'Enable shortcuts',
-        configuration_panel_enable_shortcuts_tooltip: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
-        configuration_panel_hide_hero_adds: 'Hide hero adds',
-        configuration_panel_hide_hero_adds_tooltip: 'Hide the adds for the hero mode on all the website. Can be useful if you are already hero or don\'t want to be one.',
-        configuration_panel_highlight_ap: 'Highlight AP',
-        configuration_panel_highlight_ap_tooltip: 'Add a border with a specific color (from red to green) in function of the remaining number of action point.',
-        configuration_panel_hide_help: 'Hide help',
-        configuration_panel_hide_help_tooltip: 'Hide all the helps in the interface.',
-        configuration_panel_hide_twinoid_bar: 'Hide Twinoid bar',
-        configuration_panel_hide_twinoid_bar_tooltip: 'Hide the Twinoid black bar at the top of the screen. Put your mouse near the top of the screen to show it again.',
-        configuration_panel_hide_footer: 'Hide footer',
-        configuration_panel_hide_footer_tooltip: 'Hide the page footer with informations about other games, Motion Twin, etc...',
-        configuration_panel_hide_pegi: 'Hide PEGI',
-        configuration_panel_hide_pegi_tooltip: 'Hide the PEGI image at the bottom of each page.',
-        configuration_panel_hide_rookie_mode: 'Hide rookie mode',
-        configuration_panel_hide_rookie_mode_tooltip: 'Hide all the links to enable the rookie mode.',
-        configuration_panel_hide_rp_content: 'Hide RP content',
-        configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
-        configuration_panel_enable_bbh_sync: 'Enable <a href="http://bbh.fred26.fr/" target="_blank">BBH</a> sync',
-        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes. If an error occurs, be sure you are logged in.',
-        configuration_panel_enable_ooev_sync: 'Enable <a href="http://www.oeev-hordes.com/" target="_blank">OOEV</a> sync',
-        configuration_panel_enable_ooev_sync_tooltip: 'Add the possibility to sync with Où en êtes-vous ?. If an error occurs, be sure you are logged in.',
-        configuration_panel_enable_construction_max_ap: 'Use max AP in constructions',
-        configuration_panel_enable_construction_max_ap_tooltip: 'While in the construction page, use your actual number of AP instead of the default 1 AP.',
-        configuration_panel_hide_completed_constructions: 'Hide completed constructions',
-        configuration_panel_hide_completed_constructions_tooltip: 'While in the construction page, hide all the completed ones.',
-        configuration_panel_enable_hero_bar_stat: 'Enable hero bar stat',
-        configuration_panel_enable_hero_bar_stat_tooltip: 'On soul page, enable days stat on the hero bar.',
-        configuration_panel_save_button: 'Save',
-        external_tools_bar_update: 'Update external tools'
+        configuration_panel_title: 'Die2Nite Enhancer - Paramètres',
+        configuration_panel_enable_shortcuts: 'Activer les raccourcis',
+        configuration_panel_enable_shortcuts_tooltip: 'Vous permet d\'utiliser des raccourcis pour accéder rapidement aux places importantes en ville (e.g.: la banque, les portes).',
+        configuration_panel_hide_hero_adds: 'Cacher les pubs pour le mode héros',
+        configuration_panel_hide_hero_adds_tooltip: 'Cacher les pubs pour le mode héros sur tout le site. C\'est pratique si vous êtes déjà héros ou si vous ne comptez pas l\'être.',
+        configuration_panel_highlight_ap: 'Colorer les PA',
+        configuration_panel_highlight_ap_tooltip: 'Ajoute une bordure avec une couleur spécifique (du rouge au vert) en fonction du nombre de PA restant.',
+        configuration_panel_hide_help: 'Cacher les aides',
+        configuration_panel_hide_help_tooltip: 'Cache les aides de jeu dans toute l\'interface.',
+        configuration_panel_hide_twinoid_bar: 'Cacher la barre Twinoid',
+        configuration_panel_hide_twinoid_bar_tooltip: 'Cache la barre Twinoid en haut de l\'écran. Rapprochez votre souris en haut de l\'écran pour l\'afficher à nouveau.',
+        configuration_panel_hide_footer: 'Cacher le bas de page',
+        configuration_panel_hide_footer_tooltip: 'Cache le bas de page contenant des informations à propos des autres jeux de Motion Twin, etc...',
+        configuration_panel_hide_pegi: 'Cache le logo PEGI',
+        configuration_panel_hide_pegi_tooltip: 'Cache le logo PEGI en bas de page',
+        configuration_panel_hide_rookie_mode: 'Cacher le mode apprentissage',
+        configuration_panel_hide_rookie_mode_tooltip: 'Cache tous les liens pour activer le mode apprentissage.',
+        configuration_panel_hide_rp_content: 'Cacher le contenu RP',
+        configuration_panel_hide_rp_content_tooltip: 'Cache le contenu RP (Role-Play).',
+        configuration_panel_enable_bbh_sync: 'Active la sync. <a href="http://bbh.fred26.fr/" target="_blank">BBH</a>',
+        configuration_panel_enable_bbh_sync_tooltip: 'Ajoute la possibilité de synchroniser avec BigBroth\'Hordes. Si une erreur survient, assurez-vous d\'être connecté.',
+        configuration_panel_enable_ooev_sync: 'Active la sync. <a href="http://www.oeev-hordes.com/" target="_blank">OOEV</a>',
+        configuration_panel_enable_ooev_sync_tooltip: 'Ajoute la possibilité de synchroniser avec Où en êtes-vous ?. Si une erreur survient, assurez-vous d\'être connecté.',
+        configuration_panel_enable_construction_max_ap: 'Constructions PA max',
+        configuration_panel_enable_construction_max_ap_tooltip: 'Utiliser le maximum de PA disponible pour les constructions au lieu de 1 par défault.',
+        configuration_panel_hide_completed_constructions: 'Cacher constructions finies',
+        configuration_panel_hide_completed_constructions_tooltip: 'Cache les constructions finies.',
+        configuration_panel_enable_hero_bar_stat: 'Activer stats barre héro',
+        configuration_panel_enable_hero_bar_stat_tooltip: 'Sur la page d\'âme, active le pourcentage de la barre héros.',
+        configuration_panel_save_button: 'Sauvegarder',
+        external_tools_bar_update: 'Mettre à jour les outils externes'
     },
 
     es: {
@@ -599,7 +599,7 @@ var D2NE = (function() {
 
                 '#d2ne_configuration_panel table {' +
                     'margin: 0 auto;' +
-                    'width: 500px;' +
+                    'width: 600px;' +
                 '}' +
                 '#d2ne_configuration_panel table tr:first-child td {' +
                     'padding-bottom: 6px;' +
@@ -970,7 +970,7 @@ var D2NE = (function() {
                     js.wait_for_selector('div.heroUpBar div.hfront', function(node) {
                         js.injectCSS(
                             'div.heroUpBar div.hfront {' +
-                                'padding-left: 2px;' +
+                                'padding-left: 8px;' +
                                 'text-align: center;' +
                                 'font-family: "Century Gothic", "Arial", "Trebuchet MS", Verdana, sans-serif;' +
                                 'font-size: 16pt;' +
