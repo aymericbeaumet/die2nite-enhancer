@@ -954,32 +954,45 @@ var D2NE = (function() {
 
         ////
         enable_hero_bar_stat: function() {
-            var add_percentage = function() {
-            };
+            js.injectCSS(
+                'div.heroUpBar div.hfront {' +
+                'padding-left: 6px;' +
+                'text-align: center;' +
+                'font-family: "Century Gothic", "Arial", "Trebuchet MS", Verdana, sans-serif;' +
+                'font-size: 16pt;' +
+                'padding-top: 10px;' +
+                'color: #f0d79e;' +
+                'text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;' +
+                '}'
+            );
 
             document.addEventListener('d2n_hashchange', function() {
                 if (!(d2n.is_on_city_page('ghost') || d2n.is_on_city_page('ghost_exp'))) {
                     return;
                 }
 
-                js.wait_for_selector('#ghost_pages img.hbar', function(node) {
-                    var width = parseFloat(node.style.width);
-                    var max_width = 655;
-                    var percent = width / max_width * 100;
+                js.wait_for_selector('#ghostImg img', function(node) {
+                    // abort if not hero
+                    if (node.alt !== 'ghost red') {
+                        return;
+                    }
 
-                    js.wait_for_selector('div.heroUpBar div.hfront', function(node) {
-                        js.injectCSS(
-                            'div.heroUpBar div.hfront {' +
-                                'padding-left: 8px;' +
-                                'text-align: center;' +
-                                'font-family: "Century Gothic", "Arial", "Trebuchet MS", Verdana, sans-serif;' +
-                                'font-size: 16pt;' +
-                                'padding-top: 10px;' +
-                                'color: #f0d79e;' +
-                                'text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;' +
-                            '}'
-                        );
-                        node.innerHTML = parseInt(percent) + '%';
+                    js.wait_for_selector('#ghost_pages img.hbar', function(node) {
+                        var width = parseFloat(node.style.width);
+                        var max_width = 583;
+                        var percent = width / max_width * 100;
+
+                        var fill_bar = function() {
+                            js.wait_for_selector('div.heroUpBar div.hfront', function(node) {
+                                if (node.innerHTML !== '') {
+                                    return setTimeout(function() {
+                                        fill_bar();
+                                    }, 50);
+                                }
+                                node.innerHTML = parseInt(percent) + '%';
+                            });
+                        };
+                        fill_bar();
                     });
                 });
             }, true);
@@ -1187,6 +1200,7 @@ var d2n = (function() {
         // Watch the hash
         js.injectJS(function() {
             js.BackForward.updateHash = function() {
+                // Original MT code
                 var n = '#' + js.BackForward.current;
                 js.BackForward.lastHash = js.Lib.window.location.hash;
                 if(n == js.BackForward.lastHash) return;
@@ -1295,7 +1309,9 @@ var js = (function() {
 
         encapsulated_css.innerHTML = code;
 
-        document.getElementsByTagName('head')[0].appendChild(encapsulated_css);
+        self.wait_for_selector('html > head', function(node) {
+            node.appendChild(encapsulated_css);
+        });
     }
 
     /**
@@ -1315,13 +1331,15 @@ var js = (function() {
 
         // Create a script node holding this  source code.
         var script = document.createElement('script');
-        script.setAttribute("type", "application/javascript");
+        script.setAttribute('type', 'application/javascript');
         script.textContent = source;
 
         // Insert the script node into the page, so it will run, and immediately
         // remove it to clean up.
-        document.body.appendChild(script);
-        document.body.removeChild(script);
+        self.wait_for_selector('html > body', function(node) {
+            node.appendChild(script);
+            node.removeChild(script);
+        });
     };
 
     /**
