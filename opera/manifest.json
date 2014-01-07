@@ -1,0 +1,29 @@
+{
+  "manifest_version": 2,
+
+  "name": "Die2Nite Enhancer",
+  "version": "0.0.1",
+
+  "description": "Enhance your game experience!",
+  "developer": {
+    "name": "Aymeric Beaumet <aymeric@beaumet.me>",
+    "url": "http://beaumet.me"
+  },
+
+  "content_scripts": [{
+    "matches": [
+      "http://www.die2nite.com/*",
+      "http://www.hordes.fr/*",
+      "http://www.zombinoia.com/*",
+      "http://www.dieverdammten.de/*"
+    ],
+    "js": [
+      "die2nite_enhancer.user.js"
+    ]
+  }],
+
+  "permissions": [
+    "http://bbh.fred26.fr/*",
+    "http://www.oeev-hordes.com/*"
+  ]
+}

@@ -322,47 +322,45 @@ var D2NE = (function() {
     var _external_tools = {
         bbh: {
             update: function(callback_success, callback_failure) {
-                GM_xmlhttpRequest({
-                    method: 'POST',
-                    url: 'http://bbh.fred26.fr/',
-                    data: 'action=force_maj',
-                    headers: {
+                portability.network_post_request(
+                    'http://bbh.fred26.fr/',
+                    'action=force_maj',
+                    {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    onload: function(response) {
+                    function(response_text) {
                         // if response is too short, it is incomplete because
                         // the user is not logged
-                        if (response.responseText.length < 20000) {
+                        if (response_text.length < 20000) {
                             return callback_failure();
                         }
                         return callback_success();
                     },
-                    onerror: function(response) {
+                    function() {
                         return callback_failure();
                     }
-                });
+                );
             }
         },
 
         ooev: {
             update: function(callback_success, callback_failure) {
-                GM_xmlhttpRequest({
-                    method: 'POST',
-                    url: 'http://www.oeev-hordes.com/',
-                    data: 'key=c11d21a87965a867af6b1c33f18472cc4f40f3&mode=json',
-                    headers: {
+                portability.network_post_request(
+                    'http://www.oeev-hordes.com/',
+                    'key=c11d21a87965a867af6b1c33f18472cc4f40f3&mode=json',
+                    {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    onload: function(response) {
-                        if (response.responseText !== '{ "response": "Site mis à jour" }') {
+                    function(response_text) {
+                        if (response_text !== '{ "response": "Site mis à jour" }') {
                             return callback_failure();
                         }
                         return callback_success();
                     },
-                    onerror: function(response) {
+                    function() {
                         return callback_failure();
                     }
-                });
+                );
             }
         }
     };
@@ -1026,7 +1024,6 @@ var D2NE = (function() {
     return self;
 })(); // !D2NE
 
-
 /**
  * Die2Nite helpers
  */
@@ -1245,6 +1242,55 @@ var d2n = (function() {
 
 
 /**
+ * Portability helpers (on Chrome, GM, Opera, etc...)
+ */
+var portability = (function() {
+    var self = {};
+
+    /**
+     * Execute a network POST request
+     * @param JSON url
+     * @param JSON data
+     * @param JSON headers
+     * @param callback onsuccess in case of success
+     * @param callback onfailure in case of failure
+     */
+    self.network_post_request = function(url, data, headers, onsuccess, onfailure) {
+        // Google Chrome script / GreaseMonkey
+        if (typeof GM_xmlhttpRequest !== 'undefined') {
+            GM_xmlhttpRequest({
+                method: 'POST',
+                url: url,
+                data: data,
+                headers: headers,
+                onload: function(r) { onsuccess(r.responseText); },
+                onerror: function(r) { onfailure(); }
+            });
+
+        // all other cases
+        } else {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open('POST', url, true);
+            for (var header in headers) {
+                xmlhttp.setRequestHeader(header, headers[header]);
+            }
+            xmlhttp.onreadystatechange = function() {
+                if (xmlhttp.readyState === 4 ) {
+                    if (xmlhttp.status >= 200 && xmlhttp.status < 300) {
+                        return onsuccess(xmlhttp.responseText);
+                    }
+                    return onfailure();
+                }
+            };
+            xmlhttp.send(data);
+        }
+    };
+
+    return self;
+})();
+
+
+/**
  * Generic JavaScript helpers
  */
 var js = (function() {
@@ -1322,7 +1368,7 @@ var js = (function() {
     self.injectJS = function(source)
     {
         // Check for function input.
-        if ('function' == typeof source) {
+        if ('function' === typeof source) {
             // Execute this function with no arguments, by adding parentheses.
             // One set around the function, required for valid syntax, and a
             // second empty set calls the surrounded function.
