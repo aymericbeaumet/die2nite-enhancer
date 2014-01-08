@@ -1,30 +1,34 @@
 ## Die2Nite Enhancer
 
-This plugin is available on Google Chrome and Firefox with GreaseMonkey. It enhances your game experience on the browser game
-[Die2Nite](http://www.die2nite.com/). It also supports the French version
-([Hordes](http://www.hordes.fr/)), the Spanish version
-([Zombinoia](http://www.zombinoia.com/)) and the Dutch version
-([Dieverdammten](http://www.dieverdammten.de/)).
+Die2Nite Enhancer is an extension allowing you to improve your game experience on the browser game [Die2Nite](http://www.die2nite.com/).
 
-## Features
-
-As of today, the plugin adds the following functionalities:
-- Add shortcuts to quickly browse the important places (e.g.: the bank, the doors)
-- Enable numeric stat on the hero experience bar
-- Highlight the AP border (from green to red) depending of the remaining AP
-- Set the maximum number of PA for the constructions (instead of 1 by default)
-- Hide completed constructions
-- Hide a lot of interface elements
-- Enable synchronisation with [BigBroth'Hordes](http://bbh.fred26.fr/) (French website, available in the other languages)
-- Enable synchronisation with [Où en êtes-vous ?](http://www.oeev-hordes.com/) (French website)
+D2NE will give you access to a lot of features, it:
+- Adds shortcuts to quickly browse the important places (e.g.: the bank, the doors) ;
+- Enables numeric stat on the hero experience bar ;
+- Highlights the AP border (from green to red) depending of the remaining AP ;
+- Sets the maximum number of AP for the constructions (instead of 1 by default) ;
+- Hides completed constructions ;
+- Hides a lot of interface elements you may find superfluous ;
+- Enables synchronisation with BigBroth'Hordes (French external tool, available in other languages) ;
+- Enables synchronisation with Où en êtes-vous ? (French external tool).
 
 Everything is adjustable through a configuration panel.
 
-## Installation
+The French ([Hordes](http://www.hordes.fr/)), Spanish ([Zombinoia](http://www.zombinoia.com/)) and Dutch ([Die Verdammten](http://www.dieverdammten.de/)) versions are supported.
+
+## Installation (easy way)
+
+You can directly install this plugin as an extension for the following browsers:
+- [Google Chrome](https://chrome.google.com/webstore/detail/die2nite-enhancer/imkkdabijgkodinlhgncdfmghdcdacmg)
+- [Mozilla Firefox](https://addons.mozilla.org/en-US/firefox/addon/die2nite_enhancer/)
+
+## Installation (the other way)
+
+It is also possible to install this plugin as a script. Natively supported in Google Chrome, or with the GreaseMonkey extension under Mozilla Firefox.
 
 ### Google Chrome
 
-1. Download the latest version [here](https://github.com/abeaumet/die2nite_enhancer/raw/master/userscript/die2nite_enhancer.user.js)
+1. Download the latest version [here](http://userscripts.org/scripts/show/242398) (Right click on the green install button > Save link As)
 2. Launch Google Chrome and go on the extension page (chrome://extensions)
 3. Drag'n'drop the downloaded file
 4. Accept the permissions
@@ -33,14 +37,12 @@ Everything is adjustable through a configuration panel.
 
 1. Install [GreaseMonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/)
 2. Restart Firefox
-3. Click on [this link](https://github.com/abeaumet/die2nite_enhancer/raw/master/userscript/die2nite_enhancer.user.js) from Firefox
+3. Click on the install button [here](http://userscripts.org/scripts/show/242398) from Firefox
 4. Accept the permissions
 
-## Update
+### Script update
 
-To update, you have to repeat the [installation process](#installation).
-
-Normally, GreaseMonkey automatically updates the script based on its version number.
+To update, you have to repeat the [installation steps](#installation-the-other-way). Normally, GreaseMonkey automatically updates the script based on its version number.
 
 ## Feedback
 
