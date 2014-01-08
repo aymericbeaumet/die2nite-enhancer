@@ -1,0 +1,10 @@
+v0.0.1
+- Available as a userscript (Google Chrome / GreaseMonkey)
+- Adds shortcuts to quickly browse the important places (e.g.: the bank, the doors)
+- Enables numeric stat on the hero experience bar
+- Highlights the AP border (from green to red) depending of the remaining AP
+- Sets the maximum number of AP for the constructions (instead of 1 by default)
+- Hides completed constructions
+- Hides a lot of interface elements you may find superfluous
+- Enables synchronisation with BigBroth'Hordes (French external tool, available in other languages)
+- Enables synchronisation with Où en êtes-vous ? (French external tool)
