@@ -25,7 +25,7 @@ Everything is adjustable through a configuration panel.
 ### Google Chrome
 
 1. Download the latest version [here](https://github.com/abeaumet/die2nite_enhancer/raw/master/userscript/die2nite_enhancer.user.js)
-2. Launch Google Chrome and go on the [extension page](chrome://extensions)
+2. Launch Google Chrome and go on the extension page (chrome://extensions)
 3. Drag'n'drop the downloaded file
 4. Accept the permissions
 
