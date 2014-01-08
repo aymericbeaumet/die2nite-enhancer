@@ -1,4 +1,10 @@
+v0.0.2
+- Add placeholders to factorise redondant informations (name, version...)
+- Add wrapper extension for Google Chrome, Mozilla Firefox and Opera
+- The wrappers are published on the stores
+
 v0.0.1
+- Working configuration panel
 - Available as a userscript (Google Chrome / GreaseMonkey)
 - Adds shortcuts to quickly browse the important places (e.g.: the bank, the doors)
 - Enables numeric stat on the hero experience bar
