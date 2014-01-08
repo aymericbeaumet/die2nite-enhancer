@@ -1,14 +1,14 @@
 {
-  "manifest_version": 2,
-
   "name": "Die2Nite Enhancer",
   "version": "0.0.1",
-
   "description": "Enhance your game experience!",
   "developer": {
     "name": "Aymeric Beaumet <aymeric@beaumet.me>",
     "url": "http://beaumet.me"
   },
+  "homepage_url": "https://github.com/abeaumet/die2nite_enhancer",
+
+  "manifest_version": 2,
 
   "icons": {
     "48": "icon48.png",
