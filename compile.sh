@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 set -e
 
@@ -10,7 +10,7 @@ OUTPUT_DIR="$ABSPATH/build"
 
 PEM="$HOME/.pem/die2nite_enhancer.pem"
 CHROME='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-CFX='cfx'
+CFX="$HOME/bin/cfx"
 
 
 # Init the compilation
@@ -21,24 +21,46 @@ function init()
   mkdir -p "$OUTPUT_DIR"
 }
 
+# Build the user script
+function compile_user_script()
+{
+  userscript_source_dir="$ABSPATH/userscript"
+  userscript_build_dir="$OUTPUT_DIR/userscript"
+  userscript_ext="$OUTPUT_DIR/userscript.user.js"
+
+  # Gather sources
+  cp -r "$userscript_source_dir" "$userscript_build_dir"
+
+  # Grab the extension
+  mv "$userscript_build_dir/die2nite_enhancer.user.js" "$userscript_ext"
+
+  # Clean and notify
+  rm -rf "$userscript_build_dir"
+  echo '-- User script done!'
+}
+
 # Build the Chrome extension
 function compile_chrome_ext()
 {
   chrome_source_dir="$ABSPATH/chrome"
   chrome_build_dir="$OUTPUT_DIR/chrome"
-  chrome_ext="$OUTPUT_DIR/chrome.zip"
+  chrome_ext="$OUTPUT_DIR/chrome.crx"
+  chrome_zip="$OUTPUT_DIR/chrome.zip"
 
   # Gather sources
   cp -r "$chrome_source_dir" "$chrome_build_dir"
   cp "$ICON_DIR"/icon{48,128}.png "$chrome_build_dir"
   cp "$USERSCRIPT" "$chrome_build_dir"
 
+  # Package the extension
+  "$CHROME" --pack-extension="$chrome_build_dir" --pack-extension-key="$PEM"
+
   # Zip the extension
-  find "$chrome_build_dir" | zip -j "$chrome_ext" -@
+  find "$chrome_build_dir" | zip -j "$chrome_zip" -@
 
   # Clean and notify
   rm -rf "$chrome_build_dir"
-  echo '-- Chrome extension zipped!'
+  echo '-- Chrome extension done!'
 }
 
 # Build the Firefox extension
@@ -58,7 +80,7 @@ function compile_firefox_ext()
 
   # Clean and notify
   rm -rf "$firefox_build_dir"
-  echo '-- Firefox extension packaged!'
+  echo '-- Firefox extension done!'
 }
 
 # Build the Opera extension
@@ -75,15 +97,16 @@ function compile_opera_ext()
 
   # Package the extension
   "$CHROME" --pack-extension="$opera_build_dir" --pack-extension-key="$PEM"
-  mv "$OUTPUT_DIR"/*.crx "$opera_ext"
+  mv "$OUTPUT_DIR"/opera.crx "$opera_ext"
 
   # Clean and notify
   rm -rf "$opera_build_dir"
-  echo '-- Opera extension packaged!'
+  echo '-- Opera extension done!'
 }
 
 
 init
+compile_user_script
 compile_chrome_ext
 compile_firefox_ext
 #compile_safari_ext
