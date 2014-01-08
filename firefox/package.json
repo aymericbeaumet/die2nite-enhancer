@@ -1,17 +1,14 @@
 {
-  "title": "Die2Nite Enhancer",
-  "version": "0.0.1",
-  "description": "Enhance your game experience!",
-  "author": "Aymeric Beaumet <aymeric@beaumet.me>",
-  "license": "zlib/libpng",
+  "title": "__NAME__",
+  "version": "__VERSION__",
+  "description": "__DESCRIPTION__",
+  "author": "__AUTHOR_NAME__ <__AUTHOR_EMAIL__>",
+  "license": "__LICENSE__",
 
-  "name": "die2nite_enhancer",
+  "name": "__ID__",
   "id": "jid1-bTAmRdxiqQRANQ",
 
   "permissions": {
-    "cross-domain-content": [
-      "http://bbh.fred26.fr/",
-      "http://www.oeev-hordes.com/"
-    ]
+    "cross-domain-content": __CROSS_ORIGIN_XHR_PERMISSION_JSON_ARRAY__
   }
 }

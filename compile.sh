@@ -1,17 +1,60 @@
 #!/bin/sh
 
-set -e
+# Placeholders
+PLACEHOLDERS=(
+  '__AUTHOR_NAME__=Aymeric Beaumet'
+  '__AUTHOR_EMAIL__=aymeric@beaumet.me'
+  '__AUTHOR_WEBSITE__=beaumet.me'
+  '__ID__=die2nite_enhancer'
+  '__NAME__=Die2Nite Enhancer'
+  '__DESCRIPTION__=Die2Nite Enhancer improves your game experience on the browser game Die2Nite! But also works on Hordes, Zombinoia and Die Verdammten.'
+  '__VERSION__=0.0.1'
+  '__LICENSE__=zlib/libpng'
+  '__LICENSE_URL__=http://opensource.org/licenses/Zlib'
+  '__MATCHING_URL_JSON_ARRAY__=["__MATCHING_URL_1__","__MATCHING_URL_2__","__MATCHING_URL_3__","__MATCHING_URL_4__"]'
+  '__MATCHING_URL_1__=http://www.die2nite.com/*'
+  '__MATCHING_URL_2__=http://www.hordes.fr/*'
+  '__MATCHING_URL_3__=http://www.zombinoia.com/*'
+  '__MATCHING_URL_4__=http://www.dieverdammten.de/*'
+  '__CROSS_ORIGIN_XHR_PERMISSION_JSON_ARRAY__=["__CROSS_ORIGIN_XHR_PERMISSION_1__","__CROSS_ORIGIN_XHR_PERMISSION_2__"]'
+  '__CROSS_ORIGIN_XHR_PERMISSION_1__=http://bbh.fred26.fr/'
+  '__CROSS_ORIGIN_XHR_PERMISSION_2__=http://www.oeev-hordes.com/'
+  '__PROJECT_WEBSITE__=https://github.com/abeaumet/die2nite_enhancer'
+  '__PROJECT_BUGTRACKER__=https://github.com/abeaumet/die2nite_enhancer/issues'
+  '__USERSCRIPT_DOWNLOAD_URL__=https://github.com/abeaumet/die2nite_enhancer/raw/master/die2nite_enhancer.user.js'
+  '__USERSCRIPT_ICON__=http://www.zombinoia.com/gfx/forum/smiley/h_city_up.gif'
+)
 
+# Paths
 ABSPATH="$(cd "$(dirname "$0")"; pwd)"
-
 USERSCRIPT="$ABSPATH/userscript/die2nite_enhancer.user.js"
 ICON_DIR="$ABSPATH/icons"
 OUTPUT_DIR="$ABSPATH/build"
 
+# OS Path
 PEM="$HOME/.pem/die2nite_enhancer.pem"
 CHROME='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 CFX="$HOME/bin/cfx"
 
+
+set -e
+
+
+# Fix error -> "sed: RE error: illegal byte sequence"
+# Link: http://stackoverflow.com/a/19770395/1071486
+export LC_CTYPE=C
+export LANG=C
+
+# Replace placeholders in all the files at the given path (recursively)
+# $1 the folder where to replace placeholders
+function _replace_placeholders()
+{
+  files="$(find "$1" -type f)"
+
+  for placeholder in ${!PLACEHOLDERS[*]} ; do
+    sed -i '' -e "s=${PLACEHOLDERS[$placeholder]}=g" $files
+  done
+}
 
 # Init the compilation
 function init()
@@ -31,7 +74,10 @@ function compile_user_script()
   # Gather sources
   cp -r "$userscript_source_dir" "$userscript_build_dir"
 
-  # Grab the extension
+  # Replace placeholders
+  _replace_placeholders "$userscript_build_dir"
+
+  # Grab userscript
   mv "$userscript_build_dir/die2nite_enhancer.user.js" "$userscript_ext"
 
   # Clean and notify
@@ -51,6 +97,9 @@ function compile_chrome_ext()
   cp -r "$chrome_source_dir" "$chrome_build_dir"
   cp "$ICON_DIR"/icon{48,128}.png "$chrome_build_dir"
   cp "$USERSCRIPT" "$chrome_build_dir"
+
+  # Replace placeholders
+  _replace_placeholders "$chrome_build_dir"
 
   # Package the extension
   "$CHROME" --pack-extension="$chrome_build_dir" --pack-extension-key="$PEM"
@@ -75,6 +124,9 @@ function compile_firefox_ext()
   mkdir "$firefox_build_dir/data"
   cp "$USERSCRIPT" "$firefox_build_dir/data"
 
+  # Replace placeholders
+  _replace_placeholders "$firefox_build_dir"
+
   # Package the extension
   cd "$firefox_build_dir" && "$CFX" xpi --output-file="$firefox_ext"
 
@@ -94,6 +146,9 @@ function compile_opera_ext()
   cp -r "$opera_source_dir" "$opera_build_dir"
   cp "$ICON_DIR"/icon{48,128}.png "$opera_build_dir"
   cp "$USERSCRIPT" "$opera_build_dir"
+
+  # Replace placeholders
+  _replace_placeholders "$opera_build_dir"
 
   # Package the extension
   "$CHROME" --pack-extension="$opera_build_dir" --pack-extension-key="$PEM"

@@ -2,11 +2,6 @@ var pageMod = require('sdk/page-mod');
 var self = require('sdk/self');
 
 pageMod.PageMod({
-  include: [
-      "http://www.die2nite.com/*",
-      "http://www.hordes.fr/*",
-      "http://www.zombinoia.com/*",
-      "http://www.dieverdammten.de/*"
-  ],
+  include: __MATCHING_URL_JSON_ARRAY__,
   contentScriptFile: self.data.url("die2nite_enhancer.user.js")
 });

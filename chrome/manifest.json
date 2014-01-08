@@ -1,12 +1,12 @@
 {
-  "name": "Die2Nite Enhancer",
-  "version": "0.0.1",
-  "description": "Enhance your game experience!",
+  "name": "__NAME__",
+  "version": "__VERSION__",
+  "description": "__DESCRIPTION__",
   "author": {
-    "name": "Aymeric Beaumet <aymeric@beaumet.me>",
-    "url": "http://beaumet.me"
+    "name": "__AUTHOR_NAME__ <__AUTHOR_EMAIL__>",
+    "url": "__AUTHOR_WEBSITE__"
   },
-  "homepage_url": "https://github.com/abeaumet/die2nite_enhancer",
+  "homepage_url": "__PROJECT_WEBSITE__",
 
   "manifest_version": 2,
 
@@ -16,19 +16,11 @@
   },
 
   "content_scripts": [{
-    "matches": [
-      "http://www.die2nite.com/*",
-      "http://www.hordes.fr/*",
-      "http://www.zombinoia.com/*",
-      "http://www.dieverdammten.de/*"
-    ],
+    "matches": __MATCHING_URL_JSON_ARRAY__,
     "js": [
       "die2nite_enhancer.user.js"
     ]
   }],
 
-  "permissions": [
-    "http://bbh.fred26.fr/*",
-    "http://www.oeev-hordes.com/*"
-  ]
+  "permissions": __CROSS_ORIGIN_XHR_PERMISSION_JSON_ARRAY__
 }

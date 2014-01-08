@@ -3,25 +3,25 @@
 // You need Google Chrome 13+ or Mozilla Firefox with Greasemonkey 0.9.8+ to use
 // this script.
 //
-// @name Die2Nite Enhancer
-// @version 0.0.1
-// @description Enhance your game experience!
-// @author Aymeric Beaumet <aymeric@beaumet.me>
-// @license zlib/libpng http://opensource.org/licenses/Zlib
-// @icon http://www.zombinoia.com/gfx/forum/smiley/h_city_up.gif
-// @downloadURL https://github.com/abeaumet/die2nite_enhancer/raw/master/die2nite_enhancer.user.js
-// @updateURL https://github.com/abeaumet/die2nite_enhancer/raw/master/die2nite_enhancer.user.js
+// @name __NAME__
+// @version __VERSION__
+// @description __DESCRIPTION__
+// @author __AUTHOR_NAME__ <__AUTHOR_EMAIL__>
+// @license __LICENSE__ __LICENSE_URL__
+// @icon __USERSCRIPT_ICON__
+// @downloadURL __USERSCRIPT_DOWNLOAD_URL__
+// @updateURL __USERSCRIPT_DOWNLOAD_URL__
 //
-// @match http://www.die2nite.com/*
-// @match http://www.hordes.fr/*
-// @match http://www.zombinoia.com/*
-// @match http://www.dieverdammten.de/*
+// @match __MATCHING_URL_1__
+// @match __MATCHING_URL_2__
+// @match __MATCHING_URL_3__
+// @match __MATCHING_URL_4__
 //
 // @grant GM_xmlhttpRequest
-// @match http://bbh.fred26.fr/*
-// @exclude http://bbh.fred26.fr/*
-// @match http://www.oeev-hordes.com/*
-// @exclude http://www.oeev-hordes.com/*
+// @match __CROSS_ORIGIN_XHR_PERMISSION_1__*
+// @exclude __CROSS_ORIGIN_XHR_PERMISSION_1__*
+// @match __CROSS_ORIGIN_XHR_PERMISSION_2__*
+// @exclude __CROSS_ORIGIN_XHR_PERMISSION_2__*
 //
 // ==/UserScript==
 
@@ -33,9 +33,9 @@
 /**
  * Script informations
  */
-var SCRIPT_NAME = 'Die2Nite Enhancer';
-var SCRIPT_VERSION = '0.0.1';
-var PROJECT_PAGE = 'https://github.com/abeaumet/die2nite_enhancer';
+var SCRIPT_NAME = '__NAME__';
+var SCRIPT_VERSION = '__VERSION__';
+var PROJECT_PAGE = '__PROJECT_WEBSITE__';
 
 
 /**
