@@ -1,3 +1,6 @@
+v0.0.3
+- Fix Twinoid bar bug when hidden
+
 v0.0.2
 - Add placeholders to factorise redondant informations (name, version...)
 - Add wrapper extension for Google Chrome, Mozilla Firefox and Opera

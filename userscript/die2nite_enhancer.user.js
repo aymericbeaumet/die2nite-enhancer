@@ -753,9 +753,6 @@ var D2NE = (function() {
                 var _tid_cache = node;
                 var _tid_hidden = true;
                 js.wait_for_selector_all('.tid_sidePanel', function(nodes) {
-                    var _tid_side_panels = nodes;
-                    var _tid_side_panels_length = _tid_side_panels.length;
-
                     var _show_tid = function() {
                         _tid_cache.style.display = 'block';
                         _tid_hidden = false;
@@ -774,10 +771,9 @@ var D2NE = (function() {
                         // if not on the top of the screen, hide the bar if the
                         // lateral panels are not visible
                         else if (!_tid_hidden && event.clientY > 32) {
-                            // if Safari, refresh cache
-                            if (typeof safari !== 'undefined' ) {
-                                var _tid_side_panels = document.getElementsByClassName('tid_sidePanel');
-                            }
+                            var _tid_side_panels = document.getElementsByClassName('tid_sidePanel');
+                            var _tid_side_panels_length = _tid_side_panels.length;
+
                             for (var i = 0; i < _tid_side_panels_length; ++i) {
                                 var style = getComputedStyle(_tid_side_panels[i]);
 
