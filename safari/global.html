@@ -1,7 +1,18 @@
-<script type="text/javascript">
-  console.log('WAITING FOR EVENT');
-  document.addEventListener('d2ne_safari_network_post_request', function(event) {
-    console.log('CAUGHT!');
-    console.log(event);
-  }, true);
-</script>
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>global HTML page</title>
+    <script type="text/javascript">
+
+      safari.application.addEventListener("message", function(event) {
+        if (event.name !== "ping") {
+          return;
+        }
+        event.target.page.dispatchMessage("pong", 42);
+      }, false);
+
+    </script>
+  </head>
+  <body>
+  </body>
+</html>

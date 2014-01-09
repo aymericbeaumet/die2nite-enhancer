@@ -1276,6 +1276,20 @@ var portability = (function() {
             });
         }
 
+        // Safari
+        if (typeof safari !== 'undefined') {
+            console.log('HERE');
+            safari.self.addEventListener('message', function(event) {
+                if (event.name !== 'pong') {
+                    return;
+                }
+
+                console.log(event.message);
+            }, false);
+
+            return safari.self.tab.dispatchMessage('ping', 0);
+        }
+
         // All other cases
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open('POST', url, true);
