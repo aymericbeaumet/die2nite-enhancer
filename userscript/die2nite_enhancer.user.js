@@ -12,10 +12,10 @@
 // @downloadURL __USERSCRIPT_DOWNLOAD_URL__
 // @updateURL __USERSCRIPT_DOWNLOAD_URL__
 //
-// @match __MATCHING_URL_1__
-// @match __MATCHING_URL_2__
-// @match __MATCHING_URL_3__
-// @match __MATCHING_URL_4__
+// @match http://__MATCHING_URL_1__/*
+// @match http://__MATCHING_URL_2__/*
+// @match http://__MATCHING_URL_3__/*
+// @match http://__MATCHING_URL_4__/*
 //
 // @grant GM_xmlhttpRequest
 // @match __CROSS_ORIGIN_XHR_PERMISSION_1__*
@@ -519,9 +519,11 @@ var D2NE = (function() {
                 _external_tools_loaded = true;
 
                 // Set the update behaviour on click on the update button
-                document.getElementById('d2ne_external_tools_bar_update').addEventListener('click', function() {
-                    _update_tools(tools_number);
-                }, true);
+                js.wait_for_id('d2ne_external_tools_bar_update', function(node) {
+                    node.addEventListener('click', function() {
+                        _update_tools(tools_number);
+                    }, true);
+                });
 
                 // Remove toolbar when leaving the city/outside page
                 document.addEventListener('d2n_hashchange', function() {
@@ -696,10 +698,12 @@ var D2NE = (function() {
             node.insertBefore(config_panel_div, node.firstChild);
 
             // Save and reload page when clicking on the save button
-            document.getElementById('d2ne_configuration_save').addEventListener('click', function() {
-                _save_configuration();
-                js.reload();
-            }, true);
+            js.wait_for_id('d2ne_configuration_save', function(node) {
+                node.addEventListener('click', function() {
+                    _save_configuration();
+                    js.reload();
+                }, true);
+            });
 
             // Show/Hide config panel cache
             var _config_panel_cache = document.getElementById('d2ne_configuration_panel');
@@ -745,39 +749,47 @@ var D2NE = (function() {
                 '}'
             );
 
-            var _tid_cache = document.getElementById('tid_bar');
-            var _tid_hidden = true;
-            var _tid_side_panels = document.getElementsByClassName('tid_sidePanel');
-            var _tid_side_panels_length = _tid_side_panels.length;
+            js.wait_for_id('tid_bar', function(node) {
+                var _tid_cache = node;
+                var _tid_hidden = true;
+                js.wait_for_selector_all('.tid_sidePanel', function(nodes) {
+                    var _tid_side_panels = nodes;
+                    var _tid_side_panels_length = _tid_side_panels.length;
 
-            var _show_tid = function() {
-                _tid_cache.style.display = 'block';
-                _tid_hidden = false;
-            };
+                    var _show_tid = function() {
+                        _tid_cache.style.display = 'block';
+                        _tid_hidden = false;
+                    };
 
-            var _hide_tid = function() {
-                _tid_cache.style.display = 'none';
-                _tid_hidden = true;
-            };
+                    var _hide_tid = function() {
+                        _tid_cache.style.display = 'none';
+                        _tid_hidden = true;
+                    };
 
-            document.body.addEventListener('mousemove', function(event) {
-                // if on the top of the screen, display the bar
-                if (_tid_hidden && event.clientY <= 5) {
-                    _show_tid();
-                }
-                // if not on the top of the screen, hide the bar if the
-                // lateral panels are not visible
-                else if (!_tid_hidden && event.clientY > 32) {
-                    for (var i = 0; i < _tid_side_panels_length; ++i) {
-                        var style = getComputedStyle(_tid_side_panels[i]);
-
-                        if (style['visibility'] === 'visible') {
-                            return;
+                    document.body.addEventListener('mousemove', function(event) {
+                        // if on the top of the screen, display the bar
+                        if (_tid_hidden && event.clientY <= 5) {
+                            _show_tid();
                         }
-                    }
-                    _hide_tid();
-                }
-            }, true);
+                        // if not on the top of the screen, hide the bar if the
+                        // lateral panels are not visible
+                        else if (!_tid_hidden && event.clientY > 32) {
+                            // if Safari, refresh cache
+                            if (typeof safari !== 'undefined' ) {
+                                var _tid_side_panels = document.getElementsByClassName('tid_sidePanel');
+                            }
+                            for (var i = 0; i < _tid_side_panels_length; ++i) {
+                                var style = getComputedStyle(_tid_side_panels[i]);
+
+                                if (style['visibility'] === 'visible') {
+                                    return;
+                                }
+                            }
+                            _hide_tid();
+                        }
+                    }, true);
+                });
+            });
         },
 
         ////
@@ -1258,7 +1270,7 @@ var portability = (function() {
     self.network_post_request = function(url, data, headers, onsuccess, onfailure) {
         // Google Chrome script / GreaseMonkey
         if (typeof GM_xmlhttpRequest !== 'undefined') {
-            GM_xmlhttpRequest({
+            return GM_xmlhttpRequest({
                 method: 'POST',
                 url: url,
                 data: data,
@@ -1266,24 +1278,23 @@ var portability = (function() {
                 onload: function(r) { onsuccess(r.responseText); },
                 onerror: function(r) { onfailure(); }
             });
-
-        // all other cases
-        } else {
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('POST', url, true);
-            for (var header in headers) {
-                xmlhttp.setRequestHeader(header, headers[header]);
-            }
-            xmlhttp.onreadystatechange = function() {
-                if (xmlhttp.readyState === 4 ) {
-                    if (xmlhttp.status >= 200 && xmlhttp.status < 300) {
-                        return onsuccess(xmlhttp.responseText);
-                    }
-                    return onfailure();
-                }
-            };
-            xmlhttp.send(data);
         }
+
+        // All other cases
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('POST', url, true);
+        for (var header in headers) {
+            xmlhttp.setRequestHeader(header, headers[header]);
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState === 4 ) {
+                if (xmlhttp.status >= 200 && xmlhttp.status < 300) {
+                    return onsuccess(xmlhttp.responseText);
+                }
+                return onfailure();
+            }
+        };
+        xmlhttp.send(data);
     };
 
     return self;
@@ -1500,6 +1511,23 @@ var js = (function() {
         }
         setTimeout(function() {
             self.wait_for_selector(selector, callback);
+        }, 50);
+    };
+
+    /**
+     * Execute a callback with an array containing all the nodes matching the
+     * given selector.
+     * @param string selector The selector to execute
+     * @param callback callback The function to call when a result is found
+     */
+    self.wait_for_selector_all = function(selector, callback) {
+        var el;
+
+        if (js.is_defined(el = document.querySelectorAll(selector))) {
+            return callback(el);
+        }
+        setTimeout(function() {
+            self.wait_for_selector_all(selector, callback);
         }, 50);
     };
 

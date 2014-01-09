@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Author</key>
+	<string>__AUTHOR_NAME__</string>
+	<key>Builder Version</key>
+	<string>9537.73.11</string>
+	<key>CFBundleDisplayName</key>
+	<string>__NAME__</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.beaumet.die2niteenhancer</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleShortVersionString</key>
+	<string>__VERSION__</string>
+	<key>CFBundleVersion</key>
+  <string>1</string>
+  <key>Chrome</key>
+  <dict>
+    <key>Global Page</key>
+    <string>global.html</string>
+  </dict>
+	<key>Content</key>
+	<dict>
+		<key>Scripts</key>
+		<dict>
+			<key>End</key>
+			<array>
+				<string>die2nite_enhancer.user.js</string>
+			</array>
+		</dict>
+	</dict>
+	<key>Description</key>
+	<string>__DESCRIPTION__</string>
+	<key>ExtensionInfoDictionaryVersion</key>
+	<string>1.0</string>
+	<key>Permissions</key>
+	<dict>
+		<key>Website Access</key>
+		<dict>
+			<key>Allowed Domains</key>
+			<array>
+				<string>__MATCHING_URL_1__</string>
+				<string>__MATCHING_URL_2__</string>
+				<string>__MATCHING_URL_3__</string>
+				<string>__MATCHING_URL_4__</string>
+			</array>
+			<key>Level</key>
+			<string>Some</string>
+		</dict>
+	</dict>
+	<key>Website</key>
+	<string>__PROJECT_WEBSITE__</string>
+</dict>
+</plist>

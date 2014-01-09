@@ -1,0 +1,7 @@
+<script type="text/javascript">
+  console.log('WAITING FOR EVENT');
+  document.addEventListener('d2ne_safari_network_post_request', function(event) {
+    console.log('CAUGHT!');
+    console.log(event);
+  }, true);
+</script>
