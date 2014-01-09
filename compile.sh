@@ -1,5 +1,12 @@
 #!/bin/sh
 
+##
+# Requirements:
+# - A PEM to sign Chrome/Opera extensions
+# - Chrome
+# - Firefox Add-on SDK (https://addons.mozilla.org/en-US/developers/builder)
+# - Zip
+
 # Placeholders
 PLACEHOLDERS=(
   '__AUTHOR_NAME__=Aymeric Beaumet'
@@ -36,6 +43,7 @@ OUTPUT_DIR="$ABSPATH/build"
 PEM="$HOME/.pem/die2nite_enhancer.pem"
 CHROME='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 CFX="$HOME/bin/cfx"
+ZIP='zip'
 
 
 set -e
@@ -106,7 +114,7 @@ function compile_chrome_ext()
   "$CHROME" --pack-extension="$chrome_build_dir" --pack-extension-key="$PEM"
 
   # Zip the extension
-  find "$chrome_build_dir" | zip -j "$chrome_zip" -@
+  find "$chrome_build_dir" | "$ZIP" -j "$chrome_zip" -@
 
   # Clean and notify
   rm -rf "$chrome_build_dir"
