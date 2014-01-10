@@ -16,14 +16,14 @@ Everything is adjustable through a configuration panel.
 
 The French ([Hordes](http://www.hordes.fr/)), Spanish ([Zombinoia](http://www.zombinoia.com/)) and Dutch ([Die Verdammten](http://www.dieverdammten.de/)) versions are supported.
 
-## Installation (easy way)
+## Install as an extension (recommended)
 
 You can directly install this plugin as an extension for the following browsers:
 - [Google Chrome](https://chrome.google.com/webstore/detail/die2nite-enhancer/imkkdabijgkodinlhgncdfmghdcdacmg)
 - [Mozilla Firefox](https://addons.mozilla.org/en-US/firefox/addon/die2nite_enhancer/)
 - [Opera](https://addons.opera.com/en/extensions/details/die2nite-enhancer/)
 
-## Installation (the other way)
+## Install as a script
 
 It is also possible to install this plugin as a script. Natively supported in Google Chrome, or with the GreaseMonkey extension under Mozilla Firefox.
 
@@ -43,7 +43,7 @@ It is also possible to install this plugin as a script. Natively supported in Go
 
 ### Script update
 
-To update, you have to repeat the [installation steps](#installation-the-other-way). Normally, GreaseMonkey automatically updates the script based on its version number.
+To update, you have to repeat the [installation steps](#installation-as-a-script). Normally, GreaseMonkey automatically updates the script based on its version number.
 
 ## Feedback
 
