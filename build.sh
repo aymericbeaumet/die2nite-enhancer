@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Placeholders
 PLACEHOLDERS=(
@@ -192,10 +192,10 @@ function compile_opera_ext()
 
 
 init
-compile_user_script
-compile_chrome_ext
-compile_firefox_ext
-compile_safari_ext
-compile_opera_ext
+[[ "$1" =~ ^--all|--userscript$ ]] && compile_user_script
+[[ "$1" =~ ^--all|--chrome$ ]] && compile_chrome_ext
+[[ "$1" =~ ^--all|--firefox$ ]] && compile_firefox_ext
+[[ "$1" =~ ^--all|--safari$ ]] && compile_safari_ext
+[[ "$1" =~ ^--all|--opera$ ]] && compile_opera_ext
 
 exit 0
