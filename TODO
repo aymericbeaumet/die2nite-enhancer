@@ -4,3 +4,5 @@
 - Remove warning when taking an object in bank (keep it if anti-abuse protection)
 
 - Make sure OOEV works fine
+
+- Find a solution to fix Safari XmlHttpRequest problem with external tools
