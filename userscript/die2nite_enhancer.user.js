@@ -1285,16 +1285,10 @@ var portability = (function() {
             safari.self.addEventListener('message', function(event) {
                 switch (event.name) {
                     case 'network_request_succeed':
-                        console.log('SUCCESS');
-                        console.log(event.message);
                         return onsuccess(event.message);
 
                     case 'network_request_failed':
-                        console.log('FAILURE');
                         return onfailure();
-
-                    default:
-                        return console.log(event.message); // DEBUG
                 }
             }, false);
 
