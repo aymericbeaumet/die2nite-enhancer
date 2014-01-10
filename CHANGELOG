@@ -1,6 +1,7 @@
 v0.0.3
 - Add Safari wrapper extension
 - Fix Twinoid bar bug when hidden
+- Firefox extension will load faster
 
 v0.0.2
 - Add placeholders to factorise redondant informations (name, version...)
