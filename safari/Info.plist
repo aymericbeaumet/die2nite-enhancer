@@ -45,6 +45,8 @@
         <string>__MATCHING_URL_2__</string>
         <string>__MATCHING_URL_3__</string>
         <string>__MATCHING_URL_4__</string>
+        <string>__CROSS_ORIGIN_XHR_PERMISSION_1__</string>
+        <string>__CROSS_ORIGIN_XHR_PERMISSION_2__</string>
 			</array>
 			<key>Level</key>
 			<string>Some</string>

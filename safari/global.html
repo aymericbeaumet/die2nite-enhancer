@@ -1,14 +1,34 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-    <title>global HTML page</title>
-    <script type="text/javascript">
+    <script type="application/javascript">
 
-      safari.application.addEventListener("message", function(event) {
-        if (event.name !== "ping") {
+      // Wait for a network request to perform
+      safari.application.addEventListener('message', function(event) {
+        if (event.name !== 'do_network_request') {
           return;
         }
-        event.target.page.dispatchMessage("pong", 42);
+
+        param = event.message;
+
+        event.target.page.dispatchMessage('log', param);
+
+        var xmlhttp = new XMLHttpRequest();
+        //xmlhttp.setDisableHeaderCheck(true); // mandatory as cookie are set
+        xmlhttp.open(param.method, param.url, true);
+        for (var header in param.headers) {
+          xmlhttp.setRequestHeader(header, param.headers[header]);
+        }
+        xmlhttp.onreadystatechange = function() {
+          if (xmlhttp.readyState === 4) {
+            if (xmlhttp.status >= 200 && xmlhttp.status < 300) {
+              return event.target.page.dispatchMessage('network_request_succeed',
+                                                       xmlhttp.responseText);
+            }
+            return event.target.page.dispatchMessage('network_request_failed');
+          }
+        };
+        xmlhttp.send(param.data);
       }, false);
 
     </script>

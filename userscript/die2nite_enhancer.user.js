@@ -18,10 +18,10 @@
 // @match http://__MATCHING_URL_4__/*
 //
 // @grant GM_xmlhttpRequest
-// @match __CROSS_ORIGIN_XHR_PERMISSION_1__*
-// @exclude __CROSS_ORIGIN_XHR_PERMISSION_1__*
-// @match __CROSS_ORIGIN_XHR_PERMISSION_2__*
-// @exclude __CROSS_ORIGIN_XHR_PERMISSION_2__*
+// @match http://__CROSS_ORIGIN_XHR_PERMISSION_1__/*
+// @exclude http://__CROSS_ORIGIN_XHR_PERMISSION_1__/*
+// @match http://__CROSS_ORIGIN_XHR_PERMISSION_2__/*
+// @exclude http://__CROSS_ORIGIN_XHR_PERMISSION_2__/*
 //
 // ==/UserScript==
 
@@ -322,7 +322,8 @@ var D2NE = (function() {
     var _external_tools = {
         bbh: {
             update: function(callback_success, callback_failure) {
-                portability.network_post_request(
+                portability.network_request(
+                    'POST',
                     'http://bbh.fred26.fr/',
                     'action=force_maj',
                     {
@@ -345,7 +346,8 @@ var D2NE = (function() {
 
         ooev: {
             update: function(callback_success, callback_failure) {
-                portability.network_post_request(
+                portability.network_request(
+                    'POST',
                     'http://www.oeev-hordes.com/',
                     'key=c11d21a87965a867af6b1c33f18472cc4f40f3&mode=json',
                     {
@@ -1256,18 +1258,20 @@ var portability = (function() {
     var self = {};
 
     /**
-     * Execute a network POST request
-     * @param JSON url
-     * @param JSON data
+     * Execute an asynchronous network request
+     * @param string method
+     * @param string url
+     * @param string data
      * @param JSON headers
      * @param callback onsuccess in case of success
      * @param callback onfailure in case of failure
      */
-    self.network_post_request = function(url, data, headers, onsuccess, onfailure) {
+    self.network_request = function(method, url, data, headers, onsuccess, onfailure) {
+
         // Google Chrome script / GreaseMonkey
         if (typeof GM_xmlhttpRequest !== 'undefined') {
             return GM_xmlhttpRequest({
-                method: 'POST',
+                method: method,
                 url: url,
                 data: data,
                 headers: headers,
@@ -1276,28 +1280,40 @@ var portability = (function() {
             });
         }
 
-        // Safari
+        // Safari needs to dispatch the request to the global page
         if (typeof safari !== 'undefined') {
-            console.log('HERE');
             safari.self.addEventListener('message', function(event) {
-                if (event.name !== 'pong') {
-                    return;
-                }
+                switch (event.name) {
+                    case 'network_request_succeed':
+                        console.log('SUCCESS');
+                        console.log(event.message);
+                        return onsuccess(event.message);
 
-                console.log(event.message);
+                    case 'network_request_failed':
+                        console.log('FAILURE');
+                        return onfailure();
+
+                    default:
+                        return console.log(event.message); // DEBUG
+                }
             }, false);
 
-            return safari.self.tab.dispatchMessage('ping', 0);
+            return safari.self.tab.dispatchMessage('do_network_request', {
+                method: method,
+                url: url,
+                data: data,
+                headers: headers
+            });
         }
 
         // All other cases
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('POST', url, true);
+        xmlhttp.open(method, url, true);
         for (var header in headers) {
             xmlhttp.setRequestHeader(header, headers[header]);
         }
         xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState === 4 ) {
+            if (xmlhttp.readyState === 4) {
                 if (xmlhttp.status >= 200 && xmlhttp.status < 300) {
                     return onsuccess(xmlhttp.responseText);
                 }
@@ -1306,6 +1322,7 @@ var portability = (function() {
         };
         xmlhttp.send(data);
     };
+
 
     return self;
 })();
