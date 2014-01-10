@@ -2,6 +2,7 @@
 - Highlight the recommended construction
 - Watch for script update
 - Remove warning when taking an object in bank (keep it if anti-abuse protection)
+- Interpret image/video urls in forum posts
 
 - Make sure OOEV works fine
 
