@@ -21,6 +21,7 @@ The French ([Hordes](http://www.hordes.fr/)), Spanish ([Zombinoia](http://www.zo
 You can directly install this plugin as an extension for the following browsers:
 - [Google Chrome](https://chrome.google.com/webstore/detail/die2nite-enhancer/imkkdabijgkodinlhgncdfmghdcdacmg)
 - [Mozilla Firefox](https://addons.mozilla.org/en-US/firefox/addon/die2nite_enhancer/)
+- [Safari](http://safariaddons.com/en-US/safari/addon/227)
 - [Opera](https://addons.opera.com/en/extensions/details/die2nite-enhancer/)
 
 ## Install as a script
