@@ -1,3 +1,6 @@
+v0.0.4
+- Change local storage prefix to conform with AMO
+
 v0.0.3
 - Add Safari wrapper extension
 - Fix Twinoid bar bug when hidden

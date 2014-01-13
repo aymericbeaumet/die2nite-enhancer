@@ -194,7 +194,8 @@ var i18n = {
 var D2NE = (function() {
     var self = {};
 
-    var LOCAL_STORAGE_D2NE_CONFIGURATION_KEY = 'd2ne_configuration';
+    // Used as a key in the local storage (AMO compliant)
+    var LOCAL_STORAGE_D2NE_CONFIGURATION_KEY = 'extensions.d2ne.configuration';
 
     /**
      * The default configuration.
