@@ -203,8 +203,6 @@ var D2NE = (function() {
     var _default_configuration = {
         // Set to true to enable binds
         enable_shortcuts: false,
-        // Longest elapsed time between two binds (ms)
-        bind_elapsed_time_limit: 1000,
         // The global bind (e.g.: to go to the bank `gb`)
         go_bind: 71, // 'G'
         // Page specific bind (have to be preceded by "go_bind")
