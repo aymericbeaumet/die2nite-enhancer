@@ -38,6 +38,9 @@ var SCRIPT_VERSION = '__VERSION__';
 var PROJECT_PAGE = '__PROJECT_WEBSITE__';
 
 
+var LOCAL_STORAGE_PREFIX = 'extensions.d2ne';
+
+
 /**
  * Internationalisation
  */
@@ -65,9 +68,9 @@ var i18n = {
         configuration_panel_hide_rp_content: 'Hide RP content',
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
         configuration_panel_enable_bbh_sync: 'Enable BBH sync',
-        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes. If an error occurs, be sure you are logged in.',
-        configuration_panel_enable_ooev_sync: 'Enable OOEV sync',
-        configuration_panel_enable_ooev_sync_tooltip: 'Add the possibility to sync with Où en êtes-vous ?. If an error occurs, be sure you are logged in.',
+        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
+        configuration_panel_enable_oeev_sync: 'Enable OEEV sync',
+        configuration_panel_enable_oeev_sync_tooltip: 'Add the possibility to sync with Où en êtes-vous ?',
         configuration_panel_enable_construction_max_ap: 'Use max AP in constructions',
         configuration_panel_enable_construction_max_ap_tooltip: 'While in the construction page, use your actual number of AP instead of the default 1 AP.',
         configuration_panel_hide_completed_constructions: 'Hide completed constructions',
@@ -101,9 +104,9 @@ var i18n = {
         configuration_panel_hide_rp_content: 'Cacher le contenu RP',
         configuration_panel_hide_rp_content_tooltip: 'Cache le contenu RP (Role-Play).',
         configuration_panel_enable_bbh_sync: 'Activer la sync. BBH',
-        configuration_panel_enable_bbh_sync_tooltip: 'Ajoute la possibilité de synchroniser avec BigBroth\'Hordes. Si une erreur survient, assurez-vous d\'être connecté.',
-        configuration_panel_enable_ooev_sync: 'Activer la sync. OOEV',
-        configuration_panel_enable_ooev_sync_tooltip: 'Ajoute la possibilité de synchroniser avec Où en êtes-vous ?. Si une erreur survient, assurez-vous d\'être connecté.',
+        configuration_panel_enable_bbh_sync_tooltip: 'Ajoute la possibilité de synchroniser avec BigBroth\'Hordes.',
+        configuration_panel_enable_oeev_sync: 'Activer la sync. OEEV',
+        configuration_panel_enable_oeev_sync_tooltip: 'Ajoute la possibilité de synchroniser avec Où en êtes-vous ?.',
         configuration_panel_enable_construction_max_ap: 'Constructions PA max',
         configuration_panel_enable_construction_max_ap_tooltip: 'Utilise le maximum de PA disponible pour les constructions au lieu de 1 par défault.',
         configuration_panel_hide_completed_constructions: 'Cacher constructions finies',
@@ -137,9 +140,9 @@ var i18n = {
         configuration_panel_hide_rp_content: 'Hide RP content',
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
         configuration_panel_enable_bbh_sync: 'Enable BBH sync',
-        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes. If an error occurs, be sure you are logged in.',
-        configuration_panel_enable_ooev_sync: 'Enable OOEV sync',
-        configuration_panel_enable_ooev_sync_tooltip: 'Add the possibility to sync with Où en êtes-vous ?. If an error occurs, be sure you are logged in.',
+        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
+        configuration_panel_enable_oeev_sync: 'Enable OEEV sync',
+        configuration_panel_enable_oeev_sync_tooltip: 'Add the possibility to sync with Où en êtes-vous ?',
         configuration_panel_enable_construction_max_ap: 'Use max AP in constructions',
         configuration_panel_enable_construction_max_ap_tooltip: 'While in the construction page, use your actual number of AP instead of the default 1 AP.',
         configuration_panel_hide_completed_constructions: 'Hide completed constructions',
@@ -173,9 +176,9 @@ var i18n = {
         configuration_panel_hide_rp_content: 'Hide RP content',
         configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
         configuration_panel_enable_bbh_sync: 'Enable BBH sync',
-        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes. If an error occurs, be sure you are logged in.',
-        configuration_panel_enable_ooev_sync: 'Enable OOEV sync',
-        configuration_panel_enable_ooev_sync_tooltip: 'Add the possibility to sync with Où en êtes-vous ?. If an error occurs, be sure you are logged in.',
+        configuration_panel_enable_bbh_sync_tooltip: 'Add the possibility to sync with BigBroth\'Hordes.',
+        configuration_panel_enable_oeev_sync: 'Enable OEEV sync',
+        configuration_panel_enable_oeev_sync_tooltip: 'Add the possibility to sync with Où en êtes-vous ?',
         configuration_panel_enable_construction_max_ap: 'Use max AP in constructions',
         configuration_panel_enable_construction_max_ap_tooltip: 'While in the construction page, use your actual number of AP instead of the default 1 AP.',
         configuration_panel_hide_completed_constructions: 'Hide completed constructions',
@@ -194,8 +197,7 @@ var i18n = {
 var D2NE = (function() {
     var self = {};
 
-    // Used as a key in the local storage (AMO compliant)
-    var LOCAL_STORAGE_D2NE_CONFIGURATION_KEY = 'extensions.d2ne.configuration';
+    var LOCAL_STORAGE_D2NE_CONFIGURATION_KEY = LOCAL_STORAGE_PREFIX + '.configuration';
 
     /**
      * The default configuration.
@@ -249,7 +251,7 @@ var D2NE = (function() {
             // Set to true to enable BigBroth'Hordes (http://bbh.fred26.fr/)
             enable_bbh_sync: false,
             // Set to true to enable Où en êtes-vous ? (http://www.oeev-hordes.com/)
-            enable_ooev_sync: false
+            enable_oeev_sync: false
         },
 
         // Set to true to enable the use of maximum AP in the constructions
@@ -296,7 +298,7 @@ var D2NE = (function() {
         _configuration.hide_rookie_mode = document.getElementById('d2ne_configuration_hide_rookie_mode').checked;
         _configuration.hide_rp_content = document.getElementById('d2ne_configuration_hide_rp_content').checked;
         _configuration.external_tools.enable_bbh_sync = document.getElementById('d2ne_configuration_enable_bbh_sync').checked;
-        _configuration.external_tools.enable_ooev_sync = document.getElementById('d2ne_configuration_enable_ooev_sync').checked;
+        _configuration.external_tools.enable_oeev_sync = document.getElementById('d2ne_configuration_enable_oeev_sync').checked;
         _configuration.enable_construction_max_ap = document.getElementById('d2ne_configuration_enable_construction_max_ap').checked;
         _configuration.hide_completed_constructions = document.getElementById('d2ne_configuration_hide_completed_constructions').checked;
         _configuration.enable_hero_bar_stat = document.getElementById('d2ne_configuration_enable_hero_bar_stat').checked;
@@ -318,7 +320,7 @@ var D2NE = (function() {
         document.getElementById('d2ne_configuration_hide_rookie_mode').checked = _configuration.hide_rookie_mode;
         document.getElementById('d2ne_configuration_hide_rp_content').checked = _configuration.hide_rp_content;
         document.getElementById('d2ne_configuration_enable_bbh_sync').checked = _configuration.external_tools.enable_bbh_sync;
-        document.getElementById('d2ne_configuration_enable_ooev_sync').checked = _configuration.external_tools.enable_ooev_sync;
+        document.getElementById('d2ne_configuration_enable_oeev_sync').checked = _configuration.external_tools.enable_oeev_sync;
         document.getElementById('d2ne_configuration_enable_construction_max_ap').checked = _configuration.enable_construction_max_ap;
         document.getElementById('d2ne_configuration_hide_completed_constructions').checked = _configuration.hide_completed_constructions;
         document.getElementById('d2ne_configuration_enable_hero_bar_stat').checked = _configuration.enable_hero_bar_stat;
@@ -336,15 +338,43 @@ var D2NE = (function() {
     };
 
     /**
-     * The available extern tools
+     * Extern tools
      */
     var _external_tools = {
+        oeev: {
+            site_id: 22,
+            local_storage_key: LOCAL_STORAGE_PREFIX + '.oeev_key',
+            configuration_panel_id: 'd2ne_configuration_enable_oeev_sync',
+            update: function(callback_success, callback_failure) {
+                portability.network_request(
+                    'POST',
+                    'http://www.oeev-hordes.com/',
+                    'key=' + localStorage[_external_tools.oeev.local_storage_key] + '&mode=json',
+                    {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    function(response_text) {
+                        if (response_text !== '{ "response": "Site mis à jour" }') {
+                            return callback_failure();
+                        }
+                        return callback_success();
+                    },
+                    function() {
+                        return callback_failure();
+                    }
+                );
+            }
+        },
+
         bbh: {
+            site_id: 51,
+            local_storage_key: LOCAL_STORAGE_PREFIX + '.bbh_key',
+            configuration_panel_id: 'd2ne_configuration_enable_bbh_sync',
             update: function(callback_success, callback_failure) {
                 portability.network_request(
                     'POST',
                     'http://bbh.fred26.fr/',
-                    'action=force_maj',
+                    'key=' + localStorage[_external_tools.bbh.local_storage_key] + '&action=force_maj',
                     {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
@@ -361,27 +391,37 @@ var D2NE = (function() {
                     }
                 );
             }
-        },
+        }
+    };
 
-        ooev: {
-            update: function(callback_success, callback_failure) {
-                portability.network_request(
-                    'POST',
-                    'http://www.oeev-hordes.com/',
-                    'key=c11d21a87965a867af6b1c33f18472cc4f40f3&mode=json',
-                    {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    function(response_text) {
-                        if (response_text !== '{ "response": "Site mis à jour" }') {
-                            return callback_failure();
-                        }
-                        return callback_success();
-                    },
-                    function() {
-                        return callback_failure();
-                    }
-                );
+    /**
+     * Fetch the external tools private keys.
+     */
+    var _fetch_tools_private_keys = function() {
+        var enable_tool_in_config_panel, tool_info, match;
+        var sk = d2n.get_sk();
+
+        for (var tool in _external_tools) {
+            tool_info = _external_tools[tool];
+
+            if (!js.is_defined(localStorage[tool_info.local_storage_key])) {
+                portability.network_request('GET', '/disclaimer?id=' + tool_info.site_id + ';sk=' + sk,
+                                            null, null,
+                                            function(data, param) {
+                                                match = data.match(/<input type="hidden" name="key" value="([a-f0-9]{38})"\/>/);
+                                                if (js.is_defined(match)) {
+                                                    localStorage[param.tool_info.local_storage_key] = match[1];
+                                                    document.getElementById(param.tool_info.configuration_panel_id).disabled = false;
+                                                } else {
+                                                    document.getElementById(param.tool_info.configuration_panel_id).disabled = true;
+                                                }
+                                            },
+                                            function(param) {
+                                                document.getElementById(param.tool_info.configuration_panel_id).disabled = true;
+                                            },
+                                            { tool_info: tool_info } );
+            } else {
+                document.getElementById(tool_info.configuration_panel_id).disabled = false;
             }
         }
     };
@@ -392,6 +432,7 @@ var D2NE = (function() {
     var _update_tools = function(tools_number) {
         var tools_updated = 0;
         var tools_update_aborted = 0;
+        var tools_number = 0;
 
         var images = document.querySelectorAll('#d2ne_external_tools_bar a img');
 
@@ -444,8 +485,15 @@ var D2NE = (function() {
                 continue;
             }
 
-            // else update it
             var tool_name = tool.split('_')[1].split('_')[0];
+
+            // if key hasn't been found, skip it
+            if (!js.is_defined(localStorage[_external_tools[tool_name].local_storage_key])) {
+                continue;
+            }
+
+            // else update it
+            ++tools_number;
             _external_tools[tool_name].update(function(response) {
                 tools_updated += 1;
                 handle_tool_update();
@@ -530,7 +578,7 @@ var D2NE = (function() {
                 // Create external tools bar
                 var external_tools_bar_div = js.jsonToDOM(
                     ["a", { "id": "d2ne_external_tools_bar" },
-                        ["a", { "href": "javascript:void(0)", "id": "d2ne_external_tools_bar_update", "class": "button", "onclick": function() { _update_tools(tools_number); } },
+                        ["a", { "href": "javascript:void(0)", "id": "d2ne_external_tools_bar_update", "class": "button", "onclick": function() { _update_tools(); } },
                             ["img", { "src": "/gfx/forum/smiley/h_calim.gif", "width": "19px", "height": "19px" }],
                             ["img", { "src": "/gfx/design/loading.gif", "width": "19px", "height": "19px", "style": "display: none;" }],
                             ["img", { "src": "/gfx/forum/smiley/h_smile.gif", "width": "19px", "height": "19px", "style": "display: none;" }],
@@ -840,13 +888,13 @@ var D2NE = (function() {
 
                                 // Seventh row
                                 ["tr", {},
-                                    // Enable OOEV sync
+                                    // Enable oeev sync
                                     ["td", {},
-                                        ["input", { "id": "d2ne_configuration_enable_ooev_sync", "type": "checkbox", "disabled": "disabled" }],
-                                        ["label", { "for": "d2ne_configuration_enable_ooev_sync" }, _i18n.configuration_panel_enable_ooev_sync]
+                                        ["input", { "id": "d2ne_configuration_enable_oeev_sync", "type": "checkbox", "disabled": "disabled" }],
+                                        ["label", { "for": "d2ne_configuration_enable_oeev_sync" }, _i18n.configuration_panel_enable_oeev_sync]
                                     ],
                                     ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_enable_ooev_sync_tooltip },
+                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_enable_oeev_sync_tooltip },
                                             ["img", { "src": _i18n.help_image_url, "alt": "" }],
                                         ]
                                     ],
@@ -1209,6 +1257,7 @@ var D2NE = (function() {
         _load_features();
         _load_external_tools(); // only if at least one tool is enabled
         _load_configuration_panel(); // defer loading until #main is found
+        _fetch_tools_private_keys();
         d2n.add_custom_events(); // add and fire custom events after initialisation
     };
 
@@ -1439,15 +1488,16 @@ var portability = (function() {
     var self = {};
 
     /**
-     * Execute an asynchronous network request
+     * Execute an asynchronous network request.
      * @param string method
      * @param string url
      * @param string data
      * @param JSON headers
      * @param callback onsuccess in case of success
      * @param callback onfailure in case of failure
+     * @param Object param An object given as an additional parameter to callbacks
      */
-    self.network_request = function(method, url, data, headers, onsuccess, onfailure) {
+    self.network_request = function(method, url, data, headers, onsuccess, onfailure, param) {
 
         // Google Chrome script / GreaseMonkey
         if (typeof GM_xmlhttpRequest !== 'undefined') {
@@ -1456,8 +1506,8 @@ var portability = (function() {
                 url: url,
                 data: data,
                 headers: headers,
-                onload: function(r) { onsuccess(r.responseText); },
-                onerror: function(r) { onfailure(); }
+                onload: function(r) { onsuccess(r.responseText, param); },
+                onerror: function(r) { onfailure(param); }
             });
         }
 
@@ -1466,10 +1516,10 @@ var portability = (function() {
             safari.self.addEventListener('message', function(event) {
                 switch (event.name) {
                     case 'network_request_succeed':
-                        return onsuccess(event.message);
+                        return onsuccess(event.message, param);
 
                     case 'network_request_failed':
-                        return onfailure();
+                        return onfailure(param);
                 }
             }, false);
 
@@ -1490,9 +1540,9 @@ var portability = (function() {
         xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState === 4) {
                 if (xmlhttp.status >= 200 && xmlhttp.status < 300) {
-                    return onsuccess(xmlhttp.responseText);
+                    return onsuccess(xmlhttp.responseText, param);
                 }
-                return onfailure();
+                return onfailure(param);
             }
         };
         xmlhttp.send(data);
