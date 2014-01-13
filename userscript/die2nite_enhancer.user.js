@@ -679,7 +679,7 @@ var D2NE = (function() {
                     ["div", {},
                         ["h1", {},
                             ["img", { "src": "/gfx/forum/smiley/h_city_up.gif", "alt": "" }],
-                            ["span", { "style": "display: none;" }, _i18n.configuration_panel_title]
+                            ["span", { "style": "display: none;" }, ' ' + _i18n.configuration_panel_title]
                         ],
 
                         ["div", { "style": "display: none;" },
