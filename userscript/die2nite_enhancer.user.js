@@ -615,13 +615,20 @@ var D2NE = (function() {
                     'text-align: justify;' +
                     'border-bottom: 1px dashed #ddab76;' +
                 '}' +
+                '#d2ne_configuration_panel table tr:nth-child(2) td {' +
+                    'padding-top: 6px;' +
+                '}' +
+                '#d2ne_configuration_panel table tr:nth-child(6) td:nth-child(-n + 2) {' +
+                    'border-bottom: 1px dotted rgba(221, 171, 118, 0.5);' +
+                '}' +
                 '#d2ne_configuration_panel table tr:last-child td {' +
                     'padding-top: 4px;' +
                     'text-align: right;' +
                     'border-top: 1px dashed #ddab76;' +
                 '}' +
+
                 '#d2ne_configuration_panel table tr td:nth-child(2) {' +
-                    'padding-right: 10px;' +
+                    'padding-right: 5px;' +
                     'border-right: 1px dotted rgba(221, 171, 118, 0.5);' +
                 '}' +
                 '#d2ne_configuration_panel table tr td:nth-child(3) {' +
@@ -681,6 +688,7 @@ var D2NE = (function() {
                                     ["td", { "colspan": 4 }, _i18n.configuration_panel_script_description]
                                 ],
 
+                                // First row
                                 ["tr", {},
                                     // Enable shortcuts
                                     ["td", {},
@@ -705,6 +713,7 @@ var D2NE = (function() {
                                     ]
                                 ],
 
+                                // Second row
                                 ["tr", {},
                                     // Highlight AP
                                     ["td", {},
@@ -729,6 +738,7 @@ var D2NE = (function() {
                                     ]
                                 ],
 
+                                // Third row
                                 ["tr", {},
                                     // Enable construction max AP
                                     ["td", {},
@@ -753,14 +763,15 @@ var D2NE = (function() {
                                     ]
                                 ],
 
+                                // Fourth row
                                 ["tr", {},
-                                    // Enable BBH sync
+                                    // Hide completed constructions
                                     ["td", {},
-                                        ["input", { "id": "d2ne_configuration_enable_bbh_sync", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_enable_bbh_sync" }, _i18n.configuration_panel_enable_bbh_sync]
+                                        ["input", { "id": "d2ne_configuration_hide_completed_constructions", "type": "checkbox" }],
+                                        ["label", { "for": "d2ne_configuration_hide_completed_constructions" }, _i18n.configuration_panel_hide_completed_constructions]
                                     ],
                                     ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_enable_bbh_sync_tooltip },
+                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_hide_completed_constructions_tooltip },
                                             ["img", { "src": _i18n.help_image_url, "alt": "" }],
                                         ]
                                     ],
@@ -777,14 +788,15 @@ var D2NE = (function() {
                                     ]
                                 ],
 
+                                // Fifth row
                                 ["tr", {},
-                                    // Enable OOEV sync
+                                    // Enable hero bar stat
                                     ["td", {},
-                                        ["input", { "id": "d2ne_configuration_enable_ooev_sync", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_enable_ooev_sync" }, _i18n.configuration_panel_enable_ooev_sync]
+                                        ["input", { "id": "d2ne_configuration_enable_hero_bar_stat", "type": "checkbox" }],
+                                        ["label", { "for": "d2ne_configuration_enable_hero_bar_stat" }, _i18n.configuration_panel_enable_hero_bar_stat]
                                     ],
                                     ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_enable_ooev_sync_tooltip },
+                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_enable_hero_bar_stat_tooltip },
                                             ["img", { "src": _i18n.help_image_url, "alt": "" }],
                                         ]
                                     ],
@@ -801,14 +813,15 @@ var D2NE = (function() {
                                     ]
                                 ],
 
+                                // Sixth row
                                 ["tr", {},
-                                    // Hide completed constructions
+                                    // Enable BBH sync
                                     ["td", {},
-                                        ["input", { "id": "d2ne_configuration_hide_completed_constructions", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_hide_completed_constructions" }, _i18n.configuration_panel_hide_completed_constructions]
+                                        ["input", { "id": "d2ne_configuration_enable_bbh_sync", "type": "checkbox", "disabled": "disabled" }],
+                                        ["label", { "for": "d2ne_configuration_enable_bbh_sync" }, _i18n.configuration_panel_enable_bbh_sync]
                                     ],
                                     ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_hide_completed_constructions_tooltip },
+                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_enable_bbh_sync_tooltip },
                                             ["img", { "src": _i18n.help_image_url, "alt": "" }],
                                         ]
                                     ],
@@ -825,14 +838,15 @@ var D2NE = (function() {
                                     ]
                                 ],
 
+                                // Seventh row
                                 ["tr", {},
-                                    // Enable hero bar stat
+                                    // Enable OOEV sync
                                     ["td", {},
-                                        ["input", { "id": "d2ne_configuration_enable_hero_bar_stat", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_enable_hero_bar_stat" }, _i18n.configuration_panel_enable_hero_bar_stat]
+                                        ["input", { "id": "d2ne_configuration_enable_ooev_sync", "type": "checkbox", "disabled": "disabled" }],
+                                        ["label", { "for": "d2ne_configuration_enable_ooev_sync" }, _i18n.configuration_panel_enable_ooev_sync]
                                     ],
                                     ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_enable_hero_bar_stat_tooltip },
+                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_enable_ooev_sync_tooltip },
                                             ["img", { "src": _i18n.help_image_url, "alt": "" }],
                                         ]
                                     ],
@@ -850,7 +864,7 @@ var D2NE = (function() {
                                 ],
 
                                 ["tr", {},
-                                    ["td", { "colspan": "4" },
+                                    ["td", { "colspan": 4 },
                                         ["a", { "href": "javascript:void(0)", "id": "d2ne_configuration_save", "class": "button",
                                                 "onclick": function() { _save_configuration(); js.reload(); } },
                                               _i18n.configuration_panel_save_button]
@@ -858,7 +872,7 @@ var D2NE = (function() {
                                 ],
 
                                 ["tr", {},
-                                    ["td", { "colspan": "4" },
+                                    ["td", { "colspan": 4 },
                                         ["a", { "href": PROJECT_PAGE, "target": "_blank" }, SCRIPT_NAME + ' v' + SCRIPT_VERSION]
                                     ]
                                 ]

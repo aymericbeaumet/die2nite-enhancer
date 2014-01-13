@@ -1,6 +1,7 @@
 v0.0.4
 - Change local storage prefix to conform with AMO
 - Use jsonToDOM (more cleaner way to inject config panel / tools bar)
+- Rearrange the configuration panel
 
 v0.0.3
 - Add Safari wrapper extension
