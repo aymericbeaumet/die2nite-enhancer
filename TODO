@@ -12,5 +12,4 @@ Verification:
 - Make sure OOEV works fine
 
 Tech:
-- Use jsonToDOM (https://developer.mozilla.org/en-US/Add-ons/Overlay_Extensions/XUL_School/DOM_Building_and_HTML_Insertion)
 - Find a solution to fix Safari XmlHttpRequest problem with external tools
