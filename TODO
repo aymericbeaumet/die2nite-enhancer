@@ -8,8 +8,5 @@ Improvement:
 Bugs:
 - Fix hero bar stat while not in town
 
-Verification:
-- Make sure OOEV works fine
-
 Tech:
 - Find a solution to fix Safari XmlHttpRequest problem with external tools
