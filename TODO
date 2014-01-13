@@ -1,10 +1,17 @@
+Improvement:
 - Autosync
 - Highlight the recommended construction
 - Watch for script update
 - Remove warning when taking an object in bank (keep it if anti-abuse protection)
 - Interpret image/video urls in forum posts
 
+Bugs:
+- Fix hero bar stat while not in town
+
+Verification:
 - Make sure OOEV works fine
 
+Tech:
+- Use jsonToDOM (https://developer.mozilla.org/en-US/Add-ons/Overlay_Extensions/XUL_School/DOM_Building_and_HTML_Insertion)
+- Prefix preferences with "extensions.d2ne"
 - Find a solution to fix Safari XmlHttpRequest problem with external tools
-- Fix hero bar stat while not in town
