@@ -1223,12 +1223,12 @@ var D2NE = (function() {
 
                         var fill_bar = function() {
                             js.wait_for_selector('div.heroUpBar div.hfront', function(node) {
-                                if (node.innerHTML !== '') {
+                                if (node.textContent !== '') {
                                     return setTimeout(function() {
                                         fill_bar();
                                     }, 50);
                                 }
-                                node.innerHTML = parseInt(percent) + '%';
+                                node.textContent = parseInt(percent) + '%';
                             });
                         };
                         fill_bar();
@@ -1395,7 +1395,7 @@ var d2n = (function() {
         var el = document.querySelector('#movesCounter > div');
 
         if (js.is_defined(el)) {
-            return el.innerHTML.split('>')[1].split('<')[0];
+            return el.textContent.split('>')[1].split('<')[0];
         }
         return null;
     }
@@ -1627,13 +1627,12 @@ var js = (function() {
      */
     self.injectCSS = function(code)
     {
-        var encapsulated_css = document.createElement('style');
-        encapsulated_css.type = 'text/css';
-
-        encapsulated_css.innerHTML = code;
+        var css = document.createElement('style');
+        css.setAttribute('type', 'text/css');
+        css.textContent = code;
 
         self.wait_for_selector('html > head', function(node) {
-            node.appendChild(encapsulated_css);
+            node.appendChild(css);
         });
     }
 
