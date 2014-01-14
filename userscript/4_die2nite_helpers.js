@@ -173,12 +173,8 @@ var D2N_helpers = (function() {
      */
     function add_custom_events()
     {
-        // Watch for the first hash on page loading
-        var watch_for_hash = function() {
-            if (window.location.hash === '') {
-                return setTimeout(function() { watch_for_hash(); }, 50);
-            }
-
+        // Emit a hash change event
+        var emit_hash_change_event = function() {
             var event = new CustomEvent(
                 "d2n_hashchange", {
                     detail: {
@@ -190,30 +186,19 @@ var D2N_helpers = (function() {
             );
             document.dispatchEvent(event);
         };
+
+        // Watch for the first hash on page loading
+        var watch_for_hash = function() {
+            if (window.location.hash === '') {
+                return setTimeout(function() { watch_for_hash(); }, 50);
+            }
+            emit_hash_change_event();
+        };
         watch_for_hash();
 
         // Watch the hash
-        js.injectJS(function() {
-            js.BackForward.updateHash = function() {
-                // Original MT code
-                var n = '#' + js.BackForward.current;
-                js.BackForward.lastHash = js.Lib.window.location.hash;
-                if(n == js.BackForward.lastHash) return;
-                js.Lib.window.location.hash = n;
-                js.BackForward.lastHash = js.Lib.window.location.hash;
-
-                // Emit an event when the hash changes
-                var event = new CustomEvent(
-                    'd2n_hashchange', {
-                        detail: {
-                            hash: window.location.hash
-                        },
-                        bubbles: true,
-                        cancelable: true
-                    }
-                );
-                document.dispatchEvent(event);
-            };
+        window.addEventListener('hashchange', function(event) {
+            emit_hash_change_event();
         });
 
         // Watch the AP
