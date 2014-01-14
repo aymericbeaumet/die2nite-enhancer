@@ -19,7 +19,7 @@
   "content_scripts": [{
     "matches": __MATCHING_URL_JSON_ARRAY__,
     "js": [
-      "die2nite_enhancer.user.js"
+      "userscript.user.js"
     ]
   }],
 

@@ -27,7 +27,7 @@
 		<dict>
 			<key>End</key>
 			<array>
-				<string>die2nite_enhancer.user.js</string>
+				<string>userscript.user.js</string>
 			</array>
 		</dict>
 	</dict>
