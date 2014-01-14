@@ -4,6 +4,7 @@ Improvement:
 - Watch for script update
 - Remove warning when taking an object in bank (keep it if anti-abuse protection)
 - Interpret image/video urls in forum posts
+- Remove scroll bar on soul distinctions
 
 Tech:
 - Find a solution to fix Safari XmlHttpRequest problem with external tools
