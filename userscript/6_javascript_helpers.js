@@ -2,7 +2,72 @@
  * Generic JavaScript helpers
  */
 
-var js = (function() { var self = {};
+var js = (function() {
+
+/*
+  public:
+*/
+
+    /**
+     * Execute an asynchronous network request.
+     * @param string method
+     * @param string url
+     * @param string data
+     * @param JSON headers
+     * @param callback onsuccess in case of success
+     * @param callback onfailure in case of failure
+     * @param Object param An object given as an additional parameter to callbacks
+     */
+    function network_request(method, url, data, headers, onsuccess, onfailure, param) {
+
+        // Google Chrome script / GreaseMonkey
+        if (typeof GM_xmlhttpRequest !== 'undefined') {
+            return GM_xmlhttpRequest({
+                method: method,
+                url: url,
+                data: data,
+                headers: headers,
+                onload: function(r) { onsuccess(r.responseText, param); },
+                onerror: function(r) { onfailure(param); }
+            });
+        }
+
+        // Safari needs to dispatch the request to the global page
+        if (typeof safari !== 'undefined') {
+            safari.addEventListener('message', function(event) {
+                switch (event.name) {
+                    case 'network_request_succeed':
+                        return onsuccess(event.message, param);
+
+                    case 'network_request_failed':
+                        return onfailure(param);
+                }
+            }, false);
+
+            return safari.tab.dispatchMessage('do_network_request', {
+                method: method,
+                url: url,
+                data: data,
+                headers: headers
+            });
+        }
+
+        // All other cases
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open(method, url, true);
+        for (var header in headers) {
+            xmlhttp.setRequestHeader(header, headers[header]);
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState === 4) {
+                if (xmlhttp.status >= 200 && xmlhttp.status < 300) {
+                    return onsuccess(xmlhttp.responseText, param);
+                }
+                return onfailure(param);
+            }
+        };
+        xmlhttp.send(data);
+    }
 
     /**
      * Check if a given variable is defined and is not null.
@@ -10,7 +75,7 @@ var js = (function() { var self = {};
      * @return bool true if the variable is defined and is not null, otherwise
      * false
      */
-    self.is_defined = function(variable)
+    function is_defined(variable)
     {
         return (typeof variable !== 'undefined' && variable !== null);
     }
@@ -25,10 +90,10 @@ var js = (function() { var self = {};
      * @param integer time_limit The maximum amount of time (in ms) to wait
      * between two binds.
      */
-    self.keydown_event = function(callback, time_limit)
+    function keydown_event(callback, time_limit)
     {
         // defaut 1000ms between two key strokes
-        time_limit = (self.is_defined(time_limit)) ? time_limit : 1000;
+        time_limit = (is_defined(time_limit)) ? time_limit : 1000;
 
         document.addEventListener('keydown', function(event) {
             // Cancel event if the cursor is in an input field or textarea
@@ -58,13 +123,13 @@ var js = (function() { var self = {};
      * Inject CSS code in the page context.
      * @param string code The CSS code to inject
      */
-    self.injectCSS = function(code)
+    function injectCSS(code)
     {
         var css = document.createElement('style');
         css.setAttribute('type', 'text/css');
         css.textContent = code;
 
-        self.wait_for_selector('html > head', function(node) {
+        wait_for_selector('html > head', function(node) {
             node.appendChild(css);
         });
     }
@@ -74,7 +139,7 @@ var js = (function() { var self = {};
      * @link http://wiki.greasespot.net/Content_Script_Injection
      * @param string/callback source The JS code to inject
      */
-    self.injectJS = function(source)
+    function injectJS(source)
     {
         // Check for function input.
         if ('function' === typeof source) {
@@ -91,22 +156,23 @@ var js = (function() { var self = {};
 
         // Insert the script node into the page, so it will run, and immediately
         // remove it to clean up.
-        self.wait_for_selector('html > body', function(node) {
+        wait_for_selector('html > body', function(node) {
             node.appendChild(script);
             node.removeChild(script);
         });
-    };
+    }
 
     /**
      * Remove an DOM node.
      * @link http://stackoverflow.com/a/14782/1071486
      * @param DOMNode node The DOM node to delete
      */
-    self.remove_DOM_node = function(node) {
-        if (self.is_defined(node)) {
+    function remove_DOM_node(node)
+    {
+        if (is_defined(node)) {
             node.parentNode.removeChild(node);
         }
-    };
+    }
 
     /*
      * Recursively merge properties of n objects. The first object properties
@@ -115,7 +181,8 @@ var js = (function() { var self = {};
      * @param object... Some objects to merge.
      * @return object A new merged object
      */
-    self.merge = function() {
+    function merge()
+    {
         var obj = {};
         var il = arguments.length;
         var key;
@@ -132,36 +199,39 @@ var js = (function() { var self = {};
         }
 
         return obj;
-    };
+    }
 
     /**
      * Execute a callback when a node with the given $id is found.
      * @param string id The id to search
      * @param callback callback The function to call when a result is found
      */
-    self.wait_for_id = function(id, callback) {
+    function wait_for_id(id, callback)
+    {
         var el;
 
         if (js.is_defined(el = document.getElementById(id))) {
             return callback(el);
         }
         setTimeout(function() {
-            self.wait_for_id(id, callback);
+            wait_for_id(id, callback);
         }, 50);
-    };
+    }
 
     /**
      * Redirect to the given url.
      * @param string url The url to redirect to
      */
-    self.redirect = function(url) {
+    function redirect(url)
+    {
         window.location.href = url;
-    };
+    }
 
     /**
-     * Reload the current page
+     * Reload the current page.
      */
-    self.reload = function() {
+    function reload()
+    {
         location.reload();
     }
 
@@ -172,7 +242,8 @@ var js = (function() { var self = {};
      * @param string/RegExp The regex to match the string with
      * @return bool true if the regex matches the string, false otherwise
      */
-    self.match_regex = function(string, regex) {
+    function match_regex(string, regex)
+    {
         var r;
 
         if (regex instanceof RegExp) {
@@ -189,16 +260,17 @@ var js = (function() { var self = {};
      * @param string selector The selector to execute
      * @param callback callback The function to call when a result is found
      */
-    self.wait_for_selector = function(selector, callback) {
+    function wait_for_selector(selector, callback)
+    {
         var el;
 
         if (js.is_defined(el = document.querySelector(selector))) {
             return callback(el);
         }
         setTimeout(function() {
-            self.wait_for_selector(selector, callback);
+            wait_for_selector(selector, callback);
         }, 50);
-    };
+    }
 
     /**
      * Execute a callback with an array containing all the nodes matching the
@@ -206,16 +278,17 @@ var js = (function() { var self = {};
      * @param string selector The selector to execute
      * @param callback callback The function to call when a result is found
      */
-    self.wait_for_selector_all = function(selector, callback) {
+    function wait_for_selector_all(selector, callback)
+    {
         var el;
 
         if (js.is_defined(el = document.querySelectorAll(selector))) {
             return callback(el);
         }
         setTimeout(function() {
-            self.wait_for_selector_all(selector, callback);
+            wait_for_selector_all(selector, callback);
         }, 50);
-    };
+    }
 
     /**
      * Safely insert code through JSON.
@@ -226,7 +299,8 @@ var js = (function() { var self = {};
         xul: "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
     };
     jsonToDOM.defaultNamespace = jsonToDOM.namespaces.html;
-    function jsonToDOM(xml, doc, nodes) {
+    function jsonToDOM(xml, doc, nodes)
+    {
         function namespace(name) {
             var m = /^(?:(.*):)?(.*)$/.exec(name);
             return [jsonToDOM.namespaces[m[1]], m[2]];
@@ -270,7 +344,25 @@ var js = (function() { var self = {};
         }
         return tag.apply(null, xml);
     }
-    self.jsonToDOM = jsonToDOM;
 
-    return self;
+/*
+*/
+
+    return {
+        network_request: network_request,
+        is_defined: is_defined,
+        keydown_event: keydown_event,
+        injectCSS: injectCSS,
+        injectJS: injectJS,
+        remove_DOM_node: remove_DOM_node,
+        merge: merge,
+        wait_for_id: wait_for_id,
+        redirect: redirect,
+        reload: reload,
+        match_regex: match_regex,
+        wait_for_selector: wait_for_selector,
+        wait_for_selector_all: wait_for_selector_all,
+        jsonToDOM: jsonToDOM
+    };
+
 })();

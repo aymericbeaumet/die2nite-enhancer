@@ -154,7 +154,7 @@ var D2NE = (function() { var self = {};
             local_storage_key: LOCAL_STORAGE_PREFIX + '.oeev_key',
             configuration_panel_id: 'd2ne_configuration_enable_oeev_sync',
             update: function(callback_success, callback_failure) {
-                portability.network_request(
+                js.network_request(
                     'POST',
                     'http://www.oeev-hordes.com/',
                     'key=' + localStorage[_external_tools.oeev.local_storage_key] + '&mode=json',
@@ -179,7 +179,7 @@ var D2NE = (function() { var self = {};
             local_storage_key: LOCAL_STORAGE_PREFIX + '.bbh_key',
             configuration_panel_id: 'd2ne_configuration_enable_bbh_sync',
             update: function(callback_success, callback_failure) {
-                portability.network_request(
+                js.network_request(
                     'POST',
                     'http://bbh.fred26.fr/',
                     'key=' + localStorage[_external_tools.bbh.local_storage_key] + '&action=force_maj',
@@ -212,7 +212,7 @@ var D2NE = (function() { var self = {};
                 tool_info = _external_tools[tool];
 
                 if (!js.is_defined(localStorage[tool_info.local_storage_key])) {
-                    portability.network_request('GET',
+                    js.network_request('GET',
                         window.location.host + '/disclaimer?id=' + tool_info.site_id + ';sk=' + sk,
                         null, null,
                         function(data, param) {
