@@ -1,3 +1,6 @@
+v0.0.5
+- Replace innerHTML with textContent
+
 v0.0.4
 - Change local storage prefix to conform with AMO
 - Use jsonToDOM (more cleaner way to inject config panel / tools bar)
