@@ -6,6 +6,7 @@ v0.0.5
 - Automatically clean external tools API key cache when needed
 - Disable external tools API key fetching when not available
 - Fix AP modification event
+- Fix hero bar stat reload problem while not in town
 
 v0.0.4
 - Change local storage prefix to conform with AMO
