@@ -5,8 +5,5 @@ Improvement:
 - Remove warning when taking an object in bank (keep it if anti-abuse protection)
 - Interpret image/video urls in forum posts
 
-Bugs:
-- Fix hero bar stat while not in town
-
 Tech:
 - Find a solution to fix Safari XmlHttpRequest problem with external tools

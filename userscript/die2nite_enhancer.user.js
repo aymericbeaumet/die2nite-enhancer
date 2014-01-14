@@ -1205,7 +1205,8 @@ var D2NE = (function() {
             );
 
             document.addEventListener('d2n_hashchange', function() {
-                if (!(d2n.is_on_city_page('ghost') || d2n.is_on_city_page('ghost_exp'))) {
+                if (!(d2n.is_on_city_page('ghost') || d2n.is_on_city_page('ghost_exp') ||
+                      d2n.is_on_page_not_in_city('ghost') || d2n.is_on_page_not_in_city('ghost_exp'))) {
                     return;
                 }
 
@@ -1313,6 +1314,18 @@ var d2n = (function() {
         ) || js.match_regex(
             window.location.hash,
             '^#ghost\\/city\\?go=' + _pages_url[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$'
+        );
+    };
+
+    /**
+     * Check if the given page is loaded (not in city).
+     * @param string page The page to check (a key from _pages_url)
+     * @return string true if on the selected page (not in city)
+     */
+    self.is_on_page_not_in_city = function(page) {
+        return js.match_regex(
+            window.location.hash,
+            '^#ghost\\?go=' + _pages_url[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$'
         );
     };
 

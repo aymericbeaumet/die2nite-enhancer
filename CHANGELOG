@@ -3,6 +3,7 @@ v0.0.4
 - Use jsonToDOM (more cleaner way to inject config panel / tools bar)
 - Rearrange the configuration panel
 - Use API keys to sync with external tools (-> fix OEEV sync)
+- Fix hero bar stat while not in town
 
 v0.0.3
 - Add Safari wrapper extension
