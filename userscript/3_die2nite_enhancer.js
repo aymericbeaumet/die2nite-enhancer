@@ -518,12 +518,27 @@ var D2NE = (function() {
      */
     function fetch_tools_private_keys()
     {
+        // Drop private key cache when the user go on the settings page
+        // (potential API key reset)
+        document.addEventListener('d2n_hashchange', function() {
+            if (!D2N_helpers.is_on_page('settings')) {
+                return;
+            }
+
+            console.log('CLEAN CACHE');
+
+            // Clean the cache for all the external tools
+            for (var tool in external_tools_) {
+                localStorage[external_tools_[tool].local_storage_key] = null;
+            }
+        });
+
         var enable_tool_in_config_panel, tool_info, match;
         var sk = D2N_helpers.get_sk(function(sk) {
             for (var tool in external_tools_) {
                 tool_info = external_tools_[tool];
 
-                if (!js.is_defined(localStorage[tool_info.local_storage_key])) {
+                if (localStorage[tool_info.local_storage_key] !== null) {
                     js.network_request('GET', '/disclaimer?id=' + tool_info.site_id + ';sk=' + sk,
                         null, null,
                         function(data, param) {

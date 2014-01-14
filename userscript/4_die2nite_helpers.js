@@ -275,7 +275,7 @@ var D2N_helpers = (function() {
 
         // Emit an event when the gamebody is reloaded
         var observer = new MutationObserver(function(mutations) {
-            // Emit an event when the ap changes
+            // Emit an event when the gamebody is reloaded
             emit_gamebody_reloaded_event();
         });
         js.wait_for_id('gamebody', function(node) {
@@ -303,7 +303,8 @@ var D2N_helpers = (function() {
 
         // in/out of town
         ghost: 'ghost/user',
-        ghost_exp: 'ghost/heroUpgrades'
+        ghost_exp: 'ghost/heroUpgrades',
+        settings: 'ghost/options'
     };
 
     var websites_language_ = {
