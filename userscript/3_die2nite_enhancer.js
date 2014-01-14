@@ -538,6 +538,11 @@ var D2NE = (function() {
             for (var tool in external_tools_) {
                 tool_info = external_tools_[tool];
 
+                // if website is disabled, go to the next tool
+                if (localStorage[tool_info.local_storage_key] === -1) {
+                    continue;
+                }
+
                 if (localStorage[tool_info.local_storage_key] !== null) {
                     js.network_request('GET', '/disclaimer?id=' + tool_info.site_id + ';sk=' + sk,
                         null, null,
@@ -548,6 +553,7 @@ var D2NE = (function() {
                                 document.getElementById(param.tool_info.configuration_panel_id).disabled = false;
                             } else {
                                 document.getElementById(param.tool_info.configuration_panel_id).disabled = true;
+                                localStorage[param.tool_info.local_storage_key] = -1; // disable this tool
                             }
                         },
                         function(param) {
