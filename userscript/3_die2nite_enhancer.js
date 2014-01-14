@@ -2,7 +2,29 @@
  * Die2Nite Enhancer
  */
 
-var D2NE = (function() { var self = {};
+var D2NE = (function() {
+
+/*
+  public:
+*/
+
+    /**
+     * Set up the script.
+     */
+    function init()
+    {
+        load_configuration();
+        load_internationalisation();
+        load_features();
+        load_external_tools(); // only if at least one tool is enabled
+        load_configuration_panel(); // defer loading until #main is found
+        fetch_tools_private_keys();
+        D2N_helpers.add_custom_events(); // add and fire custom events after initialisation
+    };
+
+/*
+  private:
+*/
 
     var LOCAL_STORAGE_PREFIX = 'extensions.d2ne';
     var LOCAL_STORAGE_D2NE_CONFIGURATION_KEY = LOCAL_STORAGE_PREFIX + '.configuration';
@@ -10,7 +32,7 @@ var D2NE = (function() { var self = {};
     /**
      * The default configuration.
      */
-    var _default_configuration = {
+    var default_configuration_ = {
         // Set to true to enable binds
         enable_shortcuts: false,
         // The global bind (e.g.: to go to the bank `gb`)
@@ -75,80 +97,17 @@ var D2NE = (function() { var self = {};
     /**
      * The loaded configuration.
      */
-    var _configuration = null;
-
-    /**
-     * Load the configuration by merging the one found in the local storage (if
-     * any) into the default one.
-     */
-    var _load_configuration = function() {
-        var saved_configuration = localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY];
-
-        if (js.is_defined(saved_configuration)) {
-            _configuration = js.merge(_default_configuration, JSON.parse(saved_configuration));
-        } else {
-            _configuration = _default_configuration;
-        }
-    };
-
-    /**
-     * Save the configuration found in the configuration panel into the local
-     * storage.
-     */
-    var _save_configuration = function() {
-        _configuration.enable_shortcuts = document.getElementById('d2ne_configuration_enable_shortcuts').checked;
-        _configuration.hide_hero_adds = document.getElementById('d2ne_configuration_hide_hero_adds').checked;
-        _configuration.highlight_ap = document.getElementById('d2ne_configuration_highlight_ap').checked;
-        _configuration.hide_help = document.getElementById('d2ne_configuration_hide_help').checked;
-        _configuration.hide_twinoid_bar = document.getElementById('d2ne_configuration_hide_twinoid_bar').checked;
-        _configuration.hide_footer = document.getElementById('d2ne_configuration_hide_footer').checked;
-        _configuration.hide_pegi = document.getElementById('d2ne_configuration_hide_pegi').checked;
-        _configuration.hide_rookie_mode = document.getElementById('d2ne_configuration_hide_rookie_mode').checked;
-        _configuration.hide_rp_content = document.getElementById('d2ne_configuration_hide_rp_content').checked;
-        _configuration.external_tools.enable_bbh_sync = document.getElementById('d2ne_configuration_enable_bbh_sync').checked;
-        _configuration.external_tools.enable_oeev_sync = document.getElementById('d2ne_configuration_enable_oeev_sync').checked;
-        _configuration.enable_construction_max_ap = document.getElementById('d2ne_configuration_enable_construction_max_ap').checked;
-        _configuration.hide_completed_constructions = document.getElementById('d2ne_configuration_hide_completed_constructions').checked;
-        _configuration.enable_hero_bar_stat = document.getElementById('d2ne_configuration_enable_hero_bar_stat').checked;
-
-        localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY] = JSON.stringify(_configuration);
-    }
-
-    /**
-     * Inject the configuration retrieved from the local storage.
-     */
-    var _inject_configuration = function() {
-        document.getElementById('d2ne_configuration_enable_shortcuts').checked = _configuration.enable_shortcuts;
-        document.getElementById('d2ne_configuration_hide_hero_adds').checked = _configuration.hide_hero_adds;
-        document.getElementById('d2ne_configuration_highlight_ap').checked = _configuration.highlight_ap;
-        document.getElementById('d2ne_configuration_hide_help').checked = _configuration.hide_help;
-        document.getElementById('d2ne_configuration_hide_twinoid_bar').checked = _configuration.hide_twinoid_bar;
-        document.getElementById('d2ne_configuration_hide_footer').checked = _configuration.hide_footer;
-        document.getElementById('d2ne_configuration_hide_pegi').checked = _configuration.hide_pegi;
-        document.getElementById('d2ne_configuration_hide_rookie_mode').checked = _configuration.hide_rookie_mode;
-        document.getElementById('d2ne_configuration_hide_rp_content').checked = _configuration.hide_rp_content;
-        document.getElementById('d2ne_configuration_enable_bbh_sync').checked = _configuration.external_tools.enable_bbh_sync;
-        document.getElementById('d2ne_configuration_enable_oeev_sync').checked = _configuration.external_tools.enable_oeev_sync;
-        document.getElementById('d2ne_configuration_enable_construction_max_ap').checked = _configuration.enable_construction_max_ap;
-        document.getElementById('d2ne_configuration_hide_completed_constructions').checked = _configuration.hide_completed_constructions;
-        document.getElementById('d2ne_configuration_enable_hero_bar_stat').checked = _configuration.enable_hero_bar_stat;
-    };
+    var configuration_ = null;
 
     /**
      * The script strings.
      */
-    var _i18n = null;
-
-    var _load_internationalisation = function() {
-        var language = D2N_helpers.get_website_language();
-
-        _i18n = i18n[language];
-    };
+    var i18n_ = null;
 
     /**
-     * Extern tools
+     * External tools
      */
-    var _external_tools = {
+    var external_tools_ = {
         oeev: {
             site_id: 22,
             local_storage_key: LOCAL_STORAGE_PREFIX + '.oeev_key',
@@ -157,7 +116,7 @@ var D2NE = (function() { var self = {};
                 js.network_request(
                     'POST',
                     'http://www.oeev-hordes.com/',
-                    'key=' + localStorage[_external_tools.oeev.local_storage_key] + '&mode=json',
+                    'key=' + localStorage[external_tools_.oeev.local_storage_key] + '&mode=json',
                     {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
@@ -182,7 +141,7 @@ var D2NE = (function() { var self = {};
                 js.network_request(
                     'POST',
                     'http://bbh.fred26.fr/',
-                    'key=' + localStorage[_external_tools.bbh.local_storage_key] + '&action=force_maj',
+                    'key=' + localStorage[external_tools_.bbh.local_storage_key] + '&action=force_maj',
                     {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
@@ -203,17 +162,371 @@ var D2NE = (function() { var self = {};
     };
 
     /**
+     * All features available in this extension
+     */
+    var features_ = {
+
+        ////
+        hide_twinoid_bar: function() {
+            js.injectCSS(
+                '#tid_bar {' +
+                    'display: none;' +
+                    'position: fixed;' +
+                    'z-index: 15;' +
+                '}' +
+                '#gamebody div.infoBar {' +
+                    'top: 111px;' +
+                '}' +
+                'a#backReboot {' +
+                    'top: 178px;' +
+                '}'
+            );
+
+            js.wait_for_id('tid_bar', function(node) {
+                var tid_cache = node;
+                var tid_hidden = true;
+                js.wait_for_selector_all('.tid_sidePanel', function(nodes) {
+                    var show_tid = function() {
+                        tid_cache.style.display = 'block';
+                        tid_hidden = false;
+                    };
+
+                    var hide_tid = function() {
+                        tid_cache.style.display = 'none';
+                        tid_hidden = true;
+                    };
+
+                    document.body.addEventListener('mousemove', function(event) {
+                        // if on the top of the screen, display the bar
+                        if (tid_hidden && event.clientY <= 5) {
+                            show_tid();
+                        }
+                        // if not on the top of the screen, hide the bar if the
+                        // lateral panels are not visible
+                        else if (!tid_hidden && event.clientY > 32) {
+                            var tid_side_panels = document.getElementsByClassName('tid_sidePanel');
+                            var tid_side_panels_length = tid_side_panels.length;
+
+                            for (var i = 0; i < tid_side_panels_length; ++i) {
+                                var style = getComputedStyle(tid_side_panels[i]);
+
+                                if (style['visibility'] === 'visible') {
+                                    return;
+                                }
+                            }
+                            hide_tid();
+                        }
+                    }, false);
+                });
+            });
+        },
+
+        ////
+        enable_shortcuts: function() {
+            js.keydown_event(function(keycode, previous_keycode) {
+                if (previous_keycode !== configuration_.go_bind) {
+                    return;
+                }
+                if (D2N_helpers.is_outside()) { // abort if outside
+                    return;
+                }
+                for (var bind in configuration_.binds) {
+                    if (configuration_.binds[bind] === keycode) {
+                        return D2N_helpers.go_to_city_page(bind);
+                    }
+                }
+            });
+        },
+
+        ////
+        hide_hero_adds: function() {
+            js.injectCSS(
+                '.heroMode, #ghostHeroAd, #heroContainer, .heroAd, #ghostHeroChoose, .promoBt, .sondageBg {' +
+                    'display: none !important;' +
+                '}'
+            );
+        },
+
+        ////
+        highlight_ap: function() {
+            js.wait_for_id('movesCounter', function(node) {
+                var highlight = function() {
+                    D2N_helpers.get_number_of_ap(function(ap) {
+                        var colors = [
+                            'ff0000', // 0 AP
+                            'ff4700', // 1 AP
+                            'ff8e00', // 2 AP
+                            'ffd500', // 3 AP
+                            'e3ff00', // 4 AP
+                            '9cff00', // 5 AP
+                            '55ff00', // 6 AP
+                            '00ff00'  // 7 AP+
+                        ];
+
+                        while (ap >= colors.length) {
+                            --ap;
+                        }
+
+                        js.injectCSS(
+                            '#movesCounter {' +
+                                'border: 1px solid #' + colors[ap] + ' !important;' +
+                            '}'
+                        );
+                    });
+                };
+
+                // Highlight at load
+                highlight();
+
+                // Highlight on change
+                document.addEventListener('d2n_apchange', function() {
+                    highlight();
+                }, false);
+            });
+        },
+
+        ////
+        hide_help: function() {
+            js.injectCSS(
+                '#mapTips, a.button[href^="#city/exp?editor=1;sk="] + p, .helpLink, #generic_section > div > em:last-of-type {' +
+                    'display: none;' +
+                '}' +
+
+                // Hide all blue help boxes, but keep the watchwen button
+                '#generic_section {' +
+                    'position: relative;' +
+                    'top: 0;' +
+                    'left: 0;' +
+                '}' +
+                '.help {' +
+                    'position: absolute;' +
+                    'top: 0;' +
+                    'left: -1500px;' +
+                    'width: 0;' +
+                '}' +
+                '.help a.button {' +
+                    'position: absolute;' +
+                    'top: 131px;' +
+                    'left: 1499px;' +
+                '}' +
+                'ul#door_menu + script + div.help + table {' +
+                    'margin-top: 60px;' +
+                '}'
+            );
+        },
+
+        ////
+        hide_footer: function() {
+            js.injectCSS(
+                '#tid_bar_down {' +
+                    'display: none;' +
+                '}' +
+                '#fbAd {' +
+                    'height: 0;' +
+                    'overflow: hidden;' +
+                '}'
+            );
+        },
+
+        ////
+        hide_pegi: function() {
+            js.injectCSS(
+                '.pegi {' +
+                    'display: none;' +
+                '}'
+            );
+        },
+
+        ////
+        hide_rookie_mode: function() {
+            js.injectCSS(
+                'div.block.tutorialBlock, div.expertMode {' +
+                    'display: none;' +
+                '}'
+            );
+        },
+
+        ////
+        hide_rp_content: function() {
+            js.injectCSS(
+                '.ambiant, .flavor {' +
+                    'display: none;' +
+                '}'
+            );
+        },
+
+        ////
+        enable_construction_max_ap: function() {
+            var change_ap = function() {
+                if (!D2N_helpers.is_on_page_in_city('buildings')) {
+                    return;
+                }
+
+                D2N_helpers.get_number_of_ap(function(ap) {
+                    js.wait_for_selector('tr.banner.root_wall1', function() {
+                        var fields = document.querySelectorAll('div[id^="moreForm_"] form input[type="text"]');
+                        var fields_length = fields.length;
+
+                        for (var i = 0; i < fields_length; ++i) {
+                            fields[i].value = ap;
+                        }
+                    });
+                });
+            };
+
+            document.addEventListener('d2n_apchange', function() {
+                change_ap();
+            }, false);
+
+            document.addEventListener('d2n_hashchange', function() {
+                change_ap();
+            }, false);
+        },
+
+        ////
+        hide_completed_constructions: function() {
+            js.injectCSS(
+                'tr.building.done {' +
+                    'display: none;' +
+                '}'
+            );
+        },
+
+        ////
+        enable_hero_bar_stat: function() {
+            js.injectCSS(
+                'div.heroUpBar div.hfront {' +
+                'padding-left: 6px;' +
+                'text-align: center;' +
+                'font-family: "Century Gothic", "Arial", "Trebuchet MS", Verdana, sans-serif;' +
+                'font-size: 16pt;' +
+                'padding-top: 10px;' +
+                'color: #f0d79e;' +
+                'text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;' +
+                '}'
+            );
+
+            document.addEventListener('d2n_hashchange', function() {
+                if (!(D2N_helpers.is_on_page('ghost') || D2N_helpers.is_on_page('ghost_exp'))) {
+                    return;
+                }
+
+                js.wait_for_selector('#ghostImg img', function(node) {
+                    // abort if not hero
+                    if (node.alt !== 'ghost red') {
+                        return;
+                    }
+
+                    js.wait_for_selector('#ghost_pages img.hbar', function(node) {
+                        var width = parseFloat(node.style.width);
+                        var max_width = 583;
+                        var percent = width / max_width * 100;
+
+                        var fill_bar = function() {
+                            js.wait_for_selector('div.heroUpBar div.hfront', function(node) {
+                                if (node.textContent !== '') {
+                                    return setTimeout(function() {
+                                        fill_bar();
+                                    }, 50);
+                                }
+                                node.textContent = parseInt(percent) + '%';
+                            });
+                        };
+                        fill_bar();
+                    });
+                });
+            }, false);
+        }
+    };
+
+    /**
+     * Set tot true when the external tools bar is loaded.
+     */
+    var external_tools_loaded_ = false;
+
+    /**
+     * Load the configuration by merging the one found in the local storage (if
+     * any) into the default one.
+     */
+    function load_configuration()
+    {
+        var saved_configuration = localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY];
+
+        if (js.is_defined(saved_configuration)) {
+            configuration_ = js.merge(default_configuration_, JSON.parse(saved_configuration));
+        } else {
+            configuration_ = default_configuration_;
+        }
+    }
+
+    /**
+     * Save the configuration found in the configuration panel into the local
+     * storage.
+     */
+    function save_configuration()
+    {
+        configuration_.enable_shortcuts = document.getElementById('d2ne_configuration_enable_shortcuts').checked;
+        configuration_.hide_hero_adds = document.getElementById('d2ne_configuration_hide_hero_adds').checked;
+        configuration_.highlight_ap = document.getElementById('d2ne_configuration_highlight_ap').checked;
+        configuration_.hide_help = document.getElementById('d2ne_configuration_hide_help').checked;
+        configuration_.hide_twinoid_bar = document.getElementById('d2ne_configuration_hide_twinoid_bar').checked;
+        configuration_.hide_footer = document.getElementById('d2ne_configuration_hide_footer').checked;
+        configuration_.hide_pegi = document.getElementById('d2ne_configuration_hide_pegi').checked;
+        configuration_.hide_rookie_mode = document.getElementById('d2ne_configuration_hide_rookie_mode').checked;
+        configuration_.hide_rp_content = document.getElementById('d2ne_configuration_hide_rp_content').checked;
+        configuration_.external_tools.enable_bbh_sync = document.getElementById('d2ne_configuration_enable_bbh_sync').checked;
+        configuration_.external_tools.enable_oeev_sync = document.getElementById('d2ne_configuration_enable_oeev_sync').checked;
+        configuration_.enable_construction_max_ap = document.getElementById('d2ne_configuration_enable_construction_max_ap').checked;
+        configuration_.hide_completed_constructions = document.getElementById('d2ne_configuration_hide_completed_constructions').checked;
+        configuration_.enable_hero_bar_stat = document.getElementById('d2ne_configuration_enable_hero_bar_stat').checked;
+
+        localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY] = JSON.stringify(configuration_);
+    }
+
+    /**
+     * Inject the configuration retrieved from the local storage.
+     */
+    function inject_configuration()
+    {
+        document.getElementById('d2ne_configuration_enable_shortcuts').checked = configuration_.enable_shortcuts;
+        document.getElementById('d2ne_configuration_hide_hero_adds').checked = configuration_.hide_hero_adds;
+        document.getElementById('d2ne_configuration_highlight_ap').checked = configuration_.highlight_ap;
+        document.getElementById('d2ne_configuration_hide_help').checked = configuration_.hide_help;
+        document.getElementById('d2ne_configuration_hide_twinoid_bar').checked = configuration_.hide_twinoid_bar;
+        document.getElementById('d2ne_configuration_hide_footer').checked = configuration_.hide_footer;
+        document.getElementById('d2ne_configuration_hide_pegi').checked = configuration_.hide_pegi;
+        document.getElementById('d2ne_configuration_hide_rookie_mode').checked = configuration_.hide_rookie_mode;
+        document.getElementById('d2ne_configuration_hide_rp_content').checked = configuration_.hide_rp_content;
+        document.getElementById('d2ne_configuration_enable_bbh_sync').checked = configuration_.external_tools.enable_bbh_sync;
+        document.getElementById('d2ne_configuration_enable_oeev_sync').checked = configuration_.external_tools.enable_oeev_sync;
+        document.getElementById('d2ne_configuration_enable_construction_max_ap').checked = configuration_.enable_construction_max_ap;
+        document.getElementById('d2ne_configuration_hide_completed_constructions').checked = configuration_.hide_completed_constructions;
+        document.getElementById('d2ne_configuration_enable_hero_bar_stat').checked = configuration_.enable_hero_bar_stat;
+    }
+
+    function load_internationalisation()
+    {
+        var language = D2N_helpers.get_website_language();
+
+        if (language === null) {
+            language = 'en';
+        }
+
+        i18n_ = i18n[language];
+    }
+
+    /**
      * Fetch the external tools private keys.
      */
-    var _fetch_tools_private_keys = function() {
+    function fetch_tools_private_keys()
+    {
         var enable_tool_in_config_panel, tool_info, match;
         var sk = D2N_helpers.get_sk(function(sk) {
-            for (var tool in _external_tools) {
-                tool_info = _external_tools[tool];
+            for (var tool in external_tools_) {
+                tool_info = external_tools_[tool];
 
                 if (!js.is_defined(localStorage[tool_info.local_storage_key])) {
-                    js.network_request('GET',
-                        window.location.host + '/disclaimer?id=' + tool_info.site_id + ';sk=' + sk,
+                    js.network_request('GET', '/disclaimer?id=' + tool_info.site_id + ';sk=' + sk,
                         null, null,
                         function(data, param) {
                             match = data.match(/<input type="hidden" name="key" value="([a-f0-9]{38})"\/>/);
@@ -233,12 +546,13 @@ var D2NE = (function() { var self = {};
                 }
             }
         });
-    };
+    }
 
     /**
      * Update the external tools
      */
-    var _update_tools = function(tools_number) {
+    function update_tools(tools_number)
+    {
         var tools_updated = 0;
         var tools_update_aborted = 0;
         var tools_number = 0;
@@ -288,22 +602,22 @@ var D2NE = (function() { var self = {};
 
         show_loading_wheel();
 
-        for (var tool in _configuration.external_tools) {
+        for (var tool in configuration_.external_tools) {
             // if tool isn't enabled, skip it
-            if (!(_configuration.external_tools[tool])) {
+            if (!(configuration_.external_tools[tool])) {
                 continue;
             }
 
             var tool_name = tool.split('_')[1].split('_')[0];
 
             // if key hasn't been found, skip it
-            if (!js.is_defined(localStorage[_external_tools[tool_name].local_storage_key])) {
+            if (!js.is_defined(localStorage[external_tools_[tool_name].local_storage_key])) {
                 continue;
             }
 
             // else update it
             ++tools_number;
-            _external_tools[tool_name].update(function(response) {
+            external_tools_[tool_name].update(function(response) {
                 tools_updated += 1;
                 handle_tool_update();
             }, function(response) {
@@ -311,23 +625,23 @@ var D2NE = (function() { var self = {};
                 handle_tool_update();
             });
         }
-    };
+    }
 
     /**
-     * Load a the external tools
+     * Load all the external tools
      */
-    var _external_tools_loaded = false; // set to true when loaded
-    var _load_external_tools = function() {
+    function load_external_tools()
+    {
         var load = function() {
             // if already loaded, abort
-            if (_external_tools_loaded) {
+            if (external_tools_loaded_) {
                 return;
             }
 
             // if not any tool is enabled, abort
             var tools_number = 0;
-            for (var key in _configuration.external_tools) {
-                tools_number += (_configuration.external_tools[key]) ? 1 : 0;
+            for (var key in configuration_.external_tools) {
+                tools_number += (configuration_.external_tools[key]) ? 1 : 0;
             }
             if (tools_number < 1) {
                 return;
@@ -341,7 +655,7 @@ var D2NE = (function() { var self = {};
             js.wait_for_id('main', function(node) {
                 // Create and inject external tools bar style
                 js.injectCSS(
-                    '#d2ne_external_tools_bar {' +
+                    '#d2neexternal_tools__bar {' +
                         'position: absolute;' +
                         'background-color: #5D321E;' +
                         'width: 303px;' +
@@ -353,11 +667,11 @@ var D2NE = (function() { var self = {};
                         'padding: 5px;' +
                         'padding-left: 8px;' +
                     '}' +
-                    '#d2ne_external_tools_bar a.button {' +
+                    '#d2neexternal_tools__bar a.button {' +
                         'margin-right: auto;' +
                         'margin-left: auto;' +
                     '}' +
-                    '#d2ne_external_tools_bar span {' +
+                    '#d2neexternal_tools__bar span {' +
                         'float: left;' +
                         'display: inline-block;' +
                         'vertical-align: middle;' +
@@ -371,7 +685,7 @@ var D2NE = (function() { var self = {};
                         'padding-left: 7px;' +
                         'padding-right: 4px;' +
                     '}' +
-                    '#d2ne_external_tools_bar a img {' +
+                    '#d2neexternal_tools__bar a img {' +
                         'vertical-align: middle;' +
                         'margin-right: 4px;' +
                     '}' +
@@ -386,20 +700,20 @@ var D2NE = (function() { var self = {};
 
                 // Create external tools bar
                 var external_tools_bar_div = js.jsonToDOM(
-                    ["a", { "id": "d2ne_external_tools_bar" },
-                        ["a", { "href": "javascript:void(0)", "id": "d2ne_external_tools_bar_update", "class": "button", "onclick": function() { _update_tools(); } },
+                    ["a", { "id": "d2neexternal_tools__bar" },
+                        ["a", { "href": "javascript:void(0)", "id": "d2neexternal_tools__bar_update", "class": "button", "onclick": function() { update_tools(); } },
                             ["img", { "src": "/gfx/forum/smiley/h_calim.gif", "width": "19px", "height": "19px" }],
                             ["img", { "src": "/gfx/design/loading.gif", "width": "19px", "height": "19px", "style": "display: none;" }],
                             ["img", { "src": "/gfx/forum/smiley/h_smile.gif", "width": "19px", "height": "19px", "style": "display: none;" }],
                             ["img", { "src": "/gfx/forum/smiley/h_death.gif", "width": "19px", "height": "19px", "style": "display: none;" }],
-                            _i18n.external_tools_bar_update
+                            i18n_.external_tools_bar_update
                         ]
                     ]
                 , document);
 
                 // Insert external tools bar
                 node.insertBefore(external_tools_bar_div, node.firstChild);
-                _external_tools_loaded = true;
+                external_tools_loaded_ = true;
 
                 // Remove toolbar when leaving the city/outside page
                 document.addEventListener('d2n_hashchange', function() {
@@ -422,12 +736,13 @@ var D2NE = (function() { var self = {};
         document.addEventListener('d2n_hashchange', function() {
             load();
         }, false);
-    };
+    }
 
     /**
-     * Create the configuration panel.
+     * Create and inject the configuration panel.
      */
-    var _load_configuration_panel = function() {
+    function load_configuration_panel()
+    {
         js.wait_for_id('main', function(node) {
             // Create and inject panel style
             js.injectCSS(
@@ -536,13 +851,13 @@ var D2NE = (function() { var self = {};
                     ["div", {},
                         ["h1", {},
                             ["img", { "src": "/gfx/forum/smiley/h_city_up.gif", "alt": "" }],
-                            ["span", { "style": "display: none;" }, ' ' + _i18n.configuration_panel_title]
+                            ["span", { "style": "display: none;" }, ' ' + i18n_.configuration_panel_title]
                         ],
 
                         ["div", { "style": "display: none;" },
                             ["table", {},
                                 ["tr", {},
-                                    ["td", { "colspan": 4 }, _i18n.configuration_panel_script_description]
+                                    ["td", { "colspan": 4 }, i18n_.configuration_panel_script_description]
                                 ],
 
                                 // First row
@@ -550,22 +865,22 @@ var D2NE = (function() { var self = {};
                                     // Enable shortcuts
                                     ["td", {},
                                         ["input", { "id": "d2ne_configuration_enable_shortcuts", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_enable_shortcuts" }, _i18n.configuration_panel_enable_shortcuts]
+                                        ["label", { "for": "d2ne_configuration_enable_shortcuts" }, i18n_.configuration_panel_enable_shortcuts]
                                     ],
                                     ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_enable_shortcuts_tooltip },
-                                            ["img", { "src": _i18n.help_image_url, "alt": "" }],
+                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_shortcuts_tooltip },
+                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                         ]
                                     ],
 
                                     // Hide hero adds
                                     ["td", {},
                                         ["input", { "id": "d2ne_configuration_hide_hero_adds", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_hide_hero_adds" }, _i18n.configuration_panel_hide_hero_adds],
+                                        ["label", { "for": "d2ne_configuration_hide_hero_adds" }, i18n_.configuration_panel_hide_hero_adds],
                                     ],
                                     ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_hide_hero_adds_tooltip },
-                                            ["img", { "src": _i18n.help_image_url, "alt": "" }],
+                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_hero_adds_tooltip },
+                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                         ]
                                     ]
                                 ],
@@ -575,22 +890,22 @@ var D2NE = (function() { var self = {};
                                     // Highlight AP
                                     ["td", {},
                                         ["input", { "id": "d2ne_configuration_highlight_ap", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_highlight_ap" }, _i18n.configuration_panel_highlight_ap]
+                                        ["label", { "for": "d2ne_configuration_highlight_ap" }, i18n_.configuration_panel_highlight_ap]
                                     ],
                                     ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_highlight_ap_tooltip },
-                                            ["img", { "src": _i18n.help_image_url, "alt": "" }],
+                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_highlight_ap_tooltip },
+                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                         ]
                                     ],
 
                                     // Hide help
                                     ["td", {},
                                         ["input", { "id": "d2ne_configuration_hide_help", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_hide_help" }, _i18n.configuration_panel_hide_help]
+                                        ["label", { "for": "d2ne_configuration_hide_help" }, i18n_.configuration_panel_hide_help]
                                     ],
                                     ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_hide_help_tooltip },
-                                            ["img", { "src": _i18n.help_image_url, "alt": "" }],
+                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_help_tooltip },
+                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                         ]
                                     ]
                                 ],
@@ -600,22 +915,22 @@ var D2NE = (function() { var self = {};
                                     // Enable construction max AP
                                     ["td", {},
                                         ["input", { "id": "d2ne_configuration_enable_construction_max_ap", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_enable_construction_max_ap" }, _i18n.configuration_panel_enable_construction_max_ap]
+                                        ["label", { "for": "d2ne_configuration_enable_construction_max_ap" }, i18n_.configuration_panel_enable_construction_max_ap]
                                     ],
                                     ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_enable_construction_max_ap_tooltip },
-                                            ["img", { "src": _i18n.help_image_url, "alt": "" }],
+                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_construction_max_ap_tooltip },
+                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                         ]
                                     ],
 
                                     // Hide Twinoid bar
                                     ["td", {},
                                         ["input", { "id": "d2ne_configuration_hide_twinoid_bar", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_hide_twinoid_bar" }, _i18n.configuration_panel_hide_twinoid_bar]
+                                        ["label", { "for": "d2ne_configuration_hide_twinoid_bar" }, i18n_.configuration_panel_hide_twinoid_bar]
                                     ],
                                     ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_hide_twinoid_bar_tooltip },
-                                            ["img", { "src": _i18n.help_image_url, "alt": "" }],
+                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_twinoid_bar_tooltip },
+                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                         ]
                                     ]
                                 ],
@@ -625,22 +940,22 @@ var D2NE = (function() { var self = {};
                                     // Hide completed constructions
                                     ["td", {},
                                         ["input", { "id": "d2ne_configuration_hide_completed_constructions", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_hide_completed_constructions" }, _i18n.configuration_panel_hide_completed_constructions]
+                                        ["label", { "for": "d2ne_configuration_hide_completed_constructions" }, i18n_.configuration_panel_hide_completed_constructions]
                                     ],
                                     ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_hide_completed_constructions_tooltip },
-                                            ["img", { "src": _i18n.help_image_url, "alt": "" }],
+                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_completed_constructions_tooltip },
+                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                         ]
                                     ],
 
                                     // Hide Footer
                                     ["td", {},
                                         ["input", { "id": "d2ne_configuration_hide_footer", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_hide_footer" }, _i18n.configuration_panel_hide_footer]
+                                        ["label", { "for": "d2ne_configuration_hide_footer" }, i18n_.configuration_panel_hide_footer]
                                     ],
                                     ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_hide_footer_tooltip },
-                                            ["img", { "src": _i18n.help_image_url, "alt": "" }],
+                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_footer_tooltip },
+                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                         ]
                                     ]
                                 ],
@@ -650,22 +965,22 @@ var D2NE = (function() { var self = {};
                                     // Enable hero bar stat
                                     ["td", {},
                                         ["input", { "id": "d2ne_configuration_enable_hero_bar_stat", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_enable_hero_bar_stat" }, _i18n.configuration_panel_enable_hero_bar_stat]
+                                        ["label", { "for": "d2ne_configuration_enable_hero_bar_stat" }, i18n_.configuration_panel_enable_hero_bar_stat]
                                     ],
                                     ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_enable_hero_bar_stat_tooltip },
-                                            ["img", { "src": _i18n.help_image_url, "alt": "" }],
+                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_hero_bar_stat_tooltip },
+                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                         ]
                                     ],
 
                                     // Hide PEGI
                                     ["td", {},
                                         ["input", { "id": "d2ne_configuration_hide_pegi", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_hide_pegi" }, _i18n.configuration_panel_hide_pegi]
+                                        ["label", { "for": "d2ne_configuration_hide_pegi" }, i18n_.configuration_panel_hide_pegi]
                                     ],
                                     ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_hide_pegi_tooltip },
-                                            ["img", { "src": _i18n.help_image_url, "alt": "" }],
+                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_pegi_tooltip },
+                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                         ]
                                     ]
                                 ],
@@ -675,22 +990,22 @@ var D2NE = (function() { var self = {};
                                     // Enable BBH sync
                                     ["td", {},
                                         ["input", { "id": "d2ne_configuration_enable_bbh_sync", "type": "checkbox", "disabled": "disabled" }],
-                                        ["label", { "for": "d2ne_configuration_enable_bbh_sync" }, _i18n.configuration_panel_enable_bbh_sync]
+                                        ["label", { "for": "d2ne_configuration_enable_bbh_sync" }, i18n_.configuration_panel_enable_bbh_sync]
                                     ],
                                     ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_enable_bbh_sync_tooltip },
-                                            ["img", { "src": _i18n.help_image_url, "alt": "" }],
+                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_bbh_sync_tooltip },
+                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                         ]
                                     ],
 
                                     // Hide rookie mode
                                     ["td", {},
                                         ["input", { "id": "d2ne_configuration_hide_rookie_mode", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_hide_rookie_mode" }, _i18n.configuration_panel_hide_rookie_mode]
+                                        ["label", { "for": "d2ne_configuration_hide_rookie_mode" }, i18n_.configuration_panel_hide_rookie_mode]
                                     ],
                                     ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_hide_rookie_mode_tooltip },
-                                            ["img", { "src": _i18n.help_image_url, "alt": "" }],
+                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_rookie_mode_tooltip },
+                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                         ]
                                     ]
                                 ],
@@ -700,22 +1015,22 @@ var D2NE = (function() { var self = {};
                                     // Enable oeev sync
                                     ["td", {},
                                         ["input", { "id": "d2ne_configuration_enable_oeev_sync", "type": "checkbox", "disabled": "disabled" }],
-                                        ["label", { "for": "d2ne_configuration_enable_oeev_sync" }, _i18n.configuration_panel_enable_oeev_sync]
+                                        ["label", { "for": "d2ne_configuration_enable_oeev_sync" }, i18n_.configuration_panel_enable_oeev_sync]
                                     ],
                                     ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_enable_oeev_sync_tooltip },
-                                            ["img", { "src": _i18n.help_image_url, "alt": "" }],
+                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_oeev_sync_tooltip },
+                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                         ]
                                     ],
 
                                     // Hide RP content
                                     ["td", {},
                                         ["input", { "id": "d2ne_configuration_hide_rp_content", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_hide_rp_content" }, _i18n.configuration_panel_hide_rp_content]
+                                        ["label", { "for": "d2ne_configuration_hide_rp_content" }, i18n_.configuration_panel_hide_rp_content]
                                     ],
                                     ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": _i18n.configuration_panel_hide_rp_content_tooltip },
-                                            ["img", { "src": _i18n.help_image_url, "alt": "" }],
+                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_rp_content_tooltip },
+                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                         ]
                                     ]
                                 ],
@@ -723,8 +1038,8 @@ var D2NE = (function() { var self = {};
                                 ["tr", {},
                                     ["td", { "colspan": 4 },
                                         ["a", { "href": "javascript:void(0)", "id": "d2ne_configuration_save", "class": "button",
-                                                "onclick": function() { _save_configuration(); js.reload(); } },
-                                              _i18n.configuration_panel_save_button]
+                                                "onclick": function() { save_configuration(); js.reload(); } },
+                                              i18n_.configuration_panel_save_button]
                                     ]
                                 ],
 
@@ -743,332 +1058,49 @@ var D2NE = (function() { var self = {};
             node.insertBefore(config_panel_div, node.firstChild);
 
             // Inject configuration
-            _inject_configuration();
+            inject_configuration();
 
             // Show/Hide config panel cache
-            var _config_panel_cache = document.getElementById('d2ne_configuration_panel');
-            var _config_panel_toggled_elements_cache = document.querySelectorAll('#d2ne_configuration_panel > div > h1 > span, #d2ne_configuration_panel > div > div');
-            var _config_panel_toggled_elements_cache_length = _config_panel_toggled_elements_cache.length;
+            var config_panel_cache = document.getElementById('d2ne_configuration_panel');
+            var config_panel_toggled_elements_cache = document.querySelectorAll('#d2ne_configuration_panel > div > h1 > span, #d2ne_configuration_panel > div > div');
+            var config_panel_toggled_elements_cache_length = config_panel_toggled_elements_cache.length;
 
             // Show panel on hover
             config_panel_div.addEventListener('mouseover', function() {
-                _config_panel_cache.style['z-index'] = '11'; // This fix is needed for the spanish version, as the hero adds has a z-index of 10
-                for (var i = 0; i < _config_panel_toggled_elements_cache_length; ++i) {
-                    _config_panel_toggled_elements_cache[i].style.display = 'inline';
+                config_panel_cache.style['z-index'] = '11'; // This fix is needed for the spanish version, as the hero adds has a z-index of 10
+                for (var i = 0; i < config_panel_toggled_elements_cache_length; ++i) {
+                    config_panel_toggled_elements_cache[i].style.display = 'inline';
                 }
             }, false);
 
             // Hide panel on mouse out
             config_panel_div.addEventListener('mouseout', function() {
-                for (var i = 0; i < _config_panel_toggled_elements_cache_length; ++i) {
-                    _config_panel_toggled_elements_cache[i].style.display = 'none';
+                for (var i = 0; i < config_panel_toggled_elements_cache_length; ++i) {
+                    config_panel_toggled_elements_cache[i].style.display = 'none';
                 }
-                _config_panel_cache.style['z-index'] = '9'; // See previous function comment
+                config_panel_cache.style['z-index'] = '9'; // See previous function comment
             }, false);
         });
-    };
+    }
 
     /**
-     * All features
+     * Load all the script features (depending of the configuration)
      */
-    var _features = {
-
-        ////
-        hide_twinoid_bar: function() {
-            js.injectCSS(
-                '#tid_bar {' +
-                    'display: none;' +
-                    'position: fixed;' +
-                    'z-index: 15;' +
-                '}' +
-                '#gamebody div.infoBar {' +
-                    'top: 111px;' +
-                '}' +
-                'a#backReboot {' +
-                    'top: 178px;' +
-                '}'
-            );
-
-            js.wait_for_id('tid_bar', function(node) {
-                var _tid_cache = node;
-                var _tid_hidden = true;
-                js.wait_for_selector_all('.tid_sidePanel', function(nodes) {
-                    var _show_tid = function() {
-                        _tid_cache.style.display = 'block';
-                        _tid_hidden = false;
-                    };
-
-                    var _hide_tid = function() {
-                        _tid_cache.style.display = 'none';
-                        _tid_hidden = true;
-                    };
-
-                    document.body.addEventListener('mousemove', function(event) {
-                        // if on the top of the screen, display the bar
-                        if (_tid_hidden && event.clientY <= 5) {
-                            _show_tid();
-                        }
-                        // if not on the top of the screen, hide the bar if the
-                        // lateral panels are not visible
-                        else if (!_tid_hidden && event.clientY > 32) {
-                            var _tid_side_panels = document.getElementsByClassName('tid_sidePanel');
-                            var _tid_side_panels_length = _tid_side_panels.length;
-
-                            for (var i = 0; i < _tid_side_panels_length; ++i) {
-                                var style = getComputedStyle(_tid_side_panels[i]);
-
-                                if (style['visibility'] === 'visible') {
-                                    return;
-                                }
-                            }
-                            _hide_tid();
-                        }
-                    }, false);
-                });
-            });
-        },
-
-        ////
-        enable_shortcuts: function() {
-            js.keydown_event(function(keycode, previous_keycode) {
-                if (previous_keycode !== _configuration.go_bind) {
-                    return;
-                }
-                if (D2N_helpers.is_outside()) { // abort if outside
-                    return;
-                }
-                for (var bind in _configuration.binds) {
-                    if (_configuration.binds[bind] === keycode) {
-                        return D2N_helpers.go_to_city_page(bind);
-                    }
-                }
-            });
-        },
-
-        ////
-        hide_hero_adds: function() {
-            js.injectCSS(
-                '.heroMode, #ghostHeroAd, #heroContainer, .heroAd, #ghostHeroChoose, .promoBt, .sondageBg {' +
-                    'display: none !important;' +
-                '}'
-            );
-        },
-
-        ////
-        highlight_ap: function() {
-            js.wait_for_id('movesCounter', function(node) {
-                var highlight = function() {
-                    var ap = D2N_helpers.get_number_of_ap();
-                    var colors = [
-                        'ff0000', // 0 AP
-                        'ff4700', // 1 AP
-                        'ff8e00', // 2 AP
-                        'ffd500', // 3 AP
-                        'e3ff00', // 4 AP
-                        '9cff00', // 5 AP
-                        '55ff00', // 6 AP
-                        '00ff00'  // 7 AP+
-                    ];
-
-                    while (ap >= colors.length) {
-                        --ap;
-                    }
-
-                    js.injectCSS(
-                        '#movesCounter {' +
-                            'border: 1px solid #' + colors[ap] + ' !important;' +
-                        '}'
-                    );
-                };
-
-                // Highlight at load
-                highlight();
-
-                // Highlight on change
-                document.addEventListener('d2n_apchange', function() {
-                    highlight();
-                }, false);
-            });
-        },
-
-        ////
-        hide_help: function() {
-            js.injectCSS(
-                '#mapTips, a.button[href^="#city/exp?editor=1;sk="] + p, .helpLink, #generic_section > div > em:last-of-type {' +
-                    'display: none;' +
-                '}' +
-
-                // Hide all blue help boxes, but keep the watchwen button
-                '#generic_section {' +
-                    'position: relative;' +
-                    'top: 0;' +
-                    'left: 0;' +
-                '}' +
-                '.help {' +
-                    'position: absolute;' +
-                    'top: 0;' +
-                    'left: -1500px;' +
-                    'width: 0;' +
-                '}' +
-                '.help a.button {' +
-                    'position: absolute;' +
-                    'top: 131px;' +
-                    'left: 1499px;' +
-                '}' +
-                'ul#door_menu + script + div.help + table {' +
-                    'margin-top: 60px;' +
-                '}'
-            );
-        },
-
-        ////
-        hide_footer: function() {
-            js.injectCSS(
-                '#tid_bar_down {' +
-                    'display: none;' +
-                '}' +
-                '#fbAd {' +
-                    'height: 0;' +
-                    'overflow: hidden;' +
-                '}'
-            );
-        },
-
-        ////
-        hide_pegi: function() {
-            js.injectCSS(
-                '.pegi {' +
-                    'display: none;' +
-                '}'
-            );
-        },
-
-        ////
-        hide_rookie_mode: function() {
-            js.injectCSS(
-                'div.block.tutorialBlock, div.expertMode {' +
-                    'display: none;' +
-                '}'
-            );
-        },
-
-        ////
-        hide_rp_content: function() {
-            js.injectCSS(
-                '.ambiant, .flavor {' +
-                    'display: none;' +
-                '}'
-            );
-        },
-
-        ////
-        enable_construction_max_ap: function() {
-            var change_ap = function() {
-                if (!D2N_helpers.is_on_page_in_city('buildings')) {
-                    return;
-                }
-
-                var ap = D2N_helpers.get_number_of_ap();
-
-                js.wait_for_selector('tr.banner.root_wall1', function() {
-                    var fields = document.querySelectorAll('div[id^="moreForm_"] form input[type="text"]');
-                    var fields_length = fields.length;
-
-                    for (var i = 0; i < fields_length; ++i) {
-                        fields[i].value = ap;
-                    }
-                });
-            };
-
-            document.addEventListener('d2n_apchange', function() {
-                change_ap();
-            }, false);
-
-            document.addEventListener('d2n_hashchange', function() {
-                change_ap();
-            }, false);
-        },
-
-        ////
-        hide_completed_constructions: function() {
-            js.injectCSS(
-                'tr.building.done {' +
-                    'display: none;' +
-                '}'
-            );
-        },
-
-        ////
-        enable_hero_bar_stat: function() {
-            js.injectCSS(
-                'div.heroUpBar div.hfront {' +
-                'padding-left: 6px;' +
-                'text-align: center;' +
-                'font-family: "Century Gothic", "Arial", "Trebuchet MS", Verdana, sans-serif;' +
-                'font-size: 16pt;' +
-                'padding-top: 10px;' +
-                'color: #f0d79e;' +
-                'text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;' +
-                '}'
-            );
-
-            document.addEventListener('d2n_hashchange', function() {
-                if (!(D2N_helpers.is_on_page('ghost') || D2N_helpers.is_on_page('ghost_exp'))) {
-                    return;
-                }
-
-                js.wait_for_selector('#ghostImg img', function(node) {
-                    // abort if not hero
-                    if (node.alt !== 'ghost red') {
-                        return;
-                    }
-
-                    js.wait_for_selector('#ghost_pages img.hbar', function(node) {
-                        var width = parseFloat(node.style.width);
-                        var max_width = 583;
-                        var percent = width / max_width * 100;
-
-                        var fill_bar = function() {
-                            js.wait_for_selector('div.heroUpBar div.hfront', function(node) {
-                                if (node.textContent !== '') {
-                                    return setTimeout(function() {
-                                        fill_bar();
-                                    }, 50);
-                                }
-                                node.textContent = parseInt(percent) + '%';
-                            });
-                        };
-                        fill_bar();
-                    });
-                });
-            }, false);
-        }
-    };
-
-    /**
-     * Load the script features.
-     */
-    var _load_features = function() {
+    function load_features()
+    {
         // Browse all features, and check if they have to be activated
-        for (var feature in _features) {
-            if (_configuration[feature] === true) {
-                (_features[feature])();
+        for (var feature in features_) {
+            if (configuration_[feature] === true) {
+                (features_[feature])();
             }
         }
     }
 
-    /**
-     * Set up the script.
-     */
-    self.init = function() {
-        _load_configuration();
-        _load_internationalisation();
-        _load_features();
-        _load_external_tools(); // only if at least one tool is enabled
-        _load_configuration_panel(); // defer loading until #main is found
-        _fetch_tools_private_keys();
-        D2N_helpers.add_custom_events(); // add and fire custom events after initialisation
+/*
+*/
+
+    return {
+        init: init
     };
 
-    return self;
 })();

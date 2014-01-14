@@ -99,18 +99,25 @@ var D2N_helpers = (function() {
      */
     function go_to_city_page(page)
     {
+        // if not in a town, abort
+        if (!is_in_town()) {
+            return;
+        }
+
         get_sk(function(sk) {
             var page_url = pages_url_[page];
 
             // if already on the page, abort
-            if (is_on_city_page(page)) {
+            if (is_on_page_in_city(page)) {
                 return;
             }
 
             if (is_on_forum()) { // if on the forum, redirect to the desired page
                 js.redirect('/#city/enter?go=' + page_url + ';sk=' + sk);
             } else { // else just download the content with an ajax request
-                js.injectJS('js.XmlHttp.get(\'' + page_url + '?sk=' + sk + '\');');
+                js.injectJS(function(){
+                    js.XmlHttp.get(page_url + '?sk=' + sk);
+                });
             }
         });
     }
@@ -123,7 +130,10 @@ var D2N_helpers = (function() {
     {
         js.wait_for_selector('a.mainButton.newsButton', function(node) {
             var arr = node.href.split('=');
-            return callback(arr[arr.length - 1]); // return last element
+
+            // return string after the last equal which should be the session
+            // key
+            callback(arr[arr.length - 1]);
         });
     }
 
@@ -131,7 +141,7 @@ var D2N_helpers = (function() {
      * Give the website language (specific to D2N/Hordes). Return 'en' by
      * default.
      * @return string The language of the current page ('en' / 'fr')
-     * @return string 'en' if no corresponding language can be found
+     * @return null if no corresponding language can be found
      */
     function get_website_language()
     {
@@ -142,22 +152,19 @@ var D2N_helpers = (function() {
             return websites_language_[hostname];
         }
 
-        return 'en';
+        return null;
     }
 
     /**
-     * Give the number of remaining AP. The div 'movesCounter' must be loaded.
-     * @return integer The number of AP
-     * @return null if an error occurs
+     * Call the given callback with the number of AP.
+     * @param callback callback The function to call
      */
-    function get_number_of_ap()
+    function get_number_of_ap(callback)
     {
-        var el = document.querySelector('#movesCounter > div');
-
-        if (js.is_defined(el)) {
-            return el.textContent.split('>')[1].split('<')[0];
-        }
-        return null;
+        js.wait_for_selector('#movesCounter > div', function(node) {
+            var ap = parseInt(node.textContent.split('/')[0]);
+            callback(ap);
+        });
     }
 
     /**
@@ -212,17 +219,19 @@ var D2N_helpers = (function() {
 
         // Watch the AP
         var observer = new MutationObserver(function(mutations) {
-            // Emit an event when the ap changes
-            var event = new CustomEvent(
-                'd2n_apchange', {
-                    detail: {
-                        ap: d2n.get_number_of_ap()
-                    },
-                    bubbles: true,
-                    cancelable: true
-                }
-            );
-            document.dispatchEvent(event);
+            get_number_of_ap(function(ap) {
+                // Emit an event when the ap changes
+                var event = new CustomEvent(
+                    'd2n_apchange', {
+                        detail: {
+                            ap: ap
+                        },
+                        bubbles: true,
+                        cancelable: true
+                    }
+                );
+                document.dispatchEvent(event);
+            });
         });
         js.wait_for_id('movesCounter', function(node) {
             observer.observe(node, {childList: true});
