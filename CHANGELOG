@@ -5,6 +5,7 @@ v0.0.5
 - Optimise hash change event by using native browser events
 - Automatically clean external tools API key cache when needed
 - Disable external tools API key fetching when not available
+- Fix AP modification event
 
 v0.0.4
 - Change local storage prefix to conform with AMO

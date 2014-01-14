@@ -236,26 +236,30 @@ var D2N_helpers = (function() {
 
         // Emit AP change event
         var emit_ap_change_event = function() {
-            var event = new CustomEvent(
-                'd2n_apchange', {
-                    detail: {
-                        ap: ap
-                    },
-                    bubbles: true,
-                    cancelable: true
-                }
-            );
-            document.dispatchEvent(event);
+            get_number_of_ap(function(ap) {
+                var event = new CustomEvent(
+                    'd2n_apchange', {
+                        detail: {
+                            ap: ap
+                        },
+                        bubbles: true,
+                        cancelable: true
+                    }
+                );
+                document.dispatchEvent(event);
+            });
         };
 
-        // Emit an event when the AP changes
-        var observer = new MutationObserver(function(mutations) {
-            // Emit an event when the ap changes
-            emit_ap_change_event();
-        });
-        js.wait_for_id('movesCounter', function(node) {
-            observer.observe(node, {childList: true});
-        });
+        if (is_in_town()) { // only watch AP in town
+            // Emit an event when the AP changes
+            var observer = new MutationObserver(function(mutations) {
+                // Emit an event when the ap changes
+                emit_ap_change_event();
+            });
+            js.wait_for_id('movesCounter', function(node) {
+                observer.observe(node, {childList: true});
+            });
+        }
 
         /*
          * Gamebody
