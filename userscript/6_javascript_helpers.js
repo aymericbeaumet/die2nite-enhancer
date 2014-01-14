@@ -2,8 +2,7 @@
  * Generic JavaScript helpers
  */
 
-var js = (function() {
-    var self = {};
+var js = (function() { var self = {};
 
     /**
      * Check if a given variable is defined and is not null.

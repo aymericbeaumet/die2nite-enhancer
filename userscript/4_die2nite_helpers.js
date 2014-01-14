@@ -2,99 +2,130 @@
  * Die2Nite helpers
  */
 
-var d2n = (function() {
-    var self = {};
+var D2N_helpers = (function() {
 
-    var _pages_url = {
-        overview: 'city/enter',
-        home: 'home',
-        well: 'city/well',
-        bank: 'city/bank',
-        citizens: 'city/co',
-        buildings: 'city/buildings',
-        doors: 'city/door',
-        upgrades: 'city/upgrades',
-        tower: 'city/tower',
-        refine: 'city/refine',
-        guard: 'city/guard',
-        ghost: 'ghost/user',
-        ghost_exp: 'ghost/heroUpgrades'
-    };
+/*
+  public:
+*/
+
+    /**
+     * Check if the player is on the forum.
+     * @return bool true if on the forum, false otherwise
+     */
+    function is_on_forum()
+    {
+        return (window.location.pathname === '/tid/forum');
+    }
+
+    /**
+     * Check if the user is playing in a town or not (do not confound with
+     * `is_in_city`).
+     * @return bool true if playing in a town, false otherwise
+     */
+    function is_in_town()
+    {
+        return js.is_defined(document.getElementById('clock'));
+    }
 
     /**
      * Check if the player is in the city. Return false if the user is in the city
      * but on the forum.
      * @return bool true if inside the city, false otherwise
      */
-    self.is_in_city = function()
+    function is_in_city()
     {
         return js.match_regex(
             window.location.hash,
             '^#city'
         );
-    };
+    }
+
+    /**
+     * Check if the player is outside the city. Return false if the user is
+     * outside but on the forum.
+     * @return string true if outside, false otherwise
+     */
+    function is_outside()
+    {
+        return js.match_regex(
+            window.location.hash,
+            '^#outside\\?(?:go=outside\\/refresh;)?sk=[a-z0-9]{5}$'
+        );
+    }
+
+    /**
+     * Check if the given page is loaded (in or out of city).
+     * @param string page The page to check (a key from pages_url_)
+     * @return string true if on the selected page
+     */
+    function is_on_page(page)
+    {
+        return (is_on_page_in_city(page) ||
+                is_on_page_out_of_city(page));
+    }
 
     /**
      * Check if the given city page is loaded.
-     * @param string page The page to check (a key from _pages_url)
+     * @param string page The page to check (a key from pages_url_)
      * @return string true if on the selected city page
      */
-    self.is_on_city_page = function(page)
+    function is_on_page_in_city(page)
     {
         return js.match_regex(
             window.location.hash,
-            '^#city\\/enter\\?go=' + _pages_url[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$'
+            '^#city\\/enter\\?go=' + pages_url_[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$'
         ) || js.match_regex(
             window.location.hash,
-            '^#ghost\\/city\\?go=' + _pages_url[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$'
+            '^#ghost\\/city\\?go=' + pages_url_[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$'
         );
-    };
+    }
 
     /**
      * Check if the given page is loaded (not in city).
-     * @param string page The page to check (a key from _pages_url)
+     * @param string page The page to check (a key from pages_url_)
      * @return string true if on the selected page (not in city)
      */
-    self.is_on_page_not_in_city = function(page) {
+    function is_on_page_out_of_city(page)
+    {
         return js.match_regex(
             window.location.hash,
-            '^#ghost\\?go=' + _pages_url[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$'
+            '^#ghost\\?go=' + pages_url_[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$'
         );
-    };
+    }
 
     /**
      * Load a specific city page.
-     * @param string page The page to go (a key from _pages_url)
+     * @param string page The page to go (a key from pages_url_)
      */
-    self.go_to_city_page = function(page)
+    function go_to_city_page(page)
     {
-        var sk = self.get_sk(function(sk) {
-            var page_url = _pages_url[page];
+        get_sk(function(sk) {
+            var page_url = pages_url_[page];
 
             // if already on the page, abort
-            if (self.is_on_city_page(page)) {
+            if (is_on_city_page(page)) {
                 return;
             }
 
-            if (self.is_on_forum()) { // if on the forum, redirect to the desired page
+            if (is_on_forum()) { // if on the forum, redirect to the desired page
                 js.redirect('/#city/enter?go=' + page_url + ';sk=' + sk);
             } else { // else just download the content with an ajax request
                 js.injectJS('js.XmlHttp.get(\'' + page_url + '?sk=' + sk + '\');');
             }
         });
-    };
+    }
 
     /**
      * Find the sk (session/secret key?).
      * @param callback callback The function to call once the sk is fetched
      */
-    self.get_sk = function(callback)
+    function get_sk(callback)
     {
         js.wait_for_selector('a.mainButton.newsButton', function(node) {
             var arr = node.href.split('=');
             return callback(arr[arr.length - 1]); // return last element
         });
-    };
+    }
 
     /**
      * Give the website language (specific to D2N/Hordes). Return 'en' by
@@ -102,29 +133,25 @@ var d2n = (function() {
      * @return string The language of the current page ('en' / 'fr')
      * @return string 'en' if no corresponding language can be found
      */
-    self.get_website_language = function() {
-        var websites_language = {
-            'www.die2nite.com': 'en',
-            'www.hordes.fr': 'fr',
-            'www.zombinoia.com': 'es',
-            'www.dieverdammten.de': 'de'
-        }
+    function get_website_language()
+    {
         var hostname = window.location.hostname;
 
         if (js.is_defined(hostname) &&
-            js.is_defined(websites_language[hostname])) {
-            return websites_language[hostname];
+            js.is_defined(websites_language_[hostname])) {
+            return websites_language_[hostname];
         }
 
         return 'en';
-    };
+    }
 
     /**
      * Give the number of remaining AP. The div 'movesCounter' must be loaded.
      * @return integer The number of AP
      * @return null if an error occurs
      */
-    self.get_number_of_ap = function() {
+    function get_number_of_ap()
+    {
         var el = document.querySelector('#movesCounter > div');
 
         if (js.is_defined(el)) {
@@ -134,32 +161,12 @@ var d2n = (function() {
     }
 
     /**
-     * Check if the player is on the forum.
-     * @return bool true if on the forum, false otherwise
-     */
-    self.is_on_forum = function() {
-        return (window.location.pathname === '/tid/forum');
-    };
-
-    /**
-     * Check if the player is outside the city. Return false if the user is
-     * outside but on the forum.
-     * @return string true if outside, false otherwise
-     */
-    self.is_outside = function()
-    {
-        return js.match_regex(
-            window.location.hash,
-            '^#outside\\?(?:go=outside\\/refresh;)?sk=[a-z0-9]{5}$'
-        );
-    };
-
-    /**
      * Add custom events on the interface:
      * - to watch the hash in the URL: 'hashchange'
      * - to watch the number of AP: 'apchange'
      */
-    self.add_custom_events = function() {
+    function add_custom_events()
+    {
         // Watch for the first hash on page loading
         var watch_for_hash = function() {
             if (window.location.hash === '') {
@@ -220,7 +227,54 @@ var d2n = (function() {
         js.wait_for_id('movesCounter', function(node) {
             observer.observe(node, {childList: true});
         });
+    }
+
+/*
+  private:
+*/
+
+    var pages_url_ = {
+        // in town
+        overview: 'city/enter',
+        home: 'home',
+        well: 'city/well',
+        bank: 'city/bank',
+        citizens: 'city/co',
+        buildings: 'city/buildings',
+        doors: 'city/door',
+        upgrades: 'city/upgrades',
+        tower: 'city/tower',
+        refine: 'city/refine',
+        guard: 'city/guard',
+
+        // in/out of town
+        ghost: 'ghost/user',
+        ghost_exp: 'ghost/heroUpgrades'
     };
 
-    return self;
+    var websites_language_ = {
+        'www.die2nite.com': 'en',
+        'www.hordes.fr': 'fr',
+        'www.zombinoia.com': 'es',
+        'www.dieverdammten.de': 'de'
+    };
+
+/*
+*/
+
+    return {
+        is_on_forum: is_on_forum,
+        is_in_town: is_in_town,
+        is_in_city: is_in_city,
+        is_outside: is_outside,
+        is_on_page: is_on_page,
+        is_on_page_in_city: is_on_page_in_city,
+        is_on_page_out_of_city: is_on_page_out_of_city,
+        go_to_city_page: go_to_city_page,
+        get_sk: get_sk,
+        get_website_language: get_website_language,
+        get_number_of_ap: get_number_of_ap,
+        add_custom_events: add_custom_events
+    };
+
 })();

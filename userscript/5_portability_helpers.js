@@ -2,8 +2,7 @@
  * Portability helpers (on Chrome, GM, Opera, etc...)
  */
 
-var portability = (function() {
-    var self = {};
+var portability = (function() { var self = {};
 
     /**
      * Execute an asynchronous network request.

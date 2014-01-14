@@ -2,8 +2,7 @@
  * Die2Nite Enhancer
  */
 
-var D2NE = (function() {
-    var self = {};
+var D2NE = (function() { var self = {};
 
     var LOCAL_STORAGE_PREFIX = 'extensions.d2ne';
     var LOCAL_STORAGE_D2NE_CONFIGURATION_KEY = LOCAL_STORAGE_PREFIX + '.configuration';
@@ -141,7 +140,7 @@ var D2NE = (function() {
     var _i18n = null;
 
     var _load_internationalisation = function() {
-        var language = d2n.get_website_language();
+        var language = D2N_helpers.get_website_language();
 
         _i18n = i18n[language];
     };
@@ -208,7 +207,7 @@ var D2NE = (function() {
      */
     var _fetch_tools_private_keys = function() {
         var enable_tool_in_config_panel, tool_info, match;
-        var sk = d2n.get_sk(function(sk) {
+        var sk = D2N_helpers.get_sk(function(sk) {
             for (var tool in _external_tools) {
                 tool_info = _external_tools[tool];
 
@@ -335,7 +334,7 @@ var D2NE = (function() {
             }
 
             // if not in city or outside, abort
-            if (!(d2n.is_in_city() || d2n.is_outside())) {
+            if (!(D2N_helpers.is_in_city() || D2N_helpers.is_outside())) {
                 return;
             }
 
@@ -404,7 +403,7 @@ var D2NE = (function() {
 
                 // Remove toolbar when leaving the city/outside page
                 document.addEventListener('d2n_hashchange', function() {
-                    if (!(d2n.is_in_city() || d2n.is_outside())) {
+                    if (!(D2N_helpers.is_in_city() || D2N_helpers.is_outside())) {
                         js.remove_DOM_node(document.getElementById("d2ne_external_tools_bar"));
                         js.injectCSS(
                             '#gameLayout td.sidePanel {' +
@@ -835,12 +834,12 @@ var D2NE = (function() {
                 if (previous_keycode !== _configuration.go_bind) {
                     return;
                 }
-                if (d2n.is_outside()) { // abort if outside
+                if (D2N_helpers.is_outside()) { // abort if outside
                     return;
                 }
                 for (var bind in _configuration.binds) {
                     if (_configuration.binds[bind] === keycode) {
-                        return d2n.go_to_city_page(bind);
+                        return D2N_helpers.go_to_city_page(bind);
                     }
                 }
             });
@@ -859,7 +858,7 @@ var D2NE = (function() {
         highlight_ap: function() {
             js.wait_for_id('movesCounter', function(node) {
                 var highlight = function() {
-                    var ap = d2n.get_number_of_ap();
+                    var ap = D2N_helpers.get_number_of_ap();
                     var colors = [
                         'ff0000', // 0 AP
                         'ff4700', // 1 AP
@@ -965,11 +964,11 @@ var D2NE = (function() {
         ////
         enable_construction_max_ap: function() {
             var change_ap = function() {
-                if (!d2n.is_on_city_page('buildings')) {
+                if (!D2N_helpers.is_on_page_in_city('buildings')) {
                     return;
                 }
 
-                var ap = d2n.get_number_of_ap();
+                var ap = D2N_helpers.get_number_of_ap();
 
                 js.wait_for_selector('tr.banner.root_wall1', function() {
                     var fields = document.querySelectorAll('div[id^="moreForm_"] form input[type="text"]');
@@ -1014,8 +1013,7 @@ var D2NE = (function() {
             );
 
             document.addEventListener('d2n_hashchange', function() {
-                if (!(d2n.is_on_city_page('ghost') || d2n.is_on_city_page('ghost_exp') ||
-                      d2n.is_on_page_not_in_city('ghost') || d2n.is_on_page_not_in_city('ghost_exp'))) {
+                if (!(D2N_helpers.is_on_page('ghost') || D2N_helpers.is_on_page('ghost_exp'))) {
                     return;
                 }
 
@@ -1069,7 +1067,7 @@ var D2NE = (function() {
         _load_external_tools(); // only if at least one tool is enabled
         _load_configuration_panel(); // defer loading until #main is found
         _fetch_tools_private_keys();
-        d2n.add_custom_events(); // add and fire custom events after initialisation
+        D2N_helpers.add_custom_events(); // add and fire custom events after initialisation
     };
 
     return self;
