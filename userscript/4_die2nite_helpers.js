@@ -85,7 +85,7 @@ var d2n = (function() {
     };
 
     /**
-     * Return the sk (session/secret key?), return null if nothing can be found.
+     * Find the sk (session/secret key?).
      * @param callback callback The function to call once the sk is fetched
      */
     self.get_sk = function(callback)
@@ -159,7 +159,7 @@ var d2n = (function() {
      * - to watch the hash in the URL: 'hashchange'
      * - to watch the number of AP: 'apchange'
      */
-    self.add_custom_events= function() {
+    self.add_custom_events = function() {
         // Watch for the first hash on page loading
         var watch_for_hash = function() {
             if (window.location.hash === '') {

@@ -25,18 +25,10 @@
 //
 // ==/UserScript==
 
-;(function(undefined) {
+;(function(window, document, undefined) {
 
 "use strict";
 
-/**
- * Script informations
- */
 var SCRIPT_NAME = '__NAME__';
 var SCRIPT_VERSION = '__VERSION__';
 var PROJECT_PAGE = '__PROJECT_WEBSITE__';
-
-/**
- * Script configuration
- */
-var LOCAL_STORAGE_PREFIX = 'extensions.d2ne';

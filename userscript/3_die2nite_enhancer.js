@@ -5,6 +5,7 @@
 var D2NE = (function() {
     var self = {};
 
+    var LOCAL_STORAGE_PREFIX = 'extensions.d2ne';
     var LOCAL_STORAGE_D2NE_CONFIGURATION_KEY = LOCAL_STORAGE_PREFIX + '.configuration';
 
     /**
