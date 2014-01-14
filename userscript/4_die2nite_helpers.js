@@ -170,9 +170,14 @@ var D2N_helpers = (function() {
      * Add custom events on the interface:
      * - to watch the hash in the URL: 'hashchange'
      * - to watch the number of AP: 'apchange'
+     * - to watch when the gamebody is reloaded
      */
     function add_custom_events()
     {
+        /*
+         * Hash change
+         */
+
         // Emit a hash change event
         var emit_hash_change_event = function() {
             var event = new CustomEvent(
@@ -187,7 +192,7 @@ var D2N_helpers = (function() {
             document.dispatchEvent(event);
         };
 
-        // Watch for the first hash on page loading
+        // Emit an event while the first page load
         var watch_for_hash = function() {
             if (window.location.hash === '') {
                 return setTimeout(function() { watch_for_hash(); }, 50);
@@ -196,28 +201,84 @@ var D2N_helpers = (function() {
         };
         watch_for_hash();
 
-        // Watch the hash
-        window.addEventListener('hashchange', function(event) {
+        // Emit an event when the hash changes
+        window.addEventListener('hashchange', function() {
             emit_hash_change_event();
         });
 
-        // Watch the AP
-        var observer = new MutationObserver(function(mutations) {
-            get_number_of_ap(function(ap) {
-                // Emit an event when the ap changes
-                var event = new CustomEvent(
-                    'd2n_apchange', {
-                        detail: {
-                            ap: ap
-                        },
-                        bubbles: true,
-                        cancelable: true
+        // Emit an event when the loading wheel disappears
+        var watch_for_page_load = function() {
+            // Watch the hash on page load
+            var observer = new MutationObserver(function(mutations) {
+                for (var i = 0, max = mutations.length; i < max; ++i) {
+                    // if the loading wheel disappears, then the page loading is
+                    // done, emit a hash change event
+                    if (mutations[i].target.style.display === 'none') {
+                        emit_hash_change_event();
+                        break;
                     }
-                );
-                document.dispatchEvent(event);
+                }
             });
+            js.wait_for_id('loading_section', function(node) {
+                observer.observe(node, { attributes: true });
+            });
+        };
+        watch_for_page_load();
+
+        // Loading wheel event: put it again if the gamebody is reloaded
+        document.addEventListener('d2n_gamebody_reloaded', function() {
+            watch_for_page_load();
+        });
+
+        /*
+         * AP
+         */
+
+        // Emit AP change event
+        var emit_ap_change_event = function() {
+            var event = new CustomEvent(
+                'd2n_apchange', {
+                    detail: {
+                        ap: ap
+                    },
+                    bubbles: true,
+                    cancelable: true
+                }
+            );
+            document.dispatchEvent(event);
+        };
+
+        // Emit an event when the AP changes
+        var observer = new MutationObserver(function(mutations) {
+            // Emit an event when the ap changes
+            emit_ap_change_event();
         });
         js.wait_for_id('movesCounter', function(node) {
+            observer.observe(node, {childList: true});
+        });
+
+        /*
+         * Gamebody
+         */
+
+        // Emit Gamebody reloaded event
+        var emit_gamebody_reloaded_event = function() {
+            var event = new CustomEvent(
+                'd2n_gamebody_reloaded', {
+                    detail: {},
+                    bubbles: true,
+                    cancelable: true
+                }
+            );
+            document.dispatchEvent(event);
+        };
+
+        // Emit an event when the gamebody is reloaded
+        var observer = new MutationObserver(function(mutations) {
+            // Emit an event when the ap changes
+            emit_gamebody_reloaded_event();
+        });
+        js.wait_for_id('gamebody', function(node) {
             observer.observe(node, {childList: true});
         });
     }
