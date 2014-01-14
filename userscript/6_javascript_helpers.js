@@ -210,7 +210,7 @@ var js = (function() {
     {
         var el;
 
-        if (js.is_defined(el = document.getElementById(id))) {
+        if (is_defined(el = document.getElementById(id))) {
             return callback(el);
         }
         setTimeout(function() {
@@ -264,7 +264,7 @@ var js = (function() {
     {
         var el;
 
-        if (js.is_defined(el = document.querySelector(selector))) {
+        if (is_defined(el = document.querySelector(selector))) {
             return callback(el);
         }
         setTimeout(function() {
@@ -282,7 +282,7 @@ var js = (function() {
     {
         var el;
 
-        if (js.is_defined(el = document.querySelectorAll(selector))) {
+        if (is_defined(el = document.querySelectorAll(selector))) {
             return callback(el);
         }
         setTimeout(function() {
