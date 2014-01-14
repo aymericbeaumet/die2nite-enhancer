@@ -399,31 +399,32 @@ var D2NE = (function() {
      */
     var _fetch_tools_private_keys = function() {
         var enable_tool_in_config_panel, tool_info, match;
-        var sk = d2n.get_sk();
+        var sk = d2n.get_sk(function(sk) {
+            for (var tool in _external_tools) {
+                tool_info = _external_tools[tool];
 
-        for (var tool in _external_tools) {
-            tool_info = _external_tools[tool];
-
-            if (!js.is_defined(localStorage[tool_info.local_storage_key])) {
-                portability.network_request('GET', '/disclaimer?id=' + tool_info.site_id + ';sk=' + sk,
-                                            null, null,
-                                            function(data, param) {
-                                                match = data.match(/<input type="hidden" name="key" value="([a-f0-9]{38})"\/>/);
-                                                if (js.is_defined(match)) {
-                                                    localStorage[param.tool_info.local_storage_key] = match[1];
-                                                    document.getElementById(param.tool_info.configuration_panel_id).disabled = false;
-                                                } else {
-                                                    document.getElementById(param.tool_info.configuration_panel_id).disabled = true;
-                                                }
-                                            },
-                                            function(param) {
-                                                document.getElementById(param.tool_info.configuration_panel_id).disabled = true;
-                                            },
-                                            { tool_info: tool_info } );
-            } else {
-                document.getElementById(tool_info.configuration_panel_id).disabled = false;
+                if (!js.is_defined(localStorage[tool_info.local_storage_key])) {
+                    portability.network_request('GET',
+                        window.location.host + '/disclaimer?id=' + tool_info.site_id + ';sk=' + sk,
+                        null, null,
+                        function(data, param) {
+                            match = data.match(/<input type="hidden" name="key" value="([a-f0-9]{38})"\/>/);
+                            if (js.is_defined(match)) {
+                                localStorage[param.tool_info.local_storage_key] = match[1];
+                                document.getElementById(param.tool_info.configuration_panel_id).disabled = false;
+                            } else {
+                                document.getElementById(param.tool_info.configuration_panel_id).disabled = true;
+                            }
+                        },
+                        function(param) {
+                            document.getElementById(param.tool_info.configuration_panel_id).disabled = true;
+                        },
+                        { tool_info: tool_info } );
+                } else {
+                    document.getElementById(tool_info.configuration_panel_id).disabled = false;
+                }
             }
-        }
+        });
     };
 
     /**
@@ -1321,34 +1322,32 @@ var d2n = (function() {
      */
     self.go_to_city_page = function(page)
     {
-        var sk = self.get_sk();
-        var page_url = _pages_url[page];
+        var sk = self.get_sk(function(sk) {
+            var page_url = _pages_url[page];
 
-        // if already on the page, abort
-        if (self.is_on_city_page(page)) {
-            return;
-        }
+            // if already on the page, abort
+            if (self.is_on_city_page(page)) {
+                return;
+            }
 
-        if (self.is_on_forum()) { // if on the forum, redirect to the desired page
-            js.redirect('/#city/enter?go=' + page_url + ';sk=' + sk);
-        } else { // else just download the content with an ajax request
-            js.injectJS('js.XmlHttp.get(\'' + page_url + '?sk=' + sk + '\');');
-        }
+            if (self.is_on_forum()) { // if on the forum, redirect to the desired page
+                js.redirect('/#city/enter?go=' + page_url + ';sk=' + sk);
+            } else { // else just download the content with an ajax request
+                js.injectJS('js.XmlHttp.get(\'' + page_url + '?sk=' + sk + '\');');
+            }
+        });
     };
 
     /**
      * Return the sk (session/secret key?), return null if nothing can be found.
-     * @return string The key
-     * @return null if an error occurs
+     * @param callback callback The function to call once the sk is fetched
      */
-    self.get_sk = function()
+    self.get_sk = function(callback)
     {
-        var el = document.querySelector('#sites > ul > li > a.link');
-
-        if (js.is_defined(el) && js.is_defined(el.href)) {
-            return el.href.split('=')[2];
-        }
-        return null;
+        js.wait_for_selector('a.mainButton.newsButton', function(node) {
+            var arr = node.href.split('=');
+            return callback(arr[arr.length - 1]); // return last element
+        });
     };
 
     /**
