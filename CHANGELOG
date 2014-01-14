@@ -1,5 +1,10 @@
 v0.0.5
-- Replace innerHTML with textContent
+- Replace innerHTML by textContent
+- Fix GreaseMonkey update URL
+- Massive refactoring
+- Optimise hash change event by using native browser events
+- Automatically clean external tools API key cache when needed
+- Disable external tools API key fetching when not available
 
 v0.0.4
 - Change local storage prefix to conform with AMO
