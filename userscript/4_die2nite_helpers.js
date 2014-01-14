@@ -99,25 +99,24 @@ var D2N_helpers = (function() {
      */
     function go_to_city_page(page)
     {
-        // if not in a town, abort
-        if (!is_in_town()) {
+        // if not in a town, outside city or already on the page, abort
+        if (!(is_in_town() ||
+              D2N_helpers.is_outside() ||
+              is_on_page_in_city(page))) {
             return;
         }
 
         get_sk(function(sk) {
             var page_url = pages_url_[page];
 
-            // if already on the page, abort
-            if (is_on_page_in_city(page)) {
-                return;
-            }
-
             if (is_on_forum()) { // if on the forum, redirect to the desired page
                 js.redirect('/#city/enter?go=' + page_url + ';sk=' + sk);
             } else { // else just download the content with an ajax request
-                js.injectJS(function(){
-                    js.XmlHttp.get(page_url + '?sk=' + sk);
-                });
+                // Note for AMO reviewer: this JS code calls a native function
+                // on the website (js.XmlHttp.get), the `page_url` is a string
+                // obtained from the const array `pages_url_`. `sk` is just the
+                // session key.
+                js.injectJS('js.XmlHttp.get(\'' + page_url + '?sk=' + sk + '\');');
             }
         });
     }

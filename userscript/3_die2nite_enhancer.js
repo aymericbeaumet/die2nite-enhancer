@@ -227,9 +227,7 @@ var D2NE = (function() {
                 if (previous_keycode !== configuration_.go_bind) {
                     return;
                 }
-                if (D2N_helpers.is_outside()) { // abort if outside
-                    return;
-                }
+
                 for (var bind in configuration_.binds) {
                     if (configuration_.binds[bind] === keycode) {
                         return D2N_helpers.go_to_city_page(bind);
