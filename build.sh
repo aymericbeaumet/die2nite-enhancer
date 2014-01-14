@@ -22,7 +22,7 @@ PLACEHOLDERS=(
   '__CROSS_ORIGIN_XHR_PERMISSION_2__=www.oeev-hordes.com'
   '__PROJECT_WEBSITE__=https://github.com/abeaumet/die2nite_enhancer'
   '__PROJECT_BUGTRACKER__=https://github.com/abeaumet/die2nite_enhancer/issues'
-  '__USERSCRIPT_DOWNLOAD_URL__=https://github.com/abeaumet/die2nite_enhancer/raw/master/die2nite_enhancer.user.js'
+  '__USERSCRIPT_DOWNLOAD_URL__=http://userscripts.org/scripts/source/242398.user.js'
   '__USERSCRIPT_ICON__=http://www.zombinoia.com/gfx/forum/smiley/h_city_up.gif'
 )
 
