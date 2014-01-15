@@ -531,6 +531,11 @@ var D2NE = (function() {
             }
         });
 
+        // Abort if on the settings page
+        if (D2N_helpers.is_on_page('settings')) {
+            return;
+        }
+
         // Disable the button
         var disable_button = function(button_id) {
             button = document.getElementById(button_id);
