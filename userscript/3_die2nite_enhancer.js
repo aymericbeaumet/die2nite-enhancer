@@ -538,15 +538,15 @@ var D2NE = (function() {
 
         // Disable the button
         var disable_button = function(button_id) {
-            button = document.getElementById(button_id);
-            button.onclick = function(event) { return false; };
+            var button = document.getElementById(button_id);
+            button.onclick = function() { return false; };
             button.style.opacity = 0.5;
         };
 
         // Enable the button
         var enable_button = function(button_id) {
-            button = document.getElementById(button_id);
-            button.onclick = function(event) { return true; };
+            var button = document.getElementById(button_id);
+            button.onclick = function() { return true; };
             button.style.opacity = 1;
         };
 
@@ -556,29 +556,35 @@ var D2NE = (function() {
                 tool_info = external_tools_[tool];
 
                 // if website is disabled, go to the next tool
-                if (localStorage[tool_info.local_storage_key] === -1) {
+                if (localStorage[tool_info.local_storage_key] == -1) {
+                    disable_button(tool_info.configuration_panel_id);
                     continue;
                 }
 
-                if (localStorage[tool_info.local_storage_key] !== null) {
-                    js.network_request('GET', '/disclaimer?id=' + tool_info.site_id + ';sk=' + sk, null, null,
-                        function(data, param) {
-                            match = data.match(/<input type="hidden" name="key" value="([a-f0-9]{38})"\/>/);
-                            if (js.is_defined(match)) {
-                                localStorage[param.tool_info.local_storage_key] = match[1]; // save the API key
-                                enable_button(param.tool_info.configuration_panel_id);
-                            } else {
-                                localStorage[param.tool_info.local_storage_key] = -1; // disable this tool
-                                disable_button(param.tool_info.configuration_panel_id);
-                            }
-                        },
-                        function(param) {
-                                disable_button(param.tool_info.configuration_panel_id);
-                        },
-                        { tool_info: tool_info } );
-                } else {
+                // if key already exists, go to the next tool
+                if (js.is_defined(localStorage[tool_info.local_storage_key]) &&
+                    js.match_regex(localStorage[tool_info.local_storage_key], '^[a-f0-9]{38}$')) {
                     enable_button(tool_info.configuration_panel_id);
+                    continue;
                 }
+
+                // Else fetch it
+                js.network_request('GET', '/disclaimer?id=' + tool_info.site_id + ';sk=' + sk, null, null,
+                    function on_success(data, context) {
+                        match = data.match(/<input type="hidden" name="key" value="([a-f0-9]{38})"\/>/);
+                        if (js.is_defined(match) && match.length === 2) {
+                            localStorage[context.tool_info.local_storage_key] = match[1]; // save the API key
+                            enable_button(context.tool_info.configuration_panel_id);
+                        } else {
+                            localStorage[context.tool_info.local_storage_key] = -1; // disable this tool
+                            disable_button(context.tool_info.configuration_panel_id);
+                        }
+                    },
+                    function on_failure(context) {
+                        disable_button(context.tool_info.configuration_panel_id);
+                    },
+                    { tool_info: tool_info } // context given to callback
+                );
             }
         });
     }
