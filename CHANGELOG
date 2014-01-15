@@ -1,3 +1,8 @@
+v0.0.6
+- Fix bug in the config panel when mouse hovers over a disabled checkbox
+- Fix GreaseMonkey external tools sync bug
+- Fix Firefox compability
+
 v0.0.5
 - Replace innerHTML by textContent
 - Fix GreaseMonkey update URL

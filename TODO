@@ -6,5 +6,5 @@ Improvement:
 - Interpret image/video urls in forum posts
 - Remove scroll bar on soul distinctions
 
-Tech:
+Bugs:
 - Find a solution to fix Safari XmlHttpRequest problem with external tools
