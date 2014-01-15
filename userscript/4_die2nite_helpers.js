@@ -117,11 +117,7 @@ var D2N_helpers = (function() {
                 if (is_on_forum()) { // if on the forum, redirect to the desired page
                     js.redirect('/#city/enter?go=' + page_url + ';sk=' + sk);
                 } else { // else just download the content with an ajax request
-                    // Note for AMO reviewer: this JS code calls a native function
-                    // on the website (js.XmlHttp.get), the `page_url` is a string
-                    // obtained from the const array `pages_url_`. `sk` is just the
-                    // session key.
-                    js.injectJS('js.XmlHttp.get(\'' + page_url + '?sk=' + sk + '\');');
+                    js.injectJS('js.XmlHttp.get(' + JSON.stringify(page_url + '?sk=' + sk) + ');');
                 }
             });
         });
