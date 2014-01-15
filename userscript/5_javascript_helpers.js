@@ -10,21 +10,24 @@ var js = (function() {
 
     /**
      * Execute an asynchronous network request.
-     * @param string method
-     * @param string url
-     * @param string data
+     * @param string method POST, GET...
+     * @param string urn path
+     * @param string data query string
      * @param JSON headers
      * @param callback onsuccess in case of success
      * @param callback onfailure in case of failure
      * @param Object param An object given as an additional parameter to callbacks
      */
-    function network_request(method, url, data, headers, onsuccess, onfailure, param) {
+    function network_request(method, urn, data, headers, onsuccess, onfailure, param) {
+
+        var url = window.location.protocol + '//' + window.location.host;
+        var uri = url + urn;
 
         // Google Chrome script / GreaseMonkey
         if (typeof GM_xmlhttpRequest !== 'undefined') {
             return GM_xmlhttpRequest({
                 method: method,
-                url: url,
+                url: uri,
                 data: data,
                 headers: headers,
                 onload: function(r) { onsuccess(r.responseText, param); },
@@ -46,7 +49,7 @@ var js = (function() {
 
             return safari.tab.dispatchMessage('do_network_request', {
                 method: method,
-                url: url,
+                url: uri,
                 data: data,
                 headers: headers
             });
@@ -54,7 +57,7 @@ var js = (function() {
 
         // All other cases
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open(method, url, true);
+        xmlhttp.open(method, uri, true);
         for (var header in headers) {
             xmlhttp.setRequestHeader(header, headers[header]);
         }
@@ -205,26 +208,44 @@ var js = (function() {
      * Execute a callback when a node with the given $id is found.
      * @param string id The id to search
      * @param callback callback The function to call when a result is found
+     * @param integer max The maximum number of try
+     * @param callback not_found_callback The function called if the element
+     *                                    isn't found
      */
-    function wait_for_id(id, callback)
+    function wait_for_id(id, callback, max, not_found_callback)
     {
         var el;
 
+        // if max is defined and is reached, stop research
+        if (is_defined(max) && typeof max === 'integer' && max === 0) {
+            // if a callback has been given, call it
+            if (is_defined(not_found_callback) && typeof not_found_callback === 'function') {
+                not_found_callback();
+            }
+            return;
+        }
+
+        // else try to find it
         if (is_defined(el = document.getElementById(id))) {
             return callback(el);
         }
+
+        // if not, retry in 50 ms
         setTimeout(function() {
-            wait_for_id(id, callback);
+            wait_for_id(id, callback, max, not_found_callback);
         }, 50);
     }
 
     /**
-     * Redirect to the given url.
-     * @param string url The url to redirect to
+     * Redirect to the given urn.
+     * @param string urn The URN to redirect to
      */
-    function redirect(url)
+    function redirect(urn)
     {
-        window.location.href = url;
+        var url = window.location.protocol + '//' + window.location.host;
+        var uri = url + urn;
+
+        window.location.href = uri;
     }
 
     /**

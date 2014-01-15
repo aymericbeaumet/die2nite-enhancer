@@ -25,9 +25,9 @@
 //
 // ==/UserScript==
 
-;(function(window, document, undefined) {
+;(function(undefined) {
 
-"use strict";
+'use strict';
 
 var SCRIPT_NAME = '__NAME__';
 var SCRIPT_VERSION = '__VERSION__';

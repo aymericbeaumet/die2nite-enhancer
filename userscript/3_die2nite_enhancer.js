@@ -394,13 +394,13 @@ var D2NE = (function() {
         enable_hero_bar_stat: function() {
             js.injectCSS(
                 'div.heroUpBar div.hfront {' +
-                'padding-left: 6px;' +
-                'text-align: center;' +
-                'font-family: "Century Gothic", "Arial", "Trebuchet MS", Verdana, sans-serif;' +
-                'font-size: 16pt;' +
-                'padding-top: 10px;' +
-                'color: #f0d79e;' +
-                'text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;' +
+                    'padding-left: 6px;' +
+                    'text-align: center;' +
+                    'font-family: "Century Gothic", "Arial", "Trebuchet MS", Verdana, sans-serif;' +
+                    'font-size: 16pt;' +
+                    'padding-top: 10px;' +
+                    'color: #f0d79e;' +
+                    'text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;' +
                 '}'
             );
 
@@ -538,16 +538,18 @@ var D2NE = (function() {
 
         // Disable the button
         var disable_button = function(button_id) {
-            var button = document.getElementById(button_id);
-            button.onclick = function() { return false; };
-            button.style.opacity = 0.5;
+            js.wait_for_id(button_id, function(node) {
+                node.onclick = function() { return false; };
+                node.style.opacity = 0.5;
+            });
         };
 
         // Enable the button
         var enable_button = function(button_id) {
-            var button = document.getElementById(button_id);
-            button.onclick = function() { return true; };
-            button.style.opacity = 1;
+            js.wait_for_id(button_id, function(node) {
+                node.onclick = function() { return true; };
+                node.style.opacity = 1;
+            });
         };
 
         var enable_tool_in_config_panel, tool_info, match;

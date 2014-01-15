@@ -19,12 +19,15 @@ var D2N_helpers = (function() {
 
     /**
      * Check if the user is playing in a town or not (do not confound with
-     * `is_in_city`).
-     * @return bool true if playing in a town, false otherwise
+     * `is_in_city`). Call the function `callback` with the result
      */
-    function is_in_town()
+    function is_in_town(callback)
     {
-        return js.is_defined(document.getElementById('clock'));
+        js.wait_for_id('clock', function if_found() {
+            callback(true);
+        }, 5, function if_not_found() {
+            callback(false);
+        });
     }
 
     /**
@@ -100,24 +103,27 @@ var D2N_helpers = (function() {
     function go_to_city_page(page)
     {
         // if not in a town, outside city or already on the page, abort
-        if (!(is_in_town() ||
-              D2N_helpers.is_outside() ||
-              is_on_page_in_city(page))) {
-            return;
-        }
-
-        get_sk(function(sk) {
-            var page_url = pages_url_[page];
-
-            if (is_on_forum()) { // if on the forum, redirect to the desired page
-                js.redirect('/#city/enter?go=' + page_url + ';sk=' + sk);
-            } else { // else just download the content with an ajax request
-                // Note for AMO reviewer: this JS code calls a native function
-                // on the website (js.XmlHttp.get), the `page_url` is a string
-                // obtained from the const array `pages_url_`. `sk` is just the
-                // session key.
-                js.injectJS('js.XmlHttp.get(\'' + page_url + '?sk=' + sk + '\');');
+        is_in_town(function(in_town) {
+            if (!(in_town ||
+                  is_outside() ||
+                  is_on_page_in_city(page)
+                 )) {
+                return;
             }
+
+            get_sk(function(sk) {
+                var page_url = pages_url_[page];
+
+                if (is_on_forum()) { // if on the forum, redirect to the desired page
+                    js.redirect('/#city/enter?go=' + page_url + ';sk=' + sk);
+                } else { // else just download the content with an ajax request
+                    // Note for AMO reviewer: this JS code calls a native function
+                    // on the website (js.XmlHttp.get), the `page_url` is a string
+                    // obtained from the const array `pages_url_`. `sk` is just the
+                    // session key.
+                    js.injectJS('js.XmlHttp.get(\'' + page_url + '?sk=' + sk + '\');');
+                }
+            });
         });
     }
 
@@ -181,10 +187,7 @@ var D2N_helpers = (function() {
         // Emit a hash change event
         var emit_hash_change_event = function() {
             var event = new CustomEvent(
-                "d2n_hashchange", {
-                    detail: {
-                        hash: window.location.hash
-                    },
+                'd2n_hashchange', {
                     bubbles: true,
                     cancelable: true
                 }
@@ -209,7 +212,7 @@ var D2N_helpers = (function() {
         // Emit an event when the loading wheel disappears
         var watch_for_page_load = function() {
             // Watch the hash on page load
-            var observer = new MutationObserver(function(mutations) {
+            var loading_section_observer = new MutationObserver(function(mutations) {
                 for (var i = 0, max = mutations.length; i < max; ++i) {
                     // if the loading wheel disappears, then the page loading is
                     // done, emit a hash change event
@@ -220,7 +223,7 @@ var D2N_helpers = (function() {
                 }
             });
             js.wait_for_id('loading_section', function(node) {
-                observer.observe(node, { attributes: true });
+                loading_section_observer.observe(node, { attributes: true });
             });
         };
         watch_for_page_load();
@@ -236,30 +239,27 @@ var D2N_helpers = (function() {
 
         // Emit AP change event
         var emit_ap_change_event = function() {
-            get_number_of_ap(function(ap) {
-                var event = new CustomEvent(
-                    'd2n_apchange', {
-                        detail: {
-                            ap: ap
-                        },
-                        bubbles: true,
-                        cancelable: true
-                    }
-                );
-                document.dispatchEvent(event);
-            });
+            var event = new CustomEvent(
+                'd2n_apchange', {
+                    bubbles: true,
+                    cancelable: true
+                }
+            );
+            document.dispatchEvent(event);
         };
 
-        if (is_in_town()) { // only watch AP in town
-            // Emit an event when the AP changes
-            var observer = new MutationObserver(function(mutations) {
-                // Emit an event when the ap changes
-                emit_ap_change_event();
-            });
-            js.wait_for_id('movesCounter', function(node) {
-                observer.observe(node, {childList: true});
-            });
-        }
+        is_in_town(function(in_town) {
+            if (in_town) { // only watch AP in town
+                // Emit an event when the AP changes
+                var ap_observer = new MutationObserver(function(mutations) {
+                    // Emit an event when the ap changes
+                    emit_ap_change_event();
+                });
+                js.wait_for_id('movesCounter', function(node) {
+                    ap_observer.observe(node, { childList: true });
+                });
+            }
+        });
 
         /*
          * Gamebody
@@ -269,7 +269,6 @@ var D2N_helpers = (function() {
         var emit_gamebody_reloaded_event = function() {
             var event = new CustomEvent(
                 'd2n_gamebody_reloaded', {
-                    detail: {},
                     bubbles: true,
                     cancelable: true
                 }
@@ -278,12 +277,12 @@ var D2N_helpers = (function() {
         };
 
         // Emit an event when the gamebody is reloaded
-        var observer = new MutationObserver(function(mutations) {
+        var gamebody_observer = new MutationObserver(function(mutations) {
             // Emit an event when the gamebody is reloaded
             emit_gamebody_reloaded_event();
         });
         js.wait_for_id('gamebody', function(node) {
-            observer.observe(node, {childList: true});
+            gamebody_observer.observe(node, { childList: true, subtree: true });
         });
     }
 
