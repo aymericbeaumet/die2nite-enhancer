@@ -9,6 +9,19 @@ var D2N_helpers = (function() {
 */
 
     /**
+     * Check whether the user is logged.
+     * @param callback callback The callback to call with the result
+     */
+    function is_logged(callback)
+    {
+        js.wait_for_id('tid_sidePanel_user', function(node) {
+            callback(true); // logged if the side panel exists
+        }, 20, function(node) {
+            callback(false); // else not logged
+        });
+    }
+
+    /**
      * Check if the player is on the forum.
      * @return bool true if on the forum, false otherwise
      */
@@ -332,7 +345,8 @@ var D2N_helpers = (function() {
         get_sk: get_sk,
         get_website_language: get_website_language,
         get_number_of_ap: get_number_of_ap,
-        add_custom_events: add_custom_events
+        add_custom_events: add_custom_events,
+        is_logged: is_logged
     };
 
 })();

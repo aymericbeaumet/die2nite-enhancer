@@ -13,13 +13,16 @@ var D2NE = (function() {
      */
     function init()
     {
-        load_configuration();
-        load_internationalisation();
-        load_features();
-        load_external_tools(); // only if at least one tool is enabled
-        load_configuration_panel(); // defer loading until #main is found
-        fetch_tools_private_keys();
-        D2N_helpers.add_custom_events(); // add and fire custom events after initialisation
+        import_configuration(); // from local storage
+        load_internationalisation(); // load translations
+        load_features(); // load all the features (only the ones found in the configuration)
+        load_configuration_panel(); // loading is deferred until #main is found
+
+        D2N_helpers.is_logged(function(logged) { if (logged) {
+            fetch_tools_private_keys();
+            load_external_tools(); // only if at least one tool is enabled
+            D2N_helpers.add_custom_events(); // add custom D2N events
+        }});
     };
 
 /*
@@ -446,7 +449,7 @@ var D2NE = (function() {
      * Load the configuration by merging the one found in the local storage (if
      * any) into the default one.
      */
-    function load_configuration()
+    function import_configuration()
     {
         var saved_configuration = localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY];
 
@@ -553,7 +556,7 @@ var D2NE = (function() {
         };
 
         var enable_tool_in_config_panel, tool_info, match;
-        var sk = D2N_helpers.get_sk(function(sk) {
+        D2N_helpers.get_sk(function(sk) {
             for (var tool in external_tools_) {
                 tool_info = external_tools_[tool];
 
