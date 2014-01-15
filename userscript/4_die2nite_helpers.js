@@ -184,7 +184,7 @@ var D2N_helpers = (function() {
          * Hash change
          */
 
-        // Emit a hash change event
+        // Emit change on each change hash
         var emit_hash_change_event = function() {
             var event = new CustomEvent(
                 'd2n_hashchange', {
@@ -195,16 +195,22 @@ var D2N_helpers = (function() {
             document.dispatchEvent(event);
         };
 
-        // Emit an event while the first page load
-        var watch_for_hash = function() {
+        // Watch for the first hash apparition and emit an event. The event is
+        // emitted even is the hash is already loaded.
+        var watch_for_hash = function(limit) {
+            // Avoid infinite loop (it should take less than 5 seconds...)
+            if (limit <= 0) {
+                return;
+            }
+
             if (window.location.hash === '') {
-                return setTimeout(function() { watch_for_hash(); }, 50);
+                return setTimeout(function() { watch_for_hash(limit - 1); }, 50);
             }
             emit_hash_change_event();
         };
-        watch_for_hash();
+        watch_for_hash(100);
 
-        // Emit an event when the hash changes
+        // Watch for hash update
         window.addEventListener('hashchange', function() {
             emit_hash_change_event();
         });
@@ -217,8 +223,7 @@ var D2N_helpers = (function() {
                     // if the loading wheel disappears, then the page loading is
                     // done, emit a hash change event
                     if (mutations[i].target.style.display === 'none') {
-                        emit_hash_change_event();
-                        break;
+                        return emit_hash_change_event();
                     }
                 }
             });
@@ -228,7 +233,8 @@ var D2N_helpers = (function() {
         };
         watch_for_page_load();
 
-        // Loading wheel event: put it again if the gamebody is reloaded
+        // Register the loading wheel event mutation observer again. Because
+        // when the gamebody is reloaded, the div disappeared.
         document.addEventListener('d2n_gamebody_reloaded', function() {
             watch_for_page_load();
         });
@@ -250,9 +256,8 @@ var D2N_helpers = (function() {
 
         is_in_town(function(in_town) {
             if (in_town) { // only watch AP in town
-                // Emit an event when the AP changes
+                // Watch for AP change
                 var ap_observer = new MutationObserver(function(mutations) {
-                    // Emit an event when the ap changes
                     emit_ap_change_event();
                 });
                 js.wait_for_id('movesCounter', function(node) {
@@ -276,9 +281,8 @@ var D2N_helpers = (function() {
             document.dispatchEvent(event);
         };
 
-        // Emit an event when the gamebody is reloaded
+        // Watch for the gamebody reload
         var gamebody_observer = new MutationObserver(function(mutations) {
-            // Emit an event when the gamebody is reloaded
             emit_gamebody_reloaded_event();
         });
         js.wait_for_id('gamebody', function(node) {

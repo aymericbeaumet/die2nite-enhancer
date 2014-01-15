@@ -214,10 +214,12 @@ var js = (function() {
      */
     function wait_for_id(id, callback, max, not_found_callback)
     {
+        max = (typeof max !== 'undefined') ? max : 100;
+
         var el;
 
         // if max is defined and is reached, stop research
-        if (is_defined(max) && typeof max === 'integer' && max === 0) {
+        if (max <= 0) {
             // if a callback has been given, call it
             if (is_defined(not_found_callback) && typeof not_found_callback === 'function') {
                 not_found_callback();
@@ -232,7 +234,70 @@ var js = (function() {
 
         // if not, retry in 50 ms
         setTimeout(function() {
-            wait_for_id(id, callback, max, not_found_callback);
+            wait_for_id(id, callback, max - 1, not_found_callback);
+        }, 50);
+    }
+
+    /**
+     * Execute a callback with the first node matching the given selector.
+     * @param string selector The selector to execute
+     * @param callback callback The function to call when a result is found
+     * @param integer max The maximum number of try
+     * @param callback not_found_callback The function called if the element
+     *                                    isn't found
+     */
+    function wait_for_selector(selector, callback, max, not_found_callback)
+    {
+        max = (typeof max !== 'undefined') ? max : 100;
+
+        var el;
+
+        // if max is defined and is reached, stop research
+        if (max <= 0) {
+            // if a callback has been given, call it
+            if (is_defined(not_found_callback) && typeof not_found_callback === 'function') {
+                not_found_callback();
+            }
+            return;
+        }
+
+        if (is_defined(el = document.querySelector(selector))) {
+            return callback(el);
+        }
+        setTimeout(function() {
+            wait_for_selector(selector, callback, max - 1, not_found_callback);
+        }, 50);
+    }
+
+    /**
+     * Execute a callback with an array containing all the nodes matching the
+     * given selector.
+     * @param string selector The selector to execute
+     * @param callback callback The function to call when a result is found
+     * @param integer max The maximum number of try
+     * @param callback not_found_callback The function called if the element
+     *                                    isn't found
+     */
+    function wait_for_selector_all(selector, callback, max, not_found_callback)
+    {
+        max = (typeof max !== 'undefined') ? max : 100;
+
+        var el;
+
+        // if max is defined and is reached, stop research
+        if (max <= 0) {
+            // if a callback has been given, call it
+            if (is_defined(not_found_callback) && typeof not_found_callback === 'function') {
+                not_found_callback();
+            }
+            return;
+        }
+
+        if (is_defined(el = document.querySelectorAll(selector))) {
+            return callback(el);
+        }
+        setTimeout(function() {
+            wait_for_selector_all(selector, callback, max - 1, not_found_callback);
         }, 50);
     }
 
@@ -274,41 +339,6 @@ var js = (function() {
         }
 
         return r.test(string);
-    }
-
-    /**
-     * Execute a callback with the first node matching the given selector.
-     * @param string selector The selector to execute
-     * @param callback callback The function to call when a result is found
-     */
-    function wait_for_selector(selector, callback)
-    {
-        var el;
-
-        if (is_defined(el = document.querySelector(selector))) {
-            return callback(el);
-        }
-        setTimeout(function() {
-            wait_for_selector(selector, callback);
-        }, 50);
-    }
-
-    /**
-     * Execute a callback with an array containing all the nodes matching the
-     * given selector.
-     * @param string selector The selector to execute
-     * @param callback callback The function to call when a result is found
-     */
-    function wait_for_selector_all(selector, callback)
-    {
-        var el;
-
-        if (is_defined(el = document.querySelectorAll(selector))) {
-            return callback(el);
-        }
-        setTimeout(function() {
-            wait_for_selector_all(selector, callback);
-        }, 50);
     }
 
     /**
