@@ -525,13 +525,25 @@ var D2NE = (function() {
                 return;
             }
 
-            console.log('CLEAN CACHE');
-
             // Clean the cache for all the external tools
             for (var tool in external_tools_) {
                 localStorage[external_tools_[tool].local_storage_key] = null;
             }
         });
+
+        // Disable the button
+        var disable_button = function(button_id) {
+            button = document.getElementById(button_id);
+            button.onclick = function(event) { return false; };
+            button.style.opacity = 0.5;
+        };
+
+        // Enable the button
+        var enable_button = function(button_id) {
+            button = document.getElementById(button_id);
+            button.onclick = function(event) { return true; };
+            button.style.opacity = 1;
+        };
 
         var enable_tool_in_config_panel, tool_info, match;
         var sk = D2N_helpers.get_sk(function(sk) {
@@ -544,24 +556,23 @@ var D2NE = (function() {
                 }
 
                 if (localStorage[tool_info.local_storage_key] !== null) {
-                    js.network_request('GET', '/disclaimer?id=' + tool_info.site_id + ';sk=' + sk,
-                        null, null,
+                    js.network_request('GET', '/disclaimer?id=' + tool_info.site_id + ';sk=' + sk, null, null,
                         function(data, param) {
                             match = data.match(/<input type="hidden" name="key" value="([a-f0-9]{38})"\/>/);
                             if (js.is_defined(match)) {
-                                localStorage[param.tool_info.local_storage_key] = match[1];
-                                document.getElementById(param.tool_info.configuration_panel_id).disabled = false;
+                                localStorage[param.tool_info.local_storage_key] = match[1]; // save the API key
+                                enable_button(param.tool_info.configuration_panel_id);
                             } else {
-                                document.getElementById(param.tool_info.configuration_panel_id).disabled = true;
                                 localStorage[param.tool_info.local_storage_key] = -1; // disable this tool
+                                disable_button(param.tool_info.configuration_panel_id);
                             }
                         },
                         function(param) {
-                            document.getElementById(param.tool_info.configuration_panel_id).disabled = true;
+                                disable_button(param.tool_info.configuration_panel_id);
                         },
                         { tool_info: tool_info } );
                 } else {
-                    document.getElementById(tool_info.configuration_panel_id).disabled = false;
+                    enable_button(tool_info.configuration_panel_id);
                 }
             }
         });
@@ -1008,7 +1019,7 @@ var D2NE = (function() {
                                 ["tr", {},
                                     // Enable BBH sync
                                     ["td", {},
-                                        ["input", { "id": "d2ne_configuration_enable_bbh_sync", "type": "checkbox", "disabled": "disabled" }],
+                                        ["input", { "id": "d2ne_configuration_enable_bbh_sync", "type": "checkbox" }],
                                         ["label", { "for": "d2ne_configuration_enable_bbh_sync" }, i18n_.configuration_panel_enable_bbh_sync]
                                     ],
                                     ["td", {},
@@ -1033,7 +1044,7 @@ var D2NE = (function() {
                                 ["tr", {},
                                     // Enable oeev sync
                                     ["td", {},
-                                        ["input", { "id": "d2ne_configuration_enable_oeev_sync", "type": "checkbox", "disabled": "disabled" }],
+                                        ["input", { "id": "d2ne_configuration_enable_oeev_sync", "type": "checkbox" }],
                                         ["label", { "for": "d2ne_configuration_enable_oeev_sync" }, i18n_.configuration_panel_enable_oeev_sync]
                                     ],
                                     ["td", {},
