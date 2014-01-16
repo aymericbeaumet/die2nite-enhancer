@@ -20,8 +20,14 @@ var js = (function() {
      */
     function network_request(method, urn, data, headers, onsuccess, onfailure, param) {
 
-        var url = window.location.protocol + '//' + window.location.host;
-        var uri = url + urn;
+        var uri;
+
+        // if the URL (protocol + domain) is missing, add it to form the URI
+        if (/^\/[^\/].+$/.test(urn)) {
+            uri = window.location.protocol + '//' + window.location.host + urn;
+        } else { // just use the given URN as the URI
+            uri = urn;
+        }
 
         // Google Chrome script / GreaseMonkey
         if (typeof GM_xmlhttpRequest !== 'undefined') {
