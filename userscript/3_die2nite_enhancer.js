@@ -183,6 +183,11 @@ var D2NE = (function() {
             local_storage_key: LOCAL_STORAGE_PRIVATE_KEY_PREFIX + '.duskdawn',
             configuration_panel_id: 'd2ne_configuration_enable_duskdawn_sync',
             update: function(callback_success, callback_failure) {
+                // Do not update if not outside
+                if (!D2N_helpers.is_outside()) {
+                    return callback_success();
+                }
+
                 js.network_request(
                     'POST',
                     'http://d2n.duskdawn.net/zone',
