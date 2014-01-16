@@ -31,7 +31,7 @@ var D2NE = (function() {
 
     var LOCAL_STORAGE_PREFIX = 'extensions.d2ne';
     var LOCAL_STORAGE_D2NE_CONFIGURATION_KEY = LOCAL_STORAGE_PREFIX + '.configuration';
-    var LOCAL_STORAGE_PRIVATE_KEY_PREFIX = 'extensions.d2ne.key';
+    var LOCAL_STORAGE_PRIVATE_KEY_PREFIX = LOCAL_STORAGE_PREFIX + '.key';
 
     /**
      * The default configuration.
