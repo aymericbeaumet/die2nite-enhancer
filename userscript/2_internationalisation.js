@@ -9,7 +9,7 @@ i18n.en = {
     configuration_panel_title: 'Die2Nite Enhancer - Settings',
     configuration_panel_script_description: 'Die2Nite Enhancer allows you to enhance your game experience, every features can be controlled from this panel.',
     configuration_panel_enable_shortcuts: 'Enable shortcuts',
-    configuration_panel_enable_shortcuts_tooltip: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
+    configuration_panel_enable_shortcuts_tooltip: 'Let you use keyboard shortcuts in town to quickly access important places (e.g.: banks, gates).',
     configuration_panel_hide_hero_adds: 'Hide hero adds',
     configuration_panel_hide_hero_adds_tooltip: 'Hide the adds for the hero mode on all the website. Can be useful if you are already hero or don\'t want to be one.',
     configuration_panel_highlight_ap: 'Highlight AP',
@@ -36,6 +36,8 @@ i18n.en = {
     configuration_panel_hide_completed_constructions_tooltip: 'While in the construction page, hide all the completed ones.',
     configuration_panel_enable_hero_bar_stat: 'Enable hero bar stat',
     configuration_panel_enable_hero_bar_stat_tooltip: 'On soul page, enable days stat on the hero bar.',
+    configuration_panel_enable_cyanide_protection: 'Enable cyanide protection',
+    configuration_panel_enable_cyanide_protection_tooltip: 'Avoid to eat cyanide by accident by deleting the concerning link in your home.',
     configuration_panel_save_button: 'Save',
     external_tools_bar_update: 'Update external tools'
 };
@@ -45,7 +47,7 @@ i18n.fr = {
     configuration_panel_title: 'Die2Nite Enhancer - Paramètres',
     configuration_panel_script_description: 'Die2Nite Enhancer vous permet d\'améliorer votre expérience de jeu, toutes les fonctionalités peuvent être controlées depuis ce panneau de configuration.',
     configuration_panel_enable_shortcuts: 'Activer les raccourcis',
-    configuration_panel_enable_shortcuts_tooltip: 'Active des raccourcis pour accéder rapidement aux places importantes en ville (e.g.: la banque, les portes).',
+    configuration_panel_enable_shortcuts_tooltip: 'Active des raccourcis claviers pour accéder rapidement aux places importantes en ville (e.g.: la banque, les portes).',
     configuration_panel_hide_hero_adds: 'Cacher les pubs pour le mode héros',
     configuration_panel_hide_hero_adds_tooltip: 'Cache les pubs pour le mode héros sur tout le site. C\'est pratique si vous êtes déjà héros ou si vous ne comptez pas le devenir.',
     configuration_panel_highlight_ap: 'Colorer les PA',
@@ -72,6 +74,8 @@ i18n.fr = {
     configuration_panel_hide_completed_constructions_tooltip: 'Cache les constructions finies.',
     configuration_panel_enable_hero_bar_stat: 'Activer stats barre héro',
     configuration_panel_enable_hero_bar_stat_tooltip: 'Sur la page d\'âme, active le pourcentage de la barre héros.',
+    configuration_panel_enable_cyanide_protection: 'Activer la protection au cyanure',
+    configuration_panel_enable_cyanide_protection_tooltip: 'Eviter de s\'empoisonner au cyanure par accident en supprimant le lien concerné dans votre maison.',
     configuration_panel_save_button: 'Sauvegarder',
     external_tools_bar_update: 'Mettre à jour les outils externes'
 };
@@ -81,7 +85,7 @@ i18n.es = {
     configuration_panel_title: 'Die2Nite Enhancer - Settings',
     configuration_panel_script_description: 'Die2Nite Enhancer allows you to enhance your game experience, every features can be controlled from this panel.',
     configuration_panel_enable_shortcuts: 'Enable shortcuts',
-    configuration_panel_enable_shortcuts_tooltip: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
+    configuration_panel_enable_shortcuts_tooltip: 'Let you use keyboard shortcuts in town to quickly access important places (e.g.: banks, gates).',
     configuration_panel_hide_hero_adds: 'Hide hero adds',
     configuration_panel_hide_hero_adds_tooltip: 'Hide the adds for the hero mode on all the website. Can be useful if you are already hero or don\'t want to be one.',
     configuration_panel_highlight_ap: 'Highlight AP',
@@ -104,6 +108,8 @@ i18n.es = {
     configuration_panel_hide_completed_constructions_tooltip: 'While in the construction page, hide all the completed ones.',
     configuration_panel_enable_hero_bar_stat: 'Enable hero bar stat',
     configuration_panel_enable_hero_bar_stat_tooltip: 'On soul page, enable days stat on the hero bar.',
+    configuration_panel_enable_cyanide_protection: 'Enable cyanide protection',
+    configuration_panel_enable_cyanide_protection_tooltip: 'Avoid to eat cyanide by accident by deleting the concerning link in your home.',
     configuration_panel_save_button: 'Save',
     external_tools_bar_update: 'Update external tools'
 };
@@ -113,7 +119,7 @@ i18n.de = {
     configuration_panel_title: 'Die2Nite Enhancer - Settings',
     configuration_panel_script_description: 'Die2Nite Enhancer allows you to enhance your game experience, every features can be controlled from this panel.',
     configuration_panel_enable_shortcuts: 'Enable shortcuts',
-    configuration_panel_enable_shortcuts_tooltip: 'Let you use shortcuts in town to quickly access important places (e.g.: banks, gates).',
+    configuration_panel_enable_shortcuts_tooltip: 'Let you use keyboard shortcuts in town to quickly access important places (e.g.: banks, gates).',
     configuration_panel_hide_hero_adds: 'Hide hero adds',
     configuration_panel_hide_hero_adds_tooltip: 'Hide the adds for the hero mode on all the website. Can be useful if you are already hero or don\'t want to be one.',
     configuration_panel_highlight_ap: 'Highlight AP',
@@ -136,6 +142,8 @@ i18n.de = {
     configuration_panel_hide_completed_constructions_tooltip: 'While in the construction page, hide all the completed ones.',
     configuration_panel_enable_hero_bar_stat: 'Enable hero bar stat',
     configuration_panel_enable_hero_bar_stat_tooltip: 'On soul page, enable days stat on the hero bar.',
+    configuration_panel_enable_cyanide_protection: 'Enable cyanide protection',
+    configuration_panel_enable_cyanide_protection_tooltip: 'Avoid to eat cyanide by accident by deleting the concerning link in your home.',
     configuration_panel_save_button: 'Save',
     external_tools_bar_update: 'Update external tools'
 };

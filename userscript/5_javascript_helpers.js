@@ -220,7 +220,7 @@ var js = (function() {
      */
     function wait_for_id(id, callback, max, not_found_callback)
     {
-        max = (typeof max !== 'undefined') ? max : 25;
+        max = (typeof max !== 'undefined') ? max : 15;
 
         var el;
 
@@ -254,7 +254,7 @@ var js = (function() {
      */
     function wait_for_selector(selector, callback, max, not_found_callback)
     {
-        max = (typeof max !== 'undefined') ? max : 25;
+        max = (typeof max !== 'undefined') ? max : 15;
 
         var el;
 
@@ -286,7 +286,7 @@ var js = (function() {
      */
     function wait_for_selector_all(selector, callback, max, not_found_callback)
     {
-        max = (typeof max !== 'undefined') ? max : 25;
+        max = (typeof max !== 'undefined') ? max : 15;
 
         var el;
 
@@ -318,7 +318,7 @@ var js = (function() {
      */
     function wait_for_tag(tag, callback, max, not_found_callback)
     {
-        max = (typeof max !== 'undefined') ? max : 25;
+        max = (typeof max !== 'undefined') ? max : 15;
 
         var el;
 
@@ -350,7 +350,7 @@ var js = (function() {
      */
     function wait_for_class(class_name, callback, max, not_found_callback)
     {
-        max = (typeof max !== 'undefined') ? max : 25;
+        max = (typeof max !== 'undefined') ? max : 15;
 
         var el;
 

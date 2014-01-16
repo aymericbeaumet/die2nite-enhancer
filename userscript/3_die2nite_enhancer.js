@@ -110,7 +110,10 @@ var D2NE = (function() {
         hide_completed_constructions: false,
 
         // Set to true to enable the stat on hero bar
-        enable_hero_bar_stat: true
+        enable_hero_bar_stat: true,
+
+        // Set to true to enable the cyanide protection
+        enable_cyanide_protection: true
     };
 
     /**
@@ -520,6 +523,27 @@ var D2NE = (function() {
                     });
                 });
             }, false);
+        },
+
+        ////
+        enable_cyanide_protection: function() {
+            document.addEventListener('d2n_hashchange', function() {
+                if (!D2N_helpers.is_on_page('home')) {
+                    return;
+                }
+
+                js.wait_for_selector_all('a.toolAction > span > strong', function(nodes) {
+                    var action;
+
+                    for (var node in nodes) {
+                        if (/^Cyanide|Cyanure|Cianuro$/.test(nodes[node].textContent)) {
+                            action = nodes[node].parentNode.parentNode;
+                            action.style.display = 'none';
+                            break;
+                        }
+                    }
+                }, 5);
+            }, false);
         }
     };
 
@@ -560,6 +584,7 @@ var D2NE = (function() {
         configuration_.enable_construction_max_ap = document.getElementById('d2ne_configuration_enable_construction_max_ap').checked;
         configuration_.hide_completed_constructions = document.getElementById('d2ne_configuration_hide_completed_constructions').checked;
         configuration_.enable_hero_bar_stat = document.getElementById('d2ne_configuration_enable_hero_bar_stat').checked;
+        configuration_.enable_cyanide_protection = document.getElementById('d2ne_configuration_enable_cyanide_protection').checked;
 
         localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY] = JSON.stringify(configuration_);
     }
@@ -585,6 +610,7 @@ var D2NE = (function() {
         document.getElementById('d2ne_configuration_enable_construction_max_ap').checked = configuration_.enable_construction_max_ap;
         document.getElementById('d2ne_configuration_hide_completed_constructions').checked = configuration_.hide_completed_constructions;
         document.getElementById('d2ne_configuration_enable_hero_bar_stat').checked = configuration_.enable_hero_bar_stat;
+        document.getElementById('d2ne_configuration_enable_cyanide_protection').checked = configuration_.enable_cyanide_protection;
     }
 
     function load_internationalisation()
@@ -1065,6 +1091,15 @@ var D2NE = (function() {
                                             ["input", { "id": "d2ne_configuration_enable_hero_bar_stat", "type": "checkbox" }],
                                             ["label", { "for": "d2ne_configuration_enable_hero_bar_stat" }, i18n_.configuration_panel_enable_hero_bar_stat],
                                             ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_hero_bar_stat_tooltip },
+                                                ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                            ]
+                                        ],
+
+                                        // Enable cyanide protection
+                                        ["div", {},
+                                            ["input", { "id": "d2ne_configuration_enable_cyanide_protection", "type": "checkbox" }],
+                                            ["label", { "for": "d2ne_configuration_enable_cyanide_protection" }, i18n_.configuration_panel_enable_cyanide_protection],
+                                            ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_cyanide_protection_tooltip },
                                                 ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                             ]
                                         ],
