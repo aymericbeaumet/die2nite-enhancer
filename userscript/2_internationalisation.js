@@ -75,7 +75,7 @@ i18n.fr = {
     configuration_panel_enable_hero_bar_stat: 'Activer stats barre héro',
     configuration_panel_enable_hero_bar_stat_tooltip: 'Sur la page d\'âme, active le pourcentage de la barre héros.',
     configuration_panel_enable_cyanide_protection: 'Activer la protection au cyanure',
-    configuration_panel_enable_cyanide_protection_tooltip: 'Eviter de s\'empoisonner au cyanure par accident en supprimant le lien concerné dans votre maison.',
+    configuration_panel_enable_cyanide_protection_tooltip: 'Evite de s\'empoisonner au cyanure par accident en supprimant le lien concerné dans votre maison.',
     configuration_panel_save_button: 'Sauvegarder',
     external_tools_bar_update: 'Mettre à jour les outils externes'
 };
