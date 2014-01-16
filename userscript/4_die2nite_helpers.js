@@ -207,45 +207,32 @@ var D2N_helpers = (function() {
         // Watch for the first hash apparition and emit an event. The event is
         // emitted even is the hash is already loaded.
         var watch_for_hash = function(limit) {
-            // Avoid infinite loop (it should take less than 5 seconds...)
-            if (limit <= 0) {
-                return;
-            }
-
-            if (window.location.hash === '') {
+            if (limit > 0 && window.location.hash === '') {
                 return setTimeout(function() { watch_for_hash(limit - 1); }, 50);
             }
+
+            // Emit an event for the current hash
             emit_hash_change_event();
+
+            // Watch for future hash updates
+            window.addEventListener('hashchange', function() {
+                emit_hash_change_event();
+            });
         };
         watch_for_hash(100);
 
-        // Watch for hash update
-        window.addEventListener('hashchange', function() {
-            emit_hash_change_event();
-        });
-
-        // Emit an event when the loading wheel disappears
-        var watch_for_page_load = function() {
-            // Watch the hash on page load
-            var loading_section_observer = new MutationObserver(function(mutations) {
-                for (var i = 0, max = mutations.length; i < max; ++i) {
-                    // if the loading wheel disappears, then the page loading is
-                    // done, emit a hash change event
-                    if (mutations[i].target.style.display === 'none') {
-                        return emit_hash_change_event();
-                    }
+        // Watch the hash on page load
+        var loading_section_observer = new MutationObserver(function(mutations) {
+            for (var i = 0, max = mutations.length; i < max; ++i) {
+                // if the loading wheel disappears, then the page loading is
+                // done, emit a hash change event
+                if (mutations[i].target.style.display === 'none') {
+                    return emit_hash_change_event();
                 }
-            });
-            js.wait_for_id('loading_section', function(node) {
-                loading_section_observer.observe(node, { attributes: true });
-            });
-        };
-        watch_for_page_load();
-
-        // Register the loading wheel event mutation observer again. Because
-        // when the gamebody is reloaded, the div disappeared.
-        document.addEventListener('d2n_gamebody_reloaded', function() {
-            watch_for_page_load();
+            }
+        });
+        js.wait_for_id('loading_section', function(node) {
+            loading_section_observer.observe(node, { attributes: true });
         });
 
         /*
@@ -295,7 +282,7 @@ var D2N_helpers = (function() {
             emit_gamebody_reloaded_event();
         });
         js.wait_for_id('gamebody', function(node) {
-            gamebody_observer.observe(node, { childList: true, subtree: true });
+            gamebody_observer.observe(node, { childList: true });
         });
     }
 

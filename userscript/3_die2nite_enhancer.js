@@ -470,10 +470,6 @@ var D2NE = (function() {
             document.addEventListener('d2n_apchange', function() {
                 change_ap();
             }, false);
-
-            document.addEventListener('d2n_hashchange', function() {
-                change_ap();
-            }, false);
         },
 
         ////
@@ -517,11 +513,6 @@ var D2NE = (function() {
 
                         var fill_bar = function() {
                             js.wait_for_selector('div.heroUpBar div.hfront', function(node) {
-                                if (node.textContent !== '') {
-                                    return setTimeout(function() {
-                                        fill_bar();
-                                    }, 50);
-                                }
                                 node.textContent = parseInt(percent) + '%';
                             });
                         };
@@ -848,13 +839,13 @@ var D2NE = (function() {
         );
 
         var inject_tools_button = function() {
-            // the side panel is needed to place the button
-            js.wait_for_selector('.sidePanel', function(node) {
-                // if not in town or outside, abort
-                if (!(D2N_helpers.is_in_city() || D2N_helpers.is_outside())) {
-                    return;
-                }
+            // if not in town or outside, abort
+            if (!(D2N_helpers.is_in_city() || D2N_helpers.is_outside())) {
+                return;
+            }
 
+            // the side panel is needed to place the button
+            js.wait_for_class('sidePanel', function(nodes) {
                 // if already loaded, abort
                 if (js.is_defined(document.getElementById('d2ne_external_tools_bar'))) {
                     return;
@@ -874,7 +865,7 @@ var D2NE = (function() {
                 , document);
 
                 // Insert external tools bar
-                node.insertBefore(external_tools_bar_div, node.firstChild);
+                nodes[0].insertBefore(external_tools_bar_div, nodes[0].firstChild);
             });
         };
 

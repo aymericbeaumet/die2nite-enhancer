@@ -138,8 +138,8 @@ var js = (function() {
         css.setAttribute('type', 'text/css');
         css.textContent = code;
 
-        wait_for_selector('html > head', function(node) {
-            node.appendChild(css);
+        wait_for_tag('head', function(nodes) {
+            nodes[0].appendChild(css);
         });
     }
 
@@ -220,7 +220,7 @@ var js = (function() {
      */
     function wait_for_id(id, callback, max, not_found_callback)
     {
-        max = (typeof max !== 'undefined') ? max : 100;
+        max = (typeof max !== 'undefined') ? max : 25;
 
         var el;
 
@@ -241,7 +241,7 @@ var js = (function() {
         // if not, retry in 50 ms
         setTimeout(function() {
             wait_for_id(id, callback, max - 1, not_found_callback);
-        }, 50);
+        }, 500);
     }
 
     /**
@@ -254,7 +254,7 @@ var js = (function() {
      */
     function wait_for_selector(selector, callback, max, not_found_callback)
     {
-        max = (typeof max !== 'undefined') ? max : 100;
+        max = (typeof max !== 'undefined') ? max : 25;
 
         var el;
 
@@ -272,7 +272,7 @@ var js = (function() {
         }
         setTimeout(function() {
             wait_for_selector(selector, callback, max - 1, not_found_callback);
-        }, 50);
+        }, 500);
     }
 
     /**
@@ -286,7 +286,7 @@ var js = (function() {
      */
     function wait_for_selector_all(selector, callback, max, not_found_callback)
     {
-        max = (typeof max !== 'undefined') ? max : 100;
+        max = (typeof max !== 'undefined') ? max : 25;
 
         var el;
 
@@ -299,12 +299,76 @@ var js = (function() {
             return;
         }
 
-        if (is_defined(el = document.querySelectorAll(selector))) {
+        if (is_defined(el = document.querySelectorAll(selector)) && el.length > 0) {
             return callback(el);
         }
         setTimeout(function() {
             wait_for_selector_all(selector, callback, max - 1, not_found_callback);
-        }, 50);
+        }, 500);
+    }
+
+    /**
+     * Execute a callback with an array containing all the nodes matching the
+     * given tag.
+     * @param string tag The tag to search
+     * @param callback callback The function to call when a result is found
+     * @param integer max The maximum number of try
+     * @param callback not_found_callback The function called if the element
+     *                                    isn't found
+     */
+    function wait_for_tag(tag, callback, max, not_found_callback)
+    {
+        max = (typeof max !== 'undefined') ? max : 25;
+
+        var el;
+
+        // if max is defined and is reached, stop research
+        if (max <= 0) {
+            // if a callback has been given, call it
+            if (is_defined(not_found_callback) && typeof not_found_callback === 'function') {
+                not_found_callback();
+            }
+            return;
+        }
+
+        if (is_defined(el = document.getElementsByTagName(tag)) && el.length > 0) {
+            return callback(el);
+        }
+        setTimeout(function() {
+            wait_for_tag(tag, callback, max - 1, not_found_callback);
+        }, 500);
+    }
+
+    /**
+     * Execute a callback with an array containing all the nodes matching the
+     * given class.
+     * @param string class The class to search
+     * @param callback callback The function to call when a result is found
+     * @param integer max The maximum number of try
+     * @param callback not_found_callback The function called if the element
+     *                                    isn't found
+     */
+    function wait_for_class(class_name, callback, max, not_found_callback)
+    {
+        max = (typeof max !== 'undefined') ? max : 25;
+
+        var el;
+
+        // if max is defined and is reached, stop research
+        if (max <= 0) {
+            // if a callback has been given, call it
+            if (is_defined(not_found_callback) && typeof not_found_callback === 'function') {
+                not_found_callback();
+            }
+            return;
+        }
+
+        if (is_defined(el = document.getElementsByClassName(class_name)) && el.length > 0) {
+            return callback(el);
+        }
+        setTimeout(function() {
+            wait_for_class(class_name, callback, max - 1, not_found_callback);
+        }, 500);
     }
 
     /**
@@ -419,6 +483,8 @@ var js = (function() {
         match_regex: match_regex,
         wait_for_selector: wait_for_selector,
         wait_for_selector_all: wait_for_selector_all,
+        wait_for_tag: wait_for_tag,
+        wait_for_class: wait_for_class,
         jsonToDOM: jsonToDOM
     };
 
