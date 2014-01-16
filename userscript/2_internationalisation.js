@@ -28,6 +28,8 @@ i18n.en = {
     configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
     configuration_panel_enable_duskdawn_sync: 'Enable Dusk Dawn sync',
     configuration_panel_enable_duskdawn_sync_tooltip: 'Add the possibility to sync with Dusk Dawn',
+    configuration_panel_enable_mapviewer_sync: 'Enable Map Viewer sync',
+    configuration_panel_enable_mapviewer_sync_tooltip: 'Add the possibility to sync with Map Viewer',
     configuration_panel_enable_construction_max_ap: 'Use max AP in constructions',
     configuration_panel_enable_construction_max_ap_tooltip: 'While in the construction page, use your actual number of AP instead of the default 1 AP.',
     configuration_panel_hide_completed_constructions: 'Hide completed constructions',

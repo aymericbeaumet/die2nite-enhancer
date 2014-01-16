@@ -98,7 +98,9 @@ var D2NE = (function() {
             //
 
             // Set to true to enable Dusk Dawn (http://d2n.duskdawn.net/)
-            enable_duskdawn_sync: false
+            enable_duskdawn_sync: false,
+            // Set to true to enable Map Viewer (http://die2nite.gamerz.org.uk/)
+            enable_mapviewer_sync: false,
         },
 
         // Set to true to enable the use of maximum AP in the constructions
@@ -194,6 +196,38 @@ var D2NE = (function() {
                             return callback_failure();
                         }
                         return callback_success();
+                    },
+                    function() {
+                        return callback_failure();
+                    }
+                );
+            }
+        },
+
+        mapviewer: {
+            site_id: {
+                'www.die2nite.com': 1
+            },
+            local_storage_key: LOCAL_STORAGE_PRIVATE_KEY_PREFIX + '.mapviewer',
+            configuration_panel_id: 'd2ne_configuration_enable_mapviewer_sync',
+            update: function(callback_success, callback_failure) {
+                js.network_request(
+                    'GET',
+                    'http://die2nite.gamerz.org.uk/ajax/update_current_zone',
+                    'key=' + localStorage[external_tools_.mapviewer.local_storage_key],
+                    {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    function(response_text) {
+                        try {
+                            var json = JSON.parse(response_text);
+                            if ('status' in json && json.status == 1) {
+                                return callback_success();
+                            }
+                            return callback_failure();
+                        } catch (e) {
+                            return callback_failure();
+                        }
                     },
                     function() {
                         return callback_failure();
@@ -522,6 +556,7 @@ var D2NE = (function() {
         configuration_.external_tools.enable_bbh_sync = document.getElementById('d2ne_configuration_enable_bbh_sync').checked;
         configuration_.external_tools.enable_oeev_sync = document.getElementById('d2ne_configuration_enable_oeev_sync').checked;
         configuration_.external_tools.enable_duskdawn_sync = document.getElementById('d2ne_configuration_enable_duskdawn_sync').checked;
+        configuration_.external_tools.enable_mapviewer_sync = document.getElementById('d2ne_configuration_enable_mapviewer_sync').checked;
         configuration_.enable_construction_max_ap = document.getElementById('d2ne_configuration_enable_construction_max_ap').checked;
         configuration_.hide_completed_constructions = document.getElementById('d2ne_configuration_hide_completed_constructions').checked;
         configuration_.enable_hero_bar_stat = document.getElementById('d2ne_configuration_enable_hero_bar_stat').checked;
@@ -546,6 +581,7 @@ var D2NE = (function() {
         document.getElementById('d2ne_configuration_enable_bbh_sync').checked = configuration_.external_tools.enable_bbh_sync;
         document.getElementById('d2ne_configuration_enable_oeev_sync').checked = configuration_.external_tools.enable_oeev_sync;
         document.getElementById('d2ne_configuration_enable_duskdawn_sync').checked = configuration_.external_tools.enable_duskdawn_sync;
+        document.getElementById('d2ne_configuration_enable_mapviewer_sync').checked = configuration_.external_tools.enable_mapviewer_sync;
         document.getElementById('d2ne_configuration_enable_construction_max_ap').checked = configuration_.enable_construction_max_ap;
         document.getElementById('d2ne_configuration_hide_completed_constructions').checked = configuration_.hide_completed_constructions;
         document.getElementById('d2ne_configuration_enable_hero_bar_stat').checked = configuration_.enable_hero_bar_stat;
@@ -1024,6 +1060,15 @@ var D2NE = (function() {
                                             ["input", { "id": "d2ne_configuration_enable_duskdawn_sync", "type": "checkbox" }],
                                             ["label", { "for": "d2ne_configuration_enable_duskdawn_sync" }, i18n_.configuration_panel_enable_duskdawn_sync],
                                             ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_duskdawn_sync_tooltip },
+                                                ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                            ]
+                                        ],
+
+                                        // Enable MapViewer sync
+                                        ["div", { "style": "display: none;" },
+                                            ["input", { "id": "d2ne_configuration_enable_mapviewer_sync", "type": "checkbox" }],
+                                            ["label", { "for": "d2ne_configuration_enable_mapviewer_sync" }, i18n_.configuration_panel_enable_mapviewer_sync],
+                                            ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_mapviewer_sync_tooltip },
                                                 ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                             ]
                                         ]

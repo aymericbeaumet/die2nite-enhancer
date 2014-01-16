@@ -24,6 +24,8 @@
 // @exclude http://__CROSS_ORIGIN_XHR_PERMISSION_2__/*
 // @match http://__CROSS_ORIGIN_XHR_PERMISSION_3__/*
 // @exclude http://__CROSS_ORIGIN_XHR_PERMISSION_3__/*
+// @match http://__CROSS_ORIGIN_XHR_PERMISSION_4__/*
+// @exclude http://__CROSS_ORIGIN_XHR_PERMISSION_4__/*
 //
 // ==/UserScript==
 
