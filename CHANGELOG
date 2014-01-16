@@ -5,6 +5,7 @@ v0.0.7
 - Now only show the external tools available on the website language
 - Add Dusk Dawn support (english tool)
 - Add Map Viewer support (english tool)
+- Disable the update button while request(s) are underway
 
 v0.0.6
 - Fix bug in the config panel when mouse hovers over a disabled checkbox
