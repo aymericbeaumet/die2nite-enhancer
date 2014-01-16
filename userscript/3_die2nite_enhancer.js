@@ -133,7 +133,6 @@ var D2NE = (function() {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
                     function(response_text) {
-                        console.log(response_text);
                         var json = JSON.parse(response_text);
                         if ('response' in json && json.response === 'Site mis à jour') {
                             return callback_success();
@@ -251,6 +250,11 @@ var D2NE = (function() {
      * The script strings.
      */
     var i18n_ = null;
+
+    /**
+     * Remember if an external tool update is currently in progress.
+     */
+    var update_in_progress_ = false;
 
     /**
      * All features available in this extension
@@ -687,8 +691,33 @@ var D2NE = (function() {
         var tools_update_aborted = 0;
         var tools_number = 0;
 
+        // Disable the toolbar
+        var disable_toolbar = function() {
+            js.wait_for_id('d2ne_external_tools_bar_update', function(node) {
+                node.style.opacity = 0.5;
+            });
+            update_in_progress_ = true;
+        };
+
+        // Enable the toolbar
+        var enable_toolbar = function() {
+            js.wait_for_id('d2ne_external_tools_bar_update', function(node) {
+                node.style.opacity = 1;
+            });
+            update_in_progress_ = false;
+        };
+
+        // if an update is in progress, abort
+        if (update_in_progress_) {
+            return;
+        }
+
+        // else disable bars
+        disable_toolbar();
+
         var images = document.querySelectorAll('#d2ne_external_tools_bar a img');
 
+        // Replace the toolbar icon with a calim
         var show_calim = function() {
             images[0].style.display = 'inline';
             images[1].style.display = 'none';
@@ -696,6 +725,7 @@ var D2NE = (function() {
             images[3].style.display = 'none';
         };
 
+        // Replace the toolbar icon with a loading wheel
         var show_loading_wheel = function() {
             images[0].style.display = 'none';
             images[1].style.display = 'inline';
@@ -703,6 +733,7 @@ var D2NE = (function() {
             images[3].style.display = 'none';
         };
 
+        // Replace the toolbar icon with a smile
         var show_smile = function() {
             images[0].style.display = 'none';
             images[1].style.display = 'none';
@@ -710,6 +741,7 @@ var D2NE = (function() {
             images[3].style.display = 'none';
         };
 
+        // Replace the toolbar icon with a skull
         var show_skull = function() {
             images[0].style.display = 'none';
             images[1].style.display = 'none';
@@ -719,7 +751,12 @@ var D2NE = (function() {
 
         // Is called after each update
         var handle_tool_update = function() {
-            // if error, show skull and abort
+            // if all requests are done, reenable the button
+            if ((tools_updated + tools_update_aborted) === tools_number) {
+                enable_toolbar();
+            }
+
+            // if error, show skull
             if (tools_update_aborted > 0) {
                 return show_skull();
             }
@@ -730,6 +767,7 @@ var D2NE = (function() {
             }
         };
 
+        disable_toolbar();
         show_loading_wheel();
 
         for (var tool in configuration_.external_tools) {
