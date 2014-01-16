@@ -20,7 +20,7 @@ var D2NE = (function() {
 
         D2N_helpers.is_logged(function(logged) { if (logged) {
             fetch_tools_private_keys();
-            load_external_tools(); // only if at least one tool is enabled
+            load_external_tools_bar(); // only if at least one tool is enabled
             D2N_helpers.add_custom_events(); // add custom D2N events
         }});
     };
@@ -31,6 +31,7 @@ var D2NE = (function() {
 
     var LOCAL_STORAGE_PREFIX = 'extensions.d2ne';
     var LOCAL_STORAGE_D2NE_CONFIGURATION_KEY = LOCAL_STORAGE_PREFIX + '.configuration';
+    var LOCAL_STORAGE_PRIVATE_KEY_PREFIX = 'extensions.d2ne.key';
 
     /**
      * The default configuration.
@@ -79,12 +80,25 @@ var D2NE = (function() {
         // Set to true to hide the RP
         hide_rp_content: true,
 
-        // Sync with external tools
+        // Sync with external tools, the tool name is gotten by extracting the
+        // string between 'enable_' and '_sync'
         external_tools: {
+
+            //
+            // www.hordes.fr
+            //
+
             // Set to true to enable BigBroth'Hordes (http://bbh.fred26.fr/)
             enable_bbh_sync: false,
             // Set to true to enable Où en êtes-vous ? (http://www.oeev-hordes.com/)
-            enable_oeev_sync: false
+            enable_oeev_sync: false,
+
+            //
+            // www.die2nite.com
+            //
+
+            // Set to true to enable Dusk Dawn (http://d2n.duskdawn.net/)
+            enable_duskdawn_sync: false
         },
 
         // Set to true to enable the use of maximum AP in the constructions
@@ -98,22 +112,15 @@ var D2NE = (function() {
     };
 
     /**
-     * The loaded configuration.
-     */
-    var configuration_ = null;
-
-    /**
-     * The script strings.
-     */
-    var i18n_ = null;
-
-    /**
      * External tools
      */
     var external_tools_ = {
+
         oeev: {
-            site_id: 22,
-            local_storage_key: LOCAL_STORAGE_PREFIX + '.oeev_key',
+            site_id: {
+                'www.hordes.fr': 22
+            },
+            local_storage_key: LOCAL_STORAGE_PRIVATE_KEY_PREFIX + '.oeev',
             configuration_panel_id: 'd2ne_configuration_enable_oeev_sync',
             update: function(callback_success, callback_failure) {
                 js.network_request(
@@ -137,8 +144,10 @@ var D2NE = (function() {
         },
 
         bbh: {
-            site_id: 51,
-            local_storage_key: LOCAL_STORAGE_PREFIX + '.bbh_key',
+            site_id: {
+                'www.hordes.fr': 51
+            },
+            local_storage_key: LOCAL_STORAGE_PRIVATE_KEY_PREFIX + '.bbh',
             configuration_panel_id: 'd2ne_configuration_enable_bbh_sync',
             update: function(callback_success, callback_failure) {
                 js.network_request(
@@ -161,8 +170,42 @@ var D2NE = (function() {
                     }
                 );
             }
+        },
+
+        duskdawn: {
+            site_id: {
+                'www.die2nite.com': 14
+            },
+            local_storage_key: LOCAL_STORAGE_PRIVATE_KEY_PREFIX + '.duskdawn',
+            configuration_panel_id: 'd2ne_configuration_enable_duskdawn_sync',
+            update: function(callback_success, callback_failure) {
+                js.network_request(
+                    'POST',
+                    'http://d2n.duskdawn.net/zone',
+                    'key=' + localStorage[external_tools_.duskdawn.local_storage_key],
+                    {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    function(response_text) {
+                        return callback_success();
+                    },
+                    function() {
+                        return callback_failure();
+                    }
+                );
+            }
         }
     };
+
+    /**
+     * The loaded configuration.
+     */
+    var configuration_ = null;
+
+    /**
+     * The script strings.
+     */
+    var i18n_ = null;
 
     /**
      * All features available in this extension
@@ -441,11 +484,6 @@ var D2NE = (function() {
     };
 
     /**
-     * Set tot true when the external tools bar is loaded.
-     */
-    var external_tools_loaded_ = false;
-
-    /**
      * Load the configuration by merging the one found in the local storage (if
      * any) into the default one.
      */
@@ -477,6 +515,7 @@ var D2NE = (function() {
         configuration_.hide_rp_content = document.getElementById('d2ne_configuration_hide_rp_content').checked;
         configuration_.external_tools.enable_bbh_sync = document.getElementById('d2ne_configuration_enable_bbh_sync').checked;
         configuration_.external_tools.enable_oeev_sync = document.getElementById('d2ne_configuration_enable_oeev_sync').checked;
+        configuration_.external_tools.enable_duskdawn_sync = document.getElementById('d2ne_configuration_enable_duskdawn_sync').checked;
         configuration_.enable_construction_max_ap = document.getElementById('d2ne_configuration_enable_construction_max_ap').checked;
         configuration_.hide_completed_constructions = document.getElementById('d2ne_configuration_hide_completed_constructions').checked;
         configuration_.enable_hero_bar_stat = document.getElementById('d2ne_configuration_enable_hero_bar_stat').checked;
@@ -500,6 +539,7 @@ var D2NE = (function() {
         document.getElementById('d2ne_configuration_hide_rp_content').checked = configuration_.hide_rp_content;
         document.getElementById('d2ne_configuration_enable_bbh_sync').checked = configuration_.external_tools.enable_bbh_sync;
         document.getElementById('d2ne_configuration_enable_oeev_sync').checked = configuration_.external_tools.enable_oeev_sync;
+        document.getElementById('d2ne_configuration_enable_duskdawn_sync').checked = configuration_.external_tools.enable_duskdawn_sync;
         document.getElementById('d2ne_configuration_enable_construction_max_ap').checked = configuration_.enable_construction_max_ap;
         document.getElementById('d2ne_configuration_hide_completed_constructions').checked = configuration_.hide_completed_constructions;
         document.getElementById('d2ne_configuration_enable_hero_bar_stat').checked = configuration_.enable_hero_bar_stat;
@@ -539,56 +579,53 @@ var D2NE = (function() {
             return;
         }
 
-        // Disable the button
-        var disable_button = function(button_id) {
-            js.wait_for_id(button_id, function(node) {
-                node.onclick = function() { return false; };
-                node.style.opacity = 0.5;
-            });
-        };
-
-        // Enable the button
+        // Display the given button by setting its parent node display CSS
+        // property
         var enable_button = function(button_id) {
             js.wait_for_id(button_id, function(node) {
-                node.onclick = function() { return true; };
-                node.style.opacity = 1;
+                node.parentNode.style.display = 'block'; // display the concerned row
             });
         };
 
         var enable_tool_in_config_panel, tool_info, match;
         D2N_helpers.get_sk(function(sk) {
-            for (var tool in external_tools_) {
-                tool_info = external_tools_[tool];
+            var tool;
 
-                // if website is disabled, go to the next tool
-                if (localStorage[tool_info.local_storage_key] == -1) {
-                    disable_button(tool_info.configuration_panel_id);
+            // Browse all the external tools
+            for (var tool_name in external_tools_) {
+                tool = external_tools_[tool_name];
+
+                // if this tool is disabled, go to the next one
+                if (localStorage[tool.local_storage_key] == -1) {
                     continue;
                 }
 
-                // if key already exists, go to the next tool
-                if (js.is_defined(localStorage[tool_info.local_storage_key]) &&
-                    js.match_regex(localStorage[tool_info.local_storage_key], '^[a-f0-9]{38}$')) {
-                    enable_button(tool_info.configuration_panel_id);
+                // if the tool is not adapted to this website, disable it and
+                // skip to the next one
+                if (!(D2N_helpers.get_website() in tool.site_id)) {
+                    localStorage[tool.local_storage_key] = -1;
                     continue;
                 }
 
-                // Else fetch it
-                js.network_request('GET', '/disclaimer?id=' + tool_info.site_id + ';sk=' + sk, null, null,
+                // if key already exists, enable config panel corresponding
+                // button and skip to the next tool
+                if (js.match_regex(localStorage[tool.local_storage_key], '^[a-f0-9]{38,39}$')) {
+                    enable_button(tool.configuration_panel_id);
+                    continue;
+                }
+
+                // Else fetch its key, enable the button if needed
+                js.network_request('GET', '/disclaimer?id=' + tool.site_id[D2N_helpers.get_website()] + ';sk=' + sk, null, null,
                     function on_success(data, context) {
-                        match = data.match(/<input type="hidden" name="key" value="([a-f0-9]{38})"\/>/);
+                        match = data.match(/<input type="hidden" name="key" value="([a-f0-9]{38,39})"\/>/);
                         if (js.is_defined(match) && match.length === 2) {
-                            localStorage[context.tool_info.local_storage_key] = match[1]; // save the API key
-                            enable_button(context.tool_info.configuration_panel_id);
+                            localStorage[context.tool.local_storage_key] = match[1]; // save the API key
+                            enable_button(context.tool.configuration_panel_id);
                         } else {
-                            localStorage[context.tool_info.local_storage_key] = -1; // disable this tool
-                            disable_button(context.tool_info.configuration_panel_id);
+                            localStorage[context.tool.local_storage_key] = -1; // disable this tool
                         }
-                    },
-                    function on_failure(context) {
-                        disable_button(context.tool_info.configuration_panel_id);
-                    },
-                    { tool_info: tool_info } // context given to callback
+                    }, null,
+                    { tool: tool } // context given to callback
                 );
             }
         });
@@ -676,7 +713,7 @@ var D2NE = (function() {
     /**
      * Load all the external tools
      */
-    function load_external_tools()
+    function load_external_tools_bar()
     {
         // if not any tool is enabled, abort
         var tools_number = 0;
@@ -728,6 +765,11 @@ var D2NE = (function() {
         var inject_tools_button = function() {
             // the side panel is needed to place the button
             js.wait_for_selector('.sidePanel', function(node) {
+                // if not in town or outside, abort
+                if (!(D2N_helpers.is_in_city() || D2N_helpers.is_outside())) {
+                    return;
+                }
+
                 // if already loaded, abort
                 if (js.is_defined(document.getElementById('d2ne_external_tools_bar'))) {
                     return;
@@ -768,92 +810,93 @@ var D2NE = (function() {
         js.wait_for_id('main', function(node) {
             // Create and inject panel style
             js.injectCSS(
+
                 '#d2ne_configuration_panel {' +
-                    'margin-top:5px;' +
-                    'position:absolute;' +
-                    'margin-left:44px;' +
-                    'z-index:9;' +
-                    'background-color:#5c2b20;' +
+                    'z-index: 9;' +
+                    'position: absolute;' +
+                    'margin-top: 5px;' +
+                    'margin-left: 44px;' +
+                    'background-color: #5c2b20;' +
                     'border: 1px solid #000000;' +
                 '}' +
 
-                '#d2ne_configuration_panel > div {' +
-                    'border: 1px solid #f0d79e;' +
-                    'padding-left:5px;' +
-                    'padding-right:5px;' +
-                '}' +
-
                 '#d2ne_configuration_panel h1 {' +
-                    'height:auto;' +
-                    'font-size:8pt;' +
-                    'text-transform:none;' +
-                    'font-variant:small-caps;' +
-                    'background:none;' +
-                    'cursor:help;' +
-                    'margin:0;' +
-                    'padding:0;' +
+                    'height: auto;' +
+                    'font-size: 8pt;' +
+                    'text-transform: none;' +
+                    'font-variant: small-caps;' +
+                    'background: none;' +
+                    'cursor: help;' +
+                    'margin: 0;' +
+                    'padding: 0;' +
                 '}' +
                 '#d2ne_configuration_panel:hover h1 {' +
-                    'border-bottom:1px solid #b37c4a;' +
-                    'margin-bottom:5px;' +
+                    'border-bottom: 1px solid #b37c4a;' +
+                    'margin-bottom: 5px;' +
                 '}' +
 
-                '#d2ne_configuration_panel table {' +
+                '#d2ne_configuration_panel > div {' +
+                    'line-height: 23px;' +
+                    'border: 1px solid #f0d79e;' +
+                    'padding-left: 5px;' +
+                    'padding-right: 5px;' +
+                '}' +
+
+                '#d2ne_configuration_panel div > table {' +
                     'margin: 0 auto;' +
+                    'padding: 0;' +
                     'width: 600px;' +
                 '}' +
-                '#d2ne_configuration_panel table tr:first-child td {' +
-                    'padding-bottom: 6px;' +
+
+                '#d2ne_configuration_panel div > table > tr:first-child td {' +
+                    'padding-bottom: 5px;' +
                     'font-size: 9pt;' +
                     'line-height: 11pt;' +
                     'text-align: justify;' +
-                    'border-bottom: 1px dashed #ddab76;' +
                 '}' +
-                '#d2ne_configuration_panel table tr:nth-child(2) td {' +
-                    'padding-top: 6px;' +
-                '}' +
-                '#d2ne_configuration_panel table tr:nth-child(6) td:nth-child(-n + 2) {' +
-                    'border-bottom: 1px dotted rgba(221, 171, 118, 0.5);' +
-                '}' +
-                '#d2ne_configuration_panel table tr:last-child td {' +
-                    'padding-top: 4px;' +
-                    'text-align: right;' +
+
+                '#d2ne_configuration_panel div > table > tr:nth-child(2) td {' +
+                    'padding: 3px;' +
+                    'padding-top: 5px;' +
+                    'padding-bottom: 5px;' +
+                    'vertical-align: top;' +
                     'border-top: 1px dashed #ddab76;' +
                 '}' +
-
-                '#d2ne_configuration_panel table tr td:nth-child(2) {' +
-                    'padding-right: 5px;' +
+                '#d2ne_configuration_panel div > table > tr:nth-child(2) td hr {' +
+                    'border-bottom: 1px dotted rgba(221, 171, 118, 0.5);' +
+                '}' +
+                '#d2ne_configuration_panel div > table > tr:nth-child(2) td:first-child div {' +
+                    'margin-right: 10px;' +
+                '}' +
+                '#d2ne_configuration_panel div > table > tr:nth-child(2) td:first-child {' +
                     'border-right: 1px dotted rgba(221, 171, 118, 0.5);' +
                 '}' +
-                '#d2ne_configuration_panel table tr td:nth-child(3) {' +
-                    'padding-left: 5px;' +
+                '#d2ne_configuration_panel div > table > tr:nth-child(2) td div {' +
+                    'position: relative;' +
                 '}' +
-
-                '#d2ne_configuration_panel a.button {' +
-                    'width: auto;' +
-                    'margin: 3px 0 3px 0;' +
-                    'text-align: center;' +
-                    'padding: 0;' +
+                '#d2ne_configuration_panel div > table > tr:nth-child(2) td div img {' +
+                    'position: absolute;' +
+                    'top: 0;' +
+                    'bottom: 0;' +
+                    'right: 0;' +
+                    'margin: auto;' +
                 '}' +
-
                 'a.d2n_tooltip {' +
                     'display: inline;' +
-                    'position: relative;' +
                     'cursor: help' +
                 '}' +
                 'a.d2n_tooltip img {' +
-                    'margin-left: 4px;' +
-                    'margin-top: 2px;' +
                     'border: 1px solid #5c2b20;' +
                 '}' +
                 'a.d2n_tooltip img:hover {' +
                     'border: 1px solid #ffffff;' +
                 '}' +
                 'a.d2n_tooltip:hover:after {' +
+                    'line-height: normal;' +
                     'z-index: 98;' +
                     'position: absolute;' +
-                    'top: -3px;' +
-                    'left: 60px;' +
+                    'top: 5px;' +
+                    'right: -300px;' +
                     'content: attr(tooltip);' +
                     'font-family: Verdana;' +
                     'font-size: 12px;' +
@@ -865,11 +908,29 @@ var D2NE = (function() {
                     'background-repeat: no-repeat;' +
                     'width: 250px;' +
                     'padding: 4px 10px 9px 30px;' +
+                '}' +
+
+                '#d2ne_configuration_panel div > table > tr:nth-child(3) td {' +
+                    'border-top: 1px dashed #ddab76;' +
+                    'border-top: 1px dotted rgba(221, 171, 118, 0.5);' +
+                    'border-bottom: 1px dashed #ddab76;' +
+                    'padding: 0;' +
+                    'padding-top: 3px;' +
+                    'padding-bottom: 5px;' +
+                '}' +
+                '#d2ne_configuration_panel a.button {' +
+                    'width: auto;' +
+                    'text-align: center;' +
+                    'padding: 0;' +
+                '}' +
+
+                '#d2ne_configuration_panel div > table > tr:last-child td {' +
+                    'text-align: right;' +
                 '}'
             );
 
             var config_panel_div = js.jsonToDOM(
-                ["html:div", { "id": "d2ne_configuration_panel" },
+                ["div", { "id": "d2ne_configuration_panel" },
                     ["div", {},
                         ["h1", {},
                             ["img", { "src": "/gfx/forum/smiley/h_city_up.gif", "alt": "" }],
@@ -879,186 +940,161 @@ var D2NE = (function() {
                         ["div", { "style": "display: none;" },
                             ["table", {},
                                 ["tr", {},
-                                    ["td", { "colspan": 4 }, i18n_.configuration_panel_script_description]
+                                    ["td", { "colspan": 2 }, i18n_.configuration_panel_script_description]
                                 ],
 
-                                // First row
                                 ["tr", {},
-                                    // Enable shortcuts
+
+                                    // First column
                                     ["td", {},
-                                        ["input", { "id": "d2ne_configuration_enable_shortcuts", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_enable_shortcuts" }, i18n_.configuration_panel_enable_shortcuts]
-                                    ],
-                                    ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_shortcuts_tooltip },
-                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
+
+                                        // Enable shortcuts
+                                        ["div", {},
+                                            ["input", { "id": "d2ne_configuration_enable_shortcuts", "type": "checkbox" }],
+                                            ["label", { "for": "d2ne_configuration_enable_shortcuts" }, i18n_.configuration_panel_enable_shortcuts],
+                                            ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_shortcuts_tooltip },
+                                                ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                            ]
+                                        ],
+
+                                        // Highlight AP
+                                        ["div", {},
+                                            ["input", { "id": "d2ne_configuration_highlight_ap", "type": "checkbox" }],
+                                            ["label", { "for": "d2ne_configuration_highlight_ap" }, i18n_.configuration_panel_highlight_ap],
+                                            ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_highlight_ap_tooltip },
+                                                ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                            ]
+                                        ],
+
+                                        // Enable construction max AP
+                                        ["div", {},
+                                            ["input", { "id": "d2ne_configuration_enable_construction_max_ap", "type": "checkbox" }],
+                                            ["label", { "for": "d2ne_configuration_enable_construction_max_ap" }, i18n_.configuration_panel_enable_construction_max_ap],
+                                            ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_construction_max_ap_tooltip },
+                                                ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                            ]
+                                        ],
+
+                                        // Hide completed constructions
+                                        ["div", {},
+                                            ["input", { "id": "d2ne_configuration_hide_completed_constructions", "type": "checkbox" }],
+                                            ["label", { "for": "d2ne_configuration_hide_completed_constructions" }, i18n_.configuration_panel_hide_completed_constructions],
+                                            ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_completed_constructions_tooltip },
+                                                ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                            ]
+                                        ],
+
+                                        // Enable hero bar stat
+                                        ["div", {},
+                                            ["input", { "id": "d2ne_configuration_enable_hero_bar_stat", "type": "checkbox" }],
+                                            ["label", { "for": "d2ne_configuration_enable_hero_bar_stat" }, i18n_.configuration_panel_enable_hero_bar_stat],
+                                            ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_hero_bar_stat_tooltip },
+                                                ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                            ]
+                                        ],
+
+                                        ["hr", {}],
+
+                                        // Enable BBH sync
+                                        ["div", { "style": "display: none;" },
+                                            ["input", { "id": "d2ne_configuration_enable_bbh_sync", "type": "checkbox" }],
+                                            ["label", { "for": "d2ne_configuration_enable_bbh_sync" }, i18n_.configuration_panel_enable_bbh_sync],
+                                            ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_bbh_sync_tooltip },
+                                                ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                            ]
+                                        ],
+
+                                        // Enable OEEV sync
+                                        ["div", { "style": "display: none;" },
+                                            ["input", { "id": "d2ne_configuration_enable_oeev_sync", "type": "checkbox" }],
+                                            ["label", { "for": "d2ne_configuration_enable_oeev_sync" }, i18n_.configuration_panel_enable_oeev_sync],
+                                            ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_oeev_sync_tooltip },
+                                                ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                            ]
+                                        ],
+
+                                        // Enable DuskDawn sync
+                                        ["div", { "style": "display: none;" },
+                                            ["input", { "id": "d2ne_configuration_enable_duskdawn_sync", "type": "checkbox" }],
+                                            ["label", { "for": "d2ne_configuration_enable_duskdawn_sync" }, i18n_.configuration_panel_enable_duskdawn_sync],
+                                            ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_duskdawn_sync_tooltip },
+                                                ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                            ]
                                         ]
+
                                     ],
 
-                                    // Hide hero adds
+                                    // Second column
                                     ["td", {},
-                                        ["input", { "id": "d2ne_configuration_hide_hero_adds", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_hide_hero_adds" }, i18n_.configuration_panel_hide_hero_adds],
-                                    ],
-                                    ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_hero_adds_tooltip },
-                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
-                                        ]
-                                    ]
-                                ],
 
-                                // Second row
-                                ["tr", {},
-                                    // Highlight AP
-                                    ["td", {},
-                                        ["input", { "id": "d2ne_configuration_highlight_ap", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_highlight_ap" }, i18n_.configuration_panel_highlight_ap]
-                                    ],
-                                    ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_highlight_ap_tooltip },
-                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
-                                        ]
-                                    ],
+                                        // Hide hero adds
+                                        ["div", {},
+                                            ["input", { "id": "d2ne_configuration_hide_hero_adds", "type": "checkbox" }],
+                                            ["label", { "for": "d2ne_configuration_hide_hero_adds" }, i18n_.configuration_panel_hide_hero_adds],
+                                            ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_hero_adds_tooltip },
+                                                ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                            ]
+                                        ],
 
-                                    // Hide help
-                                    ["td", {},
-                                        ["input", { "id": "d2ne_configuration_hide_help", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_hide_help" }, i18n_.configuration_panel_hide_help]
-                                    ],
-                                    ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_help_tooltip },
-                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
-                                        ]
-                                    ]
-                                ],
+                                        // Hide help
+                                        ["div", {},
+                                            ["input", { "id": "d2ne_configuration_hide_help", "type": "checkbox" }],
+                                            ["label", { "for": "d2ne_configuration_hide_help" }, i18n_.configuration_panel_hide_help],
+                                            ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_help_tooltip },
+                                                ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                            ]
+                                        ],
 
-                                // Third row
-                                ["tr", {},
-                                    // Enable construction max AP
-                                    ["td", {},
-                                        ["input", { "id": "d2ne_configuration_enable_construction_max_ap", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_enable_construction_max_ap" }, i18n_.configuration_panel_enable_construction_max_ap]
-                                    ],
-                                    ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_construction_max_ap_tooltip },
-                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
-                                        ]
-                                    ],
+                                        // Hide Twinoid bar
+                                        ["div", {},
+                                            ["input", { "id": "d2ne_configuration_hide_twinoid_bar", "type": "checkbox" }],
+                                            ["label", { "for": "d2ne_configuration_hide_twinoid_bar" }, i18n_.configuration_panel_hide_twinoid_bar],
+                                            ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_twinoid_bar_tooltip },
+                                                ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                            ]
+                                        ],
 
-                                    // Hide Twinoid bar
-                                    ["td", {},
-                                        ["input", { "id": "d2ne_configuration_hide_twinoid_bar", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_hide_twinoid_bar" }, i18n_.configuration_panel_hide_twinoid_bar]
-                                    ],
-                                    ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_twinoid_bar_tooltip },
-                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
-                                        ]
-                                    ]
-                                ],
+                                        // Hide Footer
+                                        ["div", {},
+                                            ["input", { "id": "d2ne_configuration_hide_footer", "type": "checkbox" }],
+                                            ["label", { "for": "d2ne_configuration_hide_footer" }, i18n_.configuration_panel_hide_footer],
+                                            ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_footer_tooltip },
+                                                ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                            ]
+                                        ],
 
-                                // Fourth row
-                                ["tr", {},
-                                    // Hide completed constructions
-                                    ["td", {},
-                                        ["input", { "id": "d2ne_configuration_hide_completed_constructions", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_hide_completed_constructions" }, i18n_.configuration_panel_hide_completed_constructions]
-                                    ],
-                                    ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_completed_constructions_tooltip },
-                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
-                                        ]
-                                    ],
+                                        // Hide PEGI
+                                        ["div", {},
+                                            ["input", { "id": "d2ne_configuration_hide_pegi", "type": "checkbox" }],
+                                            ["label", { "for": "d2ne_configuration_hide_pegi" }, i18n_.configuration_panel_hide_pegi],
+                                            ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_pegi_tooltip },
+                                                ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                            ]
+                                        ],
 
-                                    // Hide Footer
-                                    ["td", {},
-                                        ["input", { "id": "d2ne_configuration_hide_footer", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_hide_footer" }, i18n_.configuration_panel_hide_footer]
-                                    ],
-                                    ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_footer_tooltip },
-                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
-                                        ]
-                                    ]
-                                ],
+                                        // Hide rookie mode
+                                        ["div", {},
+                                            ["input", { "id": "d2ne_configuration_hide_rookie_mode", "type": "checkbox" }],
+                                            ["label", { "for": "d2ne_configuration_hide_rookie_mode" }, i18n_.configuration_panel_hide_rookie_mode],
+                                            ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_rookie_mode_tooltip },
+                                                ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                            ]
+                                        ],
 
-                                // Fifth row
-                                ["tr", {},
-                                    // Enable hero bar stat
-                                    ["td", {},
-                                        ["input", { "id": "d2ne_configuration_enable_hero_bar_stat", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_enable_hero_bar_stat" }, i18n_.configuration_panel_enable_hero_bar_stat]
-                                    ],
-                                    ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_hero_bar_stat_tooltip },
-                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                        // Hide RP content
+                                        ["div", {},
+                                            ["input", { "id": "d2ne_configuration_hide_rp_content", "type": "checkbox" }],
+                                            ["label", { "for": "d2ne_configuration_hide_rp_content" }, i18n_.configuration_panel_hide_rp_content],
+                                            ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_rp_content_tooltip },
+                                                ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                            ]
                                         ]
-                                    ],
 
-                                    // Hide PEGI
-                                    ["td", {},
-                                        ["input", { "id": "d2ne_configuration_hide_pegi", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_hide_pegi" }, i18n_.configuration_panel_hide_pegi]
-                                    ],
-                                    ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_pegi_tooltip },
-                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
-                                        ]
-                                    ]
-                                ],
-
-                                // Sixth row
-                                ["tr", {},
-                                    // Enable BBH sync
-                                    ["td", {},
-                                        ["input", { "id": "d2ne_configuration_enable_bbh_sync", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_enable_bbh_sync" }, i18n_.configuration_panel_enable_bbh_sync]
-                                    ],
-                                    ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_bbh_sync_tooltip },
-                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
-                                        ]
-                                    ],
-
-                                    // Hide rookie mode
-                                    ["td", {},
-                                        ["input", { "id": "d2ne_configuration_hide_rookie_mode", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_hide_rookie_mode" }, i18n_.configuration_panel_hide_rookie_mode]
-                                    ],
-                                    ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_rookie_mode_tooltip },
-                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
-                                        ]
-                                    ]
-                                ],
-
-                                // Seventh row
-                                ["tr", {},
-                                    // Enable oeev sync
-                                    ["td", {},
-                                        ["input", { "id": "d2ne_configuration_enable_oeev_sync", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_enable_oeev_sync" }, i18n_.configuration_panel_enable_oeev_sync]
-                                    ],
-                                    ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_oeev_sync_tooltip },
-                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
-                                        ]
-                                    ],
-
-                                    // Hide RP content
-                                    ["td", {},
-                                        ["input", { "id": "d2ne_configuration_hide_rp_content", "type": "checkbox" }],
-                                        ["label", { "for": "d2ne_configuration_hide_rp_content" }, i18n_.configuration_panel_hide_rp_content]
-                                    ],
-                                    ["td", {},
-                                        ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_rp_content_tooltip },
-                                            ["img", { "src": i18n_.help_image_url, "alt": "" }],
-                                        ]
                                     ]
                                 ],
 
                                 ["tr", {},
-                                    ["td", { "colspan": 4 },
+                                    ["td", { "colspan": 2 },
                                         ["a", { "href": "javascript:void(0)", "id": "d2ne_configuration_save", "class": "button",
                                                 "onclick": function() { save_configuration(); js.reload(); } },
                                               i18n_.configuration_panel_save_button]
@@ -1066,10 +1102,11 @@ var D2NE = (function() {
                                 ],
 
                                 ["tr", {},
-                                    ["td", { "colspan": 4 },
+                                    ["td", { "colspan": 2 },
                                         ["a", { "href": PROJECT_PAGE, "target": "_blank" }, SCRIPT_NAME + ' v' + SCRIPT_VERSION]
                                     ]
                                 ]
+
                             ]
                         ]
                     ]
@@ -1079,17 +1116,16 @@ var D2NE = (function() {
             // Insert panel
             node.insertBefore(config_panel_div, node.firstChild);
 
-            // Inject configuration
+            // Inject configuration in the config panel (in the DOM)
             inject_configuration();
 
             // Show/Hide config panel cache
-            var config_panel_cache = document.getElementById('d2ne_configuration_panel');
             var config_panel_toggled_elements_cache = document.querySelectorAll('#d2ne_configuration_panel > div > h1 > span, #d2ne_configuration_panel > div > div');
             var config_panel_toggled_elements_cache_length = config_panel_toggled_elements_cache.length;
 
             // Show panel on hover
             config_panel_div.addEventListener('mouseover', function() {
-                config_panel_cache.style['z-index'] = '11'; // This fix is needed for the spanish version, as the hero adds has a z-index of 10
+                config_panel_div.style['z-index'] = '11'; // This fix is needed for the spanish version, as the hero adds has a z-index of 10
                 for (var i = 0; i < config_panel_toggled_elements_cache_length; ++i) {
                     config_panel_toggled_elements_cache[i].style.display = 'inline';
                 }
@@ -1100,7 +1136,7 @@ var D2NE = (function() {
                 for (var i = 0; i < config_panel_toggled_elements_cache_length; ++i) {
                     config_panel_toggled_elements_cache[i].style.display = 'none';
                 }
-                config_panel_cache.style['z-index'] = '9'; // See previous function comment
+                config_panel_div.style['z-index'] = '9'; // See previous function comment
             }, false);
         });
     }

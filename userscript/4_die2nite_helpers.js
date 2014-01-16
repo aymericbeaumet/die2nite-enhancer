@@ -299,6 +299,14 @@ var D2N_helpers = (function() {
         });
     }
 
+    /**
+     * Return the hostname of the current webpage.
+     */
+    function get_website()
+    {
+        return window.location.hostname;
+    }
+
 /*
   private:
 */
@@ -346,7 +354,8 @@ var D2N_helpers = (function() {
         get_website_language: get_website_language,
         get_number_of_ap: get_number_of_ap,
         add_custom_events: add_custom_events,
-        is_logged: is_logged
+        is_logged: is_logged,
+        get_website: get_website
     };
 
 })();
