@@ -187,6 +187,10 @@ var D2NE = (function() {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
                     function(response_text) {
+                        var json = JSON.parse(response_text);
+                        if ('errorCode' in json || 'errorMessage' in json) {
+                            return callback_failure();
+                        }
                         return callback_success();
                     },
                     function() {
