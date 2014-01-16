@@ -131,10 +131,12 @@ var D2NE = (function() {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
                     function(response_text) {
-                        if (response_text !== '{ "response": "Site mis à jour" }') {
-                            return callback_failure();
+                        console.log(response_text);
+                        var json = JSON.parse(response_text);
+                        if ('response' in json && json.response === 'Site mis à jour') {
+                            return callback_success();
                         }
-                        return callback_success();
+                        return callback_failure();
                     },
                     function() {
                         return callback_failure();
