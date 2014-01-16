@@ -3,14 +3,18 @@
 Die2Nite Enhancer is an extension allowing you to improve your game experience on the browser game [Die2Nite](http://www.die2nite.com/).
 
 D2NE will give you access to a lot of features, it:
-- Adds shortcuts to quickly browse the important places (e.g.: the bank, the doors) ;
+- Adds keyboard shortcuts to quickly browse the important places (e.g.: the bank, the doors) ;
 - Enables numeric stat on the hero experience bar ;
 - Highlights the AP border (from green to red) depending of the remaining AP ;
 - Sets the maximum number of AP for the constructions (instead of 1 by default) ;
 - Hides completed constructions ;
-- Hides a lot of interface elements you may find superfluous ;
-- Enables synchronisation with BigBroth'Hordes (French external tool, available in other languages) ;
-- Enables synchronisation with Où en êtes-vous ? (French external tool).
+- Hides a lot of interface elements you may find superfluous.
+
+It also allows you to synchronise with some external tools (from the game interface):
+- Dusk Dawn (English external tool) ;
+- Map Viewer (English external tool)
+- BigBroth'Hordes (French external tool) ;
+- Où en êtes-vous ? (French external tool).
 
 Everything is adjustable through a configuration panel.
 
