@@ -1,3 +1,7 @@
+v0.0.8
+- Greatly increase performance
+- Enable cyanide protection (to avoid an accidental death...)
+
 v0.0.7
 - Fix external tools bar positionning (in DOM)
 - Fix external tools update
