@@ -190,13 +190,13 @@ var D2N_helpers = (function() {
     function add_custom_events()
     {
         /*
-         * Hash change
+         * Gamebody
          */
 
-        // Emit change on each change hash
-        var emit_hash_change_event = function() {
+        // Emit Gamebody reloaded event
+        var emit_gamebody_reloaded_event = function() {
             var event = new CustomEvent(
-                'd2n_hashchange', {
+                'd2n_gamebody_reloaded', {
                     bubbles: true,
                     cancelable: true
                 }
@@ -204,31 +204,73 @@ var D2N_helpers = (function() {
             document.dispatchEvent(event);
         };
 
-        // Watch for the first hash apparition and emit an event. The event is
-        // emitted even is the hash is already loaded.
-        var watch_for_hash = function(limit) {
-            if (limit > 0 && window.location.hash === '') {
-                return setTimeout(function() { watch_for_hash(limit - 1); }, 50);
-            }
+        var loading_wheel_old_observer = null;
+        var loading_wheel_observer = null;
 
-            // Emit an event for the current hash
-            emit_hash_change_event();
-        };
-        watch_for_hash(100);
+        var setup_loading_wheel_observer = function() {
+            js.wait_for_id('loading_section', function(node) {
+                loading_wheel_old_observer = loading_wheel_observer;
+                loading_wheel_observer = new MutationObserver(function(mutations) {
+                    for (var i = 0, max = mutations.length; i < max; ++i) {
+                        // if the loading wheel disappears, then the page loading is
+                        // done, emit a gamebody reloaded event
+                        if (mutations[i].target.style.display === 'none') {
+                            return emit_gamebody_reloaded_event();
+                        }
+                    }
+                });
 
-        // Watch the hash on page load
-        var loading_section_observer = new MutationObserver(function(mutations) {
-            for (var i = 0, max = mutations.length; i < max; ++i) {
-                // if the loading wheel disappears, then the page loading is
-                // done, emit a hash change event
-                if (mutations[i].target.style.display === 'none') {
-                    return emit_hash_change_event();
+                loading_wheel_observer.observe(node, { attributes: true });
+
+                if (loading_wheel_old_observer !== null) {
+                    loading_wheel_old_observer.disconnect();
                 }
+            });
+        };
+
+        // Watch for the first gamebody load and emit an event. Then setup the
+        // observer
+        var watch_for_hash = function(limit) {
+            limit = (typeof limit === 'undefined') ? 20 : limit;
+
+            // If the limit isn't reached and the hash isn't defined, call this
+            // function again
+            if (limit > 0 && window.location.hash === '') {
+                return setTimeout(function() { watch_for_hash(limit - 1); }, 200);
             }
-        });
-        js.wait_for_id('loading_section', function(node) {
-            loading_section_observer.observe(node, { attributes: true });
-        });
+
+            // If the hash exists, the page is loaded. Then emit an event and
+            // setup the mutation observer
+
+            // 1. Emit the event
+            emit_gamebody_reloaded_event();
+
+            // 2. Set up the observer
+            setup_loading_wheel_observer();
+
+            // 3. Re-set the observer on some pages
+            var body_observer = new MutationObserver(function(mutations) {
+                for (var i = 0, max = mutations.length; i < max; ++i) {
+                    // if the loading wheel appears, then the page is loading
+                    // and the observer is set on the loading wheel
+                    if (mutations[i].target.style.cursor === 'progress') {
+                        setup_loading_wheel_observer();
+                    }
+                }
+            });
+            js.wait_for_tag('body', function(nodes) {
+                body_observer.observe(nodes[0], { attributes: true });
+            });
+
+            // 4. Emit event on news and help page
+            window.addEventListener('hashchange', function() {
+                if (js.match_regex(window.location.hash, '^\#news') ||
+                    js.match_regex(window.location.hash, '^\#help')) {
+                    emit_gamebody_reloaded_event();
+                }
+            }, false);
+        };
+        watch_for_hash();
 
         /*
          * AP
@@ -255,29 +297,6 @@ var D2N_helpers = (function() {
                     ap_observer.observe(node, { childList: true });
                 });
             }
-        });
-
-        /*
-         * Gamebody
-         */
-
-        // Emit Gamebody reloaded event
-        var emit_gamebody_reloaded_event = function() {
-            var event = new CustomEvent(
-                'd2n_gamebody_reloaded', {
-                    bubbles: true,
-                    cancelable: true
-                }
-            );
-            document.dispatchEvent(event);
-        };
-
-        // Watch for the gamebody reload
-        var gamebody_observer = new MutationObserver(function(mutations) {
-            emit_gamebody_reloaded_event();
-        });
-        js.wait_for_id('gamebody', function(node) {
-            gamebody_observer.observe(node, { childList: true });
         });
     }
 

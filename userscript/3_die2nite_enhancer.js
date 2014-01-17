@@ -498,7 +498,7 @@ var D2NE = (function() {
                 '}'
             );
 
-            document.addEventListener('d2n_hashchange', function() {
+            document.addEventListener('d2n_gamebody_reloaded', function() {
                 if (!(D2N_helpers.is_on_page('ghost') || D2N_helpers.is_on_page('ghost_exp'))) {
                     return;
                 }
@@ -550,10 +550,6 @@ var D2NE = (function() {
                     }
                 }, 5);
             };
-
-            document.addEventListener('d2n_hashchange', function() {
-                remove_cyanide_action();
-            }, false);
 
             document.addEventListener('d2n_gamebody_reloaded', function() {
                 remove_cyanide_action();
@@ -645,7 +641,7 @@ var D2NE = (function() {
     {
         // Drop private key cache when the user go on the settings page
         // (potential API key reset)
-        document.addEventListener('d2n_hashchange', function() {
+        document.addEventListener('d2n_gamebody_reloaded', function() {
             if (!D2N_helpers.is_on_page('settings')) {
                 return;
             }
