@@ -183,9 +183,8 @@ var D2N_helpers = (function() {
 
     /**
      * Add custom events on the interface:
-     * - to watch the hash in the URL: 'hashchange'
-     * - to watch the number of AP: 'apchange'
      * - to watch when the gamebody is reloaded
+     * - to watch the number of AP: 'apchange'
      */
     function add_custom_events()
     {
@@ -224,6 +223,7 @@ var D2N_helpers = (function() {
 
                 if (loading_wheel_old_observer !== null) {
                     loading_wheel_old_observer.disconnect();
+                    loading_wheel_old_observer = null;
                 }
             });
         };
@@ -287,17 +287,35 @@ var D2N_helpers = (function() {
             document.dispatchEvent(event);
         };
 
-        is_in_town(function(in_town) {
-            if (in_town) { // only watch AP in town
-                // Watch for AP change
-                var ap_observer = new MutationObserver(function(mutations) {
-                    emit_ap_change_event();
-                });
-                js.wait_for_id('movesCounter', function(node) {
-                    ap_observer.observe(node, { childList: true });
-                });
-            }
-        });
+        var ap_observer = null;
+        var ap_old_observer = null;
+
+        var watch_for_ap = function() {
+            is_in_town(function(in_town) {
+                if (in_town) { // only watch AP in town
+                    js.wait_for_id('movesCounter', function(node) {
+                        ap_old_observer = ap_observer;
+
+                        // Watch for AP change
+                        ap_observer = new MutationObserver(function(mutations) {
+                            emit_ap_change_event();
+                        });
+
+                        ap_observer.observe(node, { childList: true, subtree: true });
+
+                        if (ap_old_observer !== null) {
+                            ap_old_observer.disconnect();
+                            ap_old_observer = null;
+                        }
+                    });
+                }
+            });
+        };
+        watch_for_ap();
+
+        window.addEventListener('hashchange', function() {
+            watch_for_ap();
+        }, false);
     }
 
     /**
