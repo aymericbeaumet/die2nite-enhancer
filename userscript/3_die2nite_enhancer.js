@@ -527,22 +527,36 @@ var D2NE = (function() {
 
         ////
         enable_cyanide_protection: function() {
-            document.addEventListener('d2n_hashchange', function() {
-                if (!D2N_helpers.is_on_page('home')) {
+            var remove_cyanide_action = function() {
+                // if not at home or outside (the two only places where a player
+                // can use an object), abort
+                if (!(D2N_helpers.is_on_page_in_city('home') || D2N_helpers.is_outside())) {
                     return;
                 }
 
+                // else list all the possible objects usable by the player
                 js.wait_for_selector_all('a.toolAction > span > strong', function(nodes) {
                     var action;
 
                     for (var node in nodes) {
+                        // Skip the node if not a 'strong' element
+                        if (nodes[node].nodeName !== 'STRONG')
+                            continue;
+
                         if (/^Cyanide|Cyanure|Cianuro$/.test(nodes[node].textContent)) {
                             action = nodes[node].parentNode.parentNode;
                             action.style.display = 'none';
-                            break;
                         }
                     }
                 }, 5);
+            };
+
+            document.addEventListener('d2n_hashchange', function() {
+                remove_cyanide_action();
+            }, false);
+
+            document.addEventListener('d2n_gamebody_reloaded', function() {
+                remove_cyanide_action();
             }, false);
         }
     };

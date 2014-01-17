@@ -213,11 +213,6 @@ var D2N_helpers = (function() {
 
             // Emit an event for the current hash
             emit_hash_change_event();
-
-            // Watch for future hash updates
-            window.addEventListener('hashchange', function() {
-                emit_hash_change_event();
-            });
         };
         watch_for_hash(100);
 

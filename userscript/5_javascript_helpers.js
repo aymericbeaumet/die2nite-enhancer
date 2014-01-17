@@ -234,7 +234,8 @@ var js = (function() {
         }
 
         // else try to find it
-        if (is_defined(el = document.getElementById(id))) {
+        el = document.getElementById(id);
+        if (is_defined(el)) {
             return callback(el);
         }
 
@@ -267,7 +268,9 @@ var js = (function() {
             return;
         }
 
-        if (is_defined(el = document.querySelector(selector))) {
+        // else try to find it
+        el = document.querySelector(selector)
+        if (is_defined(el)) {
             return callback(el);
         }
         setTimeout(function() {
@@ -299,7 +302,9 @@ var js = (function() {
             return;
         }
 
-        if (is_defined(el = document.querySelectorAll(selector)) && el.length > 0) {
+        // else try to find it
+        el = document.querySelectorAll(selector);
+        if (is_defined(el) && el.length > 0) {
             return callback(el);
         }
         setTimeout(function() {
@@ -331,7 +336,9 @@ var js = (function() {
             return;
         }
 
-        if (is_defined(el = document.getElementsByTagName(tag)) && el.length > 0) {
+        // else try to find it
+        el = document.getElementsByTagName(tag);
+        if (is_defined(el) && el.length > 0) {
             return callback(el);
         }
         setTimeout(function() {
@@ -363,7 +370,9 @@ var js = (function() {
             return;
         }
 
-        if (is_defined(el = document.getElementsByClassName(class_name)) && el.length > 0) {
+        // else try to find it
+        el = document.getElementsByClassName(class_name);
+        if (is_defined(el) && el.length > 0) {
             return callback(el);
         }
         setTimeout(function() {
