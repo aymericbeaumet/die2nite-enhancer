@@ -57,7 +57,7 @@ var D2NE = (function() {
         },
 
         // Set to true to hide hero adds
-        hide_hero_adds: true,
+        hide_hero_adds: false,
 
         // Set to true to enable AP color border
         highlight_ap: true,
@@ -104,7 +104,7 @@ var D2NE = (function() {
         },
 
         // Set to true to enable the use of maximum AP in the constructions
-        enable_construction_max_ap: true,
+        enable_construction_max_ap: false,
 
         // Set to true to hide all the completed constructions
         hide_completed_constructions: false,
@@ -113,7 +113,7 @@ var D2NE = (function() {
         enable_hero_bar_stat: true,
 
         // Set to true to enable the cyanide protection
-        enable_cyanide_protection: true
+        enable_cyanide_protection: false
     };
 
     /**
