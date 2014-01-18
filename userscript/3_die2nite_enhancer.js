@@ -511,6 +511,8 @@ var D2NE = (function() {
 
                     js.wait_for_selector('#ghost_pages img.hbar', function(node) {
                         var width = parseFloat(node.style.width);
+                        // Notes:
+                        //   0 day -> 0px
                         var max_width = 583;
                         var percent = width / max_width * 100;
 
