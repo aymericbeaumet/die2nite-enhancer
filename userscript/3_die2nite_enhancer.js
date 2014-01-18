@@ -720,18 +720,18 @@ var D2NE = (function() {
 
         // Disable the toolbar
         var disable_toolbar = function() {
-            js.wait_for_id('d2ne_external_tools_bar_update', function(node) {
-                node.style.opacity = 0.5;
-            });
             update_in_progress_ = true;
+            js.wait_for_id('d2ne_external_tools_bar_update', function(node) {
+                node.classList.add('off');
+            });
         };
 
         // Enable the toolbar
         var enable_toolbar = function() {
             js.wait_for_id('d2ne_external_tools_bar_update', function(node) {
-                node.style.opacity = 1;
+                update_in_progress_ = false;
+                node.classList.remove('off');
             });
-            update_in_progress_ = false;
         };
 
         // if an update is in progress, abort
