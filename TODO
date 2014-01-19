@@ -11,5 +11,3 @@ Features:
 Bugs:
 - Find a solution to fix Safari XmlHttpRequest problem with external tools
 - Fix filter bug in the gazette (can't select filters)
-- Fix disappearing external tools bar
-- Fix missing external tools bar when clicking on global view
