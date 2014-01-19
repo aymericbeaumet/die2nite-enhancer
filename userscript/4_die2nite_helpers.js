@@ -183,8 +183,8 @@ var D2N_helpers = (function() {
 
     /**
      * Add custom events on the interface:
-     * - to watch when the gamebody is reloaded
-     * - to watch the number of AP: 'apchange'
+     * - to watch when the gamebody is reloaded: 'd2ne_gamebody_reload'
+     * - to watch the number of AP: 'd2ne_apchange'
      */
     function add_custom_events()
     {
@@ -194,83 +194,45 @@ var D2N_helpers = (function() {
 
         // Emit Gamebody reloaded event
         var emit_gamebody_reloaded_event = function() {
-            var event = new CustomEvent(
-                'd2n_gamebody_reloaded', {
+            document.dispatchEvent(new CustomEvent(
+                'd2ne_gamebody_reload', {
                     bubbles: true,
                     cancelable: true
                 }
-            );
-            document.dispatchEvent(event);
+            ));
         };
 
-        var loading_wheel_old_observer = null;
-        var loading_wheel_observer = null;
-
-        var setup_loading_wheel_observer = function() {
-            js.wait_for_id('loading_section', function(node) {
-                loading_wheel_old_observer = loading_wheel_observer;
-                loading_wheel_observer = new MutationObserver(function(mutations) {
-                    for (var i = 0, max = mutations.length; i < max; ++i) {
-                        // if the loading wheel disappears, then the page loading is
-                        // done, emit a gamebody reloaded event
-                        if (mutations[i].target.style.display === 'none') {
-                            return emit_gamebody_reloaded_event();
-                        }
-                    }
-                });
-
-                loading_wheel_observer.observe(node, { attributes: true });
-
-                if (loading_wheel_old_observer !== null) {
-                    loading_wheel_old_observer.disconnect();
-                    loading_wheel_old_observer = null;
-                }
-            });
-        };
-
-        // Watch for the first gamebody load and emit an event. Then setup the
-        // observer
-        var watch_for_hash = function(limit) {
+        var watch_for_gamebody_reload = function(limit) {
             limit = (typeof limit === 'undefined') ? 20 : limit;
 
             // If the limit isn't reached and the hash isn't defined, call this
-            // function again
+            // function again (this is done to wait the first load)
             if (limit > 0 && window.location.hash === '') {
-                return setTimeout(function() { watch_for_hash(limit - 1); }, 200);
+                return setTimeout(function() { watch_for_gamebody_reload(limit - 1); }, 200);
             }
 
-            // If the hash exists, the page is loaded. Then emit an event and
-            // setup the mutation observer
-
-            // 1. Emit the event
+            // 1. Emit the event on the first load
             emit_gamebody_reloaded_event();
 
-            // 2. Set up the observer
-            setup_loading_wheel_observer();
-
-            // 3. Re-set the observer on some pages
+            // 2. Then watch for cursor style update on body tag, which means a
+            // content load in the page
             var body_observer = new MutationObserver(function(mutations) {
                 for (var i = 0, max = mutations.length; i < max; ++i) {
-                    // if the loading wheel appears, then the page is loading
-                    // and the observer is set on the loading wheel
-                    if (mutations[i].target.style.cursor === 'progress') {
-                        setup_loading_wheel_observer();
+                    if (mutations[i].attributeName !== 'style') {
+                        continue;
+                    }
+
+                    if (mutations[i].target.style.cursor === 'default') {
+                        emit_gamebody_reloaded_event();
+                        break;
                     }
                 }
             });
             js.wait_for_tag('body', function(nodes) {
                 body_observer.observe(nodes[0], { attributes: true });
             });
-
-            // 4. Emit event on news and help page
-            window.addEventListener('hashchange', function() {
-                if (js.match_regex(window.location.hash, '^\#news') ||
-                    js.match_regex(window.location.hash, '^\#help')) {
-                    emit_gamebody_reloaded_event();
-                }
-            }, false);
         };
-        watch_for_hash();
+        watch_for_gamebody_reload();
 
         /*
          * AP
@@ -278,13 +240,12 @@ var D2N_helpers = (function() {
 
         // Emit AP change event
         var emit_ap_change_event = function() {
-            var event = new CustomEvent(
-                'd2n_apchange', {
+            document.dispatchEvent(new CustomEvent(
+                'd2ne_apchange', {
                     bubbles: true,
                     cancelable: true
                 }
-            );
-            document.dispatchEvent(event);
+            ));
         };
 
         var ap_observer = null;
@@ -311,8 +272,9 @@ var D2N_helpers = (function() {
                 }
             });
         };
-        watch_for_ap();
+        watch_for_ap(); // watch on first load
 
+        // watch again when the page change
         window.addEventListener('hashchange', function() {
             watch_for_ap();
         }, false);

@@ -375,7 +375,7 @@ var D2NE = (function() {
                 highlight();
 
                 // Highlight on change
-                document.addEventListener('d2n_apchange', function() {
+                document.addEventListener('d2ne_apchange', function() {
                     highlight();
                 }, false);
             });
@@ -470,7 +470,7 @@ var D2NE = (function() {
                 });
             };
 
-            document.addEventListener('d2n_apchange', function() {
+            document.addEventListener('d2ne_apchange', function() {
                 change_ap();
             }, false);
         },
@@ -498,7 +498,7 @@ var D2NE = (function() {
                 '}'
             );
 
-            document.addEventListener('d2n_gamebody_reloaded', function() {
+            document.addEventListener('d2ne_gamebody_reload', function() {
                 if (!(D2N_helpers.is_on_page('ghost') || D2N_helpers.is_on_page('ghost_exp'))) {
                     return;
                 }
@@ -545,6 +545,7 @@ var D2NE = (function() {
                         if (nodes[node].nodeName !== 'STRONG')
                             continue;
 
+                        // Hide the node if cyanure
                         if (/^Cyanide|Cyanure|Cianuro$/.test(nodes[node].textContent)) {
                             action = nodes[node].parentNode.parentNode;
                             action.style.display = 'none';
@@ -553,7 +554,7 @@ var D2NE = (function() {
                 }, 5);
             };
 
-            document.addEventListener('d2n_gamebody_reloaded', function() {
+            document.addEventListener('d2ne_gamebody_reload', function() {
                 remove_cyanide_action();
             }, false);
         }
@@ -643,7 +644,7 @@ var D2NE = (function() {
     {
         // Drop private key cache when the user go on the settings page
         // (potential API key reset)
-        document.addEventListener('d2n_gamebody_reloaded', function() {
+        document.addEventListener('d2ne_gamebody_reload', function() {
             if (!D2N_helpers.is_on_page('settings')) {
                 return;
             }
@@ -911,7 +912,7 @@ var D2NE = (function() {
         inject_tools_button();
 
         // Inject button each time the gamebody is reloaded
-        document.addEventListener('d2n_gamebody_reloaded', function() {
+        document.addEventListener('d2ne_gamebody_reload', function() {
             inject_tools_button();
         }, false);
     }
