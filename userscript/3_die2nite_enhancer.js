@@ -67,22 +67,22 @@ var D2NE = (function() {
         highlight_ap: true,
 
         // Set to true to hide the help
-        hide_help: true,
+        hide_help: false,
 
         // Set to true to hide the Twinoid bar
         hide_twinoid_bar: false,
 
         // Set to true to hide the footer
-        hide_footer: true,
+        hide_footer: false,
 
         // Set to true to hide the PEGI image at the bottom of each page
-        hide_pegi: true,
+        hide_pegi: false,
 
         // Set to true to hide the rookie mode links
-        hide_rookie_mode: true,
+        hide_rookie_mode: false,
 
         // Set to true to hide the RP
-        hide_rp_content: true,
+        hide_rp_content: false,
 
         // Sync with external tools
         enable_sync: {
@@ -119,7 +119,7 @@ var D2NE = (function() {
         enable_hide_completed_constructions: true,
 
         // Set to false to show the Twitter share button (on Gazette)
-        hide_twitter_share_button: true,
+        hide_twitter_share_button: false,
 
         // Set to false to show the banner on the top of screen
         hide_city_outside_zones_banners: false,
@@ -1050,23 +1050,28 @@ var D2NE = (function() {
                     'border-bottom: 1px dashed #ddab76;' +
                 '}' +
 
+                '#' + DOM_PREFIX + '_configuration_panel div > div > h4 {' +
+                    'text-align: left;' +
+                    'border-bottom: 1px dotted rgba(221, 171, 118, 0.8);' +
+                    'padding-bottom: 4px;' +
+                    'margin-bottom: 5px;' +
+                    'margin-top: 4px;' +
+                '}' +
+                '#' + DOM_PREFIX + '_configuration_panel div > div > h4 > img {' +
+                    'vertical-align: -11%;' +
+                    'margin-right: 5px;' +
+                '}' +
+
                 '#' + DOM_PREFIX + '_configuration_panel div > div {' +
                     'position: relative;' +
                 '}' +
-                '#' + DOM_PREFIX + '_configuration_panel div > div img {' +
+                '#' + DOM_PREFIX + '_configuration_panel div > div > div img {' +
                     'position: absolute;' +
                     'top: 0;' +
                     'bottom: 0;' +
                     'right: 0;' +
                     'margin: auto;' +
                     'margin-right: 4px;' +
-                '}' +
-
-                '#' + DOM_PREFIX + '_configuration_panel hr {' +
-                    'border-top: 1px dotted rgba(221, 171, 118, 0.8);' +
-                    'margin: 0;' +
-                    'margin-top: 3px;' +
-                    'margin-bottom: 3px;' +
                 '}' +
 
                 'a.' + DOM_PREFIX + '_tooltip {' +
@@ -1125,16 +1130,11 @@ var D2NE = (function() {
                             ["p", {}, i18n_.configuration_panel_script_description],
 
                             /*
-                             * First category
                              */
 
-                            // Enable shortcuts
-                            ["div", {},
-                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_enable_shortcuts", "type": "checkbox" }],
-                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_enable_shortcuts" }, i18n_.configuration_panel_enable_shortcuts],
-                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_shortcuts_tooltip },
-                                    ["img", { "src": i18n_.help_image_url, "alt": "" }],
-                                ]
+                            ["h4", {},
+                                ["img", { src: "/gfx/forum/smiley/h_basic.gif" }],
+                                i18n_.configuration_panel_title_citizen
                             ],
 
                             // Highlight AP
@@ -1164,15 +1164,6 @@ var D2NE = (function() {
                                 ]
                             ],
 
-                            // Enable hero bar stat
-                            ["div", {},
-                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_enable_hero_bar_stat", "type": "checkbox" }],
-                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_enable_hero_bar_stat" }, i18n_.configuration_panel_enable_hero_bar_stat],
-                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_hero_bar_stat_tooltip },
-                                    ["img", { "src": i18n_.help_image_url, "alt": "" }],
-                                ]
-                            ],
-
                             // Enable cyanide protection
                             ["div", {},
                                 ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_enable_cyanide_protection", "type": "checkbox" }],
@@ -1182,7 +1173,39 @@ var D2NE = (function() {
                                 ]
                             ],
 
-                            ["hr", {}],
+                            // Enable shortcuts
+                            ["div", {},
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_enable_shortcuts", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_enable_shortcuts" }, i18n_.configuration_panel_enable_shortcuts],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_shortcuts_tooltip },
+                                    ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                ]
+                            ],
+
+                            /*
+                             */
+
+                            ["h4", {},
+                                ["img", { src: "/gfx/icons/small_hero.gif" }],
+                                i18n_.configuration_panel_title_hero
+                            ],
+
+                            // Enable hero bar stat
+                            ["div", {},
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_enable_hero_bar_stat", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_enable_hero_bar_stat" }, i18n_.configuration_panel_enable_hero_bar_stat],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_hero_bar_stat_tooltip },
+                                    ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                ]
+                            ],
+
+                            /*
+                             */
+
+                            ["h4", {},
+                                ["img", { src: "/gfx/icons/item_radio_on.gif" }],
+                                i18n_.configuration_panel_title_sync
+                            ],
 
                             // Enable BBH sync
                             ["div", { "style": "display: none;" },
@@ -1221,9 +1244,30 @@ var D2NE = (function() {
                             ],
 
                             /*
-                             * Second category
                              */
-                            ["hr", {}],
+
+                            ["h4", {},
+                                ["img", { src: "/gfx/forum/smiley/h_refine.gif" }],
+                                i18n_.configuration_panel_title_hide
+                            ],
+
+                            // Hide Twinoid bar
+                            ["div", {},
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_hide_twinoid_bar", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_hide_twinoid_bar" }, i18n_.configuration_panel_hide_twinoid_bar],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_twinoid_bar_tooltip },
+                                    ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                ]
+                            ],
+
+                            // Hide city outside zone banner
+                            ["div", {},
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_hide_city_outside_zones_banners", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_hide_city_outside_zones_banners" }, i18n_.configuration_panel_hide_city_outside_zones_banners],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_city_outside_zones_banners_tooltip },
+                                    ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                ]
+                            ],
 
                             // Hide hero adds
                             ["div", {},
@@ -1239,33 +1283,6 @@ var D2NE = (function() {
                                 ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_hide_help", "type": "checkbox" }],
                                 ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_hide_help" }, i18n_.configuration_panel_hide_help],
                                 ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_help_tooltip },
-                                    ["img", { "src": i18n_.help_image_url, "alt": "" }],
-                                ]
-                            ],
-
-                            // Hide Twinoid bar
-                            ["div", {},
-                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_hide_twinoid_bar", "type": "checkbox" }],
-                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_hide_twinoid_bar" }, i18n_.configuration_panel_hide_twinoid_bar],
-                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_twinoid_bar_tooltip },
-                                    ["img", { "src": i18n_.help_image_url, "alt": "" }],
-                                ]
-                            ],
-
-                            // Hide Footer
-                            ["div", {},
-                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_hide_footer", "type": "checkbox" }],
-                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_hide_footer" }, i18n_.configuration_panel_hide_footer],
-                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_footer_tooltip },
-                                    ["img", { "src": i18n_.help_image_url, "alt": "" }],
-                                ]
-                            ],
-
-                            // Hide PEGI
-                            ["div", {},
-                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_hide_pegi", "type": "checkbox" }],
-                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_hide_pegi" }, i18n_.configuration_panel_hide_pegi],
-                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_pegi_tooltip },
                                     ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                 ]
                             ],
@@ -1297,11 +1314,20 @@ var D2NE = (function() {
                                 ]
                             ],
 
-                            // Hide city outside zone banner
+                            // Hide PEGI
                             ["div", {},
-                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_hide_city_outside_zones_banners", "type": "checkbox" }],
-                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_hide_city_outside_zones_banners" }, i18n_.configuration_panel_hide_city_outside_zones_banners],
-                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_city_outside_zones_banners_tooltip },
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_hide_pegi", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_hide_pegi" }, i18n_.configuration_panel_hide_pegi],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_pegi_tooltip },
+                                    ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                ]
+                            ],
+
+                            // Hide Footer
+                            ["div", {},
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_hide_footer", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_hide_footer" }, i18n_.configuration_panel_hide_footer],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_footer_tooltip },
                                     ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                 ]
                             ],
