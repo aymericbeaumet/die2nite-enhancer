@@ -8,6 +8,7 @@ Features:
 - Auto escort
 - Add more filter in the gazette
 - Show chest objects form the citizen view (without mouse hover)
+- Move the escort buttons to a more conveniant place
 
 Bugs:
 - Find a solution to fix Safari XmlHttpRequest problem with external tools
