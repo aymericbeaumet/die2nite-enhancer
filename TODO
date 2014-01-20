@@ -9,6 +9,7 @@ Features:
 - Add more filter in the gazette
 - Show chest objects form the citizen view (without mouse hover)
 - Move the escort buttons to a more conveniant place
+- Add moon/sun depending of the hour of the day
 
 Bugs:
 - Find a solution to fix Safari XmlHttpRequest problem with external tools
