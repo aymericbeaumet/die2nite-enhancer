@@ -1080,6 +1080,8 @@ var D2NE = (function() {
                     'width: auto;' +
                     'text-align: center;' +
                     'padding: 0;' +
+                    'padding-top: 2px;' +
+                    'height: 19px;' +
                     'margin: 0;' +
                     'margin-top: 5px;' +
                 '}'
