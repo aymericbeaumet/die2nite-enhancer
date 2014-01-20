@@ -902,8 +902,8 @@ var D2NE = (function() {
     {
         // if not any tool is enabled, abort
         var tools_number = 0;
-        for (var key in configuration_.external_tools) {
-            tools_number += (configuration_.external_tools[key]) ? 1 : 0;
+        for (var key in configuration_.enable_sync) {
+            tools_number += (configuration_.enable_sync[key]) ? 1 : 0;
         }
         if (tools_number < 1) {
             return;
