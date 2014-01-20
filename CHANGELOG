@@ -2,6 +2,7 @@ v0.0.9
 - Use the MT button style to disable a button
 - Less intrusive default options
 - Fix missing external tools bar when clicking on city overview
+- Fix bug in the gazette forbiding to select a filter
 
 v0.0.8
 - Greatly increase performance

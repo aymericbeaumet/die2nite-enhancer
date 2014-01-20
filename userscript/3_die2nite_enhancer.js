@@ -389,7 +389,7 @@ var D2NE = (function() {
                 '}' +
 
                 // Hide all blue help boxes, but keep the watchwen button
-                '#generic_section {' +
+                'div#generic_section div.exp {' +
                     'position: relative;' +
                     'top: 0;' +
                     'left: 0;' +

@@ -10,4 +10,3 @@ Features:
 
 Bugs:
 - Find a solution to fix Safari XmlHttpRequest problem with external tools
-- Fix filter bug in the gazette (can't select filters)
