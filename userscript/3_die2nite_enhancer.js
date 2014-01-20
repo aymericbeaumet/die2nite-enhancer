@@ -121,6 +121,9 @@ var D2NE = (function() {
         // Set to false to show the Twitter share button (on Gazette)
         hide_twitter_share_button: true,
 
+        // Set to false to show the banner on the top of screen
+        hide_city_outside_zones_banners: false,
+
         /*
          * Not configurable by the user from the configuration panel
          */
@@ -378,31 +381,29 @@ var D2NE = (function() {
         ////
         hide_help: function() {
             js.injectCSS(
-                '#mapTips, a.button[href^="#city/exp?editor=1;sk="] + p, .helpLink, #generic_section > div > em:last-of-type {' +
+                '#mapTips, a.button[href^="#city/exp?editor=1;sk="] + p, .helpLink, #generic_section > div > em:last-of-type, .help {' +
                     'display: none;' +
-                '}' +
-
-                // Hide all blue help boxes, but keep the watchwen button
-                'div#generic_section div.exp {' +
-                    'position: relative;' +
-                    'top: 0;' +
-                    'left: 0;' +
-                '}' +
-                '.help {' +
-                    'position: absolute;' +
-                    'top: 0;' +
-                    'left: -1500px;' +
-                    'width: 0;' +
-                '}' +
-                '.help a.button {' +
-                    'position: absolute;' +
-                    'top: 131px;' +
-                    'left: 1499px;' +
-                '}' +
-                'ul#door_menu + script + div.help + table {' +
-                    'margin-top: 60px;' +
                 '}'
             );
+
+            document.addEventListener('d2n_gamebody_reload', function() {
+                if (!(D2N_helpers.is_on_page_in_city('guard'))) {
+                    return;
+                }
+
+                // As the watch button is in a help div, if the help is hidden
+                // the button disappeared. So in this case the button is moved
+                // elsewhere in the DOM
+                if (configuration_['hide_help']) {
+                    js.wait_for_class('help', function(help) {
+                        js.wait_for_selector('#generic_section a.button', function(button) {
+                            button.style.marginTop = '18px';
+                            button.style.marginBottom = '15px';
+                            help[0].parentNode.insertBefore(button, help[0]);
+                        });
+                    });
+                }
+            }, false);
         },
 
         ////
@@ -453,6 +454,15 @@ var D2NE = (function() {
                 '}' +
                 '#gameBodyLight div.logControl {' +
                     'margin-top: 330px;' +
+                '}'
+            );
+        },
+
+        ////
+        hide_city_outside_zones_banners: function() {
+            js.injectCSS(
+                'div.sectionArt {' +
+                    'display: none;' +
                 '}'
             );
         },
@@ -1283,6 +1293,15 @@ var D2NE = (function() {
                                 ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_hide_twitter_share_button", "type": "checkbox" }],
                                 ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_hide_twitter_share_button" }, i18n_.configuration_panel_hide_twitter_share],
                                 ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_twitter_share_tooltip },
+                                    ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                ]
+                            ],
+
+                            // Hide city outside zone banner
+                            ["div", {},
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_hide_city_outside_zones_banners", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_hide_city_outside_zones_banners" }, i18n_.configuration_panel_hide_city_outside_zones_banners],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_city_outside_zones_banners_tooltip },
                                     ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                 ]
                             ],
