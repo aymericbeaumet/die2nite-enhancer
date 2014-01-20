@@ -1279,7 +1279,8 @@ var D2NE = (function() {
      */
     function load_features()
     {
-        // Browse all features, and check if they have to be activated
+        // Browse all features, and check if they have to be activated regarding
+        // to the configuration
         for (var feature in features_) {
             if (configuration_[feature] === true) {
                 (features_[feature])();

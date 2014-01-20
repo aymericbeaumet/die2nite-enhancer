@@ -211,24 +211,29 @@ var D2N_helpers = (function() {
                 return setTimeout(function() { watch_for_gamebody_reload(limit - 1); }, 200);
             }
 
-            // 1. Emit the event on the first load
-            emit_gamebody_reloaded_event();
-
-            // 2. Then watch for cursor style update on body tag, which means a
-            // content load in the page
-            var body_observer = new MutationObserver(function(mutations) {
-                for (var i = 0, max = mutations.length; i < max; ++i) {
-                    if (mutations[i].attributeName !== 'style') {
-                        continue;
-                    }
-
-                    if (mutations[i].target.style.cursor === 'default') {
-                        emit_gamebody_reloaded_event();
-                        break;
-                    }
-                }
-            });
             js.wait_for_tag('body', function(nodes) {
+                var body_observer = new MutationObserver(function(mutations) {
+                    for (var i = 0, max = mutations.length; i < max; ++i) {
+                        if (mutations[i].attributeName !== 'style') {
+                            continue;
+                        }
+
+                        if (mutations[i].target.style.cursor === 'default') {
+                            emit_gamebody_reloaded_event();
+                            break;
+                        }
+                    }
+                });
+
+                // 1. If the cursor is 'default' it means the page is loaded
+                // (and that we missed the cursor change). In this case, just
+                // emit an event.
+                if (nodes[0].style.cursor === 'default') {
+                    emit_gamebody_reloaded_event();
+                }
+
+                // 2. Then watch for a cursor style change on the body tag,
+                // which means the end of a content load for the page
                 body_observer.observe(nodes[0], { attributes: true });
             });
         };
@@ -238,22 +243,25 @@ var D2N_helpers = (function() {
          * AP
          */
 
-        // Emit AP change event
-        var emit_ap_change_event = function() {
-            document.dispatchEvent(new CustomEvent(
-                'd2ne_apchange', {
-                    bubbles: true,
-                    cancelable: true
-                }
-            ));
-        };
+        // only watch AP change in town
+        is_in_town(function(in_town) {
+            if (in_town) {
 
-        var ap_observer = null;
-        var ap_old_observer = null;
+                // Emit AP change event
+                var emit_ap_change_event = function() {
+                    document.dispatchEvent(new CustomEvent(
+                        'd2ne_apchange', {
+                            bubbles: true,
+                            cancelable: true
+                        }
+                    ));
+                };
 
-        var watch_for_ap = function() {
-            is_in_town(function(in_town) {
-                if (in_town) { // only watch AP in town
+                // Store the observer to always have at least 1 active
+                var ap_observer = null;
+                var ap_old_observer = null;
+
+                var watch_for_ap_change = function() {
                     js.wait_for_id('movesCounter', function(node) {
                         ap_old_observer = ap_observer;
 
@@ -269,15 +277,16 @@ var D2N_helpers = (function() {
                             ap_old_observer = null;
                         }
                     });
-                }
-            });
-        };
-        watch_for_ap(); // watch on first load
+                };
+                watch_for_ap_change(); // watch on first load
 
-        // watch again when the page change
-        window.addEventListener('hashchange', function() {
-            watch_for_ap();
-        }, false);
+                // watch again when the page change
+                window.addEventListener('hashchange', function() {
+                    watch_for_ap_change();
+                }, false);
+
+            }
+        });
     }
 
     /**
