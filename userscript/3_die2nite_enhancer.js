@@ -33,6 +33,10 @@ var D2NE = (function() {
     var LOCAL_STORAGE_D2NE_CONFIGURATION_KEY = LOCAL_STORAGE_PREFIX + '.configuration';
     var LOCAL_STORAGE_PRIVATE_KEY_PREFIX = LOCAL_STORAGE_PREFIX + '.key';
 
+    var DOM_PREFIX = 'd2ne';
+    var CONFIGURATION_PANEL_ID_PREFIX = DOM_PREFIX + '_configuration_panel';
+    var CONFIGURATION_PANEL_ID_PREFIX_EXTERNAL_TOOLS = CONFIGURATION_PANEL_ID_PREFIX + '_enable_sync';
+
     /**
      * The default configuration.
      */
@@ -80,27 +84,26 @@ var D2NE = (function() {
         // Set to true to hide the RP
         hide_rp_content: true,
 
-        // Sync with external tools, the tool name is gotten by extracting the
-        // string between 'enable_' and '_sync'
-        external_tools: {
+        // Sync with external tools
+        enable_sync: {
 
             //
             // www.hordes.fr
             //
 
             // Set to true to enable BigBroth'Hordes (http://bbh.fred26.fr/)
-            enable_bbh_sync: false,
+            bbh: false,
             // Set to true to enable Où en êtes-vous ? (http://www.oeev-hordes.com/)
-            enable_oeev_sync: false,
+            oeev: false,
 
             //
             // www.die2nite.com
             //
 
             // Set to true to enable Dusk Dawn (http://d2n.duskdawn.net/)
-            enable_duskdawn_sync: false,
+            duskdawn: false,
             // Set to true to enable Map Viewer (http://die2nite.gamerz.org.uk/)
-            enable_mapviewer_sync: false
+            mapviewer: false
         },
 
         // Set to true to enable the use of maximum AP in the constructions
@@ -115,8 +118,11 @@ var D2NE = (function() {
         // Set to false to disable the "Highlight completed constructions" link
         enable_hide_completed_constructions: true,
 
+        // Set to false to show the Twitter share button (on Gazette)
+        hide_twitter_share_button: true,
+
         /*
-         * Not configurable by the user
+         * Not configurable by the user from the configuration panel
          */
 
         // Set to true to hide completed constructions
@@ -133,7 +139,6 @@ var D2NE = (function() {
                 'www.hordes.fr': 22
             },
             local_storage_key: LOCAL_STORAGE_PRIVATE_KEY_PREFIX + '.oeev',
-            configuration_panel_id: 'd2ne_configuration_enable_oeev_sync',
             update: function(callback_success, callback_failure) {
                 js.network_request(
                     'POST',
@@ -161,7 +166,6 @@ var D2NE = (function() {
                 'www.hordes.fr': 51
             },
             local_storage_key: LOCAL_STORAGE_PRIVATE_KEY_PREFIX + '.bbh',
-            configuration_panel_id: 'd2ne_configuration_enable_bbh_sync',
             update: function(callback_success, callback_failure) {
                 js.network_request(
                     'POST',
@@ -190,7 +194,6 @@ var D2NE = (function() {
                 'www.die2nite.com': 14
             },
             local_storage_key: LOCAL_STORAGE_PRIVATE_KEY_PREFIX + '.duskdawn',
-            configuration_panel_id: 'd2ne_configuration_enable_duskdawn_sync',
             update: function(callback_success, callback_failure) {
                 // Do not update if not outside
                 if (!D2N_helpers.is_outside()) {
@@ -223,7 +226,6 @@ var D2NE = (function() {
                 'www.die2nite.com': 1
             },
             local_storage_key: LOCAL_STORAGE_PRIVATE_KEY_PREFIX + '.mapviewer',
-            configuration_panel_id: 'd2ne_configuration_enable_mapviewer_sync',
             update: function(callback_success, callback_failure) {
                 js.network_request(
                     'GET',
@@ -367,7 +369,7 @@ var D2NE = (function() {
                 highlight();
 
                 // Highlight on change
-                document.addEventListener('d2ne_apchange', function() {
+                document.addEventListener('d2n_apchange', function() {
                     highlight();
                 }, false);
             });
@@ -444,6 +446,15 @@ var D2NE = (function() {
         },
 
         ////
+        hide_twitter_share_button: function() {
+            js.injectCSS(
+                '#gameBodyLight ul.linkControl {' +
+                    'display: none;' +
+                '}'
+            );
+        },
+
+        ////
         enable_shortcuts: function() {
             js.keydown_event(function(keycode, previous_keycode) {
                 if (previous_keycode !== configuration_.go_bind) {
@@ -477,7 +488,7 @@ var D2NE = (function() {
                 });
             };
 
-            document.addEventListener('d2ne_apchange', function() {
+            document.addEventListener('d2n_apchange', function() {
                 change_ap();
             }, false);
         },
@@ -535,7 +546,7 @@ var D2NE = (function() {
             add_link();
 
             // Add the link again on each page reload
-            document.addEventListener('d2ne_gamebody_reload', function() {
+            document.addEventListener('d2n_gamebody_reload', function() {
                 add_link();
             }, false);
 
@@ -555,7 +566,7 @@ var D2NE = (function() {
                 '}'
             );
 
-            document.addEventListener('d2ne_gamebody_reload', function() {
+            document.addEventListener('d2n_gamebody_reload', function() {
                 if (!(D2N_helpers.is_on_page('ghost') || D2N_helpers.is_on_page('ghost_exp'))) {
                     return;
                 }
@@ -611,7 +622,7 @@ var D2NE = (function() {
                 }, 5);
             };
 
-            document.addEventListener('d2ne_gamebody_reload', function() {
+            document.addEventListener('d2n_gamebody_reload', function() {
                 remove_cyanide_action();
             }, false);
         }
@@ -638,49 +649,48 @@ var D2NE = (function() {
      */
     function save_configuration()
     {
-        configuration_.enable_shortcuts = document.getElementById('d2ne_configuration_enable_shortcuts').checked;
-        configuration_.hide_hero_adds = document.getElementById('d2ne_configuration_hide_hero_adds').checked;
-        configuration_.highlight_ap = document.getElementById('d2ne_configuration_highlight_ap').checked;
-        configuration_.hide_help = document.getElementById('d2ne_configuration_hide_help').checked;
-        configuration_.hide_twinoid_bar = document.getElementById('d2ne_configuration_hide_twinoid_bar').checked;
-        configuration_.hide_footer = document.getElementById('d2ne_configuration_hide_footer').checked;
-        configuration_.hide_pegi = document.getElementById('d2ne_configuration_hide_pegi').checked;
-        configuration_.hide_rookie_mode = document.getElementById('d2ne_configuration_hide_rookie_mode').checked;
-        configuration_.hide_rp_content = document.getElementById('d2ne_configuration_hide_rp_content').checked;
-        configuration_.external_tools.enable_bbh_sync = document.getElementById('d2ne_configuration_enable_bbh_sync').checked;
-        configuration_.external_tools.enable_oeev_sync = document.getElementById('d2ne_configuration_enable_oeev_sync').checked;
-        configuration_.external_tools.enable_duskdawn_sync = document.getElementById('d2ne_configuration_enable_duskdawn_sync').checked;
-        configuration_.external_tools.enable_mapviewer_sync = document.getElementById('d2ne_configuration_enable_mapviewer_sync').checked;
-        configuration_.enable_construction_max_ap = document.getElementById('d2ne_configuration_enable_construction_max_ap').checked;
-        configuration_.enable_hide_completed_constructions = document.getElementById('d2ne_configuration_enable_hide_completed_constructions').checked;
-        configuration_.enable_hero_bar_stat = document.getElementById('d2ne_configuration_enable_hero_bar_stat').checked;
-        configuration_.enable_cyanide_protection = document.getElementById('d2ne_configuration_enable_cyanide_protection').checked;
+        var save = function(obj, prefix) {
+            for (var key in obj) {
+                if (typeof obj[key] === 'object') {
+                    save(obj[key], prefix + key + '_')
+                    continue;
+                }
+
+                var el = document.getElementById(prefix + key);
+
+                if (!js.is_defined(el)) {
+                    continue;
+                }
+                obj[key] = el.checked;
+            }
+        };
+        save(configuration_, CONFIGURATION_PANEL_ID_PREFIX + '_');
 
         localStorage[LOCAL_STORAGE_D2NE_CONFIGURATION_KEY] = JSON.stringify(configuration_);
     }
 
     /**
-     * Inject the configuration retrieved from the local storage.
+     * Inject in the configuration panel the configuration retrieved from the
+     * local storage.
      */
     function inject_configuration()
     {
-        document.getElementById('d2ne_configuration_enable_shortcuts').checked = configuration_.enable_shortcuts;
-        document.getElementById('d2ne_configuration_hide_hero_adds').checked = configuration_.hide_hero_adds;
-        document.getElementById('d2ne_configuration_highlight_ap').checked = configuration_.highlight_ap;
-        document.getElementById('d2ne_configuration_hide_help').checked = configuration_.hide_help;
-        document.getElementById('d2ne_configuration_hide_twinoid_bar').checked = configuration_.hide_twinoid_bar;
-        document.getElementById('d2ne_configuration_hide_footer').checked = configuration_.hide_footer;
-        document.getElementById('d2ne_configuration_hide_pegi').checked = configuration_.hide_pegi;
-        document.getElementById('d2ne_configuration_hide_rookie_mode').checked = configuration_.hide_rookie_mode;
-        document.getElementById('d2ne_configuration_hide_rp_content').checked = configuration_.hide_rp_content;
-        document.getElementById('d2ne_configuration_enable_bbh_sync').checked = configuration_.external_tools.enable_bbh_sync;
-        document.getElementById('d2ne_configuration_enable_oeev_sync').checked = configuration_.external_tools.enable_oeev_sync;
-        document.getElementById('d2ne_configuration_enable_duskdawn_sync').checked = configuration_.external_tools.enable_duskdawn_sync;
-        document.getElementById('d2ne_configuration_enable_mapviewer_sync').checked = configuration_.external_tools.enable_mapviewer_sync;
-        document.getElementById('d2ne_configuration_enable_construction_max_ap').checked = configuration_.enable_construction_max_ap;
-        document.getElementById('d2ne_configuration_enable_hide_completed_constructions').checked = configuration_.enable_hide_completed_constructions;
-        document.getElementById('d2ne_configuration_enable_hero_bar_stat').checked = configuration_.enable_hero_bar_stat;
-        document.getElementById('d2ne_configuration_enable_cyanide_protection').checked = configuration_.enable_cyanide_protection;
+        var inject = function(obj, prefix) {
+            for (var key in obj) {
+                if (typeof obj[key] === 'object') {
+                    inject(obj[key], prefix + key + '_')
+                    continue;
+                }
+
+                var el = document.getElementById(prefix + key);
+
+                if (!js.is_defined(el)) {
+                    continue;
+                }
+                el.checked = obj[key];
+            }
+        };
+        inject(configuration_, CONFIGURATION_PANEL_ID_PREFIX + '_');
     }
 
     function load_internationalisation()
@@ -701,7 +711,7 @@ var D2NE = (function() {
     {
         // Drop private key cache when the user go on the settings page
         // (potential API key reset)
-        document.addEventListener('d2ne_gamebody_reload', function() {
+        document.addEventListener('d2n_gamebody_reload', function() {
             if (!D2N_helpers.is_on_page('settings')) {
                 return;
             }
@@ -731,6 +741,8 @@ var D2NE = (function() {
 
             // Browse all the external tools
             for (var tool_name in external_tools_) {
+                var configuration_panel_id = CONFIGURATION_PANEL_ID_PREFIX_EXTERNAL_TOOLS + '_' + tool_name;
+
                 tool = external_tools_[tool_name];
 
                 // if this tool is disabled, go to the next one
@@ -748,7 +760,7 @@ var D2NE = (function() {
                 // if key already exists, enable config panel corresponding
                 // button and skip to the next tool
                 if (js.match_regex(localStorage[tool.local_storage_key], '^[a-f0-9]{38,39}$')) {
-                    enable_button(tool.configuration_panel_id);
+                    enable_button(configuration_panel_id);
                     continue;
                 }
 
@@ -757,13 +769,16 @@ var D2NE = (function() {
                     function on_success(data, context) {
                         match = data.match(/<input type="hidden" name="key" value="([a-f0-9]{38,39})"\/>/);
                         if (js.is_defined(match) && match.length === 2) {
-                            localStorage[context.tool.local_storage_key] = match[1]; // save the API key
-                            enable_button(context.tool.configuration_panel_id);
+                            localStorage[context.local_storage_key] = match[1]; // save the API key
+                            enable_button(context.configuration_panel_id);
                         } else {
-                            localStorage[context.tool.local_storage_key] = -1; // disable this tool
+                            localStorage[context.local_storage_key] = -1; // disable this tool
                         }
                     }, null,
-                    { tool: tool } // context given to callback
+                    {
+                        local_storage_key: tool.local_storage_key,
+                        configuration_panel_id: configuration_panel_id
+                    } // context given to callback
                 );
             }
         });
@@ -781,14 +796,14 @@ var D2NE = (function() {
         // Disable the toolbar
         var disable_toolbar = function() {
             update_in_progress_ = true;
-            js.wait_for_id('d2ne_external_tools_bar_update', function(node) {
+            js.wait_for_id(DOM_PREFIX + '_external_tools_bar_update', function(node) {
                 node.classList.add('off');
             });
         };
 
         // Enable the toolbar
         var enable_toolbar = function() {
-            js.wait_for_id('d2ne_external_tools_bar_update', function(node) {
+            js.wait_for_id(DOM_PREFIX + '_external_tools_bar_update', function(node) {
                 update_in_progress_ = false;
                 node.classList.remove('off');
             });
@@ -802,7 +817,7 @@ var D2NE = (function() {
         // else disable bars
         disable_toolbar();
 
-        var images = document.querySelectorAll('#d2ne_external_tools_bar a img');
+        var images = document.querySelectorAll('#' + DOM_PREFIX + '_external_tools_bar a img');
 
         // Replace the toolbar icon with a calim
         var show_calim = function() {
@@ -857,22 +872,20 @@ var D2NE = (function() {
         disable_toolbar();
         show_loading_wheel();
 
-        for (var tool in configuration_.external_tools) {
+        for (var tool in configuration_.enable_sync) {
             // if tool isn't enabled, skip it
-            if (!(configuration_.external_tools[tool])) {
+            if (!(configuration_.enable_sync[tool])) {
                 continue;
             }
 
-            var tool_name = tool.split('_')[1].split('_')[0];
-
             // if key hasn't been found, skip it
-            if (!js.is_defined(localStorage[external_tools_[tool_name].local_storage_key])) {
+            if (!js.is_defined(localStorage[external_tools_[tool].local_storage_key])) {
                 continue;
             }
 
             // else update it
             ++tools_number;
-            external_tools_[tool_name].update(function(response) {
+            external_tools_[tool].update(function(response) {
                 tools_updated += 1;
                 handle_tool_update();
             }, function(response) {
@@ -898,7 +911,7 @@ var D2NE = (function() {
 
         // Create and inject external tools bar style
         js.injectCSS(
-            '#d2ne_external_tools_bar {' +
+            '#' + DOM_PREFIX + '_external_tools_bar {' +
                 'background-color: #5D321E;' +
                 'width: 303px;' +
                 'height: 30px;' +
@@ -910,11 +923,11 @@ var D2NE = (function() {
                 'padding: 5px;' +
                 'padding-left: 8px;' +
             '}' +
-            '#d2ne_external_tools_bar a.button {' +
+            '#' + DOM_PREFIX + '_external_tools_bar a.button {' +
                 'margin-right: auto;' +
                 'margin-left: auto;' +
             '}' +
-            '#d2ne_external_tools_bar span {' +
+            '#' + DOM_PREFIX + '_external_tools_bar span {' +
                 'float: left;' +
                 'display: inline-block;' +
                 'vertical-align: middle;' +
@@ -928,7 +941,7 @@ var D2NE = (function() {
                 'padding-left: 7px;' +
                 'padding-right: 4px;' +
             '}' +
-            '#d2ne_external_tools_bar a img {' +
+            '#' + DOM_PREFIX + '_external_tools_bar a img {' +
                 'vertical-align: middle;' +
                 'margin-right: 4px;' +
             '}'
@@ -943,14 +956,14 @@ var D2NE = (function() {
             // the side panel is needed to place the button
             js.wait_for_class('sidePanel', function(nodes) {
                 // if already loaded, abort
-                if (js.is_defined(document.getElementById('d2ne_external_tools_bar'))) {
+                if (js.is_defined(document.getElementById(DOM_PREFIX + '_external_tools_bar'))) {
                     return;
                 }
 
                 // Create external tools bar
                 var external_tools_bar_div = js.jsonToDOM(
-                    ["div", { "id": "d2ne_external_tools_bar" },
-                        ["a", { "href": "javascript:void(0)", "id": "d2ne_external_tools_bar_update", "class": "button", "onclick": function() { update_tools(); } },
+                    ["div", { "id": DOM_PREFIX + "_external_tools_bar" },
+                        ["a", { "href": "javascript:void(0)", "id": DOM_PREFIX + "_external_tools_bar_update", "class": "button", "onclick": function() { update_tools(); } },
                             ["img", { "src": "/gfx/forum/smiley/h_calim.gif", "width": "19px", "height": "19px" }],
                             ["img", { "src": "/gfx/design/loading.gif", "width": "19px", "height": "19px", "style": "display: none;" }],
                             ["img", { "src": "/gfx/forum/smiley/h_smile.gif", "width": "19px", "height": "19px", "style": "display: none;" }],
@@ -969,7 +982,7 @@ var D2NE = (function() {
         inject_tools_button();
 
         // Inject button each time the gamebody is reloaded
-        document.addEventListener('d2ne_gamebody_reload', function() {
+        document.addEventListener('d2n_gamebody_reload', function() {
             inject_tools_button();
         }, false);
     }
@@ -983,7 +996,7 @@ var D2NE = (function() {
             // Create and inject panel style
             js.injectCSS(
 
-                '#d2ne_configuration_panel {' +
+                '#' + DOM_PREFIX + '_configuration_panel {' +
                     'z-index: 9;' +
                     'position: absolute;' +
                     'margin-top: 5px;' +
@@ -993,7 +1006,7 @@ var D2NE = (function() {
                     'max-width: 430px;' +
                 '}' +
 
-                '#d2ne_configuration_panel h1 {' +
+                '#' + DOM_PREFIX + '_configuration_panel h1 {' +
                     'height: auto;' +
                     'font-size: 8pt;' +
                     'text-transform: none;' +
@@ -1003,19 +1016,19 @@ var D2NE = (function() {
                     'margin: 0;' +
                     'padding: 0;' +
                 '}' +
-                '#d2ne_configuration_panel:hover h1 {' +
+                '#' + DOM_PREFIX + '_configuration_panel:hover h1 {' +
                     'border-bottom: 1px solid #b37c4a;' +
                     'margin-bottom: 5px;' +
                 '}' +
 
-                '#d2ne_configuration_panel > div {' +
+                '#' + DOM_PREFIX + '_configuration_panel > div {' +
                     'line-height: 23px;' +
                     'border: 1px solid #f0d79e;' +
                     'padding-left: 5px;' +
                     'padding-right: 5px;' +
                 '}' +
 
-                '#d2ne_configuration_panel p {' +
+                '#' + DOM_PREFIX + '_configuration_panel p {' +
                     'padding-bottom: 7px;' +
                     'margin-bottom: 3px;' +
                     'font-size: 9pt;' +
@@ -1024,10 +1037,10 @@ var D2NE = (function() {
                     'border-bottom: 1px dashed #ddab76;' +
                 '}' +
 
-                '#d2ne_configuration_panel div > div {' +
+                '#' + DOM_PREFIX + '_configuration_panel div > div {' +
                     'position: relative;' +
                 '}' +
-                '#d2ne_configuration_panel div > div img {' +
+                '#' + DOM_PREFIX + '_configuration_panel div > div img {' +
                     'position: absolute;' +
                     'top: 0;' +
                     'bottom: 0;' +
@@ -1036,24 +1049,24 @@ var D2NE = (function() {
                     'margin-right: 4px;' +
                 '}' +
 
-                '#d2ne_configuration_panel hr {' +
+                '#' + DOM_PREFIX + '_configuration_panel hr {' +
                     'border-top: 1px dotted rgba(221, 171, 118, 0.8);' +
                     'margin: 0;' +
                     'margin-top: 3px;' +
                     'margin-bottom: 3px;' +
                 '}' +
 
-                'a.d2n_tooltip {' +
+                'a.' + DOM_PREFIX + '_tooltip {' +
                     'display: inline;' +
                     'cursor: help' +
                 '}' +
-                'a.d2n_tooltip img {' +
+                'a.' + DOM_PREFIX + '_tooltip img {' +
                     'border: 1px solid #5c2b20;' +
                 '}' +
-                'a.d2n_tooltip img:hover {' +
+                'a.' + DOM_PREFIX + '_tooltip img:hover {' +
                     'border: 1px solid #ffffff;' +
                 '}' +
-                'a.d2n_tooltip:hover:after {' +
+                'a.' + DOM_PREFIX + '_tooltip:hover:after {' +
                     'line-height: normal;' +
                     'z-index: 98;' +
                     'position: absolute;' +
@@ -1072,11 +1085,11 @@ var D2NE = (function() {
                     'padding: 4px 10px 9px 30px;' +
                 '}' +
 
-                '#d2ne_configuration_panel > div > div > div:last-child {' +
+                '#' + DOM_PREFIX + '_configuration_panel > div > div > div:last-child {' +
                     'text-align: right;' +
                 '}' +
 
-                '#d2ne_configuration_panel a.button {' +
+                '#' + DOM_PREFIX + '_configuration_panel a.button {' +
                     'width: auto;' +
                     'text-align: center;' +
                     'padding: 0;' +
@@ -1088,7 +1101,7 @@ var D2NE = (function() {
             );
 
             var config_panel_div = js.jsonToDOM(
-                ["div", { "id": "d2ne_configuration_panel" },
+                ["div", { "id": CONFIGURATION_PANEL_ID_PREFIX },
                     ["div", {},
                         ["h1", {},
                             ["img", { "src": "/gfx/forum/smiley/h_city_up.gif", "alt": "" }],
@@ -1104,54 +1117,54 @@ var D2NE = (function() {
 
                             // Enable shortcuts
                             ["div", {},
-                                ["input", { "id": "d2ne_configuration_enable_shortcuts", "type": "checkbox" }],
-                                ["label", { "for": "d2ne_configuration_enable_shortcuts" }, i18n_.configuration_panel_enable_shortcuts],
-                                ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_shortcuts_tooltip },
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_enable_shortcuts", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_enable_shortcuts" }, i18n_.configuration_panel_enable_shortcuts],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_shortcuts_tooltip },
                                     ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                 ]
                             ],
 
                             // Highlight AP
                             ["div", {},
-                                ["input", { "id": "d2ne_configuration_highlight_ap", "type": "checkbox" }],
-                                ["label", { "for": "d2ne_configuration_highlight_ap" }, i18n_.configuration_panel_highlight_ap],
-                                ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_highlight_ap_tooltip },
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_highlight_ap", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_highlight_ap" }, i18n_.configuration_panel_highlight_ap],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_highlight_ap_tooltip },
                                     ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                 ]
                             ],
 
                             // Enable construction max AP
                             ["div", {},
-                                ["input", { "id": "d2ne_configuration_enable_construction_max_ap", "type": "checkbox" }],
-                                ["label", { "for": "d2ne_configuration_enable_construction_max_ap" }, i18n_.configuration_panel_enable_construction_max_ap],
-                                ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_construction_max_ap_tooltip },
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_enable_construction_max_ap", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_enable_construction_max_ap" }, i18n_.configuration_panel_enable_construction_max_ap],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_construction_max_ap_tooltip },
                                     ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                 ]
                             ],
 
                             // Hide completed constructions
                             ["div", {},
-                                ["input", { "id": "d2ne_configuration_enable_hide_completed_constructions", "type": "checkbox" }],
-                                ["label", { "for": "d2ne_configuration_enable_hide_completed_constructions" }, i18n_.configuration_panel_enable_hide_completed_constructions],
-                                ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_hide_completed_constructions_tooltip },
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_enable_hide_completed_constructions", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_enable_hide_completed_constructions" }, i18n_.configuration_panel_enable_hide_completed_constructions],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_hide_completed_constructions_tooltip },
                                     ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                 ]
                             ],
 
                             // Enable hero bar stat
                             ["div", {},
-                                ["input", { "id": "d2ne_configuration_enable_hero_bar_stat", "type": "checkbox" }],
-                                ["label", { "for": "d2ne_configuration_enable_hero_bar_stat" }, i18n_.configuration_panel_enable_hero_bar_stat],
-                                ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_hero_bar_stat_tooltip },
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_enable_hero_bar_stat", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_enable_hero_bar_stat" }, i18n_.configuration_panel_enable_hero_bar_stat],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_hero_bar_stat_tooltip },
                                     ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                 ]
                             ],
 
                             // Enable cyanide protection
                             ["div", {},
-                                ["input", { "id": "d2ne_configuration_enable_cyanide_protection", "type": "checkbox" }],
-                                ["label", { "for": "d2ne_configuration_enable_cyanide_protection" }, i18n_.configuration_panel_enable_cyanide_protection],
-                                ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_cyanide_protection_tooltip },
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_enable_cyanide_protection", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_enable_cyanide_protection" }, i18n_.configuration_panel_enable_cyanide_protection],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_cyanide_protection_tooltip },
                                     ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                 ]
                             ],
@@ -1160,36 +1173,36 @@ var D2NE = (function() {
 
                             // Enable BBH sync
                             ["div", { "style": "display: none;" },
-                                ["input", { "id": "d2ne_configuration_enable_bbh_sync", "type": "checkbox" }],
-                                ["label", { "for": "d2ne_configuration_enable_bbh_sync" }, i18n_.configuration_panel_enable_bbh_sync],
-                                ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_bbh_sync_tooltip },
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_enable_sync_bbh", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_enable_sync_bbh" }, i18n_.configuration_panel_enable_bbh_sync],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_bbh_sync_tooltip },
                                     ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                 ]
                             ],
 
                             // Enable OEEV sync
                             ["div", { "style": "display: none;" },
-                                ["input", { "id": "d2ne_configuration_enable_oeev_sync", "type": "checkbox" }],
-                                ["label", { "for": "d2ne_configuration_enable_oeev_sync" }, i18n_.configuration_panel_enable_oeev_sync],
-                                ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_oeev_sync_tooltip },
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_enable_sync_oeev", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_enable_sync_oeev" }, i18n_.configuration_panel_enable_oeev_sync],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_oeev_sync_tooltip },
                                     ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                 ]
                             ],
 
                             // Enable DuskDawn sync
                             ["div", { "style": "display: none;" },
-                                ["input", { "id": "d2ne_configuration_enable_duskdawn_sync", "type": "checkbox" }],
-                                ["label", { "for": "d2ne_configuration_enable_duskdawn_sync" }, i18n_.configuration_panel_enable_duskdawn_sync],
-                                ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_duskdawn_sync_tooltip },
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_enable_sync_duskdawn", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_enable_sync_duskdawn" }, i18n_.configuration_panel_enable_duskdawn_sync],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_duskdawn_sync_tooltip },
                                     ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                 ]
                             ],
 
                             // Enable MapViewer sync
                             ["div", { "style": "display: none;" },
-                                ["input", { "id": "d2ne_configuration_enable_mapviewer_sync", "type": "checkbox" }],
-                                ["label", { "for": "d2ne_configuration_enable_mapviewer_sync" }, i18n_.configuration_panel_enable_mapviewer_sync],
-                                ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_mapviewer_sync_tooltip },
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_enable_sync_mapviewer", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_enable_sync_mapviewer" }, i18n_.configuration_panel_enable_mapviewer_sync],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_mapviewer_sync_tooltip },
                                     ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                 ]
                             ],
@@ -1201,69 +1214,78 @@ var D2NE = (function() {
 
                             // Hide hero adds
                             ["div", {},
-                                ["input", { "id": "d2ne_configuration_hide_hero_adds", "type": "checkbox" }],
-                                ["label", { "for": "d2ne_configuration_hide_hero_adds" }, i18n_.configuration_panel_hide_hero_adds],
-                                ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_hero_adds_tooltip },
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_hide_hero_adds", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_hide_hero_adds" }, i18n_.configuration_panel_hide_hero_adds],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_hero_adds_tooltip },
                                     ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                 ]
                             ],
 
                             // Hide help
                             ["div", {},
-                                ["input", { "id": "d2ne_configuration_hide_help", "type": "checkbox" }],
-                                ["label", { "for": "d2ne_configuration_hide_help" }, i18n_.configuration_panel_hide_help],
-                                ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_help_tooltip },
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_hide_help", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_hide_help" }, i18n_.configuration_panel_hide_help],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_help_tooltip },
                                     ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                 ]
                             ],
 
                             // Hide Twinoid bar
                             ["div", {},
-                                ["input", { "id": "d2ne_configuration_hide_twinoid_bar", "type": "checkbox" }],
-                                ["label", { "for": "d2ne_configuration_hide_twinoid_bar" }, i18n_.configuration_panel_hide_twinoid_bar],
-                                ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_twinoid_bar_tooltip },
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_hide_twinoid_bar", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_hide_twinoid_bar" }, i18n_.configuration_panel_hide_twinoid_bar],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_twinoid_bar_tooltip },
                                     ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                 ]
                             ],
 
                             // Hide Footer
                             ["div", {},
-                                ["input", { "id": "d2ne_configuration_hide_footer", "type": "checkbox" }],
-                                ["label", { "for": "d2ne_configuration_hide_footer" }, i18n_.configuration_panel_hide_footer],
-                                ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_footer_tooltip },
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_hide_footer", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_hide_footer" }, i18n_.configuration_panel_hide_footer],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_footer_tooltip },
                                     ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                 ]
                             ],
 
                             // Hide PEGI
                             ["div", {},
-                                ["input", { "id": "d2ne_configuration_hide_pegi", "type": "checkbox" }],
-                                ["label", { "for": "d2ne_configuration_hide_pegi" }, i18n_.configuration_panel_hide_pegi],
-                                ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_pegi_tooltip },
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_hide_pegi", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_hide_pegi" }, i18n_.configuration_panel_hide_pegi],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_pegi_tooltip },
                                     ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                 ]
                             ],
 
                             // Hide rookie mode
                             ["div", {},
-                                ["input", { "id": "d2ne_configuration_hide_rookie_mode", "type": "checkbox" }],
-                                ["label", { "for": "d2ne_configuration_hide_rookie_mode" }, i18n_.configuration_panel_hide_rookie_mode],
-                                ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_rookie_mode_tooltip },
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_hide_rookie_mode", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_hide_rookie_mode" }, i18n_.configuration_panel_hide_rookie_mode],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_rookie_mode_tooltip },
                                     ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                 ]
                             ],
 
                             // Hide RP content
                             ["div", {},
-                                ["input", { "id": "d2ne_configuration_hide_rp_content", "type": "checkbox" }],
-                                ["label", { "for": "d2ne_configuration_hide_rp_content" }, i18n_.configuration_panel_hide_rp_content],
-                                ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_rp_content_tooltip },
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_hide_rp_content", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_hide_rp_content" }, i18n_.configuration_panel_hide_rp_content],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_rp_content_tooltip },
+                                    ["img", { "src": i18n_.help_image_url, "alt": "" }],
+                                ]
+                            ],
+
+                            // Hide Twitter share button
+                            ["div", {},
+                                ["input", { "id": CONFIGURATION_PANEL_ID_PREFIX + "_hide_twitter_share_button", "type": "checkbox" }],
+                                ["label", { "for": CONFIGURATION_PANEL_ID_PREFIX + "_hide_twitter_share_button" }, i18n_.configuration_panel_hide_twitter_share],
+                                ["a", { "class": DOM_PREFIX + "_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_twitter_share_tooltip },
                                     ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                 ]
                             ],
 
                             ["p", {},
-                                ["a", { "href": "javascript:void(0)", "id": "d2ne_configuration_save", "class": "button",
+                                ["a", { "href": "javascript:void(0)", "id": CONFIGURATION_PANEL_ID_PREFIX + "_save", "class": "button",
                                         "onclick": function() { save_configuration(); js.reload(); } },
                                     i18n_.configuration_panel_save_button]
                             ],
@@ -1283,7 +1305,7 @@ var D2NE = (function() {
             inject_configuration();
 
             // Show/Hide config panel cache
-            var config_panel_toggled_elements_cache = document.querySelectorAll('#d2ne_configuration_panel > div > h1 > span, #d2ne_configuration_panel > div > div');
+            var config_panel_toggled_elements_cache = document.querySelectorAll('#' + DOM_PREFIX + '_configuration_panel > div > h1 > span, #' + DOM_PREFIX + '_configuration_panel > div > div');
             var config_panel_toggled_elements_cache_length = config_panel_toggled_elements_cache.length;
 
             // Show panel on hover

@@ -183,8 +183,8 @@ var D2N_helpers = (function() {
 
     /**
      * Add custom events on the interface:
-     * - to watch when the gamebody is reloaded: 'd2ne_gamebody_reload'
-     * - to watch the number of AP: 'd2ne_apchange'
+     * - to watch when the gamebody is reloaded: 'd2n_gamebody_reload'
+     * - to watch the number of AP: 'd2n_apchange'
      */
     function add_custom_events()
     {
@@ -195,7 +195,7 @@ var D2N_helpers = (function() {
         // Emit Gamebody reloaded event
         var emit_gamebody_reloaded_event = function() {
             document.dispatchEvent(new CustomEvent(
-                'd2ne_gamebody_reload', {
+                'd2n_gamebody_reload', {
                     bubbles: true,
                     cancelable: true
                 }
@@ -251,7 +251,7 @@ var D2N_helpers = (function() {
                 // Emit AP change event
                 var emit_ap_change_event = function() {
                     document.dispatchEvent(new CustomEvent(
-                        'd2ne_apchange', {
+                        'd2n_apchange', {
                             bubbles: true,
                             cancelable: true
                         }
