@@ -1,5 +1,7 @@
 v0.0.10
 - Allow to block the Twitter share on the Gazette
+- Hide the building/zone image
+- Fix the watchmen button position
 
 v0.0.9
 - Use the MT button style to disable a button
