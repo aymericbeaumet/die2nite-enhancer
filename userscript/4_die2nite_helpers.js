@@ -214,7 +214,8 @@ var D2N_helpers = (function() {
             js.wait_for_tag('body', function(nodes) {
                 var body_observer = new MutationObserver(function(mutations) {
                     for (var i = 0, max = mutations.length; i < max; ++i) {
-                        if (mutations[i].attributeName !== 'style') {
+                        if (mutations[i].type !== 'attributes' ||
+                            mutations[i].attributeName !== 'style') {
                             continue;
                         }
 

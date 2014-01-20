@@ -32,14 +32,16 @@ i18n.en = {
     configuration_panel_enable_mapviewer_sync_tooltip: 'Add the possibility to sync with Map Viewer',
     configuration_panel_enable_construction_max_ap: 'Use max AP in constructions',
     configuration_panel_enable_construction_max_ap_tooltip: 'While in the construction page, use your actual number of AP instead of the default 1 AP.',
-    configuration_panel_hide_completed_constructions: 'Hide completed constructions',
-    configuration_panel_hide_completed_constructions_tooltip: 'While in the construction page, hide all the completed ones.',
+    configuration_panel_enable_hide_completed_constructions: 'Allow to hide completed constructions',
+    configuration_panel_enable_hide_completed_constructions_tooltip: 'While on the construction page, add a link to hide all the completed constructions.',
     configuration_panel_enable_hero_bar_stat: 'Enable hero bar stat',
     configuration_panel_enable_hero_bar_stat_tooltip: 'On soul page, enable days stat on the hero bar.',
     configuration_panel_enable_cyanide_protection: 'Enable cyanide protection',
     configuration_panel_enable_cyanide_protection_tooltip: 'Avoid to eat cyanide by accident by deleting the concerning link in your home.',
     configuration_panel_save_button: 'Save',
-    external_tools_bar_update: 'Update external tools'
+    external_tools_bar_update: 'Update external tools',
+    hide_completed_constructions: 'Hide completed constructions',
+    show_completed_constructions: 'Show completed constructions'
 };
 
 i18n.fr = {
@@ -48,8 +50,8 @@ i18n.fr = {
     configuration_panel_script_description: 'Die2Nite Enhancer vous permet d\'améliorer votre expérience de jeu, toutes les fonctionalités peuvent être controlées depuis ce panneau de configuration.',
     configuration_panel_enable_shortcuts: 'Activer les raccourcis',
     configuration_panel_enable_shortcuts_tooltip: 'Active des raccourcis claviers pour accéder rapidement aux places importantes en ville (e.g.: la banque, les portes).',
-    configuration_panel_hide_hero_adds: 'Cacher les pubs pour le mode héros',
-    configuration_panel_hide_hero_adds_tooltip: 'Cache les pubs pour le mode héros sur tout le site. C\'est pratique si vous êtes déjà héros ou si vous ne comptez pas le devenir.',
+    configuration_panel_hide_hero_adds: 'Cacher les pubs pour le mode héro',
+    configuration_panel_hide_hero_adds_tooltip: 'Cache les pubs pour le mode héro sur tout le site. C\'est pratique si vous êtes déjà héro ou si vous ne comptez pas le devenir.',
     configuration_panel_highlight_ap: 'Colorer les PA',
     configuration_panel_highlight_ap_tooltip: 'Ajoute une bordure avec une couleur spécifique (du rouge au vert) en fonction du nombre de PA restant.',
     configuration_panel_hide_help: 'Cacher les aides',
@@ -70,14 +72,16 @@ i18n.fr = {
     configuration_panel_enable_oeev_sync_tooltip: 'Ajoute la possibilité de synchroniser avec Où en êtes-vous ?',
     configuration_panel_enable_construction_max_ap: 'Constructions PA max',
     configuration_panel_enable_construction_max_ap_tooltip: 'Utilise le maximum de PA disponible pour les constructions au lieu de 1 par défault.',
-    configuration_panel_hide_completed_constructions: 'Cacher constructions finies',
-    configuration_panel_hide_completed_constructions_tooltip: 'Cache les constructions finies.',
+    configuration_panel_enable_hide_completed_constructions: 'Permettre de cacher les constructions finies',
+    configuration_panel_enable_hide_completed_constructions_tooltip: 'Ajoute un lien dans la page constructions permettant de cacher les constructions finies.',
     configuration_panel_enable_hero_bar_stat: 'Activer stats barre héro',
-    configuration_panel_enable_hero_bar_stat_tooltip: 'Sur la page d\'âme, active le pourcentage de la barre héros.',
+    configuration_panel_enable_hero_bar_stat_tooltip: 'Sur la page d\'âme, active le pourcentage de la barre héro.',
     configuration_panel_enable_cyanide_protection: 'Activer la protection au cyanure',
     configuration_panel_enable_cyanide_protection_tooltip: 'Evite de s\'empoisonner au cyanure par accident en supprimant le lien concerné dans votre maison.',
     configuration_panel_save_button: 'Sauvegarder',
-    external_tools_bar_update: 'Mettre à jour les outils externes'
+    external_tools_bar_update: 'Mettre à jour les outils externes',
+    hide_completed_constructions: 'Cacher les constructions finies',
+    show_completed_constructions: 'Afficher les constructions finies'
 };
 
 i18n.es = {
@@ -104,14 +108,16 @@ i18n.es = {
     configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
     configuration_panel_enable_construction_max_ap: 'Use max AP in constructions',
     configuration_panel_enable_construction_max_ap_tooltip: 'While in the construction page, use your actual number of AP instead of the default 1 AP.',
-    configuration_panel_hide_completed_constructions: 'Hide completed constructions',
-    configuration_panel_hide_completed_constructions_tooltip: 'While in the construction page, hide all the completed ones.',
+    configuration_panel_enable_hide_completed_constructions: 'Hide completed constructions',
+    configuration_panel_enable_hide_completed_constructions_tooltip: 'While in the construction page, hide all the completed ones.',
     configuration_panel_enable_hero_bar_stat: 'Enable hero bar stat',
     configuration_panel_enable_hero_bar_stat_tooltip: 'On soul page, enable days stat on the hero bar.',
     configuration_panel_enable_cyanide_protection: 'Enable cyanide protection',
     configuration_panel_enable_cyanide_protection_tooltip: 'Avoid to eat cyanide by accident by deleting the concerning link in your home.',
     configuration_panel_save_button: 'Save',
-    external_tools_bar_update: 'Update external tools'
+    external_tools_bar_update: 'Update external tools',
+    hide_completed_constructions: 'Hide completed constructions',
+    show_completed_constructions: 'Show completed constructions'
 };
 
 i18n.de = {
@@ -138,12 +144,14 @@ i18n.de = {
     configuration_panel_hide_rp_content_tooltip: 'Hide all the RP content.',
     configuration_panel_enable_construction_max_ap: 'Use max AP in constructions',
     configuration_panel_enable_construction_max_ap_tooltip: 'While in the construction page, use your actual number of AP instead of the default 1 AP.',
-    configuration_panel_hide_completed_constructions: 'Hide completed constructions',
-    configuration_panel_hide_completed_constructions_tooltip: 'While in the construction page, hide all the completed ones.',
+    configuration_panel_enable_hide_completed_constructions: 'Hide completed constructions',
+    configuration_panel_enable_hide_completed_constructions_tooltip: 'While in the construction page, hide all the completed ones.',
     configuration_panel_enable_hero_bar_stat: 'Enable hero bar stat',
     configuration_panel_enable_hero_bar_stat_tooltip: 'On soul page, enable days stat on the hero bar.',
     configuration_panel_enable_cyanide_protection: 'Enable cyanide protection',
     configuration_panel_enable_cyanide_protection_tooltip: 'Avoid to eat cyanide by accident by deleting the concerning link in your home.',
     configuration_panel_save_button: 'Save',
-    external_tools_bar_update: 'Update external tools'
+    external_tools_bar_update: 'Update external tools',
+    hide_completed_constructions: 'Hide completed constructions',
+    show_completed_constructions: 'Show completed constructions'
 };

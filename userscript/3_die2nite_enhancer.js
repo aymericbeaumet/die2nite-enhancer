@@ -100,20 +100,27 @@ var D2NE = (function() {
             // Set to true to enable Dusk Dawn (http://d2n.duskdawn.net/)
             enable_duskdawn_sync: false,
             // Set to true to enable Map Viewer (http://die2nite.gamerz.org.uk/)
-            enable_mapviewer_sync: false,
+            enable_mapviewer_sync: false
         },
 
         // Set to true to enable the use of maximum AP in the constructions
         enable_construction_max_ap: false,
 
-        // Set to true to hide all the completed constructions
-        hide_completed_constructions: false,
-
         // Set to true to enable the stat on hero bar
         enable_hero_bar_stat: true,
 
         // Set to true to enable the cyanide protection
-        enable_cyanide_protection: false
+        enable_cyanide_protection: false,
+
+        // Set to false to disable the "Highlight completed constructions" link
+        enable_hide_completed_constructions: true,
+
+        /*
+         * Not configurable by the user
+         */
+
+        // Set to true to hide completed constructions
+        hide_completed_constructions: false
     };
 
     /**
@@ -265,6 +272,15 @@ var D2NE = (function() {
     var features_ = {
 
         ////
+        hide_hero_adds: function() {
+            js.injectCSS(
+                '.heroMode, #ghostHeroAd, #heroContainer, .heroAd, #ghostHeroChoose, .promoBt, .sondageBg {' +
+                    'display: none !important;' +
+                '}'
+            );
+        },
+
+        ////
         hide_twinoid_bar: function() {
             js.injectCSS(
                 '#tid_bar {' +
@@ -317,30 +333,6 @@ var D2NE = (function() {
                     }, false);
                 });
             });
-        },
-
-        ////
-        enable_shortcuts: function() {
-            js.keydown_event(function(keycode, previous_keycode) {
-                if (previous_keycode !== configuration_.go_bind) {
-                    return;
-                }
-
-                for (var bind in configuration_.binds) {
-                    if (configuration_.binds[bind] === keycode) {
-                        return D2N_helpers.go_to_city_page(bind);
-                    }
-                }
-            });
-        },
-
-        ////
-        hide_hero_adds: function() {
-            js.injectCSS(
-                '.heroMode, #ghostHeroAd, #heroContainer, .heroAd, #ghostHeroChoose, .promoBt, .sondageBg {' +
-                    'display: none !important;' +
-                '}'
-            );
         },
 
         ////
@@ -452,6 +444,21 @@ var D2NE = (function() {
         },
 
         ////
+        enable_shortcuts: function() {
+            js.keydown_event(function(keycode, previous_keycode) {
+                if (previous_keycode !== configuration_.go_bind) {
+                    return;
+                }
+
+                for (var bind in configuration_.binds) {
+                    if (configuration_.binds[bind] === keycode) {
+                        return D2N_helpers.go_to_city_page(bind);
+                    }
+                }
+            });
+        },
+
+        ////
         enable_construction_max_ap: function() {
             var change_ap = function() {
                 if (!D2N_helpers.is_on_page_in_city('buildings')) {
@@ -476,12 +483,62 @@ var D2NE = (function() {
         },
 
         ////
-        hide_completed_constructions: function() {
-            js.injectCSS(
-                'tr.building.done {' +
-                    'display: none;' +
-                '}'
-            );
+        enable_hide_completed_constructions: function() {
+            if (!D2N_helpers.is_in_city()) {
+                return;
+            }
+
+            // Hide constructions if needed | Add the link
+            var add_link = function() {
+                // Abort if not on the building page
+                if (!D2N_helpers.is_on_page_in_city('buildings')) {
+                    return;
+                }
+
+                // Hide the constructions if needed
+                if (configuration_.hide_completed_constructions) {
+                    js.injectCSS(
+                        'tr.building.done {' +
+                            'display: none;' +
+                        '}'
+                    );
+                // Else show the constructions
+                } else {
+                    js.injectCSS(
+                        'tr.building.done {' +
+                            'display: table-row;' +
+                        '}'
+                    );
+                }
+
+                js.wait_for_class('tinyAction', function(nodes) {
+                    // if the two links are already present, then abort
+                    if (nodes[0].childNodes.length > 1) {
+                        return;
+                    }
+
+                    var right_link = nodes[0].firstChild;
+
+                    // Clone node and set the wanted properties (to keep the
+                    // right link behaviour)
+                    var link = right_link.cloneNode(false);
+                    link.style.cssFloat = 'left';
+                    link.textContent = configuration_.hide_completed_constructions ? i18n_.show_completed_constructions : i18n_.hide_completed_constructions;
+                    link.addEventListener('click', function() {
+                        configuration_.hide_completed_constructions = !configuration_.hide_completed_constructions;
+                        save_configuration();
+                    }, false);
+
+                    nodes[0].insertBefore(link, nodes[0].firstChild);
+                });
+            };
+            add_link();
+
+            // Add the link again on each page reload
+            document.addEventListener('d2ne_gamebody_reload', function() {
+                add_link();
+            }, false);
+
         },
 
         ////
@@ -595,7 +652,7 @@ var D2NE = (function() {
         configuration_.external_tools.enable_duskdawn_sync = document.getElementById('d2ne_configuration_enable_duskdawn_sync').checked;
         configuration_.external_tools.enable_mapviewer_sync = document.getElementById('d2ne_configuration_enable_mapviewer_sync').checked;
         configuration_.enable_construction_max_ap = document.getElementById('d2ne_configuration_enable_construction_max_ap').checked;
-        configuration_.hide_completed_constructions = document.getElementById('d2ne_configuration_hide_completed_constructions').checked;
+        configuration_.enable_hide_completed_constructions = document.getElementById('d2ne_configuration_enable_hide_completed_constructions').checked;
         configuration_.enable_hero_bar_stat = document.getElementById('d2ne_configuration_enable_hero_bar_stat').checked;
         configuration_.enable_cyanide_protection = document.getElementById('d2ne_configuration_enable_cyanide_protection').checked;
 
@@ -621,7 +678,7 @@ var D2NE = (function() {
         document.getElementById('d2ne_configuration_enable_duskdawn_sync').checked = configuration_.external_tools.enable_duskdawn_sync;
         document.getElementById('d2ne_configuration_enable_mapviewer_sync').checked = configuration_.external_tools.enable_mapviewer_sync;
         document.getElementById('d2ne_configuration_enable_construction_max_ap').checked = configuration_.enable_construction_max_ap;
-        document.getElementById('d2ne_configuration_hide_completed_constructions').checked = configuration_.hide_completed_constructions;
+        document.getElementById('d2ne_configuration_enable_hide_completed_constructions').checked = configuration_.enable_hide_completed_constructions;
         document.getElementById('d2ne_configuration_enable_hero_bar_stat').checked = configuration_.enable_hero_bar_stat;
         document.getElementById('d2ne_configuration_enable_cyanide_protection').checked = configuration_.enable_cyanide_protection;
     }
@@ -960,7 +1017,7 @@ var D2NE = (function() {
                 '#d2ne_configuration_panel div > table {' +
                     'margin: 0 auto;' +
                     'padding: 0;' +
-                    'width: 600px;' +
+                    'width: 650px;' +
                 '}' +
 
                 '#d2ne_configuration_panel div > table > tr:first-child td {' +
@@ -1092,9 +1149,9 @@ var D2NE = (function() {
 
                                         // Hide completed constructions
                                         ["div", {},
-                                            ["input", { "id": "d2ne_configuration_hide_completed_constructions", "type": "checkbox" }],
-                                            ["label", { "for": "d2ne_configuration_hide_completed_constructions" }, i18n_.configuration_panel_hide_completed_constructions],
-                                            ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_hide_completed_constructions_tooltip },
+                                            ["input", { "id": "d2ne_configuration_enable_hide_completed_constructions", "type": "checkbox" }],
+                                            ["label", { "for": "d2ne_configuration_enable_hide_completed_constructions" }, i18n_.configuration_panel_enable_hide_completed_constructions],
+                                            ["a", { "class": "d2n_tooltip", "href": "javascript:void(0)", "tooltip": i18n_.configuration_panel_enable_hide_completed_constructions_tooltip },
                                                 ["img", { "src": i18n_.help_image_url, "alt": "" }],
                                             ]
                                         ],
