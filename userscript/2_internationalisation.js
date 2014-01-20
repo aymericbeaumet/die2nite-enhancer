@@ -55,7 +55,7 @@ i18n.en = {
 i18n.fr = {
     help_image_url: '/gfx/loc/fr/helpLink.gif',
     configuration_panel_title: 'Die2Nite Enhancer - Paramètres',
-    configuration_panel_script_description: 'Die2Nite Enhancer vous permet d\'améliorer votre expérience de jeu, toutes les fonctionalités peuvent être controlées depuis ce panneau de configuration.',
+    configuration_panel_script_description: 'Die2Nite Enhancer vous permet d\'améliorer votre expérience de jeu, toutes les fonctionnalités peuvent être controlées depuis ce panneau de configuration.',
     configuration_panel_title_citizen: 'Citoyen',
     configuration_panel_title_hero: 'Héros',
     configuration_panel_title_sync: 'Outils externes',
