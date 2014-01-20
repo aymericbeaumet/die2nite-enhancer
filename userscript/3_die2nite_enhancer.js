@@ -450,6 +450,9 @@ var D2NE = (function() {
             js.injectCSS(
                 '#gameBodyLight ul.linkControl {' +
                     'display: none;' +
+                '}' +
+                '#gameBodyLight div.logControl {' +
+                    'margin-top: 330px;' +
                 '}'
             );
         },
