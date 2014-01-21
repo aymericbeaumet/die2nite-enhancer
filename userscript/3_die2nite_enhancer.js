@@ -465,7 +465,7 @@ var D2NE = (function() {
                     'display: none;' +
                 '}' +
                 '#gameBodyLight div.logControl {' +
-                    'margin-top: 330px;' +
+                    'margin-top: 351px;' +
                 '}'
             );
         },
