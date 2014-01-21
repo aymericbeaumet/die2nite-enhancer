@@ -12,6 +12,8 @@ Features:
 - Add moon/sun depending of the hour of the day
 - Check/Uncheck every checkbox in a category/on the whole panel
 - Confirm the update by a notification (alert, ...)
+- Inform the user that it will be less information in pandemonium (remove the
+  sync button in pande?)
 
 Bugs:
 - Find a solution to fix Safari XmlHttpRequest problem with external tools
