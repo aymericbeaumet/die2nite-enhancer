@@ -133,20 +133,31 @@ var D2NE = (function() {
     };
 
     /**
+     * External tool class
+     */
+    var ExternalTool = function(param) {
+        this.name = param.name;
+        this.site_id = param.site_id;
+        this.update = param.update;
+    };
+    ExternalTool.prototype.get_local_storage_key = function() {
+        return LOCAL_STORAGE_PRIVATE_KEY_PREFIX + '.' + this.name;
+    };
+
+    /**
      * External tools
      */
-    var external_tools_ = {
-
-        oeev: {
+    var external_tools_ = [
+        new ExternalTool({
+            name: 'oeev',
             site_id: {
                 'www.hordes.fr': 22
             },
-            local_storage_key: LOCAL_STORAGE_PRIVATE_KEY_PREFIX + '.oeev',
             update: function(callback_success, callback_failure) {
                 js.network_request(
                     'POST',
                     'http://www.oeev-hordes.com/',
-                    'key=' + localStorage[external_tools_.oeev.local_storage_key] + '&mode=json',
+                    'key=' + localStorage[this.get_local_storage_key()] + '&mode=json',
                     {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
@@ -162,9 +173,10 @@ var D2NE = (function() {
                     }
                 );
             }
-        },
+        }),
 
-        bbh: {
+        new ExternalTool({
+            name: 'bbh',
             site_id: {
                 'www.hordes.fr': 51
             },
@@ -173,7 +185,7 @@ var D2NE = (function() {
                 js.network_request(
                     'POST',
                     'http://bbh.fred26.fr/',
-                    'key=' + localStorage[external_tools_.bbh.local_storage_key] + '&action=force_maj',
+                    'key=' + localStorage[this.get_local_storage_key()] + '&action=force_maj',
                     {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
@@ -190,13 +202,13 @@ var D2NE = (function() {
                     }
                 );
             }
-        },
+        }),
 
-        duskdawn: {
+        new ExternalTool({
+            name: 'duskdawn',
             site_id: {
                 'www.die2nite.com': 14
             },
-            local_storage_key: LOCAL_STORAGE_PRIVATE_KEY_PREFIX + '.duskdawn',
             update: function(callback_success, callback_failure) {
                 // Do not update if not outside
                 if (!D2N_helpers.is_outside()) {
@@ -206,7 +218,7 @@ var D2NE = (function() {
                 js.network_request(
                     'POST',
                     'http://d2n.duskdawn.net/zone',
-                    'key=' + localStorage[external_tools_.duskdawn.local_storage_key],
+                    'key=' + localStorage[this.get_local_storage_key()],
                     {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
@@ -222,18 +234,18 @@ var D2NE = (function() {
                     }
                 );
             }
-        },
+        }),
 
-        mapviewer: {
+        new ExternalTool({
+            name: 'mapviewer',
             site_id: {
                 'www.die2nite.com': 1
             },
-            local_storage_key: LOCAL_STORAGE_PRIVATE_KEY_PREFIX + '.mapviewer',
             update: function(callback_success, callback_failure) {
                 js.network_request(
                     'GET',
                     'http://die2nite.gamerz.org.uk/ajax/update_current_zone',
-                    'key=' + localStorage[external_tools_.mapviewer.local_storage_key],
+                    'key=' + localStorage[this.get_local_storage_key()],
                     {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
@@ -253,8 +265,8 @@ var D2NE = (function() {
                     }
                 );
             }
-        }
-    };
+        })
+    ];
 
     /**
      * The loaded configuration.
@@ -730,8 +742,8 @@ var D2NE = (function() {
             }
 
             // Clean the cache for all the external tools
-            for (var tool in external_tools_) {
-                localStorage[external_tools_[tool].local_storage_key] = null;
+            for (var i = 0, max = external_tools_.length; i < max; ++i) {
+                localStorage[external_tools_[i].get_local_storage_key()] = null;
             }
         });
 
@@ -750,29 +762,27 @@ var D2NE = (function() {
 
         var enable_tool_in_config_panel, tool_info, match;
         D2N_helpers.get_sk(function(sk) {
-            var tool;
 
             // Browse all the external tools
-            for (var tool_name in external_tools_) {
-                var configuration_panel_id = CONFIGURATION_PANEL_ID_PREFIX_EXTERNAL_TOOLS + '_' + tool_name;
-
-                tool = external_tools_[tool_name];
+            for (var i = 0, max = external_tools_.length; i < max; ++i) {
+                var tool = external_tools_[i];
+                var configuration_panel_id = CONFIGURATION_PANEL_ID_PREFIX_EXTERNAL_TOOLS + '_' + tool.name;
 
                 // if this tool is disabled, go to the next one
-                if (localStorage[tool.local_storage_key] == -1) {
+                if (localStorage[tool.get_local_storage_key()] == -1) {
                     continue;
                 }
 
                 // if the tool is not adapted to this website, disable it and
                 // skip to the next one
                 if (!(D2N_helpers.get_website() in tool.site_id)) {
-                    localStorage[tool.local_storage_key] = -1;
+                    localStorage[tool.get_local_storage_key()] = -1;
                     continue;
                 }
 
                 // if key already exists, enable config panel corresponding
                 // button and skip to the next tool
-                if (js.match_regex(localStorage[tool.local_storage_key], '^[a-f0-9]{38,39}$')) {
+                if (js.match_regex(localStorage[tool.get_local_storage_key()], '^[a-f0-9]{38,39}$')) {
                     enable_button(configuration_panel_id);
                     continue;
                 }
@@ -789,7 +799,7 @@ var D2NE = (function() {
                         }
                     }, null,
                     {
-                        local_storage_key: tool.local_storage_key,
+                        local_storage_key: tool.get_local_storage_key(),
                         configuration_panel_id: configuration_panel_id
                     } // context given to callback
                 );
@@ -800,7 +810,7 @@ var D2NE = (function() {
     /**
      * Update the external tools
      */
-    function update_tools(tools_number)
+    function update_tools()
     {
         var tools_updated = 0;
         var tools_update_aborted = 0;
@@ -885,20 +895,22 @@ var D2NE = (function() {
         disable_toolbar();
         show_loading_wheel();
 
-        for (var tool in configuration_.enable_sync) {
+        for (var i = 0, max = external_tools_.length; i < max; ++i) {
+            var tool = external_tools_[i];
+
             // if tool isn't enabled, skip it
-            if (!(configuration_.enable_sync[tool])) {
+            if (!(configuration_.enable_sync[tool.name])) {
                 continue;
             }
 
             // if key hasn't been found, skip it
-            if (!js.is_defined(localStorage[external_tools_[tool].local_storage_key])) {
+            if (!js.is_defined(localStorage[tool.get_local_storage_key()])) {
                 continue;
             }
 
             // else update it
             ++tools_number;
-            external_tools_[tool].update(function(response) {
+            tool.update(function(response) {
                 tools_updated += 1;
                 handle_tool_update();
             }, function(response) {
@@ -914,11 +926,11 @@ var D2NE = (function() {
     function load_external_tools_bar()
     {
         // if not any tool is enabled, abort
-        var tools_number = 0;
+        var enabled_tools_number = 0;
         for (var key in configuration_.enable_sync) {
-            tools_number += (configuration_.enable_sync[key]) ? 1 : 0;
+            enabled_tools_number += (configuration_.enable_sync[key]) ? 1 : 0;
         }
-        if (tools_number < 1) {
+        if (enabled_tools_number < 1) {
             return;
         }
 
