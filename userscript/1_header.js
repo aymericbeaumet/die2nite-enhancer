@@ -29,9 +29,9 @@
 //
 // ==/UserScript==
 
-'use strict';
-
 ;(function(undefined) {
+
+'use strict';
 
 var DEBUG_MODE = false;
 
