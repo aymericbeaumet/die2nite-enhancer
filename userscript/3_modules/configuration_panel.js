@@ -47,16 +47,10 @@ Module.register((function() {
     {
         Module.iterate(function(module) {
 
-            console.log('-----------');
-            console.log(module);
-            console.log(module.configurable);
-
             // if configurable object does not exist, skip it
             if (typeof module.configurable === 'undefined') {
                 return;
             }
-
-            console.log('GOT A CONFIG!');
 
             JS.each(module.configurable, function(key, value) {
                 var input_id = 'd2ne_module_' + module.name + '_' + key;
