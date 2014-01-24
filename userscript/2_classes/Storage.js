@@ -36,10 +36,13 @@ Storage.set_key_prefix = function(new_prefix)
  * Get a value from the storage.
  * @param string key The key to fetch
  * @return string The related value
+ * @return null if the key isn't found
  */
 Storage.get = function(key)
 {
-    return localStorage[Storage.key_prefix + key];
+    var ret = localStorage[Storage.key_prefix + key];
+
+    return (typeof ret === 'undefined') ? null : ret;
 };
 
 /**

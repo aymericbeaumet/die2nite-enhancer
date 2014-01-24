@@ -85,9 +85,9 @@ var D2N = (function() {
          */
         is_in_city: function()
         {
-            return JS.match_regex(
-                window.location.hash,
-                '^#city'
+            return JS.regex_test(
+                '^#city',
+                window.location.hash
             );
         },
 
@@ -98,10 +98,7 @@ var D2N = (function() {
          */
         is_outside: function()
         {
-            return JS.match_regex(
-                window.location.hash,
-                '^#outside\\?(?:go=outside\\/refresh;)?sk=[a-z0-9]{5}$'
-            );
+            return /^#outside\?(?:go=outside\/refresh;)?sk=[a-z0-9]{5}$/.test(window.location.hash);
         },
 
         /**
@@ -111,8 +108,8 @@ var D2N = (function() {
          */
         is_on_page: function(page)
         {
-            return (is_on_page_in_city(page) ||
-                    is_on_page_out_of_city(page));
+            return (D2N.is_on_page_in_city(page) ||
+                    D2N.is_on_page_out_of_city(page));
         },
 
         /**
@@ -122,13 +119,8 @@ var D2N = (function() {
          */
         is_on_page_in_city: function(page)
         {
-            return JS.match_regex(
-                window.location.hash,
-                '^#city\\/enter\\?go=' + pages_url_[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$'
-            ) || JS.match_regex(
-                window.location.hash,
-                '^#ghost\\/city\\?go=' + pages_url_[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$'
-            );
+            return JS.regex_test('^#city\\/enter\\?go=' + pages_url_[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$', window.location.hash) ||
+                JS.regex_test('^#ghost\\/city\\?go=' + pages_url_[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$', window.location.hash);
         },
 
         /**
@@ -138,9 +130,9 @@ var D2N = (function() {
          */
         is_on_page_out_of_city: function(page)
         {
-            return JS.match_regex(
-                window.location.hash,
-                '^#ghost\\?go=' + pages_url_[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$'
+            return JS.regex_test(
+                '^#ghost\\?go=' + pages_url_[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$',
+                window.location.hash
             );
         },
 
@@ -151,7 +143,7 @@ var D2N = (function() {
         go_to_city_page: function(page)
         {
             // if not in a town, outside city or already on the page, abort
-            is_in_town(function(in_town) {
+            D2N.is_in_town(function(in_town) {
                 if (!(in_town ||
                       is_outside() ||
                       is_on_page_in_city(page)
@@ -159,7 +151,7 @@ var D2N = (function() {
                     return;
                 }
 
-                get_sk(function(sk) {
+                JS.get_session_key(function(sk) {
                     var page_url = pages_url_[page];
 
                     if (is_on_forum()) { // if on the forum, redirect to the desired page
@@ -172,10 +164,10 @@ var D2N = (function() {
         },
 
         /**
-         * Find the sk (session/secret key?).
+         * Find the session key.
          * @param callback callback The function to call once the sk is fetched
          */
-        get_sk: function(callback)
+        get_session_key: function(callback)
         {
             JS.wait_for_selector('a.mainButton.newsButton', function(node) {
                 var arr = node.href.split('=');
@@ -280,7 +272,7 @@ var D2N = (function() {
              */
 
             // only watch AP change in town
-            is_in_town(function(in_town) {
+            D2N.is_in_town(function(in_town) {
                 if (in_town) {
 
                     // Emit AP change event

@@ -229,7 +229,7 @@ var JS = (function() {
 
             // Insert the script node into the page, so it will run, and immediately
             // remove it to clean up.
-            wait_for_selector('html > body', function(node) {
+            JS.wait_for_selector('html > body', function(node) {
                 node.appendChild(script);
                 node.removeChild(script);
             });
@@ -303,9 +303,9 @@ var JS = (function() {
                 return callback(el);
             }
 
-            // if not, retry in 50 ms
+            // if not, retry in 500 ms
             setTimeout(function() {
-                wait_for_id(id, callback, max - 1, not_found_callback);
+                JS.wait_for_id(id, callback, max - 1, not_found_callback);
             }, 500);
         },
 
@@ -337,8 +337,10 @@ var JS = (function() {
             if (JS.is_defined(el)) {
                 return callback(el);
             }
+
+            // if not, retry in 500 ms
             setTimeout(function() {
-                wait_for_selector(selector, callback, max - 1, not_found_callback);
+                JS.wait_for_selector(selector, callback, max - 1, not_found_callback);
             }, 500);
         },
 
@@ -371,6 +373,8 @@ var JS = (function() {
             if (JS.is_defined(el) && el.length > 0) {
                 return callback(el);
             }
+
+            // if not, retry in 500 ms
             setTimeout(function() {
                 wait_for_selector_all(selector, callback, max - 1, not_found_callback);
             }, 500);
@@ -405,6 +409,8 @@ var JS = (function() {
             if (JS.is_defined(el) && el.length > 0) {
                 return callback(el);
             }
+
+            // if not, retry in 500 ms
             setTimeout(function() {
                 JS.wait_for_tag(tag, callback, max - 1, not_found_callback);
             }, 500);
@@ -466,12 +472,12 @@ var JS = (function() {
 
         /**
          * Instanciate a Regex object and test to see if the given string matches
-         * it.
-         * @param string The string to test
+         * it. Useful when the Regex should be constructed from a string.
          * @param string/RegExp The regex to match the string with
+         * @param string The string to test
          * @return bool true if the regex matches the string, false otherwise
          */
-        match_regex: function(string, regex)
+        regex_test: function(regex, string)
         {
             var r;
 

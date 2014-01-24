@@ -18,6 +18,64 @@ function Module(param)
 }
 
 
+/******************
+ * Public methods *
+ ******************/
+
+/**
+ * Return the storage key for the module.
+ * @return string The storage key
+ */
+Module.prototype.get_storage_key = function()
+{
+    return 'module.' + this.name;
+};
+
+/**
+ * Disable the module.
+ */
+Module.prototype.disable = function()
+{
+    this.config.enabled = false;
+    this.save_config();
+};
+
+/**
+ * Enable the module.
+ */
+Module.prototype.enable = function()
+{
+    this.config.enabled = true;
+    this.save_config();
+};
+
+/**
+ * Toggle the module.
+ */
+Module.prototype.toggle = function()
+{
+    this.config.enabled = !this.config.enabled;
+    this.save_config();
+};
+
+/**
+ * Check if the module is enabled.
+ * @return bool true if the module is enabled, false otherwise
+ */
+Module.prototype.is_enabled = function()
+{
+    return !!this.config.enabled;
+};
+
+/**
+ * Save the module configuration in the Storage.
+ */
+Module.prototype.save_config = function()
+{
+    Storage.set(this.get_storage_key(), JSON.stringify(this.config));
+};
+
+
 /*************
  * Constants *
  *************/

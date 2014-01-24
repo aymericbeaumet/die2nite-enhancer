@@ -31,7 +31,7 @@ Module.add((function() {
         type: Module.TYPE.CONTAINER,
 
         config: {
-            enabled: false
+            enabled: true
         },
 
         action: {

@@ -22,7 +22,7 @@ Module.add((function() {
             tool: {
                 active_on: 'www.hordes.fr',
                 directory_id: 51,
-                api_key: undefined
+                api_key: null
             }
         },
 

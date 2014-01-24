@@ -18,11 +18,11 @@ Module.add((function() {
         type: Module.TYPE.EXTERNAL_TOOL,
 
         config: {
-            enabled: false,
+            enabled: true,
             tool: {
                 active_on: 'www.hordes.fr',
                 directory_id: 22,
-                api_key: undefined
+                api_key: null
             }
         },
 

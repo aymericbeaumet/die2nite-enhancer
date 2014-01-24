@@ -20,7 +20,6 @@ Module.add((function() {
 
         action: {
             load: function() {
-                console.log(this);
                 JS.injectCSS(
                     '#mapTips, a.button[href^="#city/exp?editor=1;sk="] + p, .helpLink, #generic_section > div > em:last-of-type, .help {' +
                         'display: none;' +

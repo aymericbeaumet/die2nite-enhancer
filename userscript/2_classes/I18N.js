@@ -59,14 +59,13 @@ I18N.set_language = function(language)
  * Add some strings to the keys_ object. The `keys` should be of the following
  * form:
  *
- *     var i18n = {
- *         "say_hello": {
- *             I18N.LANG.EN: { "Hello" },
- *             I18N.LANG.FR: { "Bonjour" },
- *             I18N.LANG.ES: { "Hola" },
- *             I18N.LANG.DE: { "Hallo" }
- *         }
- *     };
+ *     var i18n = {};
+ *     i18n['say_hello'] = {};
+ *     i18n['say_hello'][I18N.LANG.EN] = 'Hello';
+ *     i18n['say_hello'][I18N.LANG.FR] = 'Bonjour';
+ *     i18n['say_hello'][I18N.LANG.ES] = 'Hola';
+ *     i18n['say_hello'][I18N.LANG.DE] = 'Hallo';
+ *
  *     I18N.set(i18n);
  */
 I18N.set = function(keys)
@@ -86,11 +85,15 @@ I18N.get = function(key, lang)
     lang = (typeof lang === 'undefined') ? I18N.language_ : lang;
 
     if (typeof I18N.keys_[key] !== 'undefined') {
-        [lang, I18N.default_language].forEach(function(lang) {
+        var languages = [lang, I18N.default_language_];
+
+        for (var i = 0, max = languages.length; i < max; ++i) {
+            var lang = languages[i];
+
             if (typeof I18N.keys_[key][lang] === 'string') {
                 return I18N.keys_[key][lang];
             }
-        });
+        }
     }
 
     return null;

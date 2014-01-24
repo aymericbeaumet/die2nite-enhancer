@@ -19,7 +19,7 @@ Module.add((function() {
             tool: {
                 active_on: 'www.die2nite.com',
                 directory_id: 14,
-                api_key: undefined
+                api_key: null
             }
         },
 
