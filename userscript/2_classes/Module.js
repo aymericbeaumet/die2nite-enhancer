@@ -11,10 +11,18 @@
  */
 function Module(param)
 {
-    this.name = param.name;
+    var this_ = this;
+
+    // Copy all the param into this
+    JS.each(param, function(key, value) {
+        this_[key] = value;
+    });
+
+    // Fill the type with the appropriate const if not defined
     this.type = (typeof param.type === 'undefined') ? Module.TYPE.UNKNOWN : param.type;
-    this.config = param.config;
-    this.action = param.action;
+
+    // Fetch module properties from the Storage
+    this.fetch_properties();
 }
 
 
@@ -36,8 +44,8 @@ Module.prototype.get_storage_key = function()
  */
 Module.prototype.disable = function()
 {
-    this.config.enabled = false;
-    this.save_config();
+    this.properties.enabled = false;
+    this.save_properties();
 };
 
 /**
@@ -45,8 +53,8 @@ Module.prototype.disable = function()
  */
 Module.prototype.enable = function()
 {
-    this.config.enabled = true;
-    this.save_config();
+    this.properties.enabled = true;
+    this.save_properties();
 };
 
 /**
@@ -54,8 +62,8 @@ Module.prototype.enable = function()
  */
 Module.prototype.toggle = function()
 {
-    this.config.enabled = !this.config.enabled;
-    this.save_config();
+    this.properties.enabled = !this.properties.enabled;
+    this.save_properties();
 };
 
 /**
@@ -64,15 +72,29 @@ Module.prototype.toggle = function()
  */
 Module.prototype.is_enabled = function()
 {
-    return !!this.config.enabled;
+    return !!this.properties.enabled;
 };
 
 /**
- * Save the module configuration in the Storage.
+ * Save the module properties in the Storage.
  */
-Module.prototype.save_config = function()
+Module.prototype.save_properties = function()
 {
-    Storage.set(this.get_storage_key(), JSON.stringify(this.config));
+    Storage.set(this.get_storage_key(), JSON.stringify(this.properties));
+};
+
+
+/**
+ * Fetch the properties from the Storage. Update the module with the fetched
+ * ones.
+ */
+Module.prototype.fetch_properties = function()
+{
+    // Fetch its properties from the Storage
+    var storage_properties = JSON.parse(Storage.get(this.get_storage_key()));
+
+    // Merge the storage properties into the default properties
+    JS.merge(this.properties, storage_properties);
 };
 
 
@@ -101,10 +123,23 @@ Module.LOADING_PRIORITY_ORDER = [
     Module.TYPE.UNKNOWN
 ];
 
+/**
+ * The different property types.
+ */
+
+Module.PROPERTIES = {};
+Module.PROPERTIES.BOOLEAN = 0;
+
 
 /********************************
  * Static methods and variables *
  ********************************/
+
+/**
+ * Stores all the registered modules, before they are initialised. Never access
+ * it directly.
+*/
+Module.registered_ = [];
 
 /**
  * Stores all the modules. Never access it directly.
@@ -117,8 +152,7 @@ Module.modules_ = {};
 Module.type_ = {};
 
 /**
- * Add a module to the internal list. You don't have to allocate it, for
- * example:
+ * Register the parameters mandatory to a module creation.
  *
  *         Module.add({
  *             param1: 'hello',
@@ -138,19 +172,38 @@ Module.type_ = {};
  *
  * @param Object param The parameters to construct the new module
  */
-Module.add = function(param)
+Module.register = function(param)
 {
-    // Create the module
-    var module = new Module(param);
+    Module.registered_.push(param);
+};
 
-    // Add module to the list
-    Module.modules_[module.name] = module;
+/**
+ * Allocate and initialise all the modules
+ */
+Module.init = function()
+{
+    // Loop to initialise any registered module
+    Module.registered_.forEach(function(param) {
+        // Create the module
+        var module = new Module(param);
 
-    // Insert it in the type index
-    if (typeof Module.type_[module.type] === 'undefined') {
-        Module.type_[module.type] = [];
-    }
-    Module.type_[module.type].push(module);
+        // Add module to the list
+        Module.modules_[module.name] = module;
+
+        // Insert it in the type index
+        if (typeof Module.type_[module.type] === 'undefined') {
+            Module.type_[module.type] = [];
+        }
+        Module.type_[module.type].push(module);
+
+        // Call the 'init' method if any
+        if (typeof module.actions.init !== 'undefined') {
+            module.actions.init.call(module);
+        }
+    });
+
+    // Empty the registered modules list
+    Module.registered_ = null;
 };
 
 /**
@@ -171,8 +224,8 @@ Module.iterate = function(callback)
 {
     var modules = Module.modules_;
 
-    JS.each(modules, function(module) {
-        callback(module);
+    JS.each(modules, function(key, value) {
+        callback(value);
     });
 };
 
@@ -204,3 +257,17 @@ Module.iterate_in_priority_order = function(callback)
         Module.iterate_on_type(type, callback);
     });
 }
+
+/**
+ * Return a specific module from its name.
+ * @param string name The module name
+ * @return Module The desired module
+ * @return null if the module is not found
+ */
+Module.get = function(name)
+{
+    if (Module.modules_.hasOwnProperty(name)) {
+        return Module.modules_[name];
+    }
+    return null;
+};

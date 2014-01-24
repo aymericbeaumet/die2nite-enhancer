@@ -1,8 +1,28 @@
-Module.add((function() {
+Module.register((function() {
+
+    var MODULE_NAME = 'highlight_ap';
 
     /******************
      * Module context *
      ******************/
+
+    /**
+     * Add the i18n strings for this module.
+     */
+    function add_i18n()
+    {
+        var i18n = {};
+
+        i18n[I18N.LANG.EN] = {};
+        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Highlight AP'; 
+        i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Add a border with a specific color (from red to green) in function of the remaining number of action point.';
+
+        i18n[I18N.LANG.FR] = {};
+        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Colorer les PA';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Ajoute une bordure avec une couleur spécifique (du rouge au vert) en fonction du nombre de PA restant.';
+
+        I18N.set(i18n);
+    }
 
 
     /************************
@@ -11,14 +31,26 @@ Module.add((function() {
 
     return {
 
-        name: 'highlight_ap',
+        name: MODULE_NAME,
         type: Module.TYPE.INTERFACE_ENHANCEMENT,
 
-        config: {
-            enabled: false,
+        properties: {
+            enabled: false
         },
 
-        action: {
+        configurable: {
+            enabled: {
+                type: Module.PROPERTIES.BOOLEAN,
+                short_desc_I18N: MODULE_NAME + '_short_desc',
+                full_desc_I18N: MODULE_NAME + '_full_desc'
+            }
+        },
+
+        actions: {
+            init: function() {
+                add_i18n();
+            },
+
             load: function() {
                 JS.wait_for_id('movesCounter', function(node) {
                     var highlight = function() {

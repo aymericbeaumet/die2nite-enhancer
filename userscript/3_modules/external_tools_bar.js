@@ -1,4 +1,6 @@
-Module.add((function() {
+Module.register((function() {
+
+    var MODULE_NAME = 'external_tools_bar';
 
     /******************
      * Module context *
@@ -129,14 +131,14 @@ Module.add((function() {
 
     return {
 
-        name: 'external_tools_bar',
+        name: MODULE_NAME,
         type: Module.TYPE.CONTAINER,
 
-        config: {
+        properties: {
             enabled: false
         },
 
-        action: {
+        actions: {
             load: function() {
             }
         }

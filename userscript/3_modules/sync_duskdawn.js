@@ -1,8 +1,24 @@
-Module.add((function() {
+Module.register((function() {
+
+    var MODULE_NAME = 'sync_duskdawn';
 
     /******************
      * Module context *
      ******************/
+
+    /**
+     * Add the i18n strings for this module.
+     */
+    function add_i18n()
+    {
+        var i18n = {};
+
+        i18n[I18N.LANG.EN] = {};
+        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Enable Dusk Dawn sync'; 
+        i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Add the possibility to sync with Dusk Dawn';
+
+        I18N.set(i18n);
+    }
 
 
     /************************
@@ -11,10 +27,10 @@ Module.add((function() {
 
     return {
 
-        name: 'sync_duskdawn',
+        name: MODULE_NAME,
         type: Module.TYPE.EXTERNAL_TOOL,
 
-        config: {
+        properties: {
             enabled: false,
             tool: {
                 active_on: 'www.die2nite.com',
@@ -23,7 +39,19 @@ Module.add((function() {
             }
         },
 
-        action: {
+        configurable: {
+            enabled: {
+                type: Module.PROPERTIES.BOOLEAN,
+                short_desc_I18N: MODULE_NAME + '_short_desc',
+                full_desc_I18N: MODULE_NAME + '_full_desc'
+            }
+        },
+
+        actions: {
+            init: function() {
+                add_i18n();
+            },
+
             update: function(callback_success, callback_failure) {
                 // Do not update if not outside
                 if (!D2N.is_outside()) {

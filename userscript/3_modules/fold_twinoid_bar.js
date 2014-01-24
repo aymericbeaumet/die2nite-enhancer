@@ -1,8 +1,28 @@
-Module.add((function() {
+Module.register((function() {
+
+    var MODULE_NAME = 'fold_twinoid_bar';
 
     /******************
      * Module context *
      ******************/
+
+    /**
+     * Add the i18n strings for this module.
+     */
+    function add_i18n()
+    {
+        var i18n = {};
+
+        i18n[I18N.LANG.EN] = {};
+        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Fold Twinoid bar'; 
+        i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Fold the Twinoid black bar at the top of the screen. Put your mouse near the top of the screen to show it again.';
+
+        i18n[I18N.LANG.FR] = {};
+        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Replier la barre Twinoid';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Replie la barre Twinoid en haut de l\'écran. Rapprochez votre souris du bord supérieur de l\'écran pour l\'afficher de nouveau.';
+
+        I18N.set(i18n);
+    }
 
 
     /************************
@@ -11,14 +31,26 @@ Module.add((function() {
 
     return {
 
-        name: 'fold_twinoid_bar',
+        name: MODULE_NAME,
         type: Module.TYPE.INTERFACE_ENHANCEMENT,
 
-        config: {
-            enabled: false,
+        properties: {
+            enabled: false
         },
 
-        action: {
+        configurable: {
+            enabled: {
+                type: Module.PROPERTIES.BOOLEAN,
+                short_desc_I18N: MODULE_NAME + '_short_desc',
+                full_desc_I18N: MODULE_NAME + '_full_desc'
+            }
+        },
+
+        actions: {
+            init: function() {
+                add_i18n();
+            },
+
             load: function() {
                 JS.injectCSS(
                     '#tid_bar {' +

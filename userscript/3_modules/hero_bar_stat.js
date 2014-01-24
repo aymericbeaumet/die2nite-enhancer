@@ -1,8 +1,28 @@
-Module.add((function() {
+Module.register((function() {
+
+    var MODULE_NAME = 'hero_bar_stat';
 
     /******************
      * Module context *
      ******************/
+
+    /**
+     * Add the i18n strings for this module.
+     */
+    function add_i18n()
+    {
+        var i18n = {};
+
+        i18n[I18N.LANG.EN] = {};
+        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Enable hero bar stat'; 
+        i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'On soul page, enable days stat on the hero bar.';
+
+        i18n[I18N.LANG.FR] = {};
+        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Activer le pourcentage sur la barre héros';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Sur la page d\'âme, active le pourcentage sur la barre héros.';
+
+        I18N.set(i18n);
+    }
 
 
     /************************
@@ -11,14 +31,26 @@ Module.add((function() {
 
     return {
 
-        name: 'hero_bar_stat',
+        name: MODULE_NAME,
         type: Module.TYPE.INTERFACE_ENHANCEMENT,
 
-        config: {
-            enabled: false,
+        properties: {
+            enabled: false
         },
 
-        action: {
+        configurable: {
+            enabled: {
+                type: Module.PROPERTIES.BOOLEAN,
+                short_desc_I18N: MODULE_NAME + '_short_desc',
+                full_desc_I18N: MODULE_NAME + '_full_desc'
+            }
+        },
+
+        actions: {
+            init: function() {
+                add_i18n();
+            },
+
             load: function() {
                 JS.injectCSS(
                     'div.heroUpBar div.hfront {' +

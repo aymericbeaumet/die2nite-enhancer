@@ -17,7 +17,29 @@ var D2NE = (function() {
 
     function configure_internationalisation()
     {
+        // Set default language
         I18N.set_language(D2N.get_website_language());
+    }
+
+    /**
+     * Initialise every modules.
+     */
+    function initialise_modules()
+    {
+        Module.init();
+    }
+
+    /**
+     * Disable all the external tools that do not match this domain.
+     */
+    function disable_inappropriate_external_tools()
+    {
+        Module.iterate_on_type(Module.TYPE.EXTERNAL_TOOL, function(module) {
+            // if the domain doesn't match, disable the module
+            if (module.properties.tool.active_on !== D2N.get_website()) {
+                module.disable();
+            }
+        });
     }
 
     /**
@@ -27,25 +49,21 @@ var D2NE = (function() {
     {
         // For each module
         Module.iterate_in_priority_order(function(module) {
-            // Fetch its configuration from the Storage
-            var storage_config = JSON.parse(Storage.get(module.get_storage_key()));
-            // Merge it into the default module configuration
-            var config = JS.merge(module.config, storage_config);
-
-            // If the module is disabled, skip it
-            if (!config.enabled) {
+            // Skip it if it is disabled
+            if (!module.is_enabled()) {
                 return;
             }
 
-            // Reinject the config into the loaded module
-            module.config = config;
-
             // If the module has a 'load' method, call it and give 'module' as
-            // the context
-            if (typeof module.action.load !== 'undefined') {
-                module.action.load.call(module);
+            // the context to be able to reach its private membres and methods
+            // via 'this'
+            if (typeof module.actions.load !== 'undefined') {
+                module.actions.load.call(module);
             }
         });
+
+        // Send an event when all the modules are loaded
+        JS.dispatch_event('d2ne_all_modules_loaded');
     }
 
     /**
@@ -54,16 +72,16 @@ var D2NE = (function() {
     function clean_api_keys()
     {
         Module.iterate_on_type(Module.TYPE.EXTERNAL_TOOL, function(module) {
-            module.config.tool.api_key = null;
+            module.properties.tool.api_key = null;
             module.save_config();
         });
     }
 
     /**
-     * Register to the 'gamebody_reload' event to delete the api keys when the
+     * Register to the 'gamebody_reload' event to clean the api keys when the
      * user go to the settings page.
      */
-    function clean_api_keys_on_settings_page()
+    function clean_api_keys_if_on_settings_page()
     {
         document.addEventListener('d2n_gamebody_reload', function() {
             if (!D2N.is_on_page('settings')) {
@@ -94,25 +112,19 @@ var D2NE = (function() {
                 }
 
                 // if the key has already been fetched, abort
-                if (module.config.tool.api_key !== null) {
-                    return;
-                }
-
-                // if the domain doesn't match, disable the module and abort
-                if (module.config.tool.active_on !== D2N.get_website()) {
-                    module.disable();
+                if (module.properties.tool.api_key !== null) {
                     return;
                 }
 
                 // else fetch the key
                 JS.network_request('GET',
-                    '/disclaimer?id=' + module.config.tool.directory_id + ';sk=' + sk, null, null,
+                    '/disclaimer?id=' + module.properties.tool.directory_id + ';sk=' + sk, null, null,
                     function on_success(data, context) {
                         var match = data.match(/<input type="hidden" name="key" value="([a-f0-9]{38,39})"\/>/);
                         if (JS.is_defined(match) && match.length === 2) {
-                            context.module.config.tool.api_key = match[1];
+                            context.module.properties.tool.api_key = match[1];
                         } else {
-                            context.module.config.tool.api_key = null;
+                            context.module.properties.tool.api_key = null;
                         }
                         context.module.save_config();
                     }, null,
@@ -137,11 +149,13 @@ var D2NE = (function() {
         {
             configure_storage();
             configure_internationalisation();
+            initialise_modules();
+            disable_inappropriate_external_tools();
             load_modules();
 
-            D2N.is_logged(function(logged) { if (logged) {
-                clean_api_keys_on_settings_page();
+            D2N.is_logged(function(is_logged) { if (is_logged) {
                 fetch_api_keys();
+                clean_api_keys_if_on_settings_page();
                 D2N.add_custom_events();
             }});
         }

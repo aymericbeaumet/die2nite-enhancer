@@ -1,25 +1,105 @@
-Module.add((function() {
+Module.register((function() {
+
+    var MODULE_NAME = 'configuration_panel';
 
     /******************
      * Module context *
      ******************/
 
-    var i18n = {};
+    /**
+     * The node where the module configuration div have to be inserted. This
+     * variable is filled during the loading.
+     */
+    var configuration_panel_extensible_zone_node_ = null;
 
-    i18n['configuration_panel_title'] = {};
-    i18n['configuration_panel_title'][I18N.LANG.EN] = 'Die2Nite Enhancer - Settings';
-    i18n['configuration_panel_title'][I18N.LANG.FR] = 'Die2Nite Enhancer - Paramètres';
+    /**
+     * Add the i18n strings for this module.
+     */
+    function add_i18n()
+    {
+        var i18n = {};
 
-    i18n['configuration_panel_script_description'] = {};
-    i18n['configuration_panel_script_description'][I18N.LANG.EN] = 'Die2Nite Enhancer allows you to enhance your game experience, every features can be controlled from this panel.';
-    i18n['configuration_panel_script_description'][I18N.LANG.FR] = 'Die2Nite Enhancer vous permet d\'améliorer votre expérience de jeu, toutes les fonctionalités peuvent être controlées depuis ce panneau de configuration.';
+        i18n[I18N.LANG.EN] = {};
+        i18n[I18N.LANG.EN][MODULE_NAME + '_title'] = 'Die2Nite Enhancer - Settings';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_description'] = 'Die2Nite Enhancer allows you to enhance your game experience, every features can be controlled from this panel.';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_help_image_url'] = '/gfx/loc/en/helpLink.gif';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_save_button'] = 'Save';
 
-    i18n['configuration_panel_save_button'] = {};
-    i18n['configuration_panel_save_button'][I18N.LANG.EN] = 'Save';
-    i18n['configuration_panel_save_button'][I18N.LANG.FR] = 'Sauvegarder';
+        i18n[I18N.LANG.FR] = {};
+        i18n[I18N.LANG.FR][MODULE_NAME + '_title'] = 'Die2Nite Enhancer - Paramètres';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_description'] = 'Die2Nite Enhancer vous permet d\'améliorer votre expérience de jeu, toutes les fonctionnalités peuvent être controlées depuis ce panneau de configuration.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_help_image_url'] = '/gfx/loc/fr/helpLink.gif';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_save_button'] = 'Sauvegarder';
 
-    I18N.set(i18n);
+        i18n[I18N.LANG.ES] = {};
+        i18n[I18N.LANG.ES][MODULE_NAME + '_help_image_url'] = '/gfx/loc/es/helpLink.gif';
 
+        i18n[I18N.LANG.DE] = {};
+        i18n[I18N.LANG.DE][MODULE_NAME + '_help_image_url'] = '/gfx/loc/de/helpLink.gif';
+
+        I18N.set(i18n);
+    }
+
+    /**
+     * Load the modules in the configuration panel.
+     */
+    function load_modules_in_configuration_panel()
+    {
+        Module.iterate(function(module) {
+
+            console.log('-----------');
+            console.log(module);
+            console.log(module.configurable);
+
+            // if configurable object does not exist, skip it
+            if (typeof module.configurable === 'undefined') {
+                return;
+            }
+
+            console.log('GOT A CONFIG!');
+
+            JS.each(module.configurable, function(key, value) {
+                var input_id = 'd2ne_module_' + module.name + '_' + key;
+                var input_value = module.properties[key];
+
+                var json_node =
+                    ["div", {},
+                        null,
+                        ["label", { "for": input_id }, I18N.get(value.short_desc_I18N)],
+                        ["a", { "class": "d2ne_tooltip", "href": "javascript:void(0)", "tooltip": I18N.get(value.full_desc_I18N)},
+                            ["img", { "src": I18N.get(MODULE_NAME + '_help_image_url'), "alt": "" }],
+                        ]
+                    ];
+
+                switch (value.type) {
+                    case Module.PROPERTIES.BOOLEAN:
+                        var node = ["input", { "id": input_id, "type": "checkbox" }];
+
+                        if (input_value === true) {
+                            node[1].checked = ''; // declare a checked attribute
+                        }
+                        json_node[2] = node;
+                        break;
+
+                    default:
+                        return;
+                }
+
+                configuration_panel_extensible_zone_node_.appendChild(JS.jsonToDOM(json_node, document));
+            });
+        });
+    }
+
+    /**
+     * Listen for the event dispatched when all the modules are loaded.
+     */
+    function add_callback_when_all_modules_loaded()
+    {
+        // Set a callback when all the modules are loaded
+        document.addEventListener('d2ne_all_modules_loaded', function() {
+            load_modules_in_configuration_panel();
+        });
+    }
 
     /************************
      * Module configuration *
@@ -27,14 +107,19 @@ Module.add((function() {
 
     return {
 
-        name: 'configuration_panel',
+        name: MODULE_NAME,
         type: Module.TYPE.CONTAINER,
 
-        config: {
+        properties: {
             enabled: true
         },
 
-        action: {
+        actions: {
+            init: function() {
+                add_callback_when_all_modules_loaded();
+                add_i18n();
+            },
+
             load: function() {
                 JS.wait_for_id('main', function(node) {
                     // Create and inject panel style
@@ -81,14 +166,14 @@ Module.add((function() {
                             'border-bottom: 1px dashed #ddab76;' +
                         '}' +
 
-                        '#d2ne_configuration_panel div > div > h4 {' +
+                        '#d2ne_configuration_panel div > div > div > h4 {' +
                             'text-align: left;' +
                             'border-bottom: 1px dotted rgba(221, 171, 118, 0.8);' +
                             'padding-bottom: 4px;' +
                             'margin-bottom: 5px;' +
                             'margin-top: 4px;' +
                         '}' +
-                        '#d2ne_configuration_panel div > div > h4 > img {' +
+                        '#d2ne_configuration_panel div > div > div > h4 > img {' +
                             'vertical-align: -11%;' +
                             'margin-right: 5px;' +
                         '}' +
@@ -119,7 +204,7 @@ Module.add((function() {
                             'line-height: normal;' +
                             'z-index: 98;' +
                             'position: absolute;' +
-                            'top: 4px;' +
+                            'top: 3px;' +
                             'right: -305px;' +
                             'content: attr(tooltip);' +
                             'font-family: Verdana;' +
@@ -131,7 +216,7 @@ Module.add((function() {
                             'background-position: 5px 0px;' +
                             'background-repeat: no-repeat;' +
                             'width: 250px;' +
-                            'padding: 4px 10px 9px 30px;' +
+                            'padding: 5px 10px 9px 30px;' +
                         '}' +
 
                         '#d2ne_configuration_panel > div > div > div:last-child {' +
@@ -154,16 +239,18 @@ Module.add((function() {
                             ["div", {},
                                 ["h1", {},
                                     ["img", { "src": "/gfx/forum/smiley/h_city_up.gif", "alt": "" }],
-                                    ["span", { "style": "display: none;" }, ' ' + I18N.get('configuration_panel_title')]
+                                    ["span", { "style": "display: none;" }, ' ' + I18N.get(MODULE_NAME + '_title')]
                                 ],
 
                                 ["div", { "style": "display: none;" },
-                                    ["p", {}, I18N.get('configuration_panel_script_description')],
+                                    ["p", {}, I18N.get(MODULE_NAME + '_description')],
+
+                                    ["div", {}],
 
                                     ["p", {},
                                         ["a", { "href": "javascript:void(0)", "class": "button",
                                                 "onclick": function() { save_configuration(); JS.reload(); } },
-                                            I18N.get('configuration_panel_save_button')]
+                                            I18N.get(MODULE_NAME + '_save_button')]
                                     ],
 
                                     ["div", {},
@@ -173,6 +260,8 @@ Module.add((function() {
                             ]
                         ]
                     , document);
+
+                configuration_panel_extensible_zone_node_ = config_panel_div.childNodes[0].childNodes[1].childNodes[1];
 
                     // Insert panel
                     node.insertBefore(config_panel_div, node.firstChild);

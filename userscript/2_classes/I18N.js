@@ -44,7 +44,7 @@ I18N.language_ = I18N.default_language;
  * Store all the keys of the extension. Use the accessors  `I18N.add` and
  * `I18N.get` to register (a) new key(s) or get key.
  */
-I18N.keys_ = {};
+I18N.strings_ = {};
 
 /**
  * Set the language that will be used when strings are requested.
@@ -56,21 +56,24 @@ I18N.set_language = function(language)
 };
 
 /**
- * Add some strings to the keys_ object. The `keys` should be of the following
+ * Add some strings to the strings_ object. The `keys` should be of the following
  * form:
  *
  *     var i18n = {};
- *     i18n['say_hello'] = {};
- *     i18n['say_hello'][I18N.LANG.EN] = 'Hello';
- *     i18n['say_hello'][I18N.LANG.FR] = 'Bonjour';
- *     i18n['say_hello'][I18N.LANG.ES] = 'Hola';
- *     i18n['say_hello'][I18N.LANG.DE] = 'Hallo';
+ *     i18n[I18N.LANG.EN] = {};
+ *     i18n[I18N.LANG.EN]['say_hello'] = 'Hello';
+ *     i18n[I18N.LANG.FR] = {};
+ *     i18n[I18N.LANG.FR]['say_hello'] = 'Bonjour';
+ *     i18n[I18N.LANG.ES] = {};
+ *     i18n[I18N.LANG.ES]['say_hello'] = 'Hola';
+ *     i18n[I18N.LANG.DE] = {};
+ *     i18n[I18N.LANG.DE]['say_hello'] = 'Hallo';
  *
  *     I18N.set(i18n);
  */
-I18N.set = function(keys)
+I18N.set = function(new_strings)
 {
-    I18N.keys_ = JS.merge(I18N.keys_, keys);
+    JS.merge(I18N.strings_, new_strings);
 };
 
 /**
@@ -83,15 +86,14 @@ I18N.set = function(keys)
 I18N.get = function(key, lang)
 {
     lang = (typeof lang === 'undefined') ? I18N.language_ : lang;
+    var languages = [lang, I18N.default_language_];
 
-    if (typeof I18N.keys_[key] !== 'undefined') {
-        var languages = [lang, I18N.default_language_];
+    for (var i = 0, max = languages.length; i < max; ++i) {
+        var language = languages[i];
 
-        for (var i = 0, max = languages.length; i < max; ++i) {
-            var lang = languages[i];
-
-            if (typeof I18N.keys_[key][lang] === 'string') {
-                return I18N.keys_[key][lang];
+        if (typeof I18N.strings_[language] !== 'undefined') {
+            if (typeof I18N.strings_[language][key] === 'string') {
+                return I18N.strings_[language][key];
             }
         }
     }

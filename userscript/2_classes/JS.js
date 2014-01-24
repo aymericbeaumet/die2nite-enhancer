@@ -11,6 +11,11 @@ var JS = (function() {
 */
 
     /**
+     * Used as a timeout by all the wait_for_* functions
+     */
+    var wait_for_star_timeout_ = 500; //ms
+
+    /**
      * Safely insert code through JSON.
      * @link https://developer.mozilla.org/en-US/Add-ons/Overlay_Extensions/XUL_School/DOM_Building_and_HTML_Insertion
      */
@@ -248,30 +253,34 @@ var JS = (function() {
         },
 
         /*
-         * Recursively merge properties of n objects. The first object properties
-         * will be erased by the following one's.
-         * @link http://stackoverflow.com/a/8625261/1071486
-         * @param object... Some objects to merge.
-         * @return object A new merged object
+         * Recursively merge properties of 2 objects. The first object properties
+         * will be erased by the second ones.
+         * @link http://stackoverflow.com/a/383245/1071486
+         * @param Object obj1 The first object which will receive the merge
+         * @param Object obj2 The second object to merge
+         * @return Object The first object
          */
-        merge: function()
-        {
-            var obj = {};
-            var il = arguments.length;
-            var key;
-
-            if (il === 0) {
-                return obj;
-            }
-            for (var i = 0; i < il; ++i) {
-                for (key in arguments[i]) {
-                    if (arguments[i].hasOwnProperty(key)) {
-                        obj[key] = arguments[i][key];
+        merge: function(obj1, obj2) {
+            for (var p in obj2) {
+                try {
+                    // Property in destination object set; update its value.
+                    if (obj2[p].constructor === Object) {
+                        obj1[p] = JS.merge(obj1[p], obj2[p]);
+                    } else {
+                        if (obj2.hasOwnProperty(p)) {
+                            obj1[p] = obj2[p];
+                        }
+                    }
+                } catch(e) {
+                    // Property in destination object not set; create it and set
+                    // its value.
+                    if (obj2.hasOwnProperty(p)) {
+                        obj1[p] = obj2[p];
                     }
                 }
             }
 
-            return obj;
+            return obj1;
         },
 
         /**
@@ -303,10 +312,10 @@ var JS = (function() {
                 return callback(el);
             }
 
-            // if not, retry in 500 ms
+            // if not, retry again
             setTimeout(function() {
                 JS.wait_for_id(id, callback, max - 1, not_found_callback);
-            }, 500);
+            }, wait_for_star_timeout_);
         },
 
         /**
@@ -338,10 +347,10 @@ var JS = (function() {
                 return callback(el);
             }
 
-            // if not, retry in 500 ms
+            // if not, retry again
             setTimeout(function() {
                 JS.wait_for_selector(selector, callback, max - 1, not_found_callback);
-            }, 500);
+            }, wait_for_star_timeout_);
         },
 
         /**
@@ -374,10 +383,10 @@ var JS = (function() {
                 return callback(el);
             }
 
-            // if not, retry in 500 ms
+            // if not, retry again
             setTimeout(function() {
                 wait_for_selector_all(selector, callback, max - 1, not_found_callback);
-            }, 500);
+            }, wait_for_star_timeout_);
         },
 
         /**
@@ -410,10 +419,10 @@ var JS = (function() {
                 return callback(el);
             }
 
-            // if not, retry in 500 ms
+            // if not, retry again
             setTimeout(function() {
                 JS.wait_for_tag(tag, callback, max - 1, not_found_callback);
-            }, 500);
+            }, wait_for_star_timeout_);
         },
 
         /**
@@ -445,9 +454,11 @@ var JS = (function() {
             if (JS.is_defined(el) && el.length > 0) {
                 return callback(el);
             }
+
+            // if not, retry again
             setTimeout(function() {
                 wait_for_class(class_name, callback, max - 1, not_found_callback);
-            }, 500);
+            }, wait_for_star_timeout_);
         },
 
         /**
@@ -491,15 +502,34 @@ var JS = (function() {
         },
 
         /**
-         * Iterate over all the keys of an object.
+         * Iterate over an object and pass the key/value to a callback.
          */
         each: function(object, callback)
         {
             for (var key in object) {
                 if (object.hasOwnProperty(key)) {
-                    callback(object[key]);
+                    callback(key, object[key]);
                 }
             }
+        },
+
+        /**
+         * Dispatch a custom event on the desired DOM Node
+         * @param string key The event key
+         * @param Object detail (optional) The event details
+         * @param DOMNode node (optional) The node to dispatch the event on
+         */
+        dispatch_event: function(key, detail, node)
+        {
+            node = (typeof node === 'undefined') ? document : node;
+            detail = (typeof detail === 'undefined') ? null : detail;
+
+            var event_param = {};
+            event_param.detail = detail;
+            event_param.bubbles = true;
+            event_param.cancelable = true;
+
+            node.dispatchEvent(new CustomEvent(key, event_param));
         },
 
         jsonToDOM: jsonToDOM

@@ -151,7 +151,7 @@ var D2N = (function() {
                     return;
                 }
 
-                JS.get_session_key(function(sk) {
+                D2N.get_session_key(function(sk) {
                     var page_url = pages_url_[page];
 
                     if (is_on_forum()) { // if on the forum, redirect to the desired page
@@ -221,12 +221,7 @@ var D2N = (function() {
 
             // Emit Gamebody reloaded event
             var emit_gamebody_reloaded_event = function() {
-                document.dispatchEvent(new CustomEvent(
-                    'd2n_gamebody_reload', {
-                        bubbles: true,
-                        cancelable: true
-                    }
-                ));
+                JS.dispatch_event('d2n_gamebody_reload');
             };
 
             var watch_for_gamebody_reload = function(limit) {
@@ -277,12 +272,7 @@ var D2N = (function() {
 
                     // Emit AP change event
                     var emit_ap_change_event = function() {
-                        document.dispatchEvent(new CustomEvent(
-                            'd2n_apchange', {
-                                bubbles: true,
-                                cancelable: true
-                            }
-                        ));
+                        JS.dispatch_event('d2n_apchange');
                     };
 
                     // Store the observer to always have at least 1 active
