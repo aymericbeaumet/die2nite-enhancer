@@ -32,9 +32,4 @@
 ;(function(undefined) {
 
 'use strict';
-
 var DEBUG_MODE = false;
-
-var SCRIPT_NAME = '__NAME__';
-var SCRIPT_VERSION = '__VERSION__';
-var PROJECT_PAGE = '__PROJECT_WEBSITE__';
