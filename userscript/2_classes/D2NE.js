@@ -10,22 +10,24 @@ var D2NE = (function() {
   private:
 */
 
+    /**
+     * The different module types (the order matters).
+     */
+    var TYPES = [
+        'CONTAINER', // Used by the passive containers
+        'INTERFACE_ENHANCEMENT', // Used to custom the interface
+        'EXTERNAL_TOOL' // Used to sync. external tools
+    ];
+
     function configure_module_class()
     {
-        // Used by the passive containers
-        Module.add_type('CONTAINER');
-        // Used to custom the interface
-        Module.add_type('INTERFACE_ENHANCEMENT');
-        // Used to sync. external tools
-        Module.add_type('EXTERNAL_TOOL');
+        // Define the types
+        TYPES.forEach(function(type) {
+            Module.add_type(type);
+        });
 
-
-        // The modules will be loaded in this order
-        Module.set_type_loading_order([
-            'CONTAINER',
-            'INTERFACE_ENHANCEMENT',
-            'EXTERNAL_TOOL'
-        ]);
+        // The types will be loaded in this order
+        Module.set_types_loading_order(TYPES);
     }
 
     function configure_storage_class()

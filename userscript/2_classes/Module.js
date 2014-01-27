@@ -287,10 +287,10 @@ Module.add_type = function(type)
 }
 
 /**
- * Define a new type priority order.
+ * Define a new types priority order.
  * @param string[] An array of module type
  */
-Module.set_type_loading_order = function(new_order)
+Module.set_types_loading_order = function(new_order)
 {
     Module.TYPE_LOADING_ORDER = new_order;
 }
