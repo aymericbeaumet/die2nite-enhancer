@@ -1,4 +1,4 @@
-Module.register((function() {
+Module.register(function() {
 
     var MODULE_NAME = 'construction_max_ap';
 
@@ -47,6 +47,10 @@ Module.register((function() {
         },
 
         actions: {
+            can_run: function() {
+                return true;
+            },
+
             init: function() {
                 add_i18n();
             },
@@ -76,4 +80,4 @@ Module.register((function() {
         }
 
     };
-})());
+});

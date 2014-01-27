@@ -89,9 +89,8 @@ var JS = (function() {
          * @param JSON headers
          * @param callback onsuccess in case of success
          * @param callback onfailure in case of failure
-         * @param Object param An object given as an additional parameter to callbacks
          */
-        network_request: function(method, urn, data, headers, onsuccess, onfailure, param) {
+        network_request: function(method, urn, data, headers, onsuccess, onfailure) {
 
             var uri;
 
@@ -109,8 +108,8 @@ var JS = (function() {
                     url: uri,
                     data: data,
                     headers: headers,
-                    onload: function(r) { onsuccess(r.responseText, param); },
-                    onerror: function(r) { onfailure(param); }
+                    onload: function(r) { onsuccess(r.responseText); },
+                    onerror: function(r) { onfailure(); }
                 });
             }
 
@@ -385,7 +384,7 @@ var JS = (function() {
 
             // if not, retry again
             setTimeout(function() {
-                wait_for_selector_all(selector, callback, max - 1, not_found_callback);
+                JS.wait_for_selector_all(selector, callback, max - 1, not_found_callback);
             }, wait_for_star_timeout_);
         },
 

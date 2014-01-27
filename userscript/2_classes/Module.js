@@ -102,27 +102,6 @@ Module.prototype.fetch_properties = function()
  * Constants *
  *************/
 
-/*
- * The different types of module and their loading priority order.
- */
-
-Module.TYPE = {};
-Module.TYPE.CONTAINER = 0;             // Used by the passive containers
-Module.TYPE.INTERFACE_ENHANCEMENT = 1; // Used to custom the interface
-Module.TYPE.EXTERNAL_TOOL = 2;         // Used to sync. external tools
-Module.TYPE.UNKNOWN = 3;               // Unknown type
-
-/*
- * The order in which the types will be loaded.
- */
-
-Module.LOADING_PRIORITY_ORDER = [
-    Module.TYPE.CONTAINER,
-    Module.TYPE.INTERFACE_ENHANCEMENT,
-    Module.TYPE.EXTERNAL_TOOL,
-    Module.TYPE.UNKNOWN
-];
-
 /**
  * The different property types.
  */
@@ -149,32 +128,37 @@ Module.modules_ = {};
 /**
  * Indexes all the modules by type. Never access it directly.
  */
-Module.type_ = {};
+Module.modules_by_type_ = {};
 
 /**
- * Register the parameters mandatory to a module creation.
+ * The different module types. You can read this variable directly.
+ */
+Module.TYPE = {};
+Module.TYPE.UNKNOWN_TYPE = 1;
+
+/**
+ * The order in which the module types should be browsed.
+ */
+Module.TYPE_LOADING_ORDER = [];
+
+/**
+ * Register a function returning a configuration object which will be used to
+ * instanciate a new module.
  *
- *         Module.add({
- *             param1: 'hello',
- *             param2: 'world'
- *         });
- *
- * If you need a private context, you can do like so:
- *
- *         Module.add((function() {
+ *         Module.add(function() {
  *             var private_var;
  *
  *             return {
  *                 param1: 'hello',
  *                 param2: 'world'
  *             };
- *         )());
+ *         });
  *
- * @param Object param The parameters to construct the new module
+ * @param Function param_constructor A function returning the configuration object
  */
-Module.register = function(param)
+Module.register = function(param_constructor)
 {
-    Module.registered_.push(param);
+    Module.registered_.push(param_constructor);
 };
 
 /**
@@ -183,7 +167,19 @@ Module.register = function(param)
 Module.init = function()
 {
     // Loop to initialise any registered module
-    Module.registered_.forEach(function(param) {
+    Module.registered_.forEach(function(param_constructor) {
+        var param = param_constructor();
+
+        // Check if the module can run in the current environment / website
+        // language
+        if (typeof param === 'undefined' ||
+            typeof param.actions === 'undefined' ||
+            typeof param.actions.can_run !== 'function' ||
+            !param.actions.can_run()) {
+
+            return;
+        }
+
         // Create the module
         var module = new Module(param);
 
@@ -191,10 +187,10 @@ Module.init = function()
         Module.modules_[module.name] = module;
 
         // Insert it in the type index
-        if (typeof Module.type_[module.type] === 'undefined') {
-            Module.type_[module.type] = [];
+        if (typeof Module.modules_by_type_[module.type] === 'undefined') {
+            Module.modules_by_type_[module.type] = [];
         }
-        Module.type_[module.type].push(module);
+        Module.modules_by_type_[module.type].push(module);
 
         // Call the 'init' method if any
         if (typeof module.actions.init !== 'undefined') {
@@ -212,7 +208,7 @@ Module.init = function()
  */
 Module.count = function()
 {
-    return Module.modules_.length;
+    return Object.keys(Module.modules_).length;
 };
 
 /**
@@ -237,11 +233,13 @@ Module.iterate = function(callback)
  */
 Module.iterate_on_type = function(type, callback)
 {
+
     // if the type is not defined, abort
-    if (typeof Module.type_[type] === 'undefined') {
+    if (typeof Module.modules_by_type_[type] === 'undefined') {
         return;
     }
-    Module.type_[type].forEach(function(module) {
+
+    Module.modules_by_type_[type].forEach(function(module) {
         callback(module);
     });
 }
@@ -253,8 +251,8 @@ Module.iterate_on_type = function(type, callback)
  */
 Module.iterate_in_priority_order = function(callback)
 {
-    Module.LOADING_PRIORITY_ORDER.forEach(function(type) {
-        Module.iterate_on_type(type, callback);
+    Module.TYPE_LOADING_ORDER.forEach(function(type) {
+        Module.iterate_on_type(Module.TYPE[type], callback);
     });
 }
 
@@ -271,3 +269,28 @@ Module.get = function(name)
     }
     return null;
 };
+
+/**
+ * Define a new module type.
+ * @param string type The new type
+ */
+Module.add_type = function(type)
+{
+    var biggest = 0;
+
+    // Obtain a unique type id by fetching the biggest id and adding one;
+    for (var key in Module.TYPE) {
+        biggest = (Module.TYPE[key] > biggest) ? Module.TYPE[key] : biggest;
+    }
+
+    Module.TYPE[type] = biggest + 1;
+}
+
+/**
+ * Define a new type priority order.
+ * @param string[] An array of module type
+ */
+Module.set_type_loading_order = function(new_order)
+{
+    Module.TYPE_LOADING_ORDER = new_order;
+}

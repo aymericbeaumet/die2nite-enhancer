@@ -1,4 +1,4 @@
-Module.register((function() {
+Module.register(function() {
 
     var MODULE_NAME = 'sync_bbh';
 
@@ -36,9 +36,10 @@ Module.register((function() {
         properties: {
             enabled: false,
             tool: {
-                active_on: 'www.hordes.fr',
                 directory_id: 51,
-                api_key: null
+                api_key: null,
+                update_method: 'POST',
+                update_url: 'http://'
             }
         },
 
@@ -51,14 +52,19 @@ Module.register((function() {
         },
 
         actions: {
+            can_run: function() {
+                return D2N.is_on_hordes();
+            },
+
             init: function() {
                 add_i18n();
             },
 
             update: function(callback_success, callback_failure) {
                 JS.network_request(
-                    update_method_, update_url_,
-                    'key=' + module_config.tool.api_key + '&action=force_maj',
+                    this.properties.tool.update_method,
+                    this.properties.tool.update_url,
+                    'key=' + this.properties.tool.api_key + '&action=force_maj',
                     {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
@@ -78,4 +84,4 @@ Module.register((function() {
         }
 
     };
-})());
+});

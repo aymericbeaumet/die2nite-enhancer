@@ -1,10 +1,20 @@
-Module.register((function() {
+Module.register(function() {
 
     var MODULE_NAME = 'configuration_panel';
 
     /******************
      * Module context *
      ******************/
+
+    /**
+     * Inject in the input field to store the corresponding module name.
+     */
+    var INPUT_DATA_MODULE_KEY = 'data-module';
+
+    /**
+     * Inject in the input field to store the corresponding module name.
+     */
+    var INPUT_DATA_MODULE_PROPERTY_KEY = 'data-module-property';
 
     /**
      * The node where the module configuration div have to be inserted. This
@@ -69,6 +79,9 @@ Module.register((function() {
                     case Module.PROPERTIES.BOOLEAN:
                         var node = ["input", { "id": input_id, "type": "checkbox" }];
 
+                        node[1][INPUT_DATA_MODULE_KEY] = module.name;
+                        node[1][INPUT_DATA_MODULE_PROPERTY_KEY] = key;
+
                         if (input_value === true) {
                             node[1].checked = ''; // declare a checked attribute
                         }
@@ -95,6 +108,45 @@ Module.register((function() {
         });
     }
 
+    /**
+     * Fetch the configuration from the configuration panel and inject it in the
+     * local storage.
+     */
+    function save_configuration()
+    {
+        var input_node = null;
+        var module = null;
+        var module_name = null;
+        var property = null;
+        var input_data = null;
+
+        for (var i = 0, max = configuration_panel_extensible_zone_node_.childElementCount; i < max; ++i) {
+            input_node = configuration_panel_extensible_zone_node_.childNodes[i].firstChild;
+            module_name = input_node.getAttribute(INPUT_DATA_MODULE_KEY);
+            module = Module.get(module_name);
+            property = input_node.getAttribute(INPUT_DATA_MODULE_PROPERTY_KEY);
+
+            // Get the value
+            switch (module.configurable[property].type) {
+                case Module.PROPERTIES.BOOLEAN:
+                    input_data = input_node.checked;
+                    break;
+
+                default:
+                    input_data = null;
+                    break;
+            }
+
+            // Inject it into the object and save
+            module.properties[property] = input_data;
+            module.save_properties();
+
+            console.log('----------');
+            console.log(module);
+            console.log(input_data);
+        }
+    }
+
     /************************
      * Module configuration *
      ************************/
@@ -109,6 +161,10 @@ Module.register((function() {
         },
 
         actions: {
+            can_run: function() {
+                return true;
+            },
+
             init: function() {
                 add_callback_when_all_modules_loaded();
                 add_i18n();
@@ -260,9 +316,6 @@ Module.register((function() {
                     // Insert panel
                     node.insertBefore(config_panel_div, node.firstChild);
 
-                    // Inject configuration in the config panel (in the DOM)
-                    //inject_configuration();
-
                     // Show/Hide config panel cache
                     var config_panel_toggled_elements_cache = document.querySelectorAll('#d2ne_configuration_panel > div > h1 > span, #d2ne_configuration_panel > div > div');
                     var config_panel_toggled_elements_cache_length = config_panel_toggled_elements_cache.length;
@@ -287,4 +340,4 @@ Module.register((function() {
         }
 
     };
-})());
+});

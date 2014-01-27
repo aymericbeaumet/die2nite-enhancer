@@ -1,4 +1,4 @@
-Module.register((function() {
+Module.register(function() {
 
     var MODULE_NAME = 'sync_oeev';
 
@@ -36,7 +36,6 @@ Module.register((function() {
         properties: {
             enabled: false,
             tool: {
-                active_on: 'www.hordes.fr',
                 directory_id: 22,
                 api_key: null
             }
@@ -51,14 +50,22 @@ Module.register((function() {
         },
  
         actions: {
+            can_run: function() {
+                return D2N.is_on_hordes();
+            },
+
             init: function() {
                 add_i18n();
             },
 
+            load: function() {
+            },
+
             update: function(callback_success, callback_failure) {
                 JS.network_request(
-                    update_method_, update_url_,
-                    'key=' + module_config.tool.api_key + '&mode=json',
+                    this.properties.tool.update_method,
+                    this.properties.tool.update_url,
+                    'key=' + this.properties.tool.api_key + '&mode=json',
                     {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
@@ -77,4 +84,4 @@ Module.register((function() {
         }
 
     };
-})());
+});

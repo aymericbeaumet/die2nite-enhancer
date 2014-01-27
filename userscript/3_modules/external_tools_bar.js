@@ -1,4 +1,4 @@
-Module.register((function() {
+Module.register(function() {
 
     var MODULE_NAME = 'external_tools_bar';
 
@@ -139,9 +139,13 @@ Module.register((function() {
         },
 
         actions: {
+            can_run: function() {
+                return true;
+            },
+
             load: function() {
             }
         }
 
     };
-})());
+});

@@ -1,4 +1,4 @@
-Module.register((function() {
+Module.register(function() {
 
     var MODULE_NAME = 'sync_duskdawn';
 
@@ -33,9 +33,10 @@ Module.register((function() {
         properties: {
             enabled: false,
             tool: {
-                active_on: 'www.die2nite.com',
                 directory_id: 14,
-                api_key: null
+                api_key: null,
+                update_method: 'POST',
+                update_url: 'http://d2n.duskdawn.net/zone'
             }
         },
 
@@ -48,6 +49,10 @@ Module.register((function() {
         },
 
         actions: {
+            can_run: function() {
+                return D2N.is_on_die2nite();
+            },
+
             init: function() {
                 add_i18n();
             },
@@ -59,9 +64,9 @@ Module.register((function() {
                 }
 
                 JS.network_request(
-                    'POST',
-                    'http://d2n.duskdawn.net/zone',
-                    'key=' + module_config.tool.api_key,
+                    this.properties.tool.update_method,
+                    this.properties.tool.update_url,
+                    'key=' + this.properties.tool.api_key,
                     {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
@@ -80,4 +85,4 @@ Module.register((function() {
         }
 
     };
-})());
+});

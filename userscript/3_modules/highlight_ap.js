@@ -1,4 +1,4 @@
-Module.register((function() {
+Module.register(function() {
 
     var MODULE_NAME = 'highlight_ap';
 
@@ -47,6 +47,10 @@ Module.register((function() {
         },
 
         actions: {
+            can_run: function() {
+                return true;
+            },
+
             init: function() {
                 add_i18n();
             },
@@ -90,4 +94,4 @@ Module.register((function() {
         }
 
     };
-})());
+});

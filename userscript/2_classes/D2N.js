@@ -37,6 +37,110 @@ var D2N = (function() {
         'www.dieverdammten.de': 'de'
     };
 
+    /**
+     * Emit a gamebody reload event.
+     */
+    function emit_gamebody_reloaded_event()
+    {
+        JS.dispatch_event('d2n_gamebody_reload');
+    }
+
+
+    /**
+     * Wait for a gamebody reload and call the function to the emit the
+     * corresponding event then.
+     */
+    function add_gamebody_reload_event()
+    {
+        var watch_for_gamebody_reload = function(limit) {
+            limit = (typeof limit === 'undefined') ? 20 : limit;
+
+            // If the limit isn't reached and the hash isn't defined, call this
+            // function again (this is done to wait the first load)
+            if (limit > 0 && window.location.hash === '') {
+                return setTimeout(function() { watch_for_gamebody_reload(limit - 1); }, 200);
+            }
+
+            JS.wait_for_tag('body', function(nodes) {
+                var body_observer = new MutationObserver(function(mutations) {
+                    for (var i = 0, max = mutations.length; i < max; ++i) {
+                        if (mutations[i].type !== 'attributes' ||
+                            mutations[i].attributeName !== 'style') {
+                            continue;
+                        }
+
+                        if (mutations[i].target.style.cursor === 'default') {
+                            emit_gamebody_reloaded_event();
+                            break;
+                        }
+                    }
+                });
+
+                // 1. If the cursor is 'default' it means the page is loaded
+                // (and that we missed the cursor change). In this case, just
+                // emit an event.
+                if (nodes[0].style.cursor === 'default') {
+                    emit_gamebody_reloaded_event();
+                }
+
+                // 2. Then watch for a cursor style change on the body tag,
+                // which means the end of a content load for the page
+                body_observer.observe(nodes[0], { attributes: true });
+            });
+        };
+        watch_for_gamebody_reload();
+    }
+
+    /**
+     * Emit an AP change event.
+     */
+    function emit_ap_change_event()
+    {
+        JS.dispatch_event('d2n_apchange');
+    }
+
+    /**
+     * Wait for an ap change and call the function to the emit the corresponding
+     * event then.
+     */
+    function add_ap_change_event()
+    {
+        // only watch AP change in town
+        D2N.is_in_town(function(in_town) {
+            if (in_town) {
+
+                // Store the observer to always have at least 1 active
+                var ap_observer = null;
+                var ap_old_observer = null;
+
+                var watch_for_ap_change = function() {
+                    JS.wait_for_id('movesCounter', function(node) {
+                        ap_old_observer = ap_observer;
+
+                        // Watch for AP change
+                        ap_observer = new MutationObserver(function(mutations) {
+                            emit_ap_change_event();
+                        });
+
+                        ap_observer.observe(node, { childList: true, subtree: true });
+
+                        if (ap_old_observer !== null) {
+                            ap_old_observer.disconnect();
+                            ap_old_observer = null;
+                        }
+                    });
+                };
+                watch_for_ap_change(); // watch on first load
+
+                // watch again when the page change
+                window.addEventListener('hashchange', function() {
+                    watch_for_ap_change();
+                }, false);
+
+            }
+        });
+    }
+
 /*
   public:
 */
@@ -172,8 +276,8 @@ var D2N = (function() {
             JS.wait_for_selector('a.mainButton.newsButton', function(node) {
                 var arr = node.href.split('=');
 
-                // return string after the last equal which should be the session
-                // key
+                // pass rhe string after the last equal which should be the
+                // session key
                 callback(arr[arr.length - 1]);
             });
         },
@@ -215,104 +319,64 @@ var D2N = (function() {
          */
         add_custom_events: function()
         {
-            /*
-             * Gamebody
-             */
-
-            // Emit Gamebody reloaded event
-            var emit_gamebody_reloaded_event = function() {
-                JS.dispatch_event('d2n_gamebody_reload');
-            };
-
-            var watch_for_gamebody_reload = function(limit) {
-                limit = (typeof limit === 'undefined') ? 20 : limit;
-
-                // If the limit isn't reached and the hash isn't defined, call this
-                // function again (this is done to wait the first load)
-                if (limit > 0 && window.location.hash === '') {
-                    return setTimeout(function() { watch_for_gamebody_reload(limit - 1); }, 200);
-                }
-
-                JS.wait_for_tag('body', function(nodes) {
-                    var body_observer = new MutationObserver(function(mutations) {
-                        for (var i = 0, max = mutations.length; i < max; ++i) {
-                            if (mutations[i].type !== 'attributes' ||
-                                mutations[i].attributeName !== 'style') {
-                                continue;
-                            }
-
-                            if (mutations[i].target.style.cursor === 'default') {
-                                emit_gamebody_reloaded_event();
-                                break;
-                            }
-                        }
-                    });
-
-                    // 1. If the cursor is 'default' it means the page is loaded
-                    // (and that we missed the cursor change). In this case, just
-                    // emit an event.
-                    if (nodes[0].style.cursor === 'default') {
-                        emit_gamebody_reloaded_event();
-                    }
-
-                    // 2. Then watch for a cursor style change on the body tag,
-                    // which means the end of a content load for the page
-                    body_observer.observe(nodes[0], { attributes: true });
-                });
-            };
-            watch_for_gamebody_reload();
-
-            /*
-             * AP
-             */
-
-            // only watch AP change in town
-            D2N.is_in_town(function(in_town) {
-                if (in_town) {
-
-                    // Emit AP change event
-                    var emit_ap_change_event = function() {
-                        JS.dispatch_event('d2n_apchange');
-                    };
-
-                    // Store the observer to always have at least 1 active
-                    var ap_observer = null;
-                    var ap_old_observer = null;
-
-                    var watch_for_ap_change = function() {
-                        JS.wait_for_id('movesCounter', function(node) {
-                            ap_old_observer = ap_observer;
-
-                            // Watch for AP change
-                            ap_observer = new MutationObserver(function(mutations) {
-                                emit_ap_change_event();
-                            });
-
-                            ap_observer.observe(node, { childList: true, subtree: true });
-
-                            if (ap_old_observer !== null) {
-                                ap_old_observer.disconnect();
-                                ap_old_observer = null;
-                            }
-                        });
-                    };
-                    watch_for_ap_change(); // watch on first load
-
-                    // watch again when the page change
-                    window.addEventListener('hashchange', function() {
-                        watch_for_ap_change();
-                    }, false);
-
-                }
-            });
+            add_gamebody_reload_event();
+            add_ap_change_event();
         },
 
         /**
-         * Return the hostname of the current webpage.
+         * Check if on Die2Nite.
+         * @return boolean true if on Die2Nite, else false
          */
-        get_website: function()
-        {
-            return window.location.hostname;
+        is_on_die2nite: function() {
+            return window.location.hostname === 'www.die2nite.com';
+        },
+
+        /**
+         * Check if on Hordes.
+         * @return boolean true if on Hordes, else false
+         */
+        is_on_hordes: function() {
+            return window.location.hostname === 'www.hordes.fr';
+        },
+
+        /**
+         * Check if on Zombinoia.
+         * @return boolean true if on Zombinoia, else false
+         */
+        is_on_zombinoia: function() {
+            return window.location.hostname === 'www.zombinoia.com';
+        },
+
+        /**
+         * Check if on Dieverdammten.
+         * @return boolean true if on Dieverdammten, else false
+         */
+        is_on_dieverdammten: function() {
+            return window.location.hostname === 'www.dieverdammten.de';
+        },
+
+        /**
+         * Get an external tool api key and pass it to the given callback
+         * @param integer directory_id The external tool id
+         * @param Function callback The callback to pass the api key
+         */
+        get_api_key: function(directory_id, callback_success, callback_failure) {
+            // Fetch the session key
+            D2N.get_session_key(function(sk) {
+                JS.network_request('GET', '/disclaimer?id=' + directory_id + ';sk=' + sk, null, null,
+                    function on_success(data, context) {
+                        var match = data.match(/<input type="hidden" name="key" value="([a-f0-9]{38,39})"\/>/);
+                        if (JS.is_defined(match) && match.length === 2) {
+                            callback_success(match[0]);
+                        } else {
+                            callback_failure();
+                        }
+                    },
+                    function onfailure() {
+                        callback_failure();
+                    }
+                );
+            });
         }
 
     };

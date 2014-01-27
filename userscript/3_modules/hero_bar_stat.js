@@ -1,4 +1,4 @@
-Module.register((function() {
+Module.register(function() {
 
     var MODULE_NAME = 'hero_bar_stat';
 
@@ -47,6 +47,10 @@ Module.register((function() {
         },
 
         actions: {
+            can_run: function() {
+                return true;
+            },
+
             init: function() {
                 add_i18n();
             },
@@ -95,4 +99,4 @@ Module.register((function() {
         }
 
     };
-})());
+});

@@ -1,4 +1,4 @@
-Module.register((function() {
+Module.register(function() {
 
     var MODULE_NAME = 'shortcuts';
 
@@ -63,6 +63,10 @@ Module.register((function() {
         },
 
         actions: {
+            can_run: function() {
+                return true;
+            },
+
             init: function() {
                 add_i18n();
             },
@@ -83,4 +87,4 @@ Module.register((function() {
         }
 
     };
-})());
+});

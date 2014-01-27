@@ -10,12 +10,31 @@ var D2NE = (function() {
   private:
 */
 
-    function configure_storage()
+    function configure_module_class()
     {
+        // Used by the passive containers
+        Module.add_type('CONTAINER');
+        // Used to custom the interface
+        Module.add_type('INTERFACE_ENHANCEMENT');
+        // Used to sync. external tools
+        Module.add_type('EXTERNAL_TOOL');
+
+
+        // The modules will be loaded in this order
+        Module.set_type_loading_order([
+            'CONTAINER',
+            'INTERFACE_ENHANCEMENT',
+            'EXTERNAL_TOOL'
+        ]);
+    }
+
+    function configure_storage_class()
+    {
+        // Set storage prefix
         Storage.set_key_prefix('extensions.d2ne.');
     }
 
-    function configure_internationalisation()
+    function configure_internationalisation_class()
     {
         // Set default language
         I18N.set_language(D2N.get_website_language());
@@ -30,16 +49,14 @@ var D2NE = (function() {
     }
 
     /**
-     * Disable all the external tools that do not match this domain.
+     * Send the 'all_modules_loaded' if needed.
      */
-    function disable_inappropriate_external_tools()
+    function emit_all_modules_loaded_event_if_needed(initialised_modules, total_modules)
     {
-        Module.iterate_on_type(Module.TYPE.EXTERNAL_TOOL, function(module) {
-            // if the domain doesn't match, disable the module
-            if (module.properties.tool.active_on !== D2N.get_website()) {
-                module.disable();
-            }
-        });
+        if (initialised_modules >= total_modules) {
+            // Dispatch an event when all the modules are loaded
+            JS.dispatch_event('d2ne_all_modules_loaded');
+        }
     }
 
     /**
@@ -47,10 +64,14 @@ var D2NE = (function() {
      */
     function load_modules()
     {
+        var initialised_modules = 0;
+        var total_modules = Module.count();
+
         // For each module
         Module.iterate_in_priority_order(function(module) {
             // Skip it if it is disabled
             if (!module.is_enabled()) {
+                emit_all_modules_loaded_event_if_needed(initialised_modules, (total_modules -= 1));
                 return;
             }
 
@@ -60,10 +81,9 @@ var D2NE = (function() {
             if (typeof module.actions.load !== 'undefined') {
                 module.actions.load.call(module);
             }
-        });
 
-        // Send an event when all the modules are loaded
-        JS.dispatch_event('d2ne_all_modules_loaded');
+            emit_all_modules_loaded_event_if_needed((initialised_modules += 1), total_modules);
+        });
     }
 
     /**
@@ -102,34 +122,24 @@ var D2NE = (function() {
             return;
         }
 
-        // Fetch the session key
-        D2N.get_session_key(function(sk) {
-            // Get the api key for each module
-            Module.iterate_on_type(Module.TYPE.EXTERNAL_TOOL, function(module) {
-                // if module is disabled, abort
-                if (!module.is_enabled()) {
-                    return;
-                }
+        // Get the api key for each module
+        Module.iterate_on_type(Module.TYPE.EXTERNAL_TOOL, function(module) {
+            // if module is disabled, abort
+            if (!module.is_enabled()) {
+                return;
+            }
 
-                // if the key has already been fetched, abort
-                if (module.properties.tool.api_key !== null) {
-                    return;
-                }
+            // if the key has already been fetched, abort
+            if (module.properties.tool.api_key !== null) {
+                return;
+            }
 
-                // else fetch the key
-                JS.network_request('GET',
-                    '/disclaimer?id=' + module.properties.tool.directory_id + ';sk=' + sk, null, null,
-                    function on_success(data, context) {
-                        var match = data.match(/<input type="hidden" name="key" value="([a-f0-9]{38,39})"\/>/);
-                        if (JS.is_defined(match) && match.length === 2) {
-                            context.module.properties.tool.api_key = match[1];
-                        } else {
-                            context.module.properties.tool.api_key = null;
-                        }
-                        context.module.save_config();
-                    }, null,
-                    { module: module } // context given to callback
-                );
+            D2N.get_api_key(module.properties.tool.directory_id, function onsuccess(key) {
+                module.properties.tool.api_key = key;
+                module.save_config();
+            }, function onfailure() {
+                module.properties.tool.api_key = null;
+                module.save_config();
             });
         });
     }
@@ -147,10 +157,11 @@ var D2NE = (function() {
          */
         init: function()
         {
-            configure_storage();
-            configure_internationalisation();
+            configure_module_class();
+            configure_storage_class();
+            configure_internationalisation_class();
+
             initialise_modules();
-            disable_inappropriate_external_tools();
             load_modules();
 
             D2N.is_logged(function(is_logged) { if (is_logged) {
