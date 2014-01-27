@@ -14,7 +14,7 @@ Module.register(function() {
         var i18n = {};
 
         i18n[I18N.LANG.EN] = {};
-        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Enable shortcuts'; 
+        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Enable shortcuts';
         i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Let you use keyboard shortcuts in town to quickly access important places (e.g.: banks, gates).';
 
         i18n[I18N.LANG.FR] = {};
@@ -24,6 +24,22 @@ Module.register(function() {
         I18N.set(i18n);
     }
 
+    /**
+     * Handle the keydown event.
+     * @param integer keycode The last keycode
+     * @param integer previous_keycode The last-but-one keycode
+     */
+    function on_keydown_event(keycode, previous_keycode) {
+        if (previous_keycode !== this.properties.binds.main) {
+            return;
+        }
+
+        for (var bind in this.properties.binds) {
+            if (this.properties.binds[bind] === keycode) {
+                return D2N.go_to_city_page(bind);
+            }
+        }
+    }
 
     /************************
      * Module configuration *
@@ -72,17 +88,8 @@ Module.register(function() {
             },
 
             load: function() {
-                JS.keydown_event(function(keycode, previous_keycode) {
-                    if (previous_keycode !== this.binds.main) {
-                        return;
-                    }
-
-                    for (var bind in this.binds) {
-                        if (this.binds[bind] === keycode) {
-                            return D2N.go_to_city_page(bind);
-                        }
-                    }
-                });
+                var f = on_keydown_event.bind(this);
+                JS.keydown_event(f);
             }
         }
 

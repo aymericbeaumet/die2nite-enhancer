@@ -258,10 +258,10 @@ var D2N = (function() {
                 D2N.get_session_key(function(sk) {
                     var page_url = pages_url_[page];
 
-                    if (is_on_forum()) { // if on the forum, redirect to the desired page
+                    if (D2N.is_on_forum()) { // if on the forum, redirect to the desired page
                         JS.redirect('/#city/enter?go=' + page_url + ';sk=' + sk);
                     } else { // else just download the content with an ajax request
-                        JS.injectJS('JS.XmlHttp.get(' + JSON.stringify(page_url + '?sk=' + sk) + ');');
+                        JS.injectJS('js.XmlHttp.get(' + JSON.stringify(page_url + '?sk=' + sk) + ');');
                     }
                 });
             });
