@@ -78,7 +78,7 @@ var D2NE = (function() {
             }
 
             // If the module has a 'load' method, call it and give 'module' as
-            // the context to be able to reach its private membres and methods
+            // the context to be able to reach its private members and methods
             // via 'this'
             if (typeof module.actions.load !== 'undefined') {
                 module.actions.load.call(module);
@@ -95,7 +95,7 @@ var D2NE = (function() {
     {
         Module.iterate_on_type(Module.TYPE.EXTERNAL_TOOL, function(module) {
             module.properties.tool.api_key = null;
-            module.save_config();
+            module.save_properties();
         });
     }
 
@@ -136,12 +136,12 @@ var D2NE = (function() {
                 return;
             }
 
-            D2N.get_api_key(module.properties.tool.directory_id, function onsuccess(key) {
+            D2N.get_api_key(module.properties.tool.directory_id, function on_success(key) {
                 module.properties.tool.api_key = key;
-                module.save_config();
-            }, function onfailure() {
+                module.save_properties();
+            }, function on_failure() {
                 module.properties.tool.api_key = null;
-                module.save_config();
+                module.save_properties();
             });
         });
     }

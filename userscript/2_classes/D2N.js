@@ -367,7 +367,7 @@ var D2N = (function() {
                     function on_success(data, context) {
                         var match = data.match(/<input type="hidden" name="key" value="([a-f0-9]{38,39})"\/>/);
                         if (JS.is_defined(match) && match.length === 2) {
-                            callback_success(match[0]);
+                            callback_success(match[1]);
                         } else {
                             callback_failure();
                         }

@@ -87,10 +87,10 @@ var JS = (function() {
          * @param string urn path
          * @param string data query string
          * @param JSON headers
-         * @param callback onsuccess in case of success
-         * @param callback onfailure in case of failure
+         * @param callback on_success in case of success
+         * @param callback on_failure in case of failure
          */
-        network_request: function(method, urn, data, headers, onsuccess, onfailure) {
+        network_request: function(method, urn, data, headers, on_success, on_failure) {
 
             var uri;
 
@@ -108,8 +108,8 @@ var JS = (function() {
                     url: uri,
                     data: data,
                     headers: headers,
-                    onload: function(r) { onsuccess(r.responseText); },
-                    onerror: function(r) { onfailure(); }
+                    onload: function(r) { on_success(r.responseText); },
+                    onerror: function(r) { on_failure(); }
                 });
             }
 
@@ -118,10 +118,10 @@ var JS = (function() {
                 safari.addEventListener('message', function(event) {
                     switch (event.name) {
                         case 'network_request_succeed':
-                            return onsuccess(event.message, param);
+                            return on_success(event.message, param);
 
                         case 'network_request_failed':
-                            return onfailure(param);
+                            return on_failure(param);
                     }
                 }, false);
 
@@ -142,9 +142,9 @@ var JS = (function() {
             xmlhttp.onreadystatechange = function() {
                 if (xmlhttp.readyState === 4) {
                     if (xmlhttp.status >= 200 && xmlhttp.status < 300) {
-                        return onsuccess(xmlhttp.responseText, param);
+                        return on_success(xmlhttp.responseText, param);
                     }
-                    return onfailure(param);
+                    return on_failure(param);
                 }
             };
             xmlhttp.send(data);
