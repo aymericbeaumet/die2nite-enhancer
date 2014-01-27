@@ -89,7 +89,10 @@ Module.register(function() {
 
             load: function() {
                 var f = on_keydown_event.bind(this);
-                JS.keydown_event(f);
+
+                JS.keydown_event(function(keycode, previous_keycode) {
+                    f(keycode, previous_keycode);
+                });
             }
         }
 

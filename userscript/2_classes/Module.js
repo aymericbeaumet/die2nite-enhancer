@@ -11,11 +11,11 @@
  */
 function Module(param)
 {
-    var this_ = this;
+    var f = JS.assign_attribute.bind(this);
 
     // Copy all the param into this
     JS.each(param, function(key, value) {
-        this_[key] = value;
+        f(key, value);
     });
 
     // Fill the type with the appropriate const if not defined

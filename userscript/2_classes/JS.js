@@ -531,6 +531,19 @@ var JS = (function() {
             node.dispatchEvent(new CustomEvent(key, event_param));
         },
 
+
+        /**
+         * Assign an attribute to the current object. This function is only
+         * relevant if you call it by specifying a `this` context (with bind(),
+         * call() or apply()).
+         * @param string key The specific key where to assign the value
+         * @param string value The value to store
+         */
+        assign_attribute: function(key, value)
+        {
+            this[key] = value;
+        },
+
         jsonToDOM: jsonToDOM
 
     };
