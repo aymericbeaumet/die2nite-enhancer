@@ -11,9 +11,9 @@ var JS = (function() {
 */
 
     /**
-     * Used as a timeout by all the wait_for_* functions
+     * Time to wait between two self-call of wait_for_* functions
      */
-    var wait_for_star_timeout_ = 500; //ms
+    var wait_for_retry_time_ = 500; //ms
 
     /**
      * Safely insert code through JSON.
@@ -314,7 +314,7 @@ var JS = (function() {
             // if not, retry again
             setTimeout(function() {
                 JS.wait_for_id(id, callback, max - 1, not_found_callback);
-            }, wait_for_star_timeout_);
+            }, wait_for_retry_time_);
         },
 
         /**
@@ -349,7 +349,7 @@ var JS = (function() {
             // if not, retry again
             setTimeout(function() {
                 JS.wait_for_selector(selector, callback, max - 1, not_found_callback);
-            }, wait_for_star_timeout_);
+            }, wait_for_retry_time_);
         },
 
         /**
@@ -385,7 +385,7 @@ var JS = (function() {
             // if not, retry again
             setTimeout(function() {
                 JS.wait_for_selector_all(selector, callback, max - 1, not_found_callback);
-            }, wait_for_star_timeout_);
+            }, wait_for_retry_time_);
         },
 
         /**
@@ -421,7 +421,7 @@ var JS = (function() {
             // if not, retry again
             setTimeout(function() {
                 JS.wait_for_tag(tag, callback, max - 1, not_found_callback);
-            }, wait_for_star_timeout_);
+            }, wait_for_retry_time_);
         },
 
         /**
@@ -457,7 +457,7 @@ var JS = (function() {
             // if not, retry again
             setTimeout(function() {
                 wait_for_class(class_name, callback, max - 1, not_found_callback);
-            }, wait_for_star_timeout_);
+            }, wait_for_retry_time_);
         },
 
         /**
