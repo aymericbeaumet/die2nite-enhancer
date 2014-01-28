@@ -9,8 +9,9 @@ Module.register(function() {
     /**
      * The external tools bar ID.
      */
-    var EXTERNAL_TOOLS_BAR_UPDATE_CONTAINER_ID = 'd2ne_external_tools_bar_update_container_id';
-    var EXTERNAL_TOOLS_BAR_UPDATE_ID = 'd2ne_external_tools_bar_update_id';
+    var EXTERNAL_TOOLS_BAR_UPDATE_CONTAINER_ID = 'd2ne_external_tools_bar_update_container';
+    var EXTERNAL_TOOLS_BAR_UPDATE_ID = 'd2ne_external_tools_bar_update';
+    var EXTERNAL_TOOLS_TOOLTIP_LIST_ID = 'd2ne_external_tools_tooltip_list';
 
     /**
      * Update state, an object containing objects of the following form:
@@ -29,6 +30,11 @@ Module.register(function() {
      *     };
      */
     var update_state_ = {};
+
+    /**
+     * Store if an update is currently in progress.
+     */
+    var update_in_progress_ = false;
 
     /**
      * Cache
@@ -58,15 +64,16 @@ Module.register(function() {
      */
     function is_update_in_progress()
     {
-        return Object.keys(update_state_).length > 0;
+        return update_in_progress_;
     }
 
     /**
-     * Reset the update state.
+     * Setter for update_in_progress_.
+     * @param boolean value The desired value (true for update, false otherwise)
      */
-    function reset_update()
+    function set_update_in_progress(value)
     {
-        update_state_ = {};
+        update_in_progress_ = value;
     }
 
     /**
@@ -98,7 +105,7 @@ Module.register(function() {
      * Get the number of external tools update done.
      * @return integer The number of external tools update done
      */
-    function get_number_of_external_tools_update_done()
+    function get_number_of_external_tool_updates_done()
     {
         var ret = 0;
 
@@ -123,20 +130,59 @@ Module.register(function() {
     }
 
     /**
-     * Update all the enabled external tools.
-     * @param Function progress_callback Will be called on each state change
+     * Update the popup content.
      */
-    function update_external_tools(progress_callback)
+    function update_tooltip()
     {
-        // Abort if an update is already in progress
-        if (is_update_in_progress()) {
-            return;
-        }
+        var element_id = EXTERNAL_TOOLS_BAR_UPDATE_CONTAINER_ID;
+        var new_content = '';
 
-        // if first launch, update the hidden div width (0/100)
-        update_hidden_div_width(0, 100);
-        // and disable the button
-        disable_button();
+        // set the content
+        new_content += '<ul id="' + EXTERNAL_TOOLS_TOOLTIP_LIST_ID + '" style="margin-top: 0;">';
+        for (var tool in update_state_) {
+            // if done and success
+            if (update_state_[tool].done === true) {
+                if (update_state_[tool].error === false) {
+                    new_content += '<li style="color: #27F037;">';
+                } else {
+                    new_content += '<li style="color: #EE1515;">';
+                }
+            } else {
+                new_content += '<li>';
+            }
+
+            // Include title
+            new_content += update_state_[tool].name + '</li>';
+        }
+        new_content += '</ul>';
+
+        // Update the listeners
+        JS.injectJS(
+            'var el = document.getElementById(' + JSON.stringify(element_id) + ');' +
+            'el.onmouseover = function() {' +
+                'return js.HordeTip.showSpecialTip(this, \'simpleTip\', \'\', ' + JSON.stringify(new_content) + ', event);' +
+            '};' +
+            'el.onmouseout = function() {' +
+                'return js.HordeTip.hide(event);' +
+            '};'
+        );
+
+        // Directly update the tooltip if it is already present in the DOM
+        JS.injectJS(
+            'if (document.getElementById(' + JSON.stringify(EXTERNAL_TOOLS_TOOLTIP_LIST_ID) + ') !== null) {' +
+                'var el = document.getElementById(\'tooltipContent\');' +
+                'el.innerHTML = ' + JSON.stringify('<div class="title"></div>' + new_content) + ';' +
+            '}'
+        );
+    }
+
+    /**
+     * Reset the update state.
+     */
+    function reset_update()
+    {
+        update_state_ = {};
+        set_update_in_progress(false);
 
         Module.iterate_on_type(Module.TYPE.EXTERNAL_TOOL, function(module) {
             if (!module.is_enabled()) {
@@ -149,16 +195,69 @@ Module.register(function() {
                 done: false,
                 error: false
             };
+        });
+    }
+
+    /**
+     * Called every time an external tool is updated.
+     */
+    function on_external_tool_update() {
+        var number_of_tools = get_number_of_external_tools();
+        var number_of_done = get_number_of_external_tool_updates_done();
+
+        // Update the tooltip
+        update_tooltip();
+
+        // Update the hidden div
+        update_hidden_div_width(number_of_done, number_of_tools);
+
+        // if done
+        if (number_of_done >= number_of_tools) {
+            // reset the update status
+            reset_update();
+
+            // enable the button
+            enable_button();
+        }
+    }
+
+    /**
+     * Update all the enabled external tools.
+     * @param Function progress_callback Will be called on each state change
+     */
+    function update_external_tools(progress_callback)
+    {
+        // Abort if an update is already in progress
+        if (is_update_in_progress()) {
+            return;
+        }
+
+        // Reset update state
+        reset_update();
+
+        // We are actually doing an update
+        set_update_in_progress(true);
+
+        // Disable the button
+        disable_button();
+        // Update the popup
+        update_tooltip();
+        // Update the hidden div width
+        update_hidden_div_width(get_number_of_external_tool_updates_done(),
+                                get_number_of_external_tools());
+
+        JS.each(update_state_, function(module_name, state) {
+            var module = state.module;
 
             module.actions.update.call(module, function on_success() {
-                update_state_[module.name].done = true;
-                update_state_[module.name].error = false;
+                state.done = true;
+                state.error = false;
 
                 return progress_callback();
 
             }, function on_failure() {
-                update_state_[module.name].done = true;
-                update_state_[module.name].error = true;
+                state.done = true;
+                state.error = true;
 
                 return progress_callback();
             });
@@ -170,19 +269,8 @@ Module.register(function() {
      */
     function on_update_button_click()
     {
-        update_external_tools(function on_progress() {
-            var number_of_tools = get_number_of_external_tools();
-            var number_of_done = get_number_of_external_tools_update_done();
-
-            update_hidden_div_width(number_of_done, number_of_tools);
-
-            // if done
-            if (number_of_done >= number_of_tools) {
-                // finally reset the update
-                reset_update();
-                // enable the button
-                enable_button();
-            }
+        update_external_tools(function() {
+            return on_external_tool_update();
         });
     }
 
@@ -198,7 +286,7 @@ Module.register(function() {
             return;
         }
 
-        // Find the reference node
+        // Define the reference node selector
         if (D2N.is_on_page_in_city('bank')) {
             selector = 'a > img[src$="/gfx/icons/r_forum.gif"]';
         } else if (D2N.is_outside()) {
@@ -209,6 +297,11 @@ Module.register(function() {
 
         JS.wait_for_selector(selector, function(node) {
             var reference_node = node.parentNode;
+
+            // if the reference node is not a button, abort
+            if (!reference_node.classList.contains('button')) {
+                return;
+            }
 
             // Create the new node
             var new_button = JS.jsonToDOM(
@@ -237,12 +330,12 @@ Module.register(function() {
             if (is_update_in_progress()) {
                 disable_button();
             }
-            // Then update the hidden div width
-            update_hidden_div_width(get_number_of_external_tools_update_done(),
-                                    get_number_of_external_tools());
 
             // Insert it
             JS.insert_after(reference_node, new_button);
+
+            // Update the tooltip
+            update_tooltip();
 
             // Inject button again each time the gamebody is reloaded
             document.addEventListener('d2n_gamebody_reload', function() {
@@ -271,6 +364,7 @@ Module.register(function() {
                 'height: 100%;' +
                 'background-color: black;' +
                 'opacity: 0.5;' +
+                'cursor: help;' +
             '}' +
 
             '#' + EXTERNAL_TOOLS_BAR_UPDATE_CONTAINER_ID + ' a.disabled {' +
@@ -287,6 +381,18 @@ Module.register(function() {
         );
     }
 
+    /**
+     * Load the module.
+     */
+    function load_module()
+    {
+        // Reset update state (scan the available external tools and fill the
+        // update state)
+        reset_update();
+
+        inject_external_tools_bar_style();
+        inject_external_tools_bar_nodes();
+    }
 
     /************************
      * Module configuration *
@@ -311,21 +417,23 @@ Module.register(function() {
             },
 
             load: function() {
-                var enabled = false;
+                var loaded = false;
 
                 // inject the button if at least one external tool is enabled
                 Module.iterate_on_type(Module.TYPE.EXTERNAL_TOOL, function(module) {
-                    // if already enabled, abort
-                    if (enabled) {
+                    // if already loaded, abort
+                    if (loaded) {
                         return;
                     }
 
-                    // if module is enabled, then the update button has to be
-                    // enable
+                    // if module is enabled, then the external tools bar has to
+                    // be enabled
                     if (module.is_enabled()) {
-                        inject_external_tools_bar_style();
-                        inject_external_tools_bar_nodes();
-                        enabled = true;
+                        // Load the external tools bar module
+                        load_module();
+
+                        // Ensure it loads only once
+                        loaded = true;
                     }
                 });
             }
