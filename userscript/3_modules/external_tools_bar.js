@@ -12,118 +12,63 @@ Module.register(function() {
     var update_in_progress_ = false;
 
     /**
-     * Update the external tools
+     * Add the i18n strings for this module.
      */
-    function update_tools()
+    function add_i18n()
     {
-        var tools_updated = 0;
-        var tools_update_aborted = 0;
-        var tools_number = 0;
+        var i18n = {};
 
-        // Disable the toolbar
-        var disable_toolbar = function() {
-            update_in_progress_ = true;
-            JS.wait_for_id(DOM_PREFIX + '_external_tools_bar_update', function(node) {
-                node.classList.add('off');
-            });
-        };
+        i18n[I18N.LANG.EN] = {};
+        i18n[I18N.LANG.EN][MODULE_NAME + '_update_button'] = 'Update the external tools';
 
-        // Enable the toolbar
-        var enable_toolbar = function() {
-            JS.wait_for_id(DOM_PREFIX + '_external_tools_bar_update', function(node) {
-                update_in_progress_ = false;
-                node.classList.remove('off');
-            });
-        };
+        i18n[I18N.LANG.FR] = {};
+        i18n[I18N.LANG.EN][MODULE_NAME + '_update_button'] = 'Mettre à jour les outils externes';
 
-        // if an update is in progress, abort
-        if (update_in_progress_) {
-            return;
-        }
-
-        // else disable bars
-        disable_toolbar();
-
-        var images = document.querySelectorAll('#' + DOM_PREFIX + '_external_tools_bar a img');
-
-        // Replace the toolbar icon with a calim
-        var show_calim = function() {
-            images[0].style.display = 'inline';
-            images[1].style.display = 'none';
-            images[2].style.display = 'none';
-            images[3].style.display = 'none';
-        };
-
-        // Replace the toolbar icon with a loading wheel
-        var show_loading_wheel = function() {
-            images[0].style.display = 'none';
-            images[1].style.display = 'inline';
-            images[2].style.display = 'none';
-            images[3].style.display = 'none';
-        };
-
-        // Replace the toolbar icon with a smile
-        var show_smile = function() {
-            images[0].style.display = 'none';
-            images[1].style.display = 'none';
-            images[2].style.display = 'inline';
-            images[3].style.display = 'none';
-        };
-
-        // Replace the toolbar icon with a skull
-        var show_skull = function() {
-            images[0].style.display = 'none';
-            images[1].style.display = 'none';
-            images[2].style.display = 'none';
-            images[3].style.display = 'inline';
-        };
-
-        // Is called after each update
-        var handle_tool_update = function() {
-            // if all requests are done, reenable the button
-            if ((tools_updated + tools_update_aborted) === tools_number) {
-                enable_toolbar();
-            }
-
-            // if error, show skull
-            if (tools_update_aborted > 0) {
-                return show_skull();
-            }
-
-            // if all success, show happy smile and abort
-            if (tools_updated === tools_number) {
-                return show_smile();
-            }
-        };
-
-        disable_toolbar();
-        show_loading_wheel();
-
-        for (var i = 0, max = external_tools_.length; i < max; ++i) {
-            var tool = external_tools_[i];
-
-            // if tool isn't enabled, skip it
-            if (!(configuration_.enable_sync[tool.name])) {
-                continue;
-            }
-
-            // if key hasn't been found, skip it
-            if (!JS.is_defined(localStorage[tool.get_local_storage_key()])) {
-                continue;
-            }
-
-            // else update it
-            ++tools_number;
-            tool.update(function(response) {
-                tools_updated += 1;
-                handle_tool_update();
-            }, function(response) {
-                tools_update_aborted += 1;
-                handle_tool_update();
-            });
-        }
+        I18N.set(i18n);
     }
 
+    /**
+     * Inject the CSS for the external tools bar.
+     */
+    function inject_external_tools_bar_css()
+    {
+        JS.injectCSS(
+            '#d2ne_external_tools_bar {' +
+                'background-color: #5D321E;' +
+                'width: 303px;' +
+                'height: 30px;' +
+                'margin-left: 3px;' +
+                'margin-top: 5px;' +
+                'margin-bottom: 7px;' +
+                'border: 1px solid rgb(240, 215, 158);' +
+                'border-radius: 9px;' +
+                'padding: 5px;' +
+                'padding-left: 8px;' +
+            '}' +
+            '#d2ne_external_tools_bar a.button {' +
+                'margin-right: auto;' +
+                'margin-left: auto;' +
+            '}' +
+            '#d2ne_external_tools_bar span {' +
+                'float: left;' +
+                'display: inline-block;' +
+                'vertical-align: middle;' +
+                'margin-top: 3px;' +
+                'margin-bottom: 3px;' +
+                'padding: 2px;' +
+                'cursor: help;' +
+                'background-color: #5c2b20;' +
+                'outline: 1px solid black;' +
+                'border: 1px solid #ad8051;' +
+                'padding-left: 7px;' +
+                'padding-right: 4px;' +
+            '}' +
+            '#d2ne_external_tools_bar a img {' +
+                'vertical-align: middle;' +
+                'margin-right: 4px;' +
+            '}'
+        );
+    }
 
     /************************
      * Module configuration *
@@ -135,7 +80,7 @@ Module.register(function() {
         type: Module.TYPE.CONTAINER,
 
         properties: {
-            enabled: false
+            enabled: true
         },
 
         actions: {
@@ -143,7 +88,12 @@ Module.register(function() {
                 return true;
             },
 
+            init: function(){
+                add_i18n();
+            },
+
             load: function() {
+                inject_external_tools_bar_css();
             }
         }
 
