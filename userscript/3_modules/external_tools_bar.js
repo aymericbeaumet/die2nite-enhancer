@@ -86,6 +86,30 @@ Module.register(function() {
     }
 
     /**
+     * Get the number of external tools for the current update
+     * @return integer The number of external tools
+     */
+    function get_number_of_external_tools()
+    {
+        return Object.keys(update_state_).length;
+    }
+
+    /**
+     * Get the number of external tools update done.
+     * @return integer The number of external tools update done
+     */
+    function get_number_of_external_tools_update_done()
+    {
+        var ret = 0;
+
+        for (var key in update_state_) {
+            ret += (update_state_[key].done === true) ? 1 : 0;
+        }
+
+        return ret;
+    }
+
+    /**
      * Set the size of the hidden div. Also enable/disable the button behind.
      * @param integer updated number of updated tools (with success or not)
      * @param integer total total number of tools
@@ -147,13 +171,8 @@ Module.register(function() {
     function on_update_button_click()
     {
         update_external_tools(function on_progress() {
-            var number_of_tools = 0;
-            var number_of_done = 0;
-
-            for (var key in update_state_) {
-                ++number_of_tools;
-                number_of_done += (update_state_[key].done === true) ? 1 : 0;
-            }
+            var number_of_tools = get_number_of_external_tools();
+            var number_of_done = get_number_of_external_tools_update_done();
 
             update_hidden_div_width(number_of_done, number_of_tools);
 
@@ -174,9 +193,8 @@ Module.register(function() {
     {
         var selector = null;
 
-        // If the toolbar exists, reset it and abort
+        // If the toolbar exists, abort
         if (JS.is_defined(document.getElementById(EXTERNAL_TOOLS_BAR_UPDATE_ID))) {
-            show_start();
             return;
         }
 
@@ -214,6 +232,14 @@ Module.register(function() {
             button_container_ = new_button;
             button_hidden_div_ = new_button.childNodes[0];
             button_link_ = new_button.childNodes[1];
+
+            // If an update is in progress, disable it
+            if (is_update_in_progress()) {
+                disable_button();
+            }
+            // Then update the hidden div width
+            update_hidden_div_width(get_number_of_external_tools_update_done(),
+                                    get_number_of_external_tools());
 
             // Insert it
             JS.insert_after(reference_node, new_button);
