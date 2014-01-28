@@ -276,10 +276,11 @@ Module.register(function() {
 
     /**
      * Inject the node composing the external tools bar into the DOM.
+     * @param boolean listen_for_gamebody_reload Whether or not set the listener (optional)
      */
-    function inject_external_tools_bar_nodes()
+    function inject_external_tools_bar_nodes(listen_for_gamebody_reload)
     {
-        var selector = null;
+        listen_for_gamebody_reload = listen_for_gamebody_reload || false;
 
         // If the toolbar exists, abort
         if (JS.is_defined(document.getElementById(EXTERNAL_TOOLS_BAR_UPDATE_ID))) {
@@ -287,21 +288,17 @@ Module.register(function() {
         }
 
         // Define the reference node selector
+        var selector = null;
         if (D2N.is_on_page_in_city('bank')) {
-            selector = 'a > img[src$="/gfx/icons/r_forum.gif"]';
+            selector = 'a.button > img[src$="/gfx/icons/r_forum.gif"]';
         } else if (D2N.is_outside()) {
-            selector = 'a > img[src$="/gfx/icons/small_hero.gif"]';
+            selector = 'a.button > img[src$="/gfx/icons/small_hero.gif"]';
         } else {
             return;
         }
 
         JS.wait_for_selector(selector, function(node) {
             var reference_node = node.parentNode;
-
-            // if the reference node is not a button, abort
-            if (!reference_node.classList.contains('button')) {
-                return;
-            }
 
             // Create the new node
             var new_button = JS.jsonToDOM(
@@ -328,6 +325,8 @@ Module.register(function() {
 
             // If an update is in progress, disable it
             if (is_update_in_progress()) {
+                update_hidden_div_width(get_number_of_external_tool_updates_done(),
+                                        get_number_of_external_tools());
                 disable_button();
             }
 
@@ -337,11 +336,13 @@ Module.register(function() {
             // Update the tooltip
             update_tooltip();
 
-            // Inject button again each time the gamebody is reloaded
-            document.addEventListener('d2n_gamebody_reload', function() {
-                inject_external_tools_bar_nodes();
-            }, false);
-        });
+            if (listen_for_gamebody_reload) {
+                // Inject DOM again each time the gamebody is reloaded
+                document.addEventListener('d2n_gamebody_reload', function() {
+                    inject_external_tools_bar_nodes();
+                }, false);
+            }
+        }, 5);
     }
 
     /**
@@ -390,8 +391,11 @@ Module.register(function() {
         // update state)
         reset_update();
 
+        // Inject CSS
         inject_external_tools_bar_style();
-        inject_external_tools_bar_nodes();
+
+        // Inject DOM
+        inject_external_tools_bar_nodes(true);
     }
 
     /************************
