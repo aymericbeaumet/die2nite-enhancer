@@ -311,6 +311,11 @@ Module.register(function() {
             },
 
             load: function() {
+                // abort if not external tool is enabled
+                if (Module.count_on_type(Module.TYPE.EXTERNAL_TOOL) === 0) {
+                    return;
+                }
+
                 inject_external_tools_bar_style();
                 inject_external_tools_bar_nodes();
             }
