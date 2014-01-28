@@ -21,7 +21,7 @@ Module.register(function() {
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Vider son sac en une fois';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Permet de vider son sac en un seul click à l\'extérieur.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Permet de vider son sac en un seul clic à l\'extérieur.';
         i18n[I18N.LANG.FR][MODULE_NAME + '_tooltip'] = 'Cliquez pour déposer tous vos objets par terre.';
         i18n[I18N.LANG.FR][MODULE_NAME + '_confirm'] = 'Êtes-vous sûr de vouloir déposer vos objets par terre ? D\'autres joueurs seront en mesure d\'en prendre possession.';
 
