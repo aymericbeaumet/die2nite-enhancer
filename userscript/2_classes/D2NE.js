@@ -115,6 +115,27 @@ var D2NE = (function() {
     }
 
     /**
+     * Called when the API key is successfully fetched.
+     * @param Object module The module
+     * @param string key The API key
+     */
+    function on_api_key_successfully_fetched(module, key)
+    {
+        module.properties.tool.api_key = key;
+        module.save_properties();
+    }
+
+    /**
+     * Called when the API key can't be fetched.
+     * @param Object module The module
+     */
+    function on_api_key_fetch_error(module)
+    {
+        module.properties.tool.api_key = null;
+        module.save_properties();
+    }
+
+    /**
      * Fetch the api keys for each available external tool.
      */
     function fetch_api_keys()
@@ -137,13 +158,21 @@ var D2NE = (function() {
             }
 
             D2N.get_api_key(module.properties.tool.directory_id, function on_success(key) {
-                module.properties.tool.api_key = key;
-                module.save_properties();
+                on_api_key_successfully_fetched(module, key);
             }, function on_failure() {
-                module.properties.tool.api_key = null;
-                module.save_properties();
+                on_api_key_fetch_error(module);
             });
         });
+    }
+
+    /**
+     * Called if the user is logged.
+     */
+    function on_user_logged()
+    {
+        fetch_api_keys();
+        clean_api_keys_if_on_settings_page();
+        D2N.add_custom_events();
     }
 
 
@@ -167,9 +196,7 @@ var D2NE = (function() {
             load_modules();
 
             D2N.is_logged(function(is_logged) { if (is_logged) {
-                fetch_api_keys();
-                clean_api_keys_if_on_settings_page();
-                D2N.add_custom_events();
+                on_user_logged();
             }});
         }
 
