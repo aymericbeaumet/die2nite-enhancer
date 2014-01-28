@@ -29,7 +29,7 @@ Module.register(function() {
             }
 
             clean_api_keys();
-        });
+        }, false);
     }
 
     /**
@@ -95,7 +95,7 @@ Module.register(function() {
         type: Module.TYPE.BUSINESS_LOGIC,
 
         properties: {
-            enabled: false,
+            enabled: true,
         },
 
         actions: {
@@ -103,13 +103,13 @@ Module.register(function() {
                 return true;
             },
 
-            init: function() {
+            load: function() {
                 D2N.is_logged(function(is_logged) { if (is_logged) {
                     document.addEventListener('d2ne_all_modules_loaded', function() {
                         fetch_api_keys();
-                        clean_api_keys_if_on_settings_page();
                     }, false);
                 }});
+                clean_api_keys_if_on_settings_page();
             }
         }
 
