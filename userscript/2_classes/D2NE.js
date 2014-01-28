@@ -157,6 +157,7 @@ var D2NE = (function() {
                 return;
             }
 
+            // else try to fetch it
             D2N.get_api_key(module.properties.tool.directory_id, function on_success(key) {
                 on_api_key_successfully_fetched(module, key);
             }, function on_failure() {
