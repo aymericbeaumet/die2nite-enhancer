@@ -104,11 +104,11 @@ Module.register(function() {
             },
 
             load: function() {
-                D2N.is_logged(function(is_logged) { if (is_logged) {
-                    document.addEventListener('d2ne_all_modules_loaded', function() {
+                document.addEventListener('d2ne_all_modules_loaded', function() {
+                    D2N.is_logged(function(is_logged) { if (is_logged) {
                         fetch_api_keys();
-                    }, false);
-                }});
+                    }});
+                }, false);
                 clean_api_keys_if_on_settings_page();
             }
         }
