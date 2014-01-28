@@ -55,7 +55,7 @@ Module.register(function() {
                 add_i18n();
             },
 
-            load: function(module_config) {
+            load: function() {
                 JS.injectCSS(
                     '.heroMode, #ghostHeroAd, #heroContainer, .heroAd, #ghostHeroChoose, .promoBt, .sondageBg {' +
                         'display: none !important;' +
