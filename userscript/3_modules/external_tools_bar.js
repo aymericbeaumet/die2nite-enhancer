@@ -311,13 +311,23 @@ Module.register(function() {
             },
 
             load: function() {
-                // abort if not external tool is enabled
-                if (Module.count_on_type(Module.TYPE.EXTERNAL_TOOL) === 0) {
-                    return;
-                }
+                var enabled = false;
 
-                inject_external_tools_bar_style();
-                inject_external_tools_bar_nodes();
+                // inject the button if at least one external tool is enabled
+                Module.iterate_on_type(Module.TYPE.EXTERNAL_TOOL, function(module) {
+                    // if already enabled, abort
+                    if (enabled) {
+                        return;
+                    }
+
+                    // if module is enabled, then the update button has to be
+                    // enable
+                    if (module.is_enabled()) {
+                        inject_external_tools_bar_style();
+                        inject_external_tools_bar_nodes();
+                        enabled = true;
+                    }
+                });
             }
         }
 
