@@ -14,7 +14,7 @@ Module.register(function() {
         var i18n = {};
 
         i18n[I18N.LANG.EN] = {};
-        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Hide rookie mode'; 
+        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Hide rookie mode';
         i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Hide all the links to enable the rookie mode.';
 
         i18n[I18N.LANG.FR] = {};

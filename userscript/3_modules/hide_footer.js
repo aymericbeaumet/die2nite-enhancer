@@ -15,7 +15,7 @@ Module.register(function() {
         var i18n = {};
 
         i18n[I18N.LANG.EN] = {};
-        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Hide footer'; 
+        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Hide footer';
         i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Hide the page footer with informations about other games, Motion Twin, etc...';
 
         i18n[I18N.LANG.FR] = {};

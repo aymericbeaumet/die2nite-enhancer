@@ -14,7 +14,7 @@ Module.register(function() {
         var i18n = {};
 
         i18n[I18N.LANG.EN] = {};
-        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Hide the city and outside zones banners'; 
+        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Hide the city and outside zones banners';
         i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Hide the banner on the top of the screen when in city or outside.';
 
         i18n[I18N.LANG.FR] = {};

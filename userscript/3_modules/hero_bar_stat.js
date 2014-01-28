@@ -14,7 +14,7 @@ Module.register(function() {
         var i18n = {};
 
         i18n[I18N.LANG.EN] = {};
-        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Enable hero bar stat'; 
+        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Enable hero bar stat';
         i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'On soul page, enable days stat on the hero bar.';
 
         i18n[I18N.LANG.FR] = {};

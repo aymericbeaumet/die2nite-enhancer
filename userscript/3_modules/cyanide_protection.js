@@ -14,7 +14,7 @@ Module.register(function() {
         var i18n = {};
 
         i18n[I18N.LANG.EN] = {};
-        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Enable cyanide protection'; 
+        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Enable cyanide protection';
         i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Avoid to eat cyanide by accident by deleting the link to use it.';
 
         i18n[I18N.LANG.FR] = {};

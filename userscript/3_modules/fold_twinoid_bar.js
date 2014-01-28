@@ -24,7 +24,7 @@ Module.register(function() {
         var i18n = {};
 
         i18n[I18N.LANG.EN] = {};
-        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Fold Twinoid bar'; 
+        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Fold Twinoid bar';
         i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Fold the Twinoid black bar at the top of the screen. Put your mouse near the top of the screen to show it again.';
 
         i18n[I18N.LANG.FR] = {};

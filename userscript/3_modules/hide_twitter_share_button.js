@@ -14,7 +14,7 @@ Module.register(function() {
         var i18n = {};
 
         i18n[I18N.LANG.EN] = {};
-        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Hide the Twitter share button'; 
+        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Hide the Twitter share button';
         i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Hide the Twitter share button on the Gazette.';
 
         i18n[I18N.LANG.FR] = {};

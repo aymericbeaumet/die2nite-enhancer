@@ -48,7 +48,7 @@ Module.register(function() {
                 full_desc_I18N: MODULE_NAME + '_full_desc'
             }
         },
- 
+
         actions: {
             can_run: function() {
                 return D2N.is_on_hordes();

@@ -14,7 +14,7 @@ Module.register(function() {
         var i18n = {};
 
         i18n[I18N.LANG.EN] = {};
-        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Highlight AP'; 
+        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Highlight AP';
         i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Add a border with a specific color (from red to green) in function of the remaining number of action point.';
 
         i18n[I18N.LANG.FR] = {};
