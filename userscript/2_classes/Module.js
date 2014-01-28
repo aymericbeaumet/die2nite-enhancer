@@ -212,6 +212,16 @@ Module.count = function()
 };
 
 /**
+ * Return the number of modules for a specific type.
+ * @param Const type The module type
+ * @return integer The number of module
+ */
+Module.count_on_type = function(type)
+{
+    return Module.modules_by_type_[type].length;
+};
+
+/**
  * Iterate over all the modules.
  * @param Function callback The function to call, it takes one parameter: a
  *                          module.
