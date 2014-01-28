@@ -456,7 +456,7 @@ var JS = (function() {
 
             // if not, retry again
             setTimeout(function() {
-                wait_for_class(class_name, callback, max - 1, not_found_callback);
+                JS.wait_for_class(class_name, callback, max - 1, not_found_callback);
             }, wait_for_retry_time_);
         },
 
@@ -542,6 +542,28 @@ var JS = (function() {
         assign_attribute: function(key, value)
         {
             this[key] = value;
+        },
+
+        /**
+         * Insert a DOM node after another.
+         * @link http://stackoverflow.com/a/4793630/1071486
+         * @param Node reference_node
+         * @param Node new_node
+         */
+        insert_after: function(reference_node, new_node)
+        {
+            reference_node.parentNode.insertBefore(new_node, reference_node.nextSibling);
+        },
+
+        /**
+         * Parse a XML string.
+         * @param string xml The XML to parse
+         */
+        parse_xml: function(xml)
+        {
+            var parser = new DOMParser();
+
+            return parser.parseFromString(xml, "text/xml");
         },
 
         jsonToDOM: jsonToDOM

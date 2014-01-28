@@ -6,9 +6,6 @@ Module.register(function() {
      * Module context *
      ******************/
 
-    var update_method_ = 'POST';
-    var update_url_ = 'http://bbh.fred26.fr/update.php';
-
     /**
      * Add the i18n strings for this module.
      */
@@ -39,7 +36,7 @@ Module.register(function() {
                 directory_id: 51,
                 api_key: null,
                 update_method: 'POST',
-                update_url: 'http://'
+                update_url: 'http://bbh.fred26.fr/update.php'
             }
         },
 
@@ -69,9 +66,11 @@ Module.register(function() {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
                     function(response_text) {
-                        // if response is too short, it is incomplete because
-                        // the user is not logged
-                        if (response_text.length < 20000) {
+                        var parsed_xml = JS.parse_xml(response_text);
+                        var hordes_node = parsed_xml.firstChild;
+                        var potential_error_node = hordes_node.childNodes[1];
+
+                        if (potential_error_node && potential_error_node.tagName === 'error') {
                             return callback_failure();
                         }
                         return callback_success();

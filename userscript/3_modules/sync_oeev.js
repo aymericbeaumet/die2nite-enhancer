@@ -6,9 +6,6 @@ Module.register(function() {
      * Module context *
      ******************/
 
-    var update_method_ = 'POST';
-    var update_url_ = 'http://www.oeev-hordes.com/';
-
     /**
      * Add the i18n strings for this module.
      */
@@ -17,6 +14,7 @@ Module.register(function() {
         var i18n = {};
 
         i18n[I18N.LANG.FR] = {};
+        i18n[I18N.LANG.FR][MODULE_NAME + '_name'] = 'Où en êtes-vous ?';
         i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Activer la synchronisation OEEV';
         i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Ajoute la possibilité de synchroniser avec Où en êtes-vous ?';
 
@@ -37,7 +35,9 @@ Module.register(function() {
             enabled: false,
             tool: {
                 directory_id: 22,
-                api_key: null
+                api_key: null,
+                update_method: 'POST',
+                update_url: 'http://www.oeev-hordes.com/'
             }
         },
 
