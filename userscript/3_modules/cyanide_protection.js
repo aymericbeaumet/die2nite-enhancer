@@ -56,9 +56,7 @@ Module.register(function() {
             },
 
             load: function() {
-                var remove_cyanide_action = function(listen_for_gamebody_reload) {
-                    listen_for_gamebody_reload = listen_for_gamebody_reload || false;
-
+                document.addEventListener('d2n_gamebody_reload', function() {
                     // if not at home or outside (the two only places where a player
                     // can use an object), abort
                     if (!(D2N.is_on_page_in_city('home') || D2N.is_outside())) {
@@ -81,14 +79,7 @@ Module.register(function() {
                             }
                         }
                     }, 5);
-
-                    if (listen_for_gamebody_reload) {
-                        document.addEventListener('d2n_gamebody_reload', function() {
-                            remove_cyanide_action();
-                        }, false);
-                    }
-                };
-                remove_cyanide_action(true);
+                }, false);
             }
         }
 

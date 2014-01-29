@@ -132,6 +132,8 @@ var D2N = (function() {
                 };
                 watch_for_ap_change(); // watch on first load
 
+                emit_ap_change_event(); // dispatch event on first load
+
                 // watch again when the page change
                 window.addEventListener('hashchange', function() {
                     watch_for_ap_change();

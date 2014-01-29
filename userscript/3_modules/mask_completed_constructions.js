@@ -95,31 +95,6 @@ Module.register(function() {
         });
     }
 
-    /**
-     * Mask the completed constructions (add the link to toggle this behaviour
-     * in the DOM).
-     * @param boolean listen_for_gamebody_reload Whether or not listen for the
-     * gamebody reload event
-     */
-    function mask_completed_constructions(listen_for_gamebody_reload)
-    {
-        listen_for_gamebody_reload = listen_for_gamebody_reload || false;
-
-        if (!D2N.is_in_city()) {
-            return;
-        }
-
-        add_link.call(this);
-
-        // Add the link again on each page reload
-        if (listen_for_gamebody_reload) {
-            var f = add_link.bind(this);
-            document.addEventListener('d2n_gamebody_reload', function() {
-                f();
-            }, false);
-        }
-    }
-
 
     /************************
      * Module configuration *
@@ -153,7 +128,14 @@ Module.register(function() {
             },
 
             load: function() {
-                mask_completed_constructions.call(this, true);
+                if (!D2N.is_in_city()) {
+                    return;
+                }
+
+                var f = add_link.bind(this);
+                document.addEventListener('d2n_gamebody_reload', function() {
+                    f();
+                }, false);
             }
         }
 

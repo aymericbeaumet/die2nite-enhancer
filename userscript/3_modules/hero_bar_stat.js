@@ -82,7 +82,8 @@ Module.register(function() {
                         JS.wait_for_selector('#ghost_pages img.hbar', function(node) {
                             var width = parseFloat(node.style.width);
                             // Notes:
-                            //   0 day -> 0px
+                            //   - day 0/XX -> 0px
+                            //   - day 5/14 -> 210.714285714286px
                             var max_width = 583;
                             var percent = width / max_width * 100;
 

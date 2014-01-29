@@ -284,7 +284,6 @@ Module.register(function() {
 
     /**
      * Inject the node composing the external tools bar into the DOM.
-     * @param boolean listen_for_gamebody_reload Whether or not set the listener (optional)
      */
     function inject_external_tools_bar_nodes()
     {

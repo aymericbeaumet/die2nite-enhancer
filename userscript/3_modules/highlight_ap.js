@@ -56,40 +56,35 @@ Module.register(function() {
             },
 
             load: function() {
-                JS.wait_for_id('movesCounter', function(node) {
-                    var highlight = function() {
-                        D2N.get_number_of_ap(function(ap) {
-                            var colors = [
-                                'ff0000', // 0 AP
-                                'ff4700', // 1 AP
-                                'ff8e00', // 2 AP
-                                'ffd500', // 3 AP
-                                'e3ff00', // 4 AP
-                                '9cff00', // 5 AP
-                                '55ff00', // 6 AP
-                                '00ff00'  // 7 AP+
-                            ];
+                var highlight = function() {
+                    D2N.get_number_of_ap(function(ap) {
+                        var colors = [
+                            'ff0000', // 0 AP
+                            'ff4700', // 1 AP
+                            'ff8e00', // 2 AP
+                            'ffd500', // 3 AP
+                            'e3ff00', // 4 AP
+                            '9cff00', // 5 AP
+                            '55ff00', // 6 AP
+                            '00ff00'  // 7 AP+
+                        ];
 
-                            while (ap >= colors.length) {
-                                --ap;
-                            }
+                        while (ap >= colors.length) {
+                            --ap;
+                        }
 
-                            JS.injectCSS(
-                                '#movesCounter {' +
-                                    'border: 1px solid #' + colors[ap] + ' !important;' +
-                                '}'
-                            );
-                        });
-                    };
+                        JS.injectCSS(
+                            '#movesCounter {' +
+                                'border: 1px solid #' + colors[ap] + ' !important;' +
+                            '}'
+                        );
+                    });
+                };
 
-                    // Highlight at load
+                // Highlight on change
+                document.addEventListener('d2n_apchange', function() {
                     highlight();
-
-                    // Highlight on change
-                    document.addEventListener('d2n_apchange', function() {
-                        highlight();
-                    }, false);
-                });
+                }, false);
             }
         }
 

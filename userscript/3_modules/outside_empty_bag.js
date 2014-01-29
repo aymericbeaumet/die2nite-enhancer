@@ -104,7 +104,7 @@ Module.register(function() {
                     '}'
                 );
 
-                var add_empty_bag_one_click = function(listen_for_gamebody_reload) {
+                document.addEventListener('d2n_gamebody_reload', function() {
                     // if not outside, abort
                     if (!D2N.is_outside()) {
                         return;
@@ -127,14 +127,8 @@ Module.register(function() {
                             '};'
                         );
 
-                        if (listen_for_gamebody_reload) {
-                            document.addEventListener('d2n_gamebody_reload', function() {
-                                add_empty_bag_one_click();
-                            }, false);
-                        }
                     });
-                };
-                add_empty_bag_one_click(true);
+                }, false);
             }
         }
 
