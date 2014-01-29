@@ -260,6 +260,63 @@ Module.register(function() {
         );
     }
 
+    function insert_configuration_panel_dom()
+    {
+        JS.wait_for_id('main', function(node) {
+            var config_panel_div = JS.jsonToDOM(
+                ["div", { "id": "d2ne_configuration_panel" },
+                    ["div", {},
+                        ["h1", {},
+                            ["img", { "src": "/gfx/forum/smiley/h_city_up.gif", "alt": "" }],
+                            ["span", { "style": "display: none;" }, ' ' + I18N.get(MODULE_NAME + '_title')]
+                        ],
+
+                        ["div", { "style": "display: none;" },
+                            ["p", {}, I18N.get(MODULE_NAME + '_description')],
+
+                            ["div", {}],
+
+                            ["p", {},
+                                ["a", { "href": "javascript:void(0)", "class": "button",
+                                        "onclick": function() { save_configuration(); JS.reload(); } },
+                                    I18N.get(MODULE_NAME + '_save_button')]
+                            ],
+
+                            ["div", {},
+                                ["a", { "href": "__PROJECT_WEBSITE__", "target": "_blank" }, "__NAME__ v__VERSION__"]
+                            ]
+                        ]
+                    ]
+                ]
+            , document);
+
+        configuration_panel_extensible_zone_node_ = config_panel_div.childNodes[0].childNodes[1].childNodes[1];
+
+            // Insert panel
+            node.insertBefore(config_panel_div, node.firstChild);
+
+            // Show/Hide config panel cache
+            var config_panel_toggled_elements_cache = document.querySelectorAll('#d2ne_configuration_panel > div > h1 > span, #d2ne_configuration_panel > div > div');
+            var config_panel_toggled_elements_cache_length = config_panel_toggled_elements_cache.length;
+
+            // Show panel on hover
+            config_panel_div.addEventListener('mouseover', function() {
+                config_panel_div.style['z-index'] = '11'; // This fix is needed for the spanish version, as the hero adds has a z-index of 10
+                for (var i = 0; i < config_panel_toggled_elements_cache_length; ++i) {
+                    config_panel_toggled_elements_cache[i].style.display = 'inline';
+                }
+            }, false);
+
+            // Hide panel on mouse out
+            config_panel_div.addEventListener('mouseout', function() {
+                for (var i = 0; i < config_panel_toggled_elements_cache_length; ++i) {
+                    config_panel_toggled_elements_cache[i].style.display = 'none';
+                }
+                config_panel_div.style['z-index'] = '9'; // See previous function comment
+            }, false);
+        });
+    }
+
     /************************
      * Module configuration *
      ************************/
@@ -284,62 +341,8 @@ Module.register(function() {
             },
 
             load: function() {
-                JS.wait_for_id('main', function(node) {
-                    // Inject panel style
-                    inject_configuration_panel_css();
-
-                    var config_panel_div = JS.jsonToDOM(
-                        ["div", { "id": "d2ne_configuration_panel" },
-                            ["div", {},
-                                ["h1", {},
-                                    ["img", { "src": "/gfx/forum/smiley/h_city_up.gif", "alt": "" }],
-                                    ["span", { "style": "display: none;" }, ' ' + I18N.get(MODULE_NAME + '_title')]
-                                ],
-
-                                ["div", { "style": "display: none;" },
-                                    ["p", {}, I18N.get(MODULE_NAME + '_description')],
-
-                                    ["div", {}],
-
-                                    ["p", {},
-                                        ["a", { "href": "javascript:void(0)", "class": "button",
-                                                "onclick": function() { save_configuration(); JS.reload(); } },
-                                            I18N.get(MODULE_NAME + '_save_button')]
-                                    ],
-
-                                    ["div", {},
-                                        ["a", { "href": "__PROJECT_WEBSITE__", "target": "_blank" }, "__NAME__ v__VERSION__"]
-                                    ]
-                                ]
-                            ]
-                        ]
-                    , document);
-
-                configuration_panel_extensible_zone_node_ = config_panel_div.childNodes[0].childNodes[1].childNodes[1];
-
-                    // Insert panel
-                    node.insertBefore(config_panel_div, node.firstChild);
-
-                    // Show/Hide config panel cache
-                    var config_panel_toggled_elements_cache = document.querySelectorAll('#d2ne_configuration_panel > div > h1 > span, #d2ne_configuration_panel > div > div');
-                    var config_panel_toggled_elements_cache_length = config_panel_toggled_elements_cache.length;
-
-                    // Show panel on hover
-                    config_panel_div.addEventListener('mouseover', function() {
-                        config_panel_div.style['z-index'] = '11'; // This fix is needed for the spanish version, as the hero adds has a z-index of 10
-                        for (var i = 0; i < config_panel_toggled_elements_cache_length; ++i) {
-                            config_panel_toggled_elements_cache[i].style.display = 'inline';
-                        }
-                    }, false);
-
-                    // Hide panel on mouse out
-                    config_panel_div.addEventListener('mouseout', function() {
-                        for (var i = 0; i < config_panel_toggled_elements_cache_length; ++i) {
-                            config_panel_toggled_elements_cache[i].style.display = 'none';
-                        }
-                        config_panel_div.style['z-index'] = '9'; // See previous function comment
-                    }, false);
-                });
+                inject_configuration_panel_css();
+                insert_configuration_panel_dom();
             }
         }
 
