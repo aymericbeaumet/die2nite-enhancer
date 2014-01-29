@@ -125,6 +125,14 @@ Module.register(function() {
     {
         var percent = (updated / total) * 100;
 
+        // Remove transition if not needed
+        if (percent <= 0) {
+            button_hidden_div_.classList.remove('smooth_transition');
+        // Else add it
+        } else {
+            button_hidden_div_.classList.add('smooth_transition');
+        }
+
         // change the div width
         button_hidden_div_.style.width = (100 - percent) + '%';
     }
@@ -366,6 +374,12 @@ Module.register(function() {
                 'background-color: black;' +
                 'opacity: 0.5;' +
                 'cursor: help;' +
+            '}' +
+
+            '#' + EXTERNAL_TOOLS_BAR_UPDATE_CONTAINER_ID + ' div.smooth_transition {' +
+                'transition: width 0.8s;' +
+                '-moz-transition: width 0.8s;' +
+                '-webkit-transition: width 0.8s;' +
             '}' +
 
             '#' + EXTERNAL_TOOLS_BAR_UPDATE_CONTAINER_ID + ' a.disabled {' +
