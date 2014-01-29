@@ -288,8 +288,6 @@ Module.register(function() {
      */
     function inject_external_tools_bar_nodes()
     {
-        listen_for_gamebody_reload = listen_for_gamebody_reload || false;
-
         // If the toolbar exists, abort
         if (JS.is_defined(document.getElementById(EXTERNAL_TOOLS_BAR_UPDATE_ID))) {
             return;

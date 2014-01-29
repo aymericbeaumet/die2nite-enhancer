@@ -109,7 +109,9 @@ var D2NE = (function() {
             initialise_modules();
             load_modules();
 
-            D2N.add_custom_events();
+            D2N.is_logged(function(is_logged) { if (is_logged) {
+                D2N.add_custom_events();
+            }});
         }
 
     };
