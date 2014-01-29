@@ -520,8 +520,8 @@ var JS = (function() {
          */
         dispatch_event: function(key, detail, node)
         {
-            node = (typeof node === 'undefined') ? document : node;
-            detail = (typeof detail === 'undefined') ? null : detail;
+            detail = detail || null;
+            node = node || document;
 
             var event_param = {};
             event_param.detail = detail;

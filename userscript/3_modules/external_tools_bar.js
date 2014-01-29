@@ -286,7 +286,7 @@ Module.register(function() {
      * Inject the node composing the external tools bar into the DOM.
      * @param boolean listen_for_gamebody_reload Whether or not set the listener (optional)
      */
-    function inject_external_tools_bar_nodes(listen_for_gamebody_reload)
+    function inject_external_tools_bar_nodes()
     {
         listen_for_gamebody_reload = listen_for_gamebody_reload || false;
 
@@ -343,13 +343,6 @@ Module.register(function() {
 
             // Update the tooltip
             update_tooltip();
-
-            if (listen_for_gamebody_reload) {
-                // Inject DOM again each time the gamebody is reloaded
-                document.addEventListener('d2n_gamebody_reload', function() {
-                    inject_external_tools_bar_nodes();
-                }, false);
-            }
         }, 10);
     }
 
@@ -405,11 +398,13 @@ Module.register(function() {
         // update state)
         reset_update();
 
+        // Inject DOM
+        document.addEventListener('d2n_gamebody_reload', function() {
+            inject_external_tools_bar_nodes();
+        }, false);
+
         // Inject CSS
         inject_external_tools_bar_style();
-
-        // Inject DOM
-        inject_external_tools_bar_nodes(true);
     }
 
     /************************
