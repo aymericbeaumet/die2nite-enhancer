@@ -350,7 +350,7 @@ Module.register(function() {
                     inject_external_tools_bar_nodes();
                 }, false);
             }
-        }, 5);
+        }, 10);
     }
 
     /**
