@@ -58,7 +58,7 @@ Module.register(function() {
             load: function() {
                 JS.injectCSS(
                     'div.sectionArt {' +
-                    'display: none;' +
+                        'display: none;' +
                     '}'
                 );
             }
