@@ -40,7 +40,8 @@ Module.register(function() {
 
         configurable: {
             enabled: {
-                type: Module.PROPERTIES.BOOLEAN,
+                category: Module.PROPERTY_CATEGORY.HERO,
+                type: Module.PROPERTY.BOOLEAN,
                 short_desc_I18N: MODULE_NAME + '_short_desc',
                 full_desc_I18N: MODULE_NAME + '_full_desc'
             }
@@ -84,6 +85,7 @@ Module.register(function() {
                             // Notes:
                             //   - day 0/XX -> 0px
                             //   - day 5/14 -> 210.714285714286px
+                            //   - day 6/14 -> 252.857142857143px
                             var max_width = 583;
                             var percent = width / max_width * 100;
 

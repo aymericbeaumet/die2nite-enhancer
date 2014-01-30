@@ -106,8 +106,8 @@ Module.prototype.fetch_properties = function()
  * The different property types.
  */
 
-Module.PROPERTIES = {};
-Module.PROPERTIES.BOOLEAN = 0;
+Module.PROPERTY = {};
+Module.PROPERTY.BOOLEAN = 0;
 
 
 /********************************
@@ -140,6 +140,17 @@ Module.TYPE.UNKNOWN_TYPE = 1;
  * The order in which the module types should be browsed.
  */
 Module.TYPE_LOADING_ORDER = [];
+
+/**
+ * The different properties categories (optional).
+ */
+Module.PROPERTY_CATEGORY = {};
+Module.PROPERTY_CATEGORY.UNKNOWN_CATEGORY = 1;
+
+/**
+ * The property categories priority order (optional).
+ */
+Module.PROPERTY_CATEGORY_PRIORITY_ORDER = [];
 
 /**
  * Register a function returning a configuration object which will be used to
@@ -193,7 +204,7 @@ Module.init = function()
         Module.modules_by_type_[module.type].push(module);
 
         // Call the 'init' method if any
-        if (typeof module.actions.init !== 'undefined') {
+        if (typeof module.actions.init === 'function') {
             module.actions.init.call(module);
         }
     });
@@ -290,7 +301,8 @@ Module.add_type = function(type)
 
     // Obtain a unique type id by fetching the biggest id and adding one;
     for (var key in Module.TYPE) {
-        biggest = (Module.TYPE[key] > biggest) ? Module.TYPE[key] : biggest;
+        biggest = (Module.TYPE[key] > biggest) ?
+            Module.TYPE[key] : biggest;
     }
 
     Module.TYPE[type] = biggest + 1;
@@ -298,9 +310,35 @@ Module.add_type = function(type)
 
 /**
  * Define a new types priority order.
- * @param string[] An array of module type
+ * @param string[] An array of module type name
  */
-Module.set_types_loading_order = function(new_order)
+Module.set_type_loading_order = function(new_order)
 {
     Module.TYPE_LOADING_ORDER = new_order;
+}
+
+/**
+ * Define a new property category.
+ * @param string property_category The new category
+ */
+Module.add_property_category = function(property_category)
+{
+    var biggest = 0;
+
+    // Obtain a unique type id by fetching the biggest id and adding one;
+    for (var key in Module.PROPERTY_CATEGORY) {
+        biggest = (Module.PROPERTY_CATEGORY[key] > biggest) ?
+            Module.PROPERTY_CATEGORY[key] : biggest;
+    }
+
+    Module.PROPERTY_CATEGORY[property_category] = biggest + 1;
+}
+
+/**
+ * Define a new property categories priority order.
+ * @param string[] An array of property categories name
+ */
+Module.set_property_category_priority_order = function(new_order)
+{
+    Module.PROPERTY_CATEGORY_PRIORITY_ORDER = new_order;
 }

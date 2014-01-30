@@ -33,12 +33,22 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_title'] = 'Die2Nite Enhancer - Settings';
         i18n[I18N.LANG.EN][MODULE_NAME + '_description'] = 'Die2Nite Enhancer allows you to enhance your game experience, every features can be controlled from this panel.';
         i18n[I18N.LANG.EN][MODULE_NAME + '_help_image_url'] = '/gfx/loc/en/helpLink.gif';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_citizen_category'] = 'Citizen';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_hero_category'] = 'Hero';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_external_tool_category'] = 'External Tools';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_interface_category'] = 'Interface';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_various_category'] = 'Various';
         i18n[I18N.LANG.EN][MODULE_NAME + '_save_button'] = 'Save';
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_title'] = 'Die2Nite Enhancer - Paramètres';
         i18n[I18N.LANG.FR][MODULE_NAME + '_description'] = 'Die2Nite Enhancer vous permet d\'améliorer votre expérience de jeu, toutes les fonctionnalités peuvent être controlées depuis ce panneau de configuration.';
         i18n[I18N.LANG.FR][MODULE_NAME + '_help_image_url'] = '/gfx/loc/fr/helpLink.gif';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_citizen_category'] = 'Citoyen';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_hero_category'] = 'Héros';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_external_tool_category'] = 'Outils Externes';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_interface_category'] = 'Interface';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_various_category'] = 'Divers';
         i18n[I18N.LANG.FR][MODULE_NAME + '_save_button'] = 'Sauvegarder';
 
         i18n[I18N.LANG.ES] = {};
@@ -51,13 +61,53 @@ Module.register(function() {
     }
 
     /**
+     * Return the category title.
+     * @return Array the title
+     */
+    function get_category_title(category_name)
+    {
+        var icon = null;
+        var text = null;
+
+        switch (category_name) {
+            case Module.PROPERTY_CATEGORY.CITIZEN:
+                icon = '/gfx/forum/smiley/h_basic.gif';
+                text = I18N.get(MODULE_NAME + '_citizen_category');
+                break;
+            case Module.PROPERTY_CATEGORY.HERO:
+                icon = '/gfx/icons/small_hero.gif';
+                text = I18N.get(MODULE_NAME + '_hero_category');
+                break;
+            case Module.PROPERTY_CATEGORY.EXTERNAL_TOOL:
+                icon = '/gfx/icons/item_radio_on.gif';
+                text = I18N.get(MODULE_NAME + '_external_tool_category');
+                break;
+            case Module.PROPERTY_CATEGORY.INTERFACE:
+                icon = '/gfx/forum/smiley/h_refine.gif';
+                text = I18N.get(MODULE_NAME + '_interface_category');
+                break;
+            default:
+                icon = '/gfx/icons/item_pet_chick.gif';
+                text = I18N.get(MODULE_NAME + '_various_category');
+                break;
+        }
+
+        return ["h4", {},
+                   ["img", { src: icon }],
+                   text
+               ];
+    }
+
+    /**
      * Load the modules in the configuration panel.
      */
     function load_modules_in_configuration_panel()
     {
+        var categories = {};
+
         Module.iterate(function(module) {
 
-            // if configurable object does not exist, skip it
+            // if configurable object does not exist, skip the module
             if (typeof module.configurable === 'undefined') {
                 return;
             }
@@ -76,7 +126,7 @@ Module.register(function() {
                     ];
 
                 switch (value.type) {
-                    case Module.PROPERTIES.BOOLEAN:
+                    case Module.PROPERTY.BOOLEAN:
                         var node = ["input", { "id": input_id, "type": "checkbox" }];
 
                         node[1][INPUT_DATA_MODULE_KEY] = module.name;
@@ -92,6 +142,31 @@ Module.register(function() {
                         return;
                 }
 
+                // Store the node
+                var c = null;
+                if (typeof value.category === 'undefined') {
+                    c = Module.PROPERTY_CATEGORY.UNKNOWN_CATEGORY;
+                } else {
+                    c = value.category;
+                }
+
+                categories[c] = categories[c] || [];
+                categories[c].push(json_node);
+            });
+        });
+
+        // Iterate over categories and insert
+        Module.PROPERTY_CATEGORY_PRIORITY_ORDER.forEach(function(category_name) {
+            var category_id = Module.PROPERTY_CATEGORY[category_name];
+            var category = categories[category_id];
+
+            if (!JS.is_defined(category)) {
+                return;
+            }
+
+            configuration_panel_extensible_zone_node_.appendChild(JS.jsonToDOM(get_category_title(category_id), document));
+
+            category.forEach(function(json_node) {
                 configuration_panel_extensible_zone_node_.appendChild(JS.jsonToDOM(json_node, document));
             });
         });
@@ -121,6 +196,11 @@ Module.register(function() {
         var input_data = null;
 
         for (var i = 0, max = configuration_panel_extensible_zone_node_.childElementCount; i < max; ++i) {
+            // skip if not div
+            if (configuration_panel_extensible_zone_node_.childNodes[i].tagName !== 'div') {
+                continue;
+            }
+
             input_node = configuration_panel_extensible_zone_node_.childNodes[i].firstChild;
             module_name = input_node.getAttribute(INPUT_DATA_MODULE_KEY);
             module = Module.get(module_name);
@@ -128,7 +208,7 @@ Module.register(function() {
 
             // Get the value
             switch (module.configurable[property].type) {
-                case Module.PROPERTIES.BOOLEAN:
+                case Module.PROPERTY.BOOLEAN:
                     input_data = input_node.checked;
                     break;
 
@@ -206,7 +286,7 @@ Module.register(function() {
             '#d2ne_configuration_panel div > div {' +
                 'position: relative;' +
             '}' +
-            '#d2ne_configuration_panel div > div > div img {' +
+            '#d2ne_configuration_panel div > div > div > a > img {' +
                 'position: absolute;' +
                 'top: 0;' +
                 'bottom: 0;' +

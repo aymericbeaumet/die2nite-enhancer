@@ -13,23 +13,42 @@ var D2NE = (function() {
     /**
      * The different module types (the order matters).
      */
-    var TYPES = [
+    var MODULE_TYPES = [
         'BUSINESS_LOGIC', // Used by business logic modules
         'CONTAINER', // Used by the containers modules
         'INTERFACE_ENHANCEMENT', // Used to customise the interface
         'EXTERNAL_TOOL' // Used to synchronise with external tools
     ];
 
+    /**
+     * The different module property categories (the order matters).
+     */
+    var MODULE_PROPERTY_CATEGORIES = [
+        'CITIZEN',
+        'HERO',
+        'EXTERNAL_TOOL',
+        'INTERFACE'
+    ];
+
     function configure_module_class()
     {
         // Define the types
-        TYPES.forEach(function(type) {
+        MODULE_TYPES.forEach(function(type) {
             Module.add_type(type);
         });
 
         // The types will be loaded in this order
-        Module.set_types_loading_order(TYPES);
+        Module.set_type_loading_order(MODULE_TYPES);
+
+        // Define the property categories
+        MODULE_PROPERTY_CATEGORIES.forEach(function(property_category) {
+            Module.add_property_category(property_category);
+        });
+
+        // Define the property categories order
+        Module.set_property_category_priority_order(MODULE_PROPERTY_CATEGORIES);
     }
+
 
     function configure_storage_class()
     {
@@ -72,20 +91,18 @@ var D2NE = (function() {
 
         // For each module
         Module.iterate_in_priority_order(function(module) {
-            // Skip it if it is disabled
-            if (!module.is_enabled()) {
-                emit_all_modules_loaded_event_if_needed(initialised_modules, (total_modules -= 1));
-                return;
-            }
+            // Load it only if it is enabled
+            if (module.is_enabled()) {
 
-            // If the module has a 'load' method, call it and give 'module' as
-            // the context to be able to reach its private members and methods
-            // via 'this'
-            if (typeof module.actions.load !== 'undefined') {
-                module.actions.load.call(module);
-            }
+                // If the module has a 'load' method, call it and give 'module' as
+                // the context to be able to reach its private members and methods
+                // via 'this'
+                if (typeof module.actions.load !== 'undefined') {
+                    module.actions.load.call(module);
+                }
 
-            emit_all_modules_loaded_event_if_needed((initialised_modules += 1), total_modules);
+                emit_all_modules_loaded_event_if_needed((initialised_modules += 1), total_modules);
+            }
         });
     }
 

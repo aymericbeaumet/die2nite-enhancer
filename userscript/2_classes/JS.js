@@ -531,7 +531,6 @@ var JS = (function() {
             node.dispatchEvent(new CustomEvent(key, event_param));
         },
 
-
         /**
          * Assign an attribute to the current object. This function is only
          * relevant if you call it by specifying a `this` context (with bind(),

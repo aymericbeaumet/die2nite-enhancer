@@ -85,7 +85,8 @@ I18N.set = function(new_strings)
  */
 I18N.get = function(key, lang)
 {
-    lang = (typeof lang === 'undefined') ? I18N.language_ : lang;
+    lang = lang || I18N.language_;
+
     var languages = [lang, I18N.default_language_];
 
     for (var i = 0, max = languages.length; i < max; ++i) {

@@ -19,7 +19,7 @@ Module.register(function() {
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Construire avec un maximum de PA';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Utilise le maximum de PA disponible pour les constructions au lieu de 1 par défault.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Utilise le maximum de PA disponible pour les constructions au lieu de 1 par défaut.';
 
         I18N.set(i18n);
     }
@@ -40,7 +40,8 @@ Module.register(function() {
 
         configurable: {
             enabled: {
-                type: Module.PROPERTIES.BOOLEAN,
+                category: Module.PROPERTY_CATEGORY.CITIZEN,
+                type: Module.PROPERTY.BOOLEAN,
                 short_desc_I18N: MODULE_NAME + '_short_desc',
                 full_desc_I18N: MODULE_NAME + '_full_desc'
             }

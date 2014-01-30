@@ -43,7 +43,8 @@ Module.register(function() {
 
         configurable: {
             enabled: {
-                type: Module.PROPERTIES.BOOLEAN,
+                category: Module.PROPERTY_CATEGORY.EXTERNAL_TOOL,
+                type: Module.PROPERTY.BOOLEAN,
                 short_desc_I18N: MODULE_NAME + '_short_desc',
                 full_desc_I18N: MODULE_NAME + '_full_desc'
             }
