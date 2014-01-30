@@ -96,6 +96,9 @@ function compile_userscript()
   # Grab userscript
   mv "$userscript_build_dir/$userscript_file" "$userscript_ext"
 
+  # Use JSHint
+  which jshint 2>&1 >/dev/null && jshint -c .jshintrc "$userscript_ext"
+
   # Clean and notify
   rm -rf "$userscript_build_dir"
   echo '-- User script done!'
@@ -229,6 +232,25 @@ function compile_opera_ext()
 if [ -z "$1" ] ; then
   echo 'Nothing built.'
   exit 1
+fi
+
+if [ "$1" = "--usage" ] ; then
+  echo "$0 [option]"
+  echo '  --usage   Show this help'
+  echo '  --deps    Install the dependencies'
+  echo
+  echo '  --userscript    Compile a userscript'
+  echo '  --chrome        Compile a Chrome extension'
+  echo '  --firefox       Compile a Firefox extension'
+  echo '  --safari        Compile a Safari extension'
+  echo '  --opera         Compile an Opera extension'
+  exit 1
+fi
+
+if [ "$1" = "--deps" ] ; then
+  echo 'Install dependencies...'
+  npm install -g jshint
+  exit $?
 fi
 
 # Create build dir
