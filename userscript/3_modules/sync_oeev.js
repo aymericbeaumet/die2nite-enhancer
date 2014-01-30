@@ -72,7 +72,7 @@ Module.register(function() {
                     },
                     function(response_text) {
                         var json = JSON.parse(response_text);
-                        if ('response' in json && json.response === 'Site mis à jour') {
+                        if (json.hasOwnProperty('response') && json.response === 'Site mis à jour') {
                             return callback_success();
                         }
                         return callback_failure();

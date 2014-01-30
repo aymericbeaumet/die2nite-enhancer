@@ -7,8 +7,8 @@
 var D2NE = (function() {
 
 /*
-  private:
-*/
+ * private:
+ */
 
     /**
      * The different module types (the order matters).
@@ -109,8 +109,8 @@ var D2NE = (function() {
 
 
 /*
-  public:
-*/
+ * public:
+ */
 
     return {
 

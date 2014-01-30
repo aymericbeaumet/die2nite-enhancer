@@ -71,7 +71,7 @@ Module.register(function() {
                         ];
 
                         while (ap >= colors.length) {
-                            --ap;
+                            ap -= 1;
                         }
 
                         JS.injectCSS(

@@ -195,7 +195,7 @@ Module.register(function() {
         var property = null;
         var input_data = null;
 
-        for (var i = 0, max = configuration_panel_extensible_zone_node_.childElementCount; i < max; ++i) {
+        for (var i = 0, max = configuration_panel_extensible_zone_node_.childElementCount; i < max; i += 1) {
             // skip if not div
             if (configuration_panel_extensible_zone_node_.childNodes[i].tagName !== 'div') {
                 continue;
@@ -343,32 +343,30 @@ Module.register(function() {
     function insert_configuration_panel_dom()
     {
         JS.wait_for_id('main', function(node) {
-            var config_panel_div = JS.jsonToDOM(
-                ["div", { "id": "d2ne_configuration_panel" },
-                    ["div", {},
-                        ["h1", {},
-                            ["img", { "src": "/gfx/forum/smiley/h_city_up.gif", "alt": "" }],
-                            ["span", { "style": "display: none;" }, ' ' + I18N.get(MODULE_NAME + '_title')]
+            var config_panel_div = JS.jsonToDOM(["div", { "id": "d2ne_configuration_panel" },
+                ["div", {},
+                    ["h1", {},
+                        ["img", { "src": "/gfx/forum/smiley/h_city_up.gif", "alt": "" }],
+                        ["span", { "style": "display: none;" }, ' ' + I18N.get(MODULE_NAME + '_title')]
+                    ],
+
+                    ["div", { "style": "display: none;" },
+                        ["p", {}, I18N.get(MODULE_NAME + '_description')],
+
+                        ["div", {}],
+
+                        ["p", {},
+                            ["a", { "href": "javascript:void(0)", "class": "button",
+                                    "onclick": function() { save_configuration(); JS.reload(); } },
+                                I18N.get(MODULE_NAME + '_save_button')]
                         ],
 
-                        ["div", { "style": "display: none;" },
-                            ["p", {}, I18N.get(MODULE_NAME + '_description')],
-
-                            ["div", {}],
-
-                            ["p", {},
-                                ["a", { "href": "javascript:void(0)", "class": "button",
-                                        "onclick": function() { save_configuration(); JS.reload(); } },
-                                    I18N.get(MODULE_NAME + '_save_button')]
-                            ],
-
-                            ["div", {},
-                                ["a", { "href": "__PROJECT_WEBSITE__", "target": "_blank" }, "__NAME__ v__VERSION__"]
-                            ]
+                        ["div", {},
+                            ["a", { "href": "__PROJECT_WEBSITE__", "target": "_blank" }, "__NAME__ v__VERSION__"]
                         ]
                     ]
                 ]
-            , document);
+            ], document);
 
         configuration_panel_extensible_zone_node_ = config_panel_div.childNodes[0].childNodes[1].childNodes[1];
 
@@ -382,14 +380,14 @@ Module.register(function() {
             // Show panel on hover
             config_panel_div.addEventListener('mouseover', function() {
                 config_panel_div.style['z-index'] = '11'; // This fix is needed for the spanish version, as the hero adds has a z-index of 10
-                for (var i = 0; i < config_panel_toggled_elements_cache_length; ++i) {
+                for (var i = 0; i < config_panel_toggled_elements_cache_length; i += 1) {
                     config_panel_toggled_elements_cache[i].style.display = 'inline';
                 }
             }, false);
 
             // Hide panel on mouse out
             config_panel_div.addEventListener('mouseout', function() {
-                for (var i = 0; i < config_panel_toggled_elements_cache_length; ++i) {
+                for (var i = 0; i < config_panel_toggled_elements_cache_length; i += 1) {
                     config_panel_toggled_elements_cache[i].style.display = 'none';
                 }
                 config_panel_div.style['z-index'] = '9'; // See previous function comment

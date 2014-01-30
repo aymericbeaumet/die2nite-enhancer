@@ -45,7 +45,7 @@ Module.register(function() {
                 return;
             }
 
-            var onclick = item.getAttributeNode('onclick').nodeValue
+            var onclick = item.getAttributeNode('onclick').nodeValue;
             var url = onclick.split('\'')[1];
 
             JS.injectJS('js.XmlHttp.get(' + JSON.stringify(url) + ');');
@@ -60,7 +60,7 @@ Module.register(function() {
     function on_bagpack_button_click()
     {
         // if the user confirms
-        if (confirm(I18N.get(MODULE_NAME + '_confirm'))) {
+        if (window.confirm(I18N.get(MODULE_NAME + '_confirm'))) {
             // drop his/her objects
             drop_first_item();
         }

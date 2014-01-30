@@ -70,7 +70,7 @@ Module.register(function() {
                     function(response_text) {
                         try {
                             var json = JSON.parse(response_text);
-                            if ('status' in json && json.status == 1) {
+                            if (json.hasOwnProperty('status') && json.status === 1) {
                                 return callback_success();
                             }
                             return callback_failure();

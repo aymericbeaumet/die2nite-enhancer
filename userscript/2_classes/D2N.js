@@ -7,8 +7,8 @@
 var D2N = (function() {
 
 /*
-  private:
-*/
+ * private:
+ */
 
     var pages_url_ = {
         // in town
@@ -63,7 +63,7 @@ var D2N = (function() {
 
             JS.wait_for_tag('body', function(nodes) {
                 var body_observer = new MutationObserver(function(mutations) {
-                    for (var i = 0, max = mutations.length; i < max; ++i) {
+                    for (var i = 0, max = mutations.length; i < max; i += 1) {
                         if (mutations[i].type !== 'attributes' ||
                             mutations[i].attributeName !== 'style') {
                             continue;
@@ -144,8 +144,8 @@ var D2N = (function() {
     }
 
 /*
-  public:
-*/
+ * public:
+ */
 
     return {
 
@@ -250,10 +250,7 @@ var D2N = (function() {
         {
             // if not in a town, outside city or already on the page, abort
             D2N.is_in_town(function(in_town) {
-                if (!(in_town ||
-                      is_outside() ||
-                      is_on_page_in_city(page)
-                     )) {
+                if (!(in_town || D2N.is_outside() || D2N.is_on_page_in_city(page))) {
                     return;
                 }
 

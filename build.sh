@@ -42,9 +42,6 @@ CFX="$HOME/bin/cfx" # https://ftp.mozilla.org/pub/mozilla.org/labs/jetpack/jetpa
 XAR="$HOME/bin/xar" # https://github.com/downloads/mackyle/xar/xar-1.6.1.tar.gz
 ZIP='zip' # Must support -j and -@
 
-# Abort on error
-set -e
-
 ###
 
 # Fix sed error -> "sed: RE error: illegal byte sequence"
@@ -97,7 +94,7 @@ function compile_userscript()
   mv "$userscript_build_dir/$userscript_file" "$userscript_ext"
 
   # Use JSHint
-  which jshint 2>&1 >/dev/null && jshint -c .jshintrc "$userscript_ext"
+  jshint -c .jshintrc "$userscript_ext"
 
   # Clean and notify
   rm -rf "$userscript_build_dir"
@@ -249,7 +246,7 @@ fi
 
 if [ "$1" = "--deps" ] ; then
   echo 'Install dependencies...'
-  npm install -g jshint
+  npm install -g jshint js-beautify
   exit $?
 fi
 

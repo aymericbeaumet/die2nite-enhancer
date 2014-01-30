@@ -7,8 +7,8 @@
 var JS = (function() {
 
 /*
-  private:
-*/
+ * private:
+ */
 
     /**
      * Time to wait between two self-call of wait_for_* functions
@@ -19,12 +19,7 @@ var JS = (function() {
      * Safely insert code through JSON.
      * @link https://developer.mozilla.org/en-US/Add-ons/Overlay_Extensions/XUL_School/DOM_Building_and_HTML_Insertion
      */
-    jsonToDOM.namespaces = {
-        html: "http://www.w3.org/1999/xhtml",
-        xul: "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-    };
-    jsonToDOM.defaultNamespace = jsonToDOM.namespaces.html;
-    function jsonToDOM(xml, doc, nodes)
+    var jsonToDOM = function(xml, doc, nodes)
     {
         function namespace(name) {
             var m = /^(?:(.*):)?(.*)$/.exec(name);
@@ -35,49 +30,58 @@ var JS = (function() {
             if (Array.isArray(name)) {
                 var frag = doc.createDocumentFragment();
                 Array.forEach(arguments, function (arg) {
-                    if (!Array.isArray(arg[0]))
+                    if (!Array.isArray(arg[0])) {
                         frag.appendChild(tag.apply(null, arg));
-                    else
+                    } else {
                         arg.forEach(function (arg) {
                             frag.appendChild(tag.apply(null, arg));
                         });
+                    }
                 });
                 return frag;
             }
 
             var args = Array.prototype.slice.call(arguments, 2);
             var vals = namespace(name);
-            var elem = doc.createElementNS(vals[0] || jsonToDOM.defaultNamespace,
-                                           vals[1]);
+            var elem = doc.createElementNS(vals[0] || jsonToDOM.defaultNamespace, vals[1]);
 
             for (var key in attr) {
-                var val = attr[key];
-                if (nodes && key == "key")
-                    nodes[val] = elem;
+                if (attr.hasOwnProperty(key)) {
+                    var val = attr[key];
+                    if (nodes && key === "key") {
+                        nodes[val] = elem;
+                    }
 
-                vals = namespace(key);
-                if (typeof val == "function")
-                    elem.addEventListener(key.replace(/^on/, ""), val, false);
-                else
-                    elem.setAttributeNS(vals[0] || "", vals[1], val);
+                    vals = namespace(key);
+                    if (typeof val === "function") {
+                        elem.addEventListener(key.replace(/^on/, ""), val, false);
+                    } else {
+                        elem.setAttributeNS(vals[0] || "", vals[1], val);
+                    }
+                }
             }
             args.forEach(function(e) {
-                elem.appendChild(typeof e == "object" ? tag.apply(null, e) :
+                elem.appendChild(typeof e === "object" ? tag.apply(null, e) :
                                  e instanceof Node    ? e : doc.createTextNode(e));
             });
             return elem;
         }
         return tag.apply(null, xml);
-    }
+    };
+    jsonToDOM.namespaces = {
+        html: "http://www.w3.org/1999/xhtml",
+        xul: "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+    };
+    jsonToDOM.defaultNamespace = jsonToDOM.namespaces.html;
 
-    var _keydown_event = {
+    var keydown_event_ = {
         previous_keycode: 0,
         previous_keycode_timestamp: 0,
     };
 
 /*
-  public:
-*/
+ * public:
+ */
 
     return {
 
@@ -103,10 +107,10 @@ var JS = (function() {
 
             // Google Chrome script / GreaseMonkey
             if (typeof GM_xmlhttpRequest !== 'undefined') {
-                return GM_xmlhttpRequest({
+                return new GM_xmlhttpRequest({
                     method: method,
                     url: uri,
-                    data: data,
+                    data: '' + data,
                     headers: headers,
                     onload: function(r) { on_success(r.responseText); },
                     onerror: function(r) { on_failure(); }
@@ -118,17 +122,17 @@ var JS = (function() {
                 safari.addEventListener('message', function(event) {
                     switch (event.name) {
                         case 'network_request_succeed':
-                            return on_success(event.message, param);
+                            return on_success(event.message);
 
                         case 'network_request_failed':
-                            return on_failure(param);
+                            return on_failure();
                     }
                 }, false);
 
                 return safari.tab.dispatchMessage('do_network_request', {
                     method: method,
                     url: uri,
-                    data: data,
+                    data: '' + data,
                     headers: headers
                 });
             }
@@ -137,14 +141,16 @@ var JS = (function() {
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open(method, uri, true);
             for (var header in headers) {
-                xmlhttp.setRequestHeader(header, headers[header]);
+                if (headers.hasOwnProperty(header)) {
+                    xmlhttp.setRequestHeader(header, headers[header]);
+                }
             }
             xmlhttp.onreadystatechange = function() {
                 if (xmlhttp.readyState === 4) {
                     if (xmlhttp.status >= 200 && xmlhttp.status < 300) {
-                        return on_success(xmlhttp.responseText, param);
+                        return on_success(xmlhttp.responseText);
                     }
-                    return on_failure(param);
+                    return on_failure();
                 }
             };
             xmlhttp.send(data);
@@ -183,16 +189,16 @@ var JS = (function() {
                 }
 
                 // Cancel event if elapsed time is too long between two key strokes
-                if (event.timeStamp - _keydown_event.previous_keycode_timestamp > time_limit) {
-                    _keydown_event.previous_keycode = null;
+                if (event.timeStamp - keydown_event_.previous_keycode_timestamp > time_limit) {
+                    keydown_event_.previous_keycode = null;
                 }
 
                 // Invoke callback
-                callback(event.keyCode, _keydown_event.previous_keycode);
+                callback(event.keyCode, keydown_event_.previous_keycode);
 
                 // Save keycode
-                _keydown_event.previous_keycode = event.keyCode;
-                _keydown_event.previous_keycode_timestamp = event.timeStamp;
+                keydown_event_.previous_keycode = event.keyCode;
+                keydown_event_.previous_keycode_timestamp = event.timeStamp;
             }, false);
         },
 
@@ -223,7 +229,7 @@ var JS = (function() {
                 // Execute this function with no arguments, by adding parentheses.
                 // One set around the function, required for valid syntax, and a
                 // second empty set calls the surrounded function.
-                source = '(' + source + ')();'
+                source = '(' + source + ')();';
             }
 
             // Create a script node holding this  source code.
@@ -261,19 +267,17 @@ var JS = (function() {
          */
         merge: function(obj1, obj2) {
             for (var p in obj2) {
-                try {
-                    // Property in destination object set; update its value.
-                    if (obj2[p].constructor === Object) {
-                        obj1[p] = JS.merge(obj1[p], obj2[p]);
-                    } else {
-                        if (obj2.hasOwnProperty(p)) {
+                if (obj2.hasOwnProperty(p)) {
+                    try {
+                        // Property in destination object set; update its value.
+                        if (obj2[p].constructor === Object) {
+                            obj1[p] = JS.merge(obj1[p], obj2[p]);
+                        } else {
                             obj1[p] = obj2[p];
                         }
-                    }
-                } catch(e) {
-                    // Property in destination object not set; create it and set
-                    // its value.
-                    if (obj2.hasOwnProperty(p)) {
+                    } catch(e) {
+                        // Property in destination object not set; create it and set
+                        // its value.
                         obj1[p] = obj2[p];
                     }
                 }
@@ -341,7 +345,7 @@ var JS = (function() {
             }
 
             // else try to find it
-            el = document.querySelector(selector)
+            el = document.querySelector(selector);
             if (JS.is_defined(el)) {
                 return callback(el);
             }

@@ -110,7 +110,9 @@ Module.register(function() {
         var ret = 0;
 
         for (var key in update_state_) {
-            ret += (update_state_[key].done === true) ? 1 : 0;
+            if (update_state_.hasOwnProperty(key)) {
+                ret += (update_state_[key].done === true) ? 1 : 0;
+            }
         }
 
         return ret;
@@ -148,19 +150,21 @@ Module.register(function() {
         // set the content
         new_content += '<ul id="' + EXTERNAL_TOOLS_TOOLTIP_LIST_ID + '" style="margin-top: 0;">';
         for (var tool in update_state_) {
-            // if done and success
-            if (update_state_[tool].done === true) {
-                if (update_state_[tool].error === false) {
-                    new_content += '<li style="color: #27F037;">';
+            if (update_state_.hasOwnProperty(tool)) {
+                // if done and success
+                if (update_state_[tool].done === true) {
+                    if (update_state_[tool].error === false) {
+                        new_content += '<li style="color: #27F037;">';
+                    } else {
+                        new_content += '<li style="color: #EE1515;">';
+                    }
                 } else {
-                    new_content += '<li style="color: #EE1515;">';
+                    new_content += '<li>';
                 }
-            } else {
-                new_content += '<li>';
-            }
 
-            // Include title
-            new_content += update_state_[tool].name + '</li>';
+                // Include title
+                new_content += update_state_[tool].name + '</li>';
+            }
         }
         new_content += '</ul>';
 
@@ -306,22 +310,20 @@ Module.register(function() {
             var reference_node = node.parentNode;
 
             // Create the new node
-            var new_button = JS.jsonToDOM(
-                ["div", { "id": EXTERNAL_TOOLS_BAR_UPDATE_CONTAINER_ID },
-                    ["div", {}],
-                    ["a", { "href": "javascript:void(0)", "class": "button", "id": EXTERNAL_TOOLS_BAR_UPDATE_ID,
-                            "onclick": function() {
-                                           if (this.classList.contains('disabled')) {
-                                               return;
-                                           }
-                                           on_update_button_click();
+            var new_button = JS.jsonToDOM(["div", { "id": EXTERNAL_TOOLS_BAR_UPDATE_CONTAINER_ID },
+                ["div", {}],
+                ["a", { "href": "javascript:void(0)", "class": "button", "id": EXTERNAL_TOOLS_BAR_UPDATE_ID,
+                        "onclick": function() {
+                                       if (this.classList.contains('disabled')) {
+                                           return;
                                        }
-                          },
-                        ["img", { "src": "/gfx/icons/r_explo2.gif", "width": "16px", "height": "16px" }],
-                        ' ' + I18N.get(MODULE_NAME + '_update_button')
-                    ]
+                                       on_update_button_click();
+                                   }
+                      },
+                    ["img", { "src": "/gfx/icons/r_explo2.gif", "width": "16px", "height": "16px" }],
+                    ' ' + I18N.get(MODULE_NAME + '_update_button')
                 ]
-            , document);
+            ], document);
 
             // Cache it
             button_container_ = new_button;

@@ -69,14 +69,17 @@ Module.register(function() {
                         var action;
 
                         for (var node in nodes) {
-                            // Skip the node if not a 'strong' element
-                            if (nodes[node].nodeName !== 'STRONG')
-                                continue;
+                            if (nodes.hasOwnProperty(node)) {
+                                // Skip the node if not a 'strong' element
+                                if (nodes[node].nodeName !== 'STRONG') {
+                                    continue;
+                                }
 
-                            // Hide the node if cyanure
-                            if (/^Cyanide|Cyanure|Cianuro$/.test(nodes[node].textContent)) {
-                                action = nodes[node].parentNode.parentNode;
-                                action.style.display = 'none';
+                                // Hide the node if cyanure
+                                if (/^Cyanide|Cyanure|Cianuro$/.test(nodes[node].textContent)) {
+                                    action = nodes[node].parentNode.parentNode;
+                                    action.style.display = 'none';
+                                }
                             }
                         }
                     }, 5);

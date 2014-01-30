@@ -40,7 +40,7 @@ Module.register(function() {
     function show_tid() {
         tid_cache_.style.display = 'block';
         tid_hidden_ = false;
-    };
+    }
 
     /**
      * Hide the twinoid bar.
@@ -48,7 +48,7 @@ Module.register(function() {
     function hide_tid() {
         tid_cache_.style.display = 'none';
         tid_hidden_ = true;
-    };
+    }
 
     /**
      * Handle the mouse move event.
@@ -67,10 +67,10 @@ Module.register(function() {
             var tid_side_panels = document.getElementsByClassName('tid_sidePanel');
             var tid_side_panels_length = tid_side_panels.length;
 
-            for (var i = 0; i < tid_side_panels_length; ++i) {
+            for (var i = 0; i < tid_side_panels_length; i += 1) {
                 var style = getComputedStyle(tid_side_panels[i]);
 
-                if (style['visibility'] === 'visible') {
+                if (style.visibility === 'visible') {
                     return;
                 }
             }

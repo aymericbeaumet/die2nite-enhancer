@@ -263,7 +263,7 @@ Module.iterate_on_type = function(type, callback)
     Module.modules_by_type_[type].forEach(function(module) {
         callback(module);
     });
-}
+};
 
 /**
  * Iterate over all the modules in the priority order.
@@ -275,7 +275,7 @@ Module.iterate_in_priority_order = function(callback)
     Module.TYPE_LOADING_ORDER.forEach(function(type) {
         Module.iterate_on_type(Module.TYPE[type], callback);
     });
-}
+};
 
 /**
  * Return a specific module from its name.
@@ -301,12 +301,14 @@ Module.add_type = function(type)
 
     // Obtain a unique type id by fetching the biggest id and adding one;
     for (var key in Module.TYPE) {
-        biggest = (Module.TYPE[key] > biggest) ?
-            Module.TYPE[key] : biggest;
+        if (Module.TYPE.hasOwnProperty(key)) {
+            biggest = (Module.TYPE[key] > biggest) ?
+                Module.TYPE[key] : biggest;
+        }
     }
 
     Module.TYPE[type] = biggest + 1;
-}
+};
 
 /**
  * Define a new types priority order.
@@ -315,7 +317,7 @@ Module.add_type = function(type)
 Module.set_type_loading_order = function(new_order)
 {
     Module.TYPE_LOADING_ORDER = new_order;
-}
+};
 
 /**
  * Define a new property category.
@@ -327,12 +329,14 @@ Module.add_property_category = function(property_category)
 
     // Obtain a unique type id by fetching the biggest id and adding one;
     for (var key in Module.PROPERTY_CATEGORY) {
-        biggest = (Module.PROPERTY_CATEGORY[key] > biggest) ?
-            Module.PROPERTY_CATEGORY[key] : biggest;
+        if (Module.PROPERTY_CATEGORY.hasOwnProperty(key)) {
+            biggest = (Module.PROPERTY_CATEGORY[key] > biggest) ?
+                Module.PROPERTY_CATEGORY[key] : biggest;
+        }
     }
 
     Module.PROPERTY_CATEGORY[property_category] = biggest + 1;
-}
+};
 
 /**
  * Define a new property categories priority order.
@@ -341,4 +345,4 @@ Module.add_property_category = function(property_category)
 Module.set_property_category_priority_order = function(new_order)
 {
     Module.PROPERTY_CATEGORY_PRIORITY_ORDER = new_order;
-}
+};

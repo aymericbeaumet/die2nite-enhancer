@@ -67,7 +67,7 @@ Module.register(function() {
                             var fields = document.querySelectorAll('div[id^="moreForm_"] form input[type="text"]');
                             var fields_length = fields.length;
 
-                            for (var i = 0; i < fields_length; ++i) {
+                            for (var i = 0; i < fields_length; i += 1) {
                                 fields[i].value = ap;
                             }
                         });
