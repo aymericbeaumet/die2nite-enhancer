@@ -206,11 +206,11 @@ module.exports = function(grunt) {
                         expand: true
                     },
                     {
-                        cwd: config.buildDir,
-                        src: [placeholders.compiled_script],
+                        src: [config.compiled_script.outputFile],
                         dest: config.chrome_crx.workingDir,
                         filter: "isFile",
-                        expand: true
+                        expand: true,
+                        flatten: true
                     },
                     {
                         cwd: config.iconsDir,
@@ -231,11 +231,11 @@ module.exports = function(grunt) {
                         expand: true
                     },
                     {
-                        cwd: config.buildDir,
-                        src: [placeholders.compiled_script],
+                        src: [config.compiled_script.outputFile],
                         dest: config.chrome_zip.workingDir,
                         filter: "isFile",
-                        expand: true
+                        expand: true,
+                        flatten: true
                     },
                     {
                         cwd: config.iconsDir,
@@ -256,11 +256,11 @@ module.exports = function(grunt) {
                         expand: true
                     },
                     {
-                        cwd: config.buildDir,
-                        src: [placeholders.compiled_script],
+                        src: [config.compiled_script.outputFile],
                         dest: path.join(config.firefox.workingDir, 'data'),
                         filter: "isFile",
-                        expand: true
+                        expand: true,
+                        flatten: true
                     }
                 ]
             },
@@ -275,10 +275,11 @@ module.exports = function(grunt) {
                     },
                     {
                         cwd: config.buildDir,
-                        src: [placeholders.compiled_script],
+                        src: [config.compiled_script.outputFile],
                         dest: config.opera.workingDir,
                         filter: "isFile",
-                        expand: true
+                        expand: true,
+                        flatten: true
                     },
                     {
                         cwd: config.iconsDir,
@@ -299,11 +300,11 @@ module.exports = function(grunt) {
                         expand: true
                     },
                     {
-                        cwd: config.buildDir,
-                        src: [placeholders.compiled_script],
+                        src: [config.compiled_script.outputFile],
                         dest: config.safari.workingDir,
                         filter: "isFile",
-                        expand: true
+                        expand: true,
+                        flatten: true
                     }
                 ]
             }
