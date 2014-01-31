@@ -44,7 +44,7 @@ module.exports = function(grunt) {
             workingDir: null,
             inputDir: "userscript"
         },
-        chrome_crx: {
+        chrome: {
             outputFile: null,
             workingDir: null,
             inputDir: "chrome"
@@ -74,14 +74,14 @@ module.exports = function(grunt) {
     config.compiled_script.outputFile = path.join(config.buildDir, placeholders.compiled_script);
 
     config.userscript.outputFile = path.join(config.buildDir, "userscript.user.js");
-    config.chrome_crx.outputFile = path.join(config.buildDir, "chrome.crx");
+    config.chrome.outputFile = path.join(config.buildDir, "chrome.crx");
     config.chrome_zip.outputFile = path.join(config.buildDir, "chrome.zip");
     config.firefox.outputFile = path.join(config.buildDir, "firefox.xpi");
     config.opera.outputFile = path.join(config.buildDir, "opera.nex");
     config.safari.outputFile = path.join(config.buildDir, "safari.safariextz");
 
     config.userscript.workingDir = path.join(config.buildDir, "userscript");
-    config.chrome_crx.workingDir = path.join(config.buildDir, "chrome");
+    config.chrome.workingDir = path.join(config.buildDir, "chrome");
     config.chrome_zip.workingDir = path.join(config.buildDir, "chrome");
     config.firefox.workingDir = path.join(config.buildDir, "firefox");
     config.opera.workingDir = path.join(config.buildDir, "opera");
@@ -104,12 +104,12 @@ module.exports = function(grunt) {
                     grunt.task.run("concat:userscript");
                 }
             },
-            chrome_crx: {
-                outputFile: config.chrome_crx.outputFile,
-                workingDir: config.chrome_crx.workingDir,
-                inputDir: config.chrome_crx.inputDir,
+            chrome: {
+                outputFile: config.chrome.outputFile,
+                workingDir: config.chrome.workingDir,
+                inputDir: config.chrome.inputDir,
                 custom: function(workingDir, OutputFile) {
-                    grunt.task.run("shell:pack_chrome_crx");
+                    grunt.task.run("shell:pack_chrome");
                 }
             },
             chrome_zip: {
@@ -150,14 +150,14 @@ module.exports = function(grunt) {
             all: [config.buildDir],
             all_working_dirs: [
                 config.userscript.workingDir,
-                config.chrome_crx.workingDir,
+                config.chrome.workingDir,
                 config.chrome_zip.workingDir,
                 config.firefox.workingDir,
                 config.opera.workingDir,
                 config.safari.workingDir
             ],
             userscript: [config.userscript.workingDir],
-            chrome_crx: [config.chrome_crx.workingDir],
+            chrome: [config.chrome.workingDir],
             chrome_zip: [config.chrome_zip.workingDir],
             firefox: [config.firefox.workingDir],
             opera: [config.opera.workingDir],
@@ -203,18 +203,18 @@ module.exports = function(grunt) {
                 filter: "isFile",
                 expand: true
             },
-            chrome_crx: {
+            chrome: {
                 files: [
                     {
-                        cwd: config.chrome_crx.inputDir,
+                        cwd: config.chrome.inputDir,
                         src: ["**"],
-                        dest: config.chrome_crx.workingDir,
+                        dest: config.chrome.workingDir,
                         filter: "isFile",
                         expand: true
                     },
                     {
                         src: [config.compiled_script.outputFile],
-                        dest: config.chrome_crx.workingDir,
+                        dest: config.chrome.workingDir,
                         filter: "isFile",
                         expand: true,
                         flatten: true
@@ -222,7 +222,7 @@ module.exports = function(grunt) {
                     {
                         cwd: config.iconsDir,
                         src: ["icon48.png", "icon128.png"],
-                        dest: config.chrome_crx.workingDir,
+                        dest: config.chrome.workingDir,
                         filter: "isFile",
                         expand: true
                     }
@@ -321,9 +321,9 @@ module.exports = function(grunt) {
             options: {
                 stdout: false
             },
-            pack_chrome_crx: {
+            pack_chrome: {
                 command: function() {
-                    var cmd = "'" + config.path.chrome + "' --pack-extension='" + config.chrome_crx.workingDir + "' --pack-extension-key='" + config.path.chrome_pem + "'";
+                    var cmd = "'" + config.path.chrome + "' --pack-extension='" + config.chrome.workingDir + "' --pack-extension-key='" + config.path.chrome_pem + "'";
                     return cmd;
                 }
             },
