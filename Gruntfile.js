@@ -25,6 +25,8 @@ module.exports = function(grunt) {
 
         iconsDir: path.join(path.resolve(), "icons"),
 
+        wrappersDir: path.join(path.resolve(), "wrappers"),
+
         path: {
             cfx: path.join(userhome(), "bin", "cfx"), // https://ftp.mozilla.org/pub/mozilla.org/labs/jetpack/jetpack-sdk-latest.zip
             chrome: path.join(path.sep, "Applications", "Google Chrome.app", "Contents", "MacOS", "Google Chrome"),
@@ -35,45 +37,16 @@ module.exports = function(grunt) {
             zip: "zip" // Must support -j and -@
         },
 
-        compiled_script: {
-            outputFile: null,
-            inputDir: "sources"
-        },
-
-        userscript: {
-            outputFile: null,
-            workingDir: null,
-            inputDir: "userscript"
-        },
-        chrome: {
-            outputFile: null,
-            workingDir: null,
-            inputDir: "chrome"
-        },
-        chrome_zip: {
-            outputFile: null,
-            workingDir: null,
-            inputDir: "chrome"
-        },
-        firefox: {
-            outputFile: null,
-            workingDir: null,
-            inputDir: "firefox"
-        },
-        opera: {
-            outputFile: null,
-            workingDir: null,
-            inputDir: "opera"
-        },
-        safari: {
-            outputFile: null,
-            workingDir: null,
-            inputDir: "safari"
-        }
+        compiled_script: {},
+        userscript: {},
+        chrome: {},
+        chrome_zip: {},
+        firefox: {},
+        opera: {},
+        safari: {}
     };
 
     config.compiled_script.outputFile = path.join(config.buildDir, placeholders.compiled_script);
-
     config.userscript.outputFile = path.join(config.buildDir, "userscript.user.js");
     config.chrome.outputFile = path.join(config.buildDir, "chrome.crx");
     config.chrome_zip.outputFile = path.join(config.buildDir, "chrome.zip");
@@ -81,12 +54,21 @@ module.exports = function(grunt) {
     config.opera.outputFile = path.join(config.buildDir, "opera.nex");
     config.safari.outputFile = path.join(config.buildDir, "safari.safariextz");
 
+    config.compiled_script.outputFile = null;
     config.userscript.workingDir = path.join(config.buildDir, "userscript");
     config.chrome.workingDir = path.join(config.buildDir, "chrome");
     config.chrome_zip.workingDir = path.join(config.buildDir, "chrome");
     config.firefox.workingDir = path.join(config.buildDir, "firefox");
     config.opera.workingDir = path.join(config.buildDir, "opera");
     config.safari.workingDir = path.join(config.buildDir, "safari.safariextension");
+
+    config.compiled_script.inputDir = path.join(path.resolve(), "sources");
+    config.userscript.inputDir = path.join(config.wrappersDir, "userscript");
+    config.chrome.inputDir = path.join(config.wrappersDir, "chrome");
+    config.chrome_zip.inputDir = path.join(config.wrappersDir, "chrome");
+    config.firefox.inputDir = path.join(config.wrappersDir, "firefox");
+    config.opera.inputDir = path.join(config.wrappersDir, "opera");
+    config.safari.inputDir = path.join(config.wrappersDir, "safari");
 
 
     /*
