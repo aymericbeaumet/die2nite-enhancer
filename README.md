@@ -26,7 +26,6 @@ You can directly install this plugin as an extension for the following browsers:
 - [Google Chrome](https://chrome.google.com/webstore/detail/die2nite-enhancer/imkkdabijgkodinlhgncdfmghdcdacmg)
 - [Mozilla Firefox](https://addons.mozilla.org/en-US/firefox/addon/die2nite_enhancer/)
 - [Opera](https://addons.opera.com/en/extensions/details/die2nite-enhancer/)
-- [Safari](http://safariaddons.com/en-US/safari/addon/227)
 
 ## Install as a script
 
