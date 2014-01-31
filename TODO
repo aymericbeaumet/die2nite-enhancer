@@ -7,7 +7,7 @@ Features:
 - Remove scroll bar on soul distinctions
 - Auto escort
 - Add more filter in the gazette
-- Show chest objects form the citizen view (without mouse hover)
+- Show chest objects from the citizen view (without mouse hover)
 - Move the escort buttons to a more conveniant place
 - Add moon/sun depending of the hour of the day
 - Check/Uncheck every checkbox in a category/on the whole panel
@@ -16,4 +16,5 @@ Features:
   sync button in pande?)
 
 Bugs:
+- Re-enable Safari support
 - Find a solution to fix Safari XmlHttpRequest problem with external tools

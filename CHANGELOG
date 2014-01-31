@@ -1,4 +1,7 @@
 v0.1.0
+- Switch to Grunt to build the project
+- Switch to the Lo-Dash template engine
+- Set up JSHint and Travis-CI
 - Set up the new module system
 - The external tools sync button is more beautifuly integrated
 - Add the possibility to drop all the bag content in one click while outside
