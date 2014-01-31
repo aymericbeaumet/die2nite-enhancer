@@ -4,8 +4,8 @@ module.exports = function(grunt) {
      * Modules
      */
 
-    var userhome = require('userhome');
-    var merge = require('merge');
+    var userhome = require("userhome");
+    var merge = require("merge");
     var path = require("path");
 
 
@@ -21,6 +21,8 @@ module.exports = function(grunt) {
 
     var config = {
         outputDir: path.join(path.resolve(), "build"), // Use an absolute path to fix problems when using the external extension compilers
+
+        iconDir: path.join(path.resolve(), "icon"),
 
         path: {
             cfx: userhome() + "/bin/cfx", // https://ftp.mozilla.org/pub/mozilla.org/labs/jetpack/jetpack-sdk-latest.zip
@@ -208,6 +210,13 @@ module.exports = function(grunt) {
                         dest: config.chrome_crx.workingDir,
                         filter: "isFile",
                         expand: true
+                    },
+                    {
+                        cwd: config.iconDir,
+                        src: ["**"],
+                        dest: config.chrome_crx.workingDir,
+                        filter: "isFile",
+                        expand: true
                     }
                 ]
             },
@@ -223,6 +232,13 @@ module.exports = function(grunt) {
                     {
                         cwd: config.outputDir,
                         src: [placeholders.compiled_script],
+                        dest: config.chrome_zip.workingDir,
+                        filter: "isFile",
+                        expand: true
+                    },
+                    {
+                        cwd: config.iconDir,
+                        src: ["**"],
                         dest: config.chrome_zip.workingDir,
                         filter: "isFile",
                         expand: true
@@ -259,6 +275,13 @@ module.exports = function(grunt) {
                     {
                         cwd: config.outputDir,
                         src: [placeholders.compiled_script],
+                        dest: config.opera.workingDir,
+                        filter: "isFile",
+                        expand: true
+                    },
+                    {
+                        cwd: config.iconDir,
+                        src: ["**"],
                         dest: config.opera.workingDir,
                         filter: "isFile",
                         expand: true
