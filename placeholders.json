@@ -1,0 +1,34 @@
+{
+  "full_name": "Die2Nite Enhancer",
+  "short_name": "D2NE",
+
+  "matching_urls": [
+    "www.die2nite.com",
+    "www.hordes.fr",
+    "www.zombinoia.com",
+    "www.dieverdammten.de"
+  ],
+
+  "cross_origin_xhr_permissions": [
+    "d2n.duskdawn.net",
+    "die2nite.gamerz.org.uk",
+
+    "bbh.fred26.fr",
+    "www.oeev-hordes.com"
+  ],
+
+  "compiled_script": "compiled.js",
+
+  "userscript": {
+    "download_url": "http://userscripts.org/scripts/source/242398.user.js",
+    "icon": "http://www.die2nite.com/gfx/forum/smiley/h_city_up.gif"
+  },
+
+  "firefox": {
+    "identifier": "jid1-bTAmRdxiqQRANQ"
+  },
+
+  "safari": {
+    "identifier": "com.beaumet.die2niteenhancer"
+  }
+}

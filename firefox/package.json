@@ -1,14 +1,18 @@
 {
-  "title": "__NAME__",
-  "version": "__VERSION__",
-  "description": "__DESCRIPTION__",
-  "author": "__AUTHOR_NAME__ <__AUTHOR_EMAIL__>",
-  "license": "__LICENSE__",
+  "title": "<%= full_name %>",
+  "version": "<%= version %>",
+  "description": "<%= description %>",
+  "author": "<%= author.name %> <<%= author.email %>>",
+  "license": "<%= licenses[0].type %>",
 
-  "name": "__ID__",
-  "id": "jid1-bTAmRdxiqQRANQ",
+  "name": "<%= name %>",
+  "id": "<%= firefox.identifier %>",
 
   "permissions": {
-    "cross-domain-content": __CROSS_ORIGIN_XHR_PERMISSION_JSON_ARRAY__
+    "cross-domain-content": [
+      <% for (var i = 0, max = cross_origin_xhr_permissions.length; i < max; i += 1) {
+      %>"http://<%- cross_origin_xhr_permissions[i] %>/*"<% if (i < (max - 1)) { %>,
+      <% } %><% } %>
+    ]
   }
 }

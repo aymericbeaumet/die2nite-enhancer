@@ -1,13 +1,13 @@
 {
-  "name": "__NAME__",
-  "short_name": "__SHORT_NAME__",
-  "version": "__VERSION__",
-  "description": "__DESCRIPTION__",
+  "name": "<%= full_name %>",
+  "short_name": "<%= short_name %>",
+  "version": "<%= version %>",
+  "description": "<%= description %>",
   "author": {
-    "name": "__AUTHOR_NAME__ <__AUTHOR_EMAIL__>",
-    "url": "__AUTHOR_WEBSITE__"
+    "name": "<%= author.name %> <<%= author.email %>>",
+    "url": "<%= author.url %>"
   },
-  "homepage_url": "__PROJECT_WEBSITE__",
+  "homepage_url": "<%= homepage %>",
 
   "manifest_version": 2,
 
@@ -17,11 +17,20 @@
   },
 
   "content_scripts": [{
-    "matches": __MATCHING_URL_JSON_ARRAY__,
+    "matches": [
+      <% for (var i = 0, max = matching_urls.length; i < max; i += 1) {
+      %>"http://<%- matching_urls[i] %>/*"<% if (i < (max - 1)) { %>,
+      <% } %><% } %>
+    ],
+
     "js": [
-      "userscript.user.js"
+      "<%= compiled_script %>"
     ]
   }],
 
-  "permissions": __CROSS_ORIGIN_XHR_PERMISSION_JSON_ARRAY__
+  "permissions": [
+    <% for (var i = 0, max = cross_origin_xhr_permissions.length; i < max; i += 1) {
+    %>"http://<%- cross_origin_xhr_permissions[i] %>/*"<% if (i < (max - 1)) { %>,
+    <% } %><% } %>
+  ]
 }

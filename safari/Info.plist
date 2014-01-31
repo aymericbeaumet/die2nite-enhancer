@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>Author</key>
-	<string>__AUTHOR_NAME__</string>
+  <string><%= author.name %></string>
 	<key>Builder Version</key>
 	<string>9537.73.11</string>
 	<key>CFBundleDisplayName</key>
-	<string>__NAME__</string>
+  <string><%= full_name %></string>
 	<key>CFBundleIdentifier</key>
-	<string>com.beaumet.die2niteenhancer</string>
+  <string><%= safari.identifier %></string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
@@ -27,12 +27,12 @@
 		<dict>
 			<key>End</key>
 			<array>
-				<string>userscript.user.js</string>
+        <string><%= compiled_script %></string>
 			</array>
 		</dict>
 	</dict>
 	<key>Description</key>
-	<string>__DESCRIPTION__</string>
+  <string><%= description %></string>
 	<key>ExtensionInfoDictionaryVersion</key>
 	<string>1.0</string>
 	<key>Permissions</key>
@@ -41,18 +41,16 @@
 		<dict>
 			<key>Allowed Domains</key>
       <array>
-        <string>__MATCHING_URL_1__</string>
-        <string>__MATCHING_URL_2__</string>
-        <string>__MATCHING_URL_3__</string>
-        <string>__MATCHING_URL_4__</string>
-        <string>__CROSS_ORIGIN_XHR_PERMISSION_1__</string>
-        <string>__CROSS_ORIGIN_XHR_PERMISSION_2__</string>
+        <% var concat = matching_urls.concat(cross_origin_xhr_permissions);
+           for (var i = 0, max = concat.length; i < max; i += 1) {
+        %><string><%- concat[i] %></string><% if (i < (max - 1)) { %>
+        <% } %><% } %>
 			</array>
 			<key>Level</key>
 			<string>Some</string>
 		</dict>
 	</dict>
 	<key>Website</key>
-	<string>__PROJECT_WEBSITE__</string>
+  <string><%= homepage %></string>
 </dict>
 </plist>
