@@ -14,7 +14,6 @@ Features:
 - Confirm the update by a notification (alert, ...)
 - Inform the user that it will be less information in pandemonium (remove the
   sync button in pande?)
-- Add a system of generic modules
 
 Bugs:
 - Find a solution to fix Safari XmlHttpRequest problem with external tools
