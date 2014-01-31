@@ -35,6 +35,7 @@ Module.register(function() {
     {
         document.removeEventListener('d2n_gamebody_reload', drop_first_item);
 
+        // Find all the items and iterate on them
         JS.wait_for_selector('ul.tools.shortTools.bagInv > li:nth-child(n + 3):not(.clear) > a', function found(item) {
             // if it a free slot, abort
             if (item.classList.contains('freeSlot')) {
@@ -49,6 +50,11 @@ Module.register(function() {
             var url = onclick.split('\'')[1];
 
             JS.injectJS('js.XmlHttp.get(' + JSON.stringify(url) + ');');
+
+            // If in camping, try to drop an item to show the MT error and abort
+            if (D2N.is_camping()) {
+                return;
+            }
 
             document.addEventListener('d2n_gamebody_reload', drop_first_item);
         });

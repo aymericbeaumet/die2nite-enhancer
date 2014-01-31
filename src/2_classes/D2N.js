@@ -312,6 +312,15 @@ var D2N = (function() {
         },
 
         /**
+         * Check if the user is outside and camping.
+         * @return boolean true if the user is outside and camping, otherwise false
+         */
+        is_camping: function() {
+            return D2N.is_outside() &&
+                document.getElementsByClassName('left').length < 1;
+        },
+
+        /**
          * Add custom events on the interface:
          * - to watch when the gamebody is reloaded: 'd2n_gamebody_reload'
          * - to watch the number of AP: 'd2n_apchange'
