@@ -12,6 +12,7 @@ module.exports = function(grunt) {
     /*
      * Load placeholders
      */
+
     var placeholders = grunt.file.readJSON("placeholders.json");
 
 
