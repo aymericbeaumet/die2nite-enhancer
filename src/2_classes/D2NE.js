@@ -73,9 +73,9 @@ var D2NE = (function() {
     /**
      * Send the 'all_modules_loaded' if needed.
      */
-    function emit_all_modules_loaded_event_if_needed(initialised_modules, total_modules)
+    function emit_all_modules_loaded_event_if_needed(processed_modules, total_modules)
     {
-        if (initialised_modules >= total_modules) {
+        if (processed_modules >= total_modules) {
             // Dispatch an event when all the modules are loaded
             JS.dispatch_event('d2ne_all_modules_loaded');
         }
@@ -86,7 +86,7 @@ var D2NE = (function() {
      */
     function load_modules()
     {
-        var initialised_modules = 0;
+        var processed_modules = 0;
         var total_modules = Module.count();
 
         // For each module
@@ -94,15 +94,14 @@ var D2NE = (function() {
             // Load it only if it is enabled
             if (module.is_enabled()) {
 
-                // If the module has a 'load' method, call it and give 'module' as
-                // the context to be able to reach its private members and methods
-                // via 'this'
+                // If the module has a 'load' method, call it and provide
+                // 'module' as the context to be able to reach its private
+                // members and methods via 'this'
                 if (typeof module.actions.load !== 'undefined') {
                     module.actions.load.call(module);
                 }
-
-                emit_all_modules_loaded_event_if_needed((initialised_modules += 1), total_modules);
             }
+            emit_all_modules_loaded_event_if_needed((processed_modules += 1), total_modules);
         });
     }
 

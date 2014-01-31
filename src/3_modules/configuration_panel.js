@@ -197,7 +197,7 @@ Module.register(function() {
 
         for (var i = 0, max = configuration_panel_extensible_zone_node_.childElementCount; i < max; i += 1) {
             // skip if not div
-            if (configuration_panel_extensible_zone_node_.childNodes[i].tagName !== 'div') {
+            if (configuration_panel_extensible_zone_node_.childNodes[i].tagName.toLowerCase() !== 'div') {
                 continue;
             }
 
