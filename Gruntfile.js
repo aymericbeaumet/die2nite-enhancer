@@ -258,7 +258,7 @@ module.exports = function(grunt) {
                     {
                         cwd: config.buildDir,
                         src: [placeholders.compiled_script],
-                        dest: config.firefox.workingDir,
+                        dest: path.join(config.firefox.workingDir, 'data'),
                         filter: "isFile",
                         expand: true
                     }

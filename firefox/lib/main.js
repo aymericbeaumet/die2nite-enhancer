@@ -5,7 +5,11 @@ var self = require('sdk/self');
 var setTimeout = require('sdk/timers').setTimeout;
 
 pageMod.PageMod({
-  include: __MATCHING_URL_JSON_ARRAY__,
-  contentScriptFile: self.data.url("userscript.user.js"),
+  include: [
+    <% for (var i = 0, max = matching_urls.length; i < max; i += 1) {
+    %>"http://<%- matching_urls[i] %>/*"<% if (i < (max - 1)) { %>,
+    <% } %><% } %>
+  ],
+  contentScriptFile: self.data.url("<%= compiled_script %>"),
   contentScriptWhen: "ready"
 });
