@@ -70,12 +70,12 @@ Module.register(function() {
                     function(response_text) {
                         var parsed_xml = JS.parse_xml(response_text);
                         var hordes_node = parsed_xml.firstChild;
-                        var potential_error_node = hordes_node.childNodes[1];
+                        var answer = hordes_node.childNodes[1];
 
-                        if (potential_error_node && potential_error_node.tagName === 'error') {
-                            return callback_failure();
+                        if (answer && answer.tagName === 'error' && answer.getAttribute('code') === 'ok') {
+                            return callback_success();
                         }
-                        return callback_success();
+                        return callback_failure();
                     },
                     function() {
                         return callback_failure();
