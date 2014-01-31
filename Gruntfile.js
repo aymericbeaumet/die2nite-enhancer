@@ -37,7 +37,7 @@ module.exports = function(grunt) {
 
         compiled_script: {
             outputFile: null,
-            inputDir: "src"
+            inputDir: "sources"
         },
 
         userscript: {
