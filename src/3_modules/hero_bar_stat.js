@@ -86,6 +86,7 @@ Module.register(function() {
                             //   - day 0/XX -> 0px
                             //   - day 5/14 -> 210.714285714286px
                             //   - day 6/14 -> 252.857142857143px
+                            //   - dat 7/14 -> 295px
                             var max_width = 583;
                             var percent = width / max_width * 100;
 
