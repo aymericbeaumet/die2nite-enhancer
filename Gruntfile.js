@@ -183,9 +183,10 @@ module.exports = function(grunt) {
             options: {
                 process: function(content) {
                     return grunt.template.process(content, {
-                        data: merge(grunt.config('pkg'), placeholders)
+                        data: merge(grunt.config("pkg"), placeholders)
                     });
-                }
+                },
+                processContentExclude: [path.join("**", "*.png")]
             },
 
             userscript: {
@@ -491,11 +492,11 @@ module.exports = function(grunt) {
         if (typeof target === "undefined") {
             grunt.task.run("copy");
             grunt.task.run("_pack");
-            grunt.task.run("clean:all_working_dirs");
+            //grunt.task.run("clean:all_working_dirs");
         } else {
             grunt.task.run("copy:" + target);
             grunt.task.run("_pack:" + target);
-            grunt.task.run("clean:" + target);
+            //grunt.task.run("clean:" + target);
         }
     });
 
