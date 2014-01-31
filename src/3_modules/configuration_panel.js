@@ -362,7 +362,7 @@ Module.register(function() {
                         ],
 
                         ["div", {},
-                            ["a", { "href": "__PROJECT_WEBSITE__", "target": "_blank" }, "__NAME__ v__VERSION__"]
+                            ["a", { "href": "<%= homepage %>", "target": "_blank" }, "<%= full_name %> v<%= version %>"]
                         ]
                     ]
                 ]
