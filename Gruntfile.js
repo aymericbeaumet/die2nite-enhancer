@@ -54,7 +54,7 @@ module.exports = function(grunt) {
     config.opera.outputFile = path.join(config.buildDir, "opera.nex");
     config.safari.outputFile = path.join(config.buildDir, "safari.safariextz");
 
-    config.compiled_script.outputFile = null;
+    config.compiled_script.workingDir = null;
     config.userscript.workingDir = path.join(config.buildDir, "userscript");
     config.chrome.workingDir = path.join(config.buildDir, "chrome");
     config.chrome_zip.workingDir = path.join(config.buildDir, "chrome");
