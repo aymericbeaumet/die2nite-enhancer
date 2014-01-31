@@ -35,7 +35,7 @@ Module.register(function() {
     {
         document.removeEventListener('d2n_gamebody_reload', drop_first_item);
 
-        // Find all the items and iterate on them
+        // Find the first item and try to drop it
         JS.wait_for_selector('ul.tools.shortTools.bagInv > li:nth-child(n + 3):not(.clear) > a', function found(item) {
             // if it a free slot, abort
             if (item.classList.contains('freeSlot')) {
@@ -56,6 +56,7 @@ Module.register(function() {
                 return;
             }
 
+            // When the item is removed, drop the second
             document.addEventListener('d2n_gamebody_reload', drop_first_item);
         });
     }
