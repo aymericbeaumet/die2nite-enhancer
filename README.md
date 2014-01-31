@@ -1,4 +1,4 @@
-## Die2Nite Enhancer
+## Die2Nite Enhancer [![Build Status](https://travis-ci.org/abeaumet/die2nite_enhancer.png?branch=module_system)](https://travis-ci.org/abeaumet/die2nite_enhancer) [![Coverage Status](https://coveralls.io/repos/abeaumet/die2nite_enhancer/badge.png)](https://coveralls.io/r/abeaumet/die2nite_enhancer)
 
 Die2Nite Enhancer is an extension allowing you to improve your game experience on the browser game [Die2Nite](http://www.die2nite.com/).
 
@@ -25,8 +25,8 @@ The French ([Hordes](http://www.hordes.fr/)), Spanish ([Zombinoia](http://www.zo
 You can directly install this plugin as an extension for the following browsers:
 - [Google Chrome](https://chrome.google.com/webstore/detail/die2nite-enhancer/imkkdabijgkodinlhgncdfmghdcdacmg)
 - [Mozilla Firefox](https://addons.mozilla.org/en-US/firefox/addon/die2nite_enhancer/)
-- [Safari](http://safariaddons.com/en-US/safari/addon/227)
 - [Opera](https://addons.opera.com/en/extensions/details/die2nite-enhancer/)
+- [Safari](http://safariaddons.com/en-US/safari/addon/227)
 
 ## Install as a script
 
