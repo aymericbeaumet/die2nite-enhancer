@@ -152,7 +152,12 @@ module.exports = function(grunt) {
                 separator: "\n"
             },
             compiled_script: {
-                src: [path.join(config.compiled_script.inputDir, "**", "*.js")],
+                src: [
+                    path.join(config.compiled_script.inputDir, "header.js"),
+                    path.join(config.compiled_script.inputDir, "classes", "*.js"),
+                    path.join(config.compiled_script.inputDir, "modules", "*.js"),
+                    path.join(config.compiled_script.inputDir, "footer.js")
+                ],
                 dest: config.compiled_script.outputFile
             },
             userscript: {
