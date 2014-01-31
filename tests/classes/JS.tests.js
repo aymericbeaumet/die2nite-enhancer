@@ -1,7 +1,7 @@
-describe("network_request", function() {
+describe("JS.network_request", function() {
 });
 
-describe("is_defined", function() {
+describe("JS.is_defined", function() {
     it("should return false if undefined", function() {
         expect(JS.is_defined(undefined)).toBe(false);
     });
