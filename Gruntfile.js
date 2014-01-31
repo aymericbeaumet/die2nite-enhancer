@@ -97,49 +97,31 @@ module.exports = function(grunt) {
 
         _pack: {
             userscript: {
-                outputFile: config.userscript.outputFile,
-                workingDir: config.userscript.workingDir,
-                inputDir: config.userscript.inputDir,
                 custom: function(workingDir, OutputFile) {
                     grunt.task.run("concat:userscript");
                 }
             },
             chrome: {
-                outputFile: config.chrome.outputFile,
-                workingDir: config.chrome.workingDir,
-                inputDir: config.chrome.inputDir,
                 custom: function(workingDir, OutputFile) {
                     grunt.task.run("shell:pack_chrome");
                 }
             },
             chrome_zip: {
-                outputFile: config.chrome_zip.outputFile,
-                workingDir: config.chrome_zip.workingDir,
-                inputDir: config.chrome_zip.inputDir,
                 custom: function(workingDir, OutputFile) {
                     grunt.task.run("shell:pack_chrome_zip");
                 }
             },
             firefox: {
-                outputFile: config.firefox.outputFile,
-                workingDir: config.firefox.workingDir,
-                inputDir: config.firefox.inputDir,
                 custom: function(workingDir, OutputFile) {
                     grunt.task.run("shell:pack_firefox");
                 }
             },
             opera: {
-                outputFile: config.opera.outputFile,
-                workingDir: config.opera.workingDir,
-                inputDir: config.opera.inputDir,
                 custom: function(workingDir, OutputFile) {
                     grunt.task.run("shell:pack_opera");
                 }
             },
             safari: {
-                outputFile: config.safari.outputFile,
-                workingDir: config.safari.workingDir,
-                inputDir: config.safari.inputDir,
                 custom: function(workingDir, OutputFile) {
                     grunt.task.run("shell:pack_safari");
                 }
