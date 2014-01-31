@@ -468,11 +468,11 @@ module.exports = function(grunt) {
         if (typeof target === "undefined") {
             grunt.task.run("copy");
             grunt.task.run("_pack");
-            //grunt.task.run("clean:all_working_dirs");
+            grunt.task.run("clean:all_working_dirs");
         } else {
             grunt.task.run("copy:" + target);
             grunt.task.run("_pack:" + target);
-            //grunt.task.run("clean:" + target);
+            grunt.task.run("clean:" + target);
         }
     });
 
