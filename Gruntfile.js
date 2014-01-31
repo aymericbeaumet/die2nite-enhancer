@@ -175,7 +175,14 @@ module.exports = function(grunt) {
             userscript: {
                 src: [path.join(config.userscript.workingDir, "metadata.js"),
                       config.compiled_script.outputFile],
-                dest: config.userscript.outputFile
+                dest: config.userscript.outputFile,
+                options: {
+                    process: function(content) {
+                        return grunt.template.process(content, {
+                            data: merge(grunt.config("pkg"), placeholders)
+                        });
+                    }
+                }
             }
         },
 
