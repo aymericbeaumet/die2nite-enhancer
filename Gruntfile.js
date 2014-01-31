@@ -20,7 +20,7 @@ module.exports = function(grunt) {
      */
 
     var config = {
-        outputDir: path.join(path.resolve(), "build"), // Use an absolute path to fix problem when using the external extension compilers
+        outputDir: path.join(path.resolve(), "build"), // Use an absolute path to fix problems when using the external extension compilers
 
         path: {
             cfx: userhome() + "/bin/cfx", // https://ftp.mozilla.org/pub/mozilla.org/labs/jetpack/jetpack-sdk-latest.zip
