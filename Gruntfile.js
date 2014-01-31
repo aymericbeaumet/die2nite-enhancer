@@ -263,7 +263,6 @@ module.exports = function(grunt) {
                         expand: true
                     },
                     {
-                        cwd: config.buildDir,
                         src: [config.compiled_script.outputFile],
                         dest: config.opera.workingDir,
                         filter: "isFile",
@@ -325,7 +324,7 @@ module.exports = function(grunt) {
                 command: function() {
                     var cmd =
                         "'" + config.path.chrome + "' --pack-extension=" + config.opera.workingDir + " --pack-extension-key=" + config.path.chrome_pem + ";" +
-                        "mv " + path.join(config.buildDir, "opera.crx") + " " + config.opera.outputFile;
+                        "mv '" + path.join(config.buildDir, "opera.crx") + "' '" + config.opera.outputFile + "'";
                     return cmd;
                 }
             },
