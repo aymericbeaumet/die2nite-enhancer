@@ -22,9 +22,8 @@ module.exports = function(grunt) {
 
     var config = {
         buildDir: path.join(path.resolve(), "build"), // Use an absolute path to fix problems when using the external extension compilers
-
         iconsDir: path.join(path.resolve(), "icons"),
-
+        testsDir: path.join(path.resolve(), "tests"),
         wrappersDir: path.join(path.resolve(), "wrappers"),
 
         path: {
@@ -331,6 +330,18 @@ module.exports = function(grunt) {
             }
         },
 
+        karma: {
+            options: {
+                configFile: path.join(config.testsDir, "karma.conf.js"),
+            },
+
+            travis: {
+                singleRun: true,
+                browsers: ['Firefox']
+            },
+            watch: {}
+        },
+
         jshint: {
             src: [config.compiled_script.outputFile],
             options: {
@@ -485,9 +496,11 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask("test", "Launch the tests.", ["clean:all", "compile", "jshint"]);
+    grunt.registerTask("test", "Launch the lint and unit tests.", ["clean:all", "compile", "jshint", "karma:travis"]);
 
     grunt.registerTask("compile", "Concatenate the JavaScript files into one.", ["concat:compiled_script"]);
+
+    grunt.registerTask("dev", "Watch for modifications and recompile/relaunch tests on the fly", ["karma:watch"]);
 
 
     /*
@@ -499,5 +512,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-jshint");
     grunt.loadNpmTasks('grunt-shell');
+    grunt.loadNpmTasks('grunt-karma');
 
 };
