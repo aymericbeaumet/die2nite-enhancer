@@ -5,17 +5,17 @@ module.exports = function(config) {
   config.set({
 
     // base path, that will be used to resolve files and exclude
-    basePath: '',
+    basePath: "",
 
 
     // frameworks to use
-    frameworks: ['jasmine'],
+    frameworks: ["jasmine"],
 
 
     // list of files / patterns to load in the browser
     files: [
-      '../sources/classes/*.js',
-      '**/*.tests.js'
+      "../sources/classes/*.js",
+      "**/*.tests.js"
     ],
 
 
@@ -26,7 +26,7 @@ module.exports = function(config) {
 
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-    reporters: ['progress'],
+    reporters: ["progress"],
 
 
     // web server port
@@ -54,7 +54,7 @@ module.exports = function(config) {
     // - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
     // - PhantomJS
     // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-    browsers: ['PhantomJS', 'Chrome', 'Firefox', 'Opera', 'Safari'],
+    browsers: ["PhantomJS", "Chrome", "Firefox", "Opera", "Safari"],
 
 
     // If browser does not capture in given timeout [ms], kill it

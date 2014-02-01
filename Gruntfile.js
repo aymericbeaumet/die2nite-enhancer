@@ -21,7 +21,7 @@
  *       Run `grunt compile`, `grunt jsvalidate` and then `grunt jshint`.
  *
  *   - `grunt test:unit`:
- *       Run `grunt karma:continous`.
+ *       Run `grunt karma:continuous`.
  *
  *   - `grunt dev`:
  *       Recompile the packages and launch the static analysis and the unit
@@ -268,7 +268,7 @@ module.exports = function(grunt) {
                     },
                     {
                         src: [config.compiled_script.outputFile],
-                        dest: path.join(config.firefox.workingDir, 'data'),
+                        dest: path.join(config.firefox.workingDir, "data"),
                         filter: "isFile",
                         expand: true,
                         flatten: true
@@ -332,7 +332,7 @@ module.exports = function(grunt) {
             },
             pack_chrome_zip: {
                 command: function() {
-                    var cmd = 'echo ' + grunt.file.expand(config.chrome_zip.workingDir + "**" + path.sep + "*").join(' ') + " | tr ' ' '\n' | " + config.path.zip + " -j " + config.chrome_zip.outputFile + " -@";
+                    var cmd = "echo " + grunt.file.expand(config.chrome_zip.workingDir + "**" + path.sep + "*").join(" ") + " | tr ' ' '\n' | " + config.path.zip + " -j " + config.chrome_zip.outputFile + " -@";
                     return cmd;
                 }
             },
@@ -370,9 +370,9 @@ module.exports = function(grunt) {
                 configFile: path.join(config.testsDir, "karma.conf.js"),
             },
 
-            continous: {
+            continuous: {
                 singleRun: true,
-                browsers: ['PhantomJS', 'Firefox']
+                browsers: ["PhantomJS", "Firefox"]
             },
             server: {
                 background: true
@@ -383,17 +383,17 @@ module.exports = function(grunt) {
             karma: {
                 // if a test is modifed, relaunch the tests
                 files: [
-                    'tests/**/*.tests.js'
+                    "tests/**/*.tests.js"
                 ],
-                tasks: ['karma:server:run']
+                tasks: ["karma:server:run"]
             },
             pack: {
                 // if a source file is modified, re-statically check the files,
                 // relaunch the tests and finally re-pack
                 files: [
-                    'sources/**/*.js'
+                    "sources/**/*.js"
                 ],
-                tasks: ['static_check', 'karma:server:run', 'pack']
+                tasks: ["static_check", "karma:server:run", "pack"]
             }
         },
 
@@ -596,7 +596,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask("static_check", "Statically check the JS files.", ["compile", "jsvalidate", "jshint"]);
 
-    grunt.registerTask("unit", "Launch the unit tests.", ["karma:continous"]);
+    grunt.registerTask("unit", "Launch the unit tests.", ["karma:continuous"]);
 
     grunt.registerTask("compile", "Concatenate the JavaScript files into one.", ["clean:all", "concat:compiled_script"]);
 
@@ -611,9 +611,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-contrib-concat");
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-jshint");
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-shell');
-    grunt.loadNpmTasks('grunt-karma');
-    grunt.loadNpmTasks('grunt-jsvalidate');
+    grunt.loadNpmTasks("grunt-contrib-watch");
+    grunt.loadNpmTasks("grunt-shell");
+    grunt.loadNpmTasks("grunt-karma");
+    grunt.loadNpmTasks("grunt-jsvalidate");
 
 };
