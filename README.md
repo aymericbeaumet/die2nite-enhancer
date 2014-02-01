@@ -1,4 +1,4 @@
-## Die2Nite Enhancer [![Build Status](https://travis-ci.org/abeaumet/die2nite_enhancer.png?branch=module_system)](https://travis-ci.org/abeaumet/die2nite_enhancer)
+## Die2Nite Enhancer [![Build Status](https://travis-ci.org/abeaumet/die2nite_enhancer.png?branch=module_system)](https://travis-ci.org/abeaumet/die2nite_enhancer) [![Dependency Status](https://gemnasium.com/abeaumet/die2nite_enhancer.png)](https://gemnasium.com/abeaumet/die2nite_enhancer)
 
 Die2Nite Enhancer is an extension allowing you to improve your game experience on the browser game [Die2Nite](http://www.die2nite.com/).
 
