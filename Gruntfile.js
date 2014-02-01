@@ -20,10 +20,10 @@
  *       Run `grunt compile` then `grunt jshint`.
  *
  *   - `grunt test:unit`:
- *       Run `grunt karma:single_run`.
+ *       Run `grunt karma:continous`.
  *
  *   - `grunt dev`:
- *       Run `grunt karma:watch`.
+ *       Recompile the packages and launch the unit tests on the fly.
  *
  */
 
@@ -364,11 +364,23 @@ module.exports = function(grunt) {
                 configFile: path.join(config.testsDir, "karma.conf.js"),
             },
 
-            single_run: {
+            continous: {
                 singleRun: true,
                 browsers: ['Firefox']
             },
-            watch: {}
+            server: {
+                background: true
+            }
+        },
+
+        watch: {
+            karma: {
+                files: [
+                    'sources/classes/*.js',
+                    'tests/**/*.tests.js'
+                ],
+                tasks: ['karma:watch:run']
+            }
         },
 
         jshint: {
@@ -544,11 +556,11 @@ module.exports = function(grunt) {
 
     grunt.registerTask("lint", "Lint the JS files.", ["compile", "jshint"]);
 
-    grunt.registerTask("unit", "Launch the unit tests.", ["karma:single_run"]);
+    grunt.registerTask("unit", "Launch the unit tests.", ["karma:continous"]);
 
     grunt.registerTask("compile", "Concatenate the JavaScript files into one.", ["concat:compile_script"]);
 
-    grunt.registerTask("dev", "Watch for modifications and recompile/relaunch tests on the fly.", ["karma:watch"]);
+    grunt.registerTask("dev", "Watch for modifications and recompile/relaunch tests on the fly.", ["karma:server:start", "watch"]);
 
 
     /*
@@ -559,6 +571,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-contrib-concat");
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-jshint");
+    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-shell');
     grunt.loadNpmTasks('grunt-karma');
 
