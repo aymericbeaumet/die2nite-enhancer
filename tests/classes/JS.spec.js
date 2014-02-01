@@ -26,7 +26,7 @@ describe("JS.is_defined", function() {
         expect(JS.is_defined({})).toBe(true);
     });
 
-    it("should return true if close", function() {
+    it("should return true if closure", function() {
         expect(JS.is_defined(function(){})).toBe(true);
     });
 });

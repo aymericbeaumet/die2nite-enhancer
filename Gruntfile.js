@@ -372,18 +372,38 @@ module.exports = function(grunt) {
 
             run: {
                 singleRun: true,
-                browsers: ["PhantomJS", "Firefox"]
+                browsers: ["PhantomJS", "Firefox"],
+                reporters: ["dots", "coverage"],
+
+                // CoverAlls
+
+                preprocessors: {
+                    "sources/classes/*.js" : ["coverage"]
+                },
+
+                coverageReporter: {
+                    type: "lcov",
+                    dir: "coverage/"
+                }
             },
+
+            // Should be launched by `grunt:dev`
             daemon: {
                 background: true
             }
         },
 
+        coveralls: {
+            options: {
+                coverage_dir: "coverage/PhantomJS 1.9.7 (Mac OS X)/"
+            }
+        },
+
         watch: {
             karma: {
-                // if a test is modifed, relaunch the tests
+                // if a spec file is modifed, relaunch the tests
                 files: [
-                    "tests/**/*.tests.js"
+                    "tests/**/*.spec.js"
                 ],
                 tasks: ["karma:daemon:run"]
             },
@@ -612,8 +632,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-jshint");
     grunt.loadNpmTasks("grunt-contrib-watch");
-    grunt.loadNpmTasks("grunt-shell");
-    grunt.loadNpmTasks("grunt-karma");
     grunt.loadNpmTasks("grunt-jsvalidate");
+    grunt.loadNpmTasks("grunt-karma");
+    grunt.loadNpmTasks('grunt-karma-coveralls');
+    grunt.loadNpmTasks("grunt-shell");
 
 };
