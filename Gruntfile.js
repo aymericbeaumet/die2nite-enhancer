@@ -9,21 +9,27 @@
  *       Call `grunt compile` and then pack the compiled script into the
  *       different wrappers.
  *
- *   - `grunt pack:chrome`
- *       Same as `grunt pack` but for only one wrapper (available wrappers:
- *       'chrome', 'chrome_zip', 'firefox', 'opera', 'safari' and 'userscript')
+ *   - `grunt pack --chrome --firefox`
+ *       Same as `grunt pack` but only for the specified wrappers (available
+ *       wrappers: 'chrome', 'chrome_zip', 'firefox', 'opera', 'safari' and
+ *       'userscript').
  *
  *   - `grunt test`
  *       Run the `test:*` tasks.
  *
- *   - `grunt test:lint`:
- *       Run `grunt compile` then `grunt jshint`.
+ *   - `grunt test:static_check`:
+ *       Run `grunt compile`, `grunt jsvalidate` and then `grunt jshint`.
  *
  *   - `grunt test:unit`:
  *       Run `grunt karma:continous`.
  *
  *   - `grunt dev`:
- *       Recompile the packages and launch the unit tests on the fly.
+ *       Recompile the packages and launch the static analysis and the unit
+ *       tests on the fly.
+ *
+ *   - `grunt dev --userscript --firefox`:
+ *       Same as `grunt dev` but only for the specified wrappers (see the `grunt
+ *       pack` comment above for the available wrappers).
  *
  */
 
@@ -161,7 +167,7 @@ module.exports = function(grunt) {
             options: {
                 separator: "\n"
             },
-            compile_script: {
+            compiled_script: {
                 src: [
                     path.join(config.compiled_script.inputDir, "header.js"),
                     path.join(config.compiled_script.inputDir, "classes", "*.js"),
@@ -366,7 +372,7 @@ module.exports = function(grunt) {
 
             continous: {
                 singleRun: true,
-                browsers: ['Firefox']
+                browsers: ['PhantomJS', 'Firefox']
             },
             server: {
                 background: true
@@ -375,11 +381,32 @@ module.exports = function(grunt) {
 
         watch: {
             karma: {
+                // if a test is modifed, relaunch the tests
                 files: [
-                    'sources/classes/*.js',
                     'tests/**/*.tests.js'
                 ],
-                tasks: ['karma:watch:run']
+                tasks: ['karma:server:run']
+            },
+            pack: {
+                // if a source file is modified, re-statically check the files,
+                // relaunch the tests and finally re-pack
+                files: [
+                    'sources/**/*.js'
+                ],
+                tasks: ['static_check', 'karma:server:run', 'pack']
+            }
+        },
+
+        jsvalidate: {
+            options:{
+                globals: {},
+                esprimaOptions: {},
+                verbose: false
+            },
+            compiled_script:{
+                files: {
+                    src: [config.compiled_script.outputFile]
+                }
             }
         },
 
@@ -514,17 +541,30 @@ module.exports = function(grunt) {
     grunt.registerTask("default", "Call the task `pack`.", ["pack"]);
 
     grunt.registerTask("pack", "Pack all the extensions", function(target) {
+        var options = false;
+
         grunt.task.run("compile");
 
-        // if no target provided, pack everything
-        if (typeof target === "undefined") {
+        // Browse all the possible _pack. Pack it if the concerned wrapper
+        // options is found and enabled.
+        var _packs = grunt.config("_pack");
+        for (var key in _packs) {
+            if (!_packs.hasOwnProperty(key) ||
+                typeof grunt.option(key) === "undefined" ||
+                grunt.option(key) === false) {
+                continue;
+            }
+            options = true;
+            grunt.task.run("copy:" + key);
+            grunt.task.run("_pack:" + key);
+            grunt.task.run("clean:" + key);
+        }
+
+        // if no options provided, pack everything
+        if (!options) {
             grunt.task.run("copy");
             grunt.task.run("_pack");
             grunt.task.run("clean:all_working_dirs");
-        } else {
-            grunt.task.run("copy:" + target);
-            grunt.task.run("_pack:" + target);
-            grunt.task.run("clean:" + target);
         }
     });
 
@@ -536,8 +576,8 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask("test", "Launch the lint tests and the unit tests.", function(target) {
-        var tests = ["lint", "unit"];
+    grunt.registerTask("test", "Launch the static tests and the unit tests.", function(target) {
+        var tests = ["static_check", "unit"];
 
         // if no target provided, launch all the tests
         if (typeof target === "undefined") {
@@ -554,11 +594,11 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask("lint", "Lint the JS files.", ["compile", "jshint"]);
+    grunt.registerTask("static_check", "Statically check the JS files.", ["compile", "jsvalidate", "jshint"]);
 
     grunt.registerTask("unit", "Launch the unit tests.", ["karma:continous"]);
 
-    grunt.registerTask("compile", "Concatenate the JavaScript files into one.", ["concat:compile_script"]);
+    grunt.registerTask("compile", "Concatenate the JavaScript files into one.", ["clean:all", "concat:compiled_script"]);
 
     grunt.registerTask("dev", "Watch for modifications and recompile/relaunch tests on the fly.", ["karma:server:start", "watch"]);
 
@@ -574,5 +614,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-shell');
     grunt.loadNpmTasks('grunt-karma');
+    grunt.loadNpmTasks('grunt-jsvalidate');
 
 };
