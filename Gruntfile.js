@@ -21,7 +21,7 @@
  *       Run `grunt compile`, `grunt jsvalidate` and then `grunt jshint`.
  *
  *   - `grunt test:unit`:
- *       Run `grunt karma:continuous`.
+ *       Run `grunt karma:run`.
  *
  *   - `grunt dev`:
  *       Recompile the packages and launch the static analysis and the unit
@@ -370,11 +370,11 @@ module.exports = function(grunt) {
                 configFile: path.join(config.testsDir, "karma.conf.js"),
             },
 
-            continuous: {
+            run: {
                 singleRun: true,
                 browsers: ["PhantomJS", "Firefox"]
             },
-            server: {
+            daemon: {
                 background: true
             }
         },
@@ -385,7 +385,7 @@ module.exports = function(grunt) {
                 files: [
                     "tests/**/*.tests.js"
                 ],
-                tasks: ["karma:server:run"]
+                tasks: ["karma:daemon:run"]
             },
             pack: {
                 // if a source file is modified, re-statically check the files,
@@ -393,7 +393,7 @@ module.exports = function(grunt) {
                 files: [
                     "sources/**/*.js"
                 ],
-                tasks: ["static_check", "karma:server:run", "pack"]
+                tasks: ["static_check", "karma:daemon:run", "pack"]
             }
         },
 
@@ -596,11 +596,11 @@ module.exports = function(grunt) {
 
     grunt.registerTask("static_check", "Statically check the JS files.", ["compile", "jsvalidate", "jshint"]);
 
-    grunt.registerTask("unit", "Launch the unit tests.", ["karma:continuous"]);
+    grunt.registerTask("unit", "Launch the unit tests.", ["karma:run"]);
 
     grunt.registerTask("compile", "Concatenate the JavaScript files into one.", ["clean:all", "concat:compiled_script"]);
 
-    grunt.registerTask("dev", "Watch for modifications and recompile/relaunch tests on the fly.", ["karma:server:start", "watch"]);
+    grunt.registerTask("dev", "Watch for modifications and recompile/relaunch tests on the fly.", ["karma:daemon:start", "watch"]);
 
 
     /*
