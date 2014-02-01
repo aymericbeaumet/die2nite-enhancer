@@ -1,3 +1,32 @@
+/*
+ * This Gruntfile is used to develop, test and compile this project. Here are
+ * the callable tasks:
+ *
+ *   - `grunt compile`
+ *       Concatenate all the files present in ./sources/ into one.
+ *
+ *   - `grunt pack`
+ *       Call `grunt compile` and then pack the compiled script into the
+ *       different wrappers.
+ *
+ *   - `grunt pack:chrome`
+ *       Same as `grunt pack` but for only one wrapper (available wrappers:
+ *       'chrome', 'chrome_zip', 'firefox', 'opera', 'safari' and 'userscript')
+ *
+ *   - `grunt test`
+ *       Run the `test:*` tasks.
+ *
+ *   - `grunt test:lint`:
+ *       Run `grunt compile` then `grunt jshint`.
+ *
+ *   - `grunt test:unit`:
+ *       Run `grunt karma:single_run`.
+ *
+ *   - `grunt dev`:
+ *       Run `grunt karma:watch`.
+ *
+ */
+
 module.exports = function(grunt) {
 
     /*
@@ -80,7 +109,7 @@ module.exports = function(grunt) {
         _pack: {
             userscript: {
                 custom: function(workingDir, OutputFile) {
-                    grunt.task.run("concat:userscript");
+                    grunt.task.run("concat:pack_userscript");
                 }
             },
             chrome: {
@@ -132,7 +161,7 @@ module.exports = function(grunt) {
             options: {
                 separator: "\n"
             },
-            compiled_script: {
+            compile_script: {
                 src: [
                     path.join(config.compiled_script.inputDir, "header.js"),
                     path.join(config.compiled_script.inputDir, "classes", "*.js"),
@@ -141,7 +170,7 @@ module.exports = function(grunt) {
                 ],
                 dest: config.compiled_script.outputFile
             },
-            userscript: {
+            pack_userscript: {
                 src: [path.join(config.userscript.workingDir, "metadata.js"),
                       config.compiled_script.outputFile],
                 dest: config.userscript.outputFile,
@@ -335,7 +364,7 @@ module.exports = function(grunt) {
                 configFile: path.join(config.testsDir, "karma.conf.js"),
             },
 
-            travis: {
+            single_run: {
                 singleRun: true,
                 browsers: ['Firefox']
             },
@@ -473,7 +502,6 @@ module.exports = function(grunt) {
     grunt.registerTask("default", "Call the task `pack`.", ["pack"]);
 
     grunt.registerTask("pack", "Pack all the extensions", function(target) {
-        grunt.task.run("clean:all");
         grunt.task.run("compile");
 
         // if no target provided, pack everything
@@ -496,11 +524,31 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask("test", "Launch the lint and unit tests.", ["clean:all", "compile", "jshint", "karma:travis"]);
+    grunt.registerTask("test", "Launch the lint tests and the unit tests.", function(target) {
+        var tests = ["lint", "unit"];
 
-    grunt.registerTask("compile", "Concatenate the JavaScript files into one.", ["concat:compiled_script"]);
+        // if no target provided, launch all the tests
+        if (typeof target === "undefined") {
+            tests.forEach(function(test) {
+                grunt.task.run(test);
+            });
+        } else {
+            // else launch the test if it is known
+            if (tests.indexOf(target) > -1) {
+                grunt.task.run(target);
+            } else {
+                grunt.warn("test:" + target + " does not exist.");
+            }
+        }
+    });
 
-    grunt.registerTask("dev", "Watch for modifications and recompile/relaunch tests on the fly", ["karma:watch"]);
+    grunt.registerTask("lint", "Lint the JS files.", ["compile", "jshint"]);
+
+    grunt.registerTask("unit", "Launch the unit tests.", ["karma:single_run"]);
+
+    grunt.registerTask("compile", "Concatenate the JavaScript files into one.", ["concat:compile_script"]);
+
+    grunt.registerTask("dev", "Watch for modifications and recompile/relaunch tests on the fly.", ["karma:watch"]);
 
 
     /*
