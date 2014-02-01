@@ -11,4 +11,5 @@ before_script:
   # `-> to be able to launch Firefox through Karma
 
 script:
-  - npm test
+  - grunt test
+  - grunt coveralls
