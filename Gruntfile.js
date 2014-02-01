@@ -395,7 +395,7 @@ module.exports = function(grunt) {
 
         coveralls: {
             options: {
-                coverage_dir: "coverage/PhantomJS 1.9.7 (Mac OS X)/"
+                coverage_dir: "coverage/PhantomJS 1.9.7 (Linux)/"
             }
         },
 
