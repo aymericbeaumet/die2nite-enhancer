@@ -22,7 +22,7 @@
     }
   ],
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test && grunt coverage"
   },
   "dependencies": {
     "grunt": "~0.4.2",

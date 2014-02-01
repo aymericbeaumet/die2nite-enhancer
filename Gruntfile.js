@@ -378,7 +378,7 @@ module.exports = function(grunt) {
                 // CoverAlls
 
                 preprocessors: {
-                    "sources/classes/*.js" : ["coverage"]
+                    "**/*.js" : ["coverage"]
                 },
 
                 coverageReporter: {
