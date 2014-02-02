@@ -1,6 +1,8 @@
+/*jshint browser:true */
+/*jshint scripturl:true */
+
 (function(undefined) {
 
-/*jshint scripturl:true */
 /*jshint validthis:true */
 
 'use strict';
