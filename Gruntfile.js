@@ -33,7 +33,11 @@
  *
  */
 
+/*jshint node:true */
+
 module.exports = function(grunt) {
+
+    "use strict";
 
     /*
      * Modules
@@ -425,13 +429,19 @@ module.exports = function(grunt) {
             },
             compiled_script:{
                 files: {
-                    src: [config.compiled_script.outputFile]
+                    src: [
+                        'Gruntfile.js',
+                        config.compiled_script.outputFile
+                    ],
                 }
             }
         },
 
         jshint: {
-            src: [config.compiled_script.outputFile],
+            src: [
+                'Gruntfile.js',
+                config.compiled_script.outputFile
+            ],
             options: {
                 // --------------------------------------------------------------------
                 // JSHint Configuration, Strict Edition
@@ -514,7 +524,7 @@ module.exports = function(grunt) {
                 // popular JavaScript libraries and runtime environments—such as
                 // browser or node.js.
 
-                "browser"       : true,     // Standard browser globals e.g. `window`, `document`.
+                "browser"       : false,     // Standard browser globals e.g. `window`, `document`.
                 "couch"         : false,    // Enable globals exposed by CouchDB.
                 "devel"         : false,    // Allow development statements e.g. `console.log();`.
                 "dojo"          : false,    // Enable globals exposed by Dojo Toolkit.
@@ -569,15 +579,15 @@ module.exports = function(grunt) {
         // options is found and enabled.
         var _packs = grunt.config("_pack");
         for (var key in _packs) {
-            if (!_packs.hasOwnProperty(key) ||
-                typeof grunt.option(key) === "undefined" ||
-                grunt.option(key) === false) {
-                continue;
+            if (_packs.hasOwnProperty(key) &&
+                typeof grunt.option(key) !== "undefined" &&
+                grunt.option(key) === true) {
+
+                options = true;
+                grunt.task.run("copy:" + key);
+                grunt.task.run("_pack:" + key);
+                grunt.task.run("clean:" + key);
             }
-            options = true;
-            grunt.task.run("copy:" + key);
-            grunt.task.run("_pack:" + key);
-            grunt.task.run("clean:" + key);
         }
 
         // if no options provided, pack everything
