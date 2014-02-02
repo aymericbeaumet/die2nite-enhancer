@@ -11,4 +11,4 @@ before_script:
   # `-> to be able to launch Firefox through Karma
 
 script:
-  - grunt test && grunt coveralls
+  - grunt test #&& grunt coveralls
