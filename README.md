@@ -6,18 +6,18 @@ Die2Nite Enhancer is an extension allowing you to improve your game experience o
 
 The French ([Hordes](http://www.hordes.fr/)), Spanish ([Zombinoia](http://www.zombinoia.com/)) and Dutch ([Die Verdammten](http://www.dieverdammten.de/)) versions are supported.
 
-## Install as an extension (recommended)
+### Install as an extension (recommended)
 
 You can directly install this plugin as an extension for the following browsers:
 - [Google Chrome](https://chrome.google.com/webstore/detail/die2nite-enhancer/imkkdabijgkodinlhgncdfmghdcdacmg)
 - [Mozilla Firefox](https://addons.mozilla.org/en-US/firefox/addon/die2nite_enhancer/)
 - [Opera](https://addons.opera.com/en/extensions/details/die2nite-enhancer/)
 
-## Install as a script
+### Install as a script
 
 It is also possible to install this plugin as a script. Natively supported in Google Chrome, or with the GreaseMonkey extension under Mozilla Firefox. If you want to do it like so, I consider you know what you are doing: the script can be found [here](http://userscripts.org/scripts/show/242398).
 
-## Feedback
+### Feedback
 
 If you find any problem or have a suggestion, please give me a feedback [here](https://github.com/abeaumet/die2nite_enhancer/issues).
 
