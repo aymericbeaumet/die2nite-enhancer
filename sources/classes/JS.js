@@ -176,13 +176,15 @@ var JS = (function() {
          * previous_keycode will be null if it doesn't exists.
          * @param integer time_limit The maximum amount of time (in ms) to wait
          * between two binds.
+         * @param DOMNode node The DOM node to listen on
          */
-        keydown_event: function(callback, time_limit)
+        keydown_event: function(callback, time_limit, node)
         {
             // defaut 1000ms between two key strokes
-            time_limit = (JS.is_defined(time_limit)) ? time_limit : 1000;
+            time_limit = time_limit || 1000;
+            node = node || document;
 
-            document.addEventListener('keydown', function(event) {
+            node.addEventListener('keydown', function(event) {
                 // Cancel event if the cursor is in an input field or textarea
                 if (event.target.nodeName === 'INPUT' || event.target.nodeName === 'TEXTAREA') {
                     return;

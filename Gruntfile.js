@@ -376,13 +376,13 @@ module.exports = function(grunt) {
 
             run: {
                 singleRun: true,
-                browsers: ["Firefox", "PhantomJS"],
+                browsers: ["PhantomJS", "Firefox"],
                 reporters: ["dots", "coverage"],
 
                 // CoverAlls
 
                 preprocessors: {
-                    "sources/**/*.js" : ["coverage"]
+                    "sources/classes/*.js" : ["coverage"]
                 },
 
                 coverageReporter: {

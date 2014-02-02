@@ -13,8 +13,15 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      "sources/classes/*.js",
-      "tests/**/*.spec.js"
+      "node_modules/jquery/dist/jquery.js",
+      "node_modules/jasmine-jquery/lib/jasmine-jquery.js",
+      "node_modules/jquery-simulate-ext/libs/jquery.simulate.js",
+
+      "tests/bootstrap.js",
+      { pattern: "tests/fixtures/**/*.html", included: false },
+
+      "tests/specs/**/*.spec.js",
+      "sources/classes/*.js"
     ],
 
 
@@ -53,10 +60,7 @@ module.exports = function(config) {
     // - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
     // - PhantomJS
     // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-    browsers: ["Opera", "Firefox", "PhantomJS"],
-    // Opera -> Blink (Chrome, Opera)
-    // Firefox -> Gecko (Firefox)
-    // PhantomJS -> Webkit (Safari)
+    browsers: ["PhantomJS"],
 
 
     // If browser does not capture in given timeout [ms], kill it
@@ -65,6 +69,11 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit
-    singleRun: false
+    singleRun: false,
+
+
+    // Disable preprocessor to be able to serve HTML files, see:
+    // https://github.com/karma-runner/karma/issues/740#issuecomment-24942822
+    preprocessors: {}
   });
 };
