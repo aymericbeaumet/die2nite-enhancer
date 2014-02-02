@@ -431,7 +431,7 @@ module.exports = function(grunt) {
                 files: {
                     src: [
                         'Gruntfile.js',
-                        path.join(config.testsDir, '**', '*.spec.js'),
+                        path.join(config.testsDir, '**', '*.js'),
                         config.compiled_script.outputFile
                     ],
                 }
@@ -441,7 +441,7 @@ module.exports = function(grunt) {
         jshint: {
             src: [
                 'Gruntfile.js',
-                path.join(config.testsDir, '**', '*.spec.js'),
+                path.join(config.testsDir, '**', '*.js'),
                 config.compiled_script.outputFile
             ]
         }
