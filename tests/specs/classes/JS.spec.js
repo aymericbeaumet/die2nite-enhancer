@@ -217,4 +217,36 @@
         });
     });
 
+
+
+    describe("JS.injectJS", function() {
+        describe("should have inserted", function() {
+            var proof_variable_key = "proof_variable";
+            var proof_variable_content = "Build a ship before you burn a bridge.";
+
+            beforeEach(function() {
+                window[proof_variable_key] = null;
+            });
+
+            afterEach(function() {
+                delete window[proof_variable_key];
+            });
+
+            it("the string as is", function() {
+                var to_be_inserted = "window['" + proof_variable_key + "'] = '" + proof_variable_content + "'";
+                JS.injectJS(to_be_inserted);
+                expect(window[proof_variable_key]).toEqual(proof_variable_content);
+            });
+
+            it("the string as an auto-called closure", function() {
+                var to_be_inserted = function() {
+                    // values are hard-coded because it is interpreted at execution (in the page context)
+                    window["proof_variable"] = "Build a ship before you burn a bridge.";
+                };
+                JS.injectJS(to_be_inserted);
+                expect(window[proof_variable_key]).toEqual(proof_variable_content);
+            });
+        });
+    });
+
 })();
