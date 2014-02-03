@@ -241,11 +241,36 @@
             it("the string as an auto-called closure", function() {
                 var to_be_inserted = function() {
                     // values are hard-coded because it is interpreted at execution (in the page context)
-                    window["proof_variable"] = "Build a ship before you burn a bridge.";
+                    window.proof_variable = "Build a ship before you burn a bridge.";
                 };
                 JS.injectJS(to_be_inserted);
                 expect(window[proof_variable_key]).toEqual(proof_variable_content);
             });
+        });
+    });
+
+
+
+    describe("JS.remove_DOM_node", function() {
+        var id_to_delete = "I-am-a-unique-id";
+
+        beforeEach(function() {
+            // Create the DOM element
+            var el_to_remove = $(document.createElement("div")).attr("id", id_to_delete);
+
+            // Insert it in the DOM
+            $("body").append(el_to_remove);
+        });
+
+        afterEach(function() {
+            // Delete it (just in case)
+            $("#" + id_to_delete).remove();
+        });
+
+        it("should have removed the DOM node", function() {
+            expect($("#" + id_to_delete)).toBeInDOM();
+            JS.remove_DOM_node(document.getElementById(id_to_delete));
+            expect($("#" + id_to_delete)).not.toBeInDOM();
         });
     });
 

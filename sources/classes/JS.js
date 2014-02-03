@@ -248,7 +248,7 @@ var JS = (function() {
         },
 
         /**
-         * Remove an DOM node.
+         * Remove a DOM node.
          * @link http://stackoverflow.com/a/14782/1071486
          * @param DOMNode node The DOM node to delete
          */
