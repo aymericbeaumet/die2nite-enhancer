@@ -274,4 +274,51 @@
         });
     });
 
+
+
+    describe("JS.merge", function() {
+        var object1 = {
+            a: {
+                aa: {
+                    aaa: "content",
+                    aab: "will be replaced"
+                }
+            }
+        };
+
+        var object2 = {
+            a: {
+                aa: {
+                    aab: "replace"
+                },
+                ab: {
+                    aba: "content"
+                }
+            },
+            b: {
+                bb: "content"
+            }
+        };
+
+        var merged_object_ref = {
+            a: {
+                aa: {
+                    aaa: "content",
+                    aab: "replace"
+                },
+                ab: {
+                    aba: "content"
+                }
+            },
+            b: {
+                bb: "content"
+            }
+        };
+
+        it("should have merge this two objets", function() {
+            var merged_object = JS.merge(object1, object2);
+            expect(merged_object).toEqual(merged_object_ref);
+        });
+    });
+
 })();
