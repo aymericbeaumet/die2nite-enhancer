@@ -19,8 +19,8 @@
         /**
          * Used to perform network request.
          * @param string method GET, POST, etc...
-         * @param string urn Where do the request should be performed?
-         * @param boolean expect_success Should is it supposed to success?
+         * @param string urn Where does the request have to be performed?
+         * @param boolean expect_success Is it supposed to be a success?
          */
         var test_network_request = function(method, urn, expect_success) {
             var answer = false;
@@ -64,8 +64,8 @@
         });
 
         describe("[XMLHttpRequest()]", function() {
-            describe("should succeed on a valid", function() {
-                describe("GET request", function() {
+            describe("should success on a valid", function() {
+                describe("HTTP GET request", function() {
                     it("(URN)", function() {
                         test_network_request("GET", urn, true);
                     });
@@ -77,7 +77,7 @@
             });
 
             describe("should fail on a non-valid", function() {
-                describe("GET request", function() {
+                describe("HTTP GET request", function() {
                     it("(URN)", function() {
                         test_network_request("GET", bad_urn, false);
                     });
@@ -252,22 +252,10 @@
 
 
     describe("JS.remove_DOM_node", function() {
-        var id_to_delete = "I-am-a-unique-id";
-
-        beforeEach(function() {
-            // Create the DOM element
-            var el_to_remove = $(document.createElement("div")).attr("id", id_to_delete);
-
-            // Insert it in the DOM
-            $("body").append(el_to_remove);
-        });
-
-        afterEach(function() {
-            // Delete it (just in case)
-            $("#" + id_to_delete).remove();
-        });
-
         it("should have removed the DOM node", function() {
+            loadFixtures("generic/input_text.html");
+            var id_to_delete = "input_text";
+
             expect($("#" + id_to_delete)).toBeInDOM();
             JS.remove_DOM_node(document.getElementById(id_to_delete));
             expect($("#" + id_to_delete)).not.toBeInDOM();
@@ -315,7 +303,7 @@
             }
         };
 
-        it("should have merge this two objets", function() {
+        it("should have merge this two objects", function() {
             var merged_object = JS.merge(object1, object2);
             expect(merged_object).toEqual(merged_object_ref);
         });
