@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# exit in case of error
+set -e
+
+# launch the tests
+grunt test
+
+exit 0
