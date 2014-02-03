@@ -2,6 +2,7 @@
 
     "use strict";
 
+    // TODO: find a way to test with GM_xmlhttpRequest and safari
     describe("JS.network_request", function() {
         var url = window.location.protocol + "//" + window.location.host;
         var urn = "/base/tests/bootstrap.js"; // random file, the test will be done based on its content
@@ -148,7 +149,7 @@
 
         afterEach(function() {
             callback = null;
-            node.removeEventListener(callback); // remove the callback added by the function
+            node.removeEventListener("keydown", callback); // remove the callback added by the function
         });
 
         describe("should have called the callback with", function() {
@@ -194,6 +195,26 @@
             });
         });
 
+    });
+
+
+
+    describe("JS.injectCSS", function() {
+        var to_be_injected = "/* You are not your resume, you are your work. */";
+        var injected;
+
+        beforeEach(function() {
+            JS.injectCSS(to_be_injected);
+            injected = $("head > style:last-of-type");
+        });
+
+        afterEach(function() {
+            injected.remove();
+        });
+
+        it("should have injected the CSS", function() {
+            expect(injected.text()).toEqual(to_be_injected);
+        });
     });
 
 })();

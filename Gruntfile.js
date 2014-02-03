@@ -405,9 +405,9 @@ module.exports = function(grunt) {
 
         watch: {
             karma: {
-                // if a spec file is modifed, relaunch the tests
+                // if a test file is modified, relaunch the tests
                 files: [
-                    "tests/**/*.spec.js"
+                    "tests/**/*"
                 ],
                 tasks: ["karma:daemon:run"]
             },
