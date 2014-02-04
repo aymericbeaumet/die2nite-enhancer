@@ -136,6 +136,34 @@
 
 
 
+    describe("JS.reset_previous_keycode", function() {
+        afterEach(function() {
+            JS.reset_previous_keycode();
+        });
+
+        it("should permit two sequential keydown_event calls without a memorised keystroke", function() {
+            var callback = jasmine.createSpy("callback");
+            var keycode = 65; // 'A'
+
+            JS.keydown_event(callback, 500);
+            expect(callback).not.toHaveBeenCalled();
+
+            $(document).simulate("keydown", {
+                keyCode: keycode
+            });
+            expect(callback).toHaveBeenCalledWith(keycode, null);
+
+            JS.reset_previous_keycode();
+
+            $(document).simulate("keydown", {
+                keyCode: keycode
+            });
+            expect(callback).toHaveBeenCalledWith(keycode, null);
+        });
+    });
+
+
+
     describe("JS.keydown_event", function() {
         var callback;
         var keycode = 65; // 'A'
