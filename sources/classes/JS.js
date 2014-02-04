@@ -11,9 +11,14 @@ var JS = (function() {
  */
 
     /**
-     * Time to wait between two self-call of wait_for_* functions
+     * Time to wait between two self-call of `wait_for_*` functions.
      */
-    var wait_for_retry_time_ = 500; //ms
+    var wait_for_retry_time_ = 100; //ms
+
+    /**
+     * Maximum number of retry for the `wait_for_*` functions.
+     */
+    var wait_for_max_retry_ = 15;
 
     /**
      * Safely insert code through JSON.
@@ -77,6 +82,39 @@ var JS = (function() {
     var keydown_event_ = {
         previous_keycode: 0,
         previous_keycode_timestamp: 0,
+    };
+
+    /**
+     * Generic wait_for_ function. See wait_for_id for the purpose of this
+     * function.
+     * @param function search A closure returning the searched element
+     * @param function is_found A close taking the searched element and
+     * returning true or false whether it was found or not
+     * @param function callback The function to call if the element was found
+     * @param integer max The maximum number of retry if the first search fails
+     * @param function not_found_callback The function to call if the element
+     * was not found
+     */
+    var wait_for_ = function(search, is_found, callback, max, not_found_callback) {
+            max = (typeof max === "number") ? max : wait_for_max_retry_;
+
+            // try to find it
+            var el = search();
+            if (is_found(el)) {
+                return callback(el);
+            }
+
+            // if max is defined and is reached, stop research
+            if (max <= 0) {
+                // if a callback has been given, call it
+                if (JS.is_defined(not_found_callback) && typeof not_found_callback === 'function') {
+                    not_found_callback();
+                }
+            } else { // else try again
+                setTimeout(function() {
+                    wait_for_(search, is_found, callback, max - 1, not_found_callback);
+                }, wait_for_retry_time_);
+            }
     };
 
 /*
@@ -298,136 +336,11 @@ var JS = (function() {
          */
         wait_for_id: function(id, callback, max, not_found_callback)
         {
-            max = max || 15;
-
-            var el;
-
-            // if max is defined and is reached, stop research
-            if (max <= 0) {
-                // if a callback has been given, call it
-                if (JS.is_defined(not_found_callback) && typeof not_found_callback === 'function') {
-                    not_found_callback();
-                }
-                return;
-            }
-
-            // else try to find it
-            el = document.getElementById(id);
-            if (JS.is_defined(el)) {
-                return callback(el);
-            }
-
-            // if not, retry again
-            setTimeout(function() {
-                JS.wait_for_id(id, callback, max - 1, not_found_callback);
-            }, wait_for_retry_time_);
-        },
-
-        /**
-         * Execute a callback with the first node matching the given selector.
-         * @param string selector The selector to execute
-         * @param callback callback The function to call when a result is found
-         * @param integer max The maximum number of try
-         * @param callback not_found_callback The function called if the element
-         *                                    isn't found
-         */
-        wait_for_selector: function(selector, callback, max, not_found_callback)
-        {
-            max = max || 15;
-
-            var el;
-
-            // if max is defined and is reached, stop research
-            if (max <= 0) {
-                // if a callback has been given, call it
-                if (JS.is_defined(not_found_callback) && typeof not_found_callback === 'function') {
-                    not_found_callback();
-                }
-                return;
-            }
-
-            // else try to find it
-            el = document.querySelector(selector);
-            if (JS.is_defined(el)) {
-                return callback(el);
-            }
-
-            // if not, retry again
-            setTimeout(function() {
-                JS.wait_for_selector(selector, callback, max - 1, not_found_callback);
-            }, wait_for_retry_time_);
-        },
-
-        /**
-         * Execute a callback with an array containing all the nodes matching the
-         * given selector.
-         * @param string selector The selector to execute
-         * @param callback callback The function to call when a result is found
-         * @param integer max The maximum number of try
-         * @param callback not_found_callback The function called if the element
-         *                                    isn't found
-         */
-        wait_for_selector_all: function(selector, callback, max, not_found_callback)
-        {
-            max = max || 15;
-
-            var el;
-
-            // if max is defined and is reached, stop research
-            if (max <= 0) {
-                // if a callback has been given, call it
-                if (JS.is_defined(not_found_callback) && typeof not_found_callback === 'function') {
-                    not_found_callback();
-                }
-                return;
-            }
-
-            // else try to find it
-            el = document.querySelectorAll(selector);
-            if (JS.is_defined(el) && el.length > 0) {
-                return callback(el);
-            }
-
-            // if not, retry again
-            setTimeout(function() {
-                JS.wait_for_selector_all(selector, callback, max - 1, not_found_callback);
-            }, wait_for_retry_time_);
-        },
-
-        /**
-         * Execute a callback with an array containing all the nodes matching the
-         * given tag.
-         * @param string tag The tag to search
-         * @param callback callback The function to call when a result is found
-         * @param integer max The maximum number of try
-         * @param callback not_found_callback The function called if the element
-         *                                    isn't found
-         */
-        wait_for_tag: function(tag, callback, max, not_found_callback)
-        {
-            max = max || 15;
-
-            var el;
-
-            // if max is defined and is reached, stop research
-            if (max <= 0) {
-                // if a callback has been given, call it
-                if (JS.is_defined(not_found_callback) && typeof not_found_callback === 'function') {
-                    not_found_callback();
-                }
-                return;
-            }
-
-            // else try to find it
-            el = document.getElementsByTagName(tag);
-            if (JS.is_defined(el) && el.length > 0) {
-                return callback(el);
-            }
-
-            // if not, retry again
-            setTimeout(function() {
-                JS.wait_for_tag(tag, callback, max - 1, not_found_callback);
-            }, wait_for_retry_time_);
+            return wait_for_(function search() {
+                    return document.getElementById(id);
+                }, function is_found(result) {
+                    return JS.is_defined(result);
+                }, callback, max, not_found_callback);
         },
 
         /**
@@ -441,29 +354,64 @@ var JS = (function() {
          */
         wait_for_class: function(class_name, callback, max, not_found_callback)
         {
-            max = max || 15;
+            return wait_for_(function search() {
+                    return document.getElementsByClassName(class_name);
+                }, function is_found(result) {
+                    return JS.is_defined(result) && result.length > 0;
+                }, callback, max, not_found_callback);
+        },
 
-            var el;
+        /**
+         * Execute a callback with an array containing all the nodes matching the
+         * given tag.
+         * @param string tag The tag to search
+         * @param callback callback The function to call when a result is found
+         * @param integer max The maximum number of try
+         * @param callback not_found_callback The function called if the element
+         *                                    isn't found
+         */
+        wait_for_tag: function(tag, callback, max, not_found_callback)
+        {
+            return wait_for_(function search() {
+                    return document.getElementsByTagName(tag);
+                }, function is_found(result) {
+                    return JS.is_defined(result) && result.length > 0;
+                }, callback, max, not_found_callback);
+        },
 
-            // if max is defined and is reached, stop research
-            if (max <= 0) {
-                // if a callback has been given, call it
-                if (JS.is_defined(not_found_callback) && typeof not_found_callback === 'function') {
-                    not_found_callback();
-                }
-                return;
-            }
+        /**
+         * Execute a callback with the first node matching the given selector.
+         * @param string selector The selector to execute
+         * @param callback callback The function to call when a result is found
+         * @param integer max The maximum number of try
+         * @param callback not_found_callback The function called if the element
+         *                                    isn't found
+         */
+        wait_for_selector: function(selector, callback, max, not_found_callback)
+        {
+            return wait_for_(function search() {
+                    return document.querySelector(selector);
+                }, function is_found(result) {
+                    return JS.is_defined(result);
+                }, callback, max, not_found_callback);
+        },
 
-            // else try to find it
-            el = document.getElementsByClassName(class_name);
-            if (JS.is_defined(el) && el.length > 0) {
-                return callback(el);
-            }
-
-            // if not, retry again
-            setTimeout(function() {
-                JS.wait_for_class(class_name, callback, max - 1, not_found_callback);
-            }, wait_for_retry_time_);
+        /**
+         * Execute a callback with an array containing all the nodes matching the
+         * given selector.
+         * @param string selector The selector to execute
+         * @param callback callback The function to call when a result is found
+         * @param integer max The maximum number of try
+         * @param callback not_found_callback The function called if the element
+         *                                    isn't found
+         */
+        wait_for_selector_all: function(selector, callback, max, not_found_callback)
+        {
+            return wait_for_(function search() {
+                    return document.querySelectorAll(selector);
+                }, function is_found(result) {
+                    return JS.is_defined(result) && result.length > 0;
+                }, callback, max, not_found_callback);
         },
 
         /**

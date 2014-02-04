@@ -23,24 +23,24 @@
          * @param boolean expect_success Is it supposed to be a success?
          */
         var test_network_request = function(method, urn, expect_success) {
-            var answer = false;
+            var flag = false;
 
             runs(function() {
                 JS.network_request(method, urn, "", {},
                    function(content) {
-                       answer = true;
+                       flag = true;
                        callback_success(content);
                    },
                    function() {
-                       answer = true;
+                       flag = true;
                        callback_failure();
                    }
                 );
             });
 
             waitsFor(function() {
-                return answer === true;
-            }, "The network request took too much time", request_timeout);
+                return flag === true;
+            }, "the network request to answer (positively or nagatively)", request_timeout);
 
             runs(function() {
                 if (expect_success) {
@@ -66,11 +66,11 @@
         describe("[XMLHttpRequest()]", function() {
             describe("should success on a valid", function() {
                 describe("HTTP GET request", function() {
-                    it("(URN)", function() {
+                    it("(URN).", function() {
                         test_network_request("GET", urn, true);
                     });
 
-                    it("(URL + URN)", function() {
+                    it("(URL + URN).", function() {
                         test_network_request("GET", url + urn, true);
                     });
                 });
@@ -78,11 +78,11 @@
 
             describe("should fail on a non-valid", function() {
                 describe("HTTP GET request", function() {
-                    it("(URN)", function() {
+                    it("(URN).", function() {
                         test_network_request("GET", bad_urn, false);
                     });
 
-                    it("(URL + URN)", function() {
+                    it("(URL + URN).", function() {
                         test_network_request("GET", url + bad_urn, false);
                     });
                 });
@@ -94,41 +94,41 @@
 
     describe("JS.is_defined", function() {
         describe("should return false if", function() {
-            it("the parameter is null", function() {
+            it("the parameter is null.", function() {
                 expect(JS.is_defined(null)).toBe(false);
             });
 
-            it("the parameter is undefined", function() {
+            it("the parameter is undefined.", function() {
                 expect(JS.is_defined(undefined)).toBe(false);
             });
         });
 
         describe("should return true if", function() {
-            it("the parameter is a string", function() {
+            it("the parameter is a string.", function() {
                 expect(JS.is_defined("")).toBe(true);
             });
 
-            it("the parameter is a number", function() {
+            it("the parameter is a number.", function() {
                 expect(JS.is_defined(0)).toBe(true);
             });
 
-            it("the parameter is a boolean", function() {
+            it("the parameter is a boolean.", function() {
                 expect(JS.is_defined(false)).toBe(true);
             });
 
-            it("the parameter is an array", function() {
+            it("the parameter is an array.", function() {
                 expect(JS.is_defined([])).toBe(true);
             });
 
-            it("the parameter is an object", function() {
+            it("the parameter is an object.", function() {
                 expect(JS.is_defined({})).toBe(true);
             });
 
-            it("the parameter is a closure", function() {
+            it("the parameter is a closure.", function() {
                 expect(JS.is_defined(function(){})).toBe(true);
             });
 
-            it("the parameter is a regular expression", function() {
+            it("the parameter is a regular expression.", function() {
                 expect(JS.is_defined(/regexp/)).toBe(true);
             });
         });
@@ -149,18 +149,18 @@
 
         afterEach(function() {
             callback = null;
-            node.removeEventListener("keydown", callback); // remove the callback added by the function
+            node.removeEventListener("keydown", callback); // remove the listener added by the function
         });
 
         describe("should have called the callback with", function() {
-            it("keycode and null", function() {
+            it("keycode and null.", function() {
                 $(node).simulate("keydown", {
                     keyCode: keycode
                 });
                 expect(callback).toHaveBeenCalledWith(keycode, null);
             });
 
-            it("keycode and null", function() {
+            it("keycode and null.", function() {
                 // wait for the timeout to expire (polluted by the previous
                 // test)
                 setTimeout(function() {
@@ -178,7 +178,7 @@
         });
 
         describe("should have not called the callback if the event was emitted from", function() {
-            it("a text input", function() {
+            it("a text input.", function() {
                 loadFixtures("generic/input_text.html");
                 $("#input_text").simulate("keydown", {
                     keyCode: keycode
@@ -186,7 +186,7 @@
                 expect(callback).not.toHaveBeenCalled();
             });
 
-            it("a textarea input", function() {
+            it("a textarea input.", function() {
                 loadFixtures("generic/input_textarea.html");
                 $("#input_textarea").simulate("keydown", {
                     keyCode: keycode
@@ -212,7 +212,7 @@
             injected.remove();
         });
 
-        it("should have injected the CSS", function() {
+        it("should have injected the CSS.", function() {
             expect(injected.text()).toEqual(to_be_injected);
         });
     });
@@ -232,13 +232,13 @@
                 delete window[proof_variable_key];
             });
 
-            it("the string as is", function() {
+            it("the string as is.", function() {
                 var to_be_inserted = "window['" + proof_variable_key + "'] = '" + proof_variable_content + "'";
                 JS.injectJS(to_be_inserted);
                 expect(window[proof_variable_key]).toEqual(proof_variable_content);
             });
 
-            it("the string as an auto-called closure", function() {
+            it("the string as an auto-called closure.", function() {
                 var to_be_inserted = function() {
                     // values are hard-coded because it is interpreted at execution (in the page context)
                     window.proof_variable = "Build a ship before you burn a bridge.";
@@ -252,9 +252,9 @@
 
 
     describe("JS.remove_DOM_node", function() {
-        it("should have removed the DOM node", function() {
-            loadFixtures("generic/input_text.html");
-            var id_to_delete = "input_text";
+        it("should have removed the DOM node.", function() {
+            loadFixtures("generic/simple_div.html");
+            var id_to_delete = "simple_div";
 
             expect($("#" + id_to_delete)).toBeInDOM();
             JS.remove_DOM_node(document.getElementById(id_to_delete));
@@ -303,10 +303,143 @@
             }
         };
 
-        it("should have merge this two objects", function() {
+        it("should have merge this two objects.", function() {
             var merged_object = JS.merge(object1, object2);
             expect(merged_object).toEqual(merged_object_ref);
         });
+    });
+
+
+
+    describe("JS.wait_for_", function() {
+        var found_callback;
+        var not_found_callback;
+        var timeout = 225; // ms (2 * wait_for_max_retry_ + a little allowance)
+
+        var types = {
+            id: {
+                fixture: "generic/simple_div.html",
+                get_query_func: function() { return JS.wait_for_id; },
+                query: "simple_div",
+                match: function(q) { return document.getElementById(q); }
+            },
+            class_: {
+                fixture: "generic/simple_div.html",
+                get_query_func: function() { return JS.wait_for_class; },
+                query: "simple_div",
+                match: function(q) { return document.getElementsByClassName(q); }
+            },
+            tag: {
+                fixture: "generic/simple_video.html", // the tag must not be used anywhere else
+                get_query_func: function() { return JS.wait_for_tag; },
+                query: "video",
+                match: function(q) { return document.getElementsByTagName(q); }
+            },
+            selector: {
+                fixture: "generic/simple_div.html",
+                get_query_func: function() { return JS.wait_for_selector; },
+                query: "div#simple_div",
+                match: function(q) { return document.querySelector(q); }
+            },
+            selector_all: {
+                fixture: "generic/simple_div.html",
+                get_query_func: function() { return JS.wait_for_selector_all; },
+                query: "div#simple_div",
+                match: function(q) { return document.querySelectorAll(q); }
+            }
+        };
+
+        beforeEach(function() {
+            found_callback = jasmine.createSpy("found_callback");
+            not_found_callback = jasmine.createSpy("not_found_callback");
+        });
+
+        afterEach(function() {
+            found_callback = null;
+            not_found_callback = null;
+        });
+
+        var test_type = function(name, data) {
+            describe(name, function() {
+                it("should have found immediatly.", function() {
+                    loadFixtures(data.fixture);
+
+                    if (name === "selector_all") {
+                        console.log(document.querySelectorAll(data.query));
+                    }
+
+                    data.get_query_func()(data.query, found_callback, 0, not_found_callback);
+                    expect(found_callback).toHaveBeenCalledWith(data.match(data.query));
+                    expect(not_found_callback).not.toHaveBeenCalled();
+                });
+
+                it("should have found after one recursion.", function() {
+                    var flag = false;
+
+                    runs(function() {
+                        data.get_query_func()(data.query, function(el) {
+                            found_callback(el);
+                            flag = true;
+                        }, 1, function() {
+                            not_found_callback();
+                            flag = true;
+                        });
+                        loadFixtures(data.fixture);
+                    });
+
+                    waitsFor(function() {
+                        return flag === true;
+                    }, "the function to find in less than 2 retries", timeout);
+
+                    runs(function() {
+                        expect(found_callback).toHaveBeenCalledWith(data.match(data.query));
+                        expect(not_found_callback).not.toHaveBeenCalled();
+                    });
+                });
+
+                it("should not have found.", function() {
+                    data.get_query_func()(data.query, function(el) {
+                        found_callback(el);
+                        flag = true;
+                    }, 0, function() {
+                        not_found_callback();
+                        flag = true;
+                    });
+
+                    expect(found_callback).not.toHaveBeenCalled();
+                    expect(not_found_callback).toHaveBeenCalled();
+                });
+
+                it("should not have found after one recursion.", function() {
+                    var flag = false;
+
+                    runs(function() {
+                        data.get_query_func()(data.query, function(el) {
+                            found_callback(el);
+                            flag = true;
+                        }, 1, function() {
+                            not_found_callback();
+                            flag = true;
+                        });
+                    });
+
+                    waitsFor(function() {
+                        return flag === true;
+                    }, "the function to find in less than 2 retries", timeout);
+
+                    runs(function() {
+                        expect(found_callback).not.toHaveBeenCalled();
+                        expect(not_found_callback).toHaveBeenCalled();
+                    });
+                });
+            });
+        };
+
+        for (var type in types) {
+            if (types.hasOwnProperty(type)) {
+                test_type(type, types[type]);
+            }
+        }
     });
 
 })();
