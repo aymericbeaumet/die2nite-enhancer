@@ -68,20 +68,18 @@ Module.register(function() {
                     JS.wait_for_selector_all('a.toolAction > span > strong', function(nodes) {
                         var action;
 
-                        for (var node in nodes) {
-                            if (nodes.hasOwnProperty(node)) {
-                                // Skip the node if not a 'strong' element
-                                if (nodes[node].nodeName !== 'STRONG') {
-                                    continue;
-                                }
-
-                                // Hide the node if cyanure
-                                if (/^Cyanide|Cyanure|Cianuro$/.test(nodes[node].textContent)) {
-                                    action = nodes[node].parentNode.parentNode;
-                                    action.style.display = 'none';
-                                }
+                        nodes.forEach(function(node) {
+                            // Skip the node if not a 'strong' element
+                            if (nodes[node].nodeName !== 'STRONG') {
+                                return;
                             }
-                        }
+
+                            // Hide the node if cyanure
+                            if (/^Cyanide|Cyanure|Cianuro$/.test(nodes[node].textContent)) {
+                                action = nodes[node].parentNode.parentNode;
+                                action.style.display = 'none';
+                            }
+                        });
                     }, 5);
                 }, false);
             }

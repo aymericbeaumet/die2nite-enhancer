@@ -208,6 +208,15 @@ var JS = (function() {
         },
 
         /**
+         * Reset the keydown_event_ object. Forget about the last key stroke.
+         */
+        reset_previous_keycode: function()
+        {
+            keydown_event_.previous_keycode = null;
+            keydown_event_.previous_keycode_timestamp = 0;
+        },
+
+        /**
          * Catch a keydown event (abort if the cursor is in an input field). Call
          * the callback `callback` with the current keycode and the last one (if it
          * exists).
@@ -250,15 +259,6 @@ var JS = (function() {
                 keydown_event_.previous_keycode = event.keyCode;
                 keydown_event_.previous_keycode_timestamp = event.timeStamp;
             }, false);
-        },
-
-        /**
-         * Reset the keydown_event_ object. Forget about the last key stroke.
-         */
-        reset_previous_keycode: function()
-        {
-            keydown_event_.previous_keycode = null;
-            keydown_event_.previous_keycode_timestamp = 0;
         },
 
         /**
@@ -427,7 +427,7 @@ var JS = (function() {
         wait_for_selector_all: function(selector, callback, max, not_found_callback)
         {
             return wait_for_(function search() {
-                    return document.querySelectorAll(selector);
+                    return JS.to_array(document.querySelectorAll(selector));
                 }, function is_found(result) {
                     return JS.is_defined(result) && result.length > 0;
                 }, callback, max, not_found_callback);
@@ -536,6 +536,20 @@ var JS = (function() {
             var parser = new DOMParser();
 
             return parser.parseFromString(xml, "text/xml");
+        },
+
+        /**
+         * Convert any object to an array.
+         * @link http://stackoverflow.com/a/2735133/1071486
+         * @param Object obj The object to convert.
+         */
+        to_array: function(obj) {
+            var array = [];
+            // iterate backwards ensuring that length is an UInt32
+            for (var i = obj.length >>> 0; i--;) {
+                array[i] = obj[i];
+            }
+            return array;
         },
 
         jsonToDOM: jsonToDOM

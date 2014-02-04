@@ -306,11 +306,10 @@
 
 
 
-    if (false) { // TODO: remove the return when the tests work
     describe("JS.wait_for_", function() {
         var found_callback;
         var not_found_callback;
-        var timeout = 225; // ms (2 * wait_for_max_retry_ + a little allowance)
+        var timeout = 1000;
 
         var types = {
             id: {
@@ -341,7 +340,7 @@
                 fixture: "generic/simple_div.html",
                 get_query_func: function() { return JS.wait_for_selector_all; },
                 query: "div#simple_div",
-                match: function(q) { return document.querySelectorAll(q); }
+                match: function(q) { return $.makeArray(document.querySelectorAll(q)); }
             }
         };
 
@@ -433,6 +432,5 @@
             }
         }
     });
-    }
 
 })();
