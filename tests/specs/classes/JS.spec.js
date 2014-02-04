@@ -138,47 +138,42 @@
 
     describe("JS.keydown_event", function() {
         var callback;
-        var node = document;
         var keycode = 65; // 'A'
         var timeout = 25; // ms
 
         beforeEach(function() {
             callback = jasmine.createSpy("callback");
-            JS.keydown_event(callback, timeout, node); // call node.addEventListener on 'callback'
+            JS.keydown_event(callback, timeout);
         });
 
         afterEach(function() {
+            JS.reset_previous_keycode();
             callback = null;
-            node.removeEventListener("keydown", callback); // remove the listener added by the function
         });
 
         describe("should have called the callback with", function() {
             it("keycode and null.", function() {
-                $(node).simulate("keydown", {
+                $(document).simulate("keydown", {
                     keyCode: keycode
                 });
                 expect(callback).toHaveBeenCalledWith(keycode, null);
             });
 
-            it("keycode and null.", function() {
-                // wait for the timeout to expire (polluted by the previous
-                // test)
-                setTimeout(function() {
-                    $(node).simulate("keydown", {
-                        keyCode: keycode
-                    });
-                    expect(callback).toHaveBeenCalledWith(keycode, null);
+            it("keycode_1 and keycode_2.", function() {
+                $(document).simulate("keydown", {
+                    keyCode: keycode
+                });
+                expect(callback).toHaveBeenCalledWith(keycode, null);
 
-                    $(node).simulate("keydown", {
-                        keyCode: (keycode + 1) // 'B'
-                    });
-                    expect(callback).toHaveBeenCalledWith((keycode + 1), keycode);
-                }, timeout * 2);
+                $(document).simulate("keydown", {
+                    keyCode: (keycode + 1) // 'B'
+                });
+                expect(callback).toHaveBeenCalledWith((keycode + 1), keycode);
             });
         });
 
-        describe("should have not called the callback if the event was emitted from", function() {
-            it("a text input.", function() {
+        describe("should have not called the callback if the event was emitted from a", function() {
+            it("text input.", function() {
                 loadFixtures("generic/input_text.html");
                 $("#input_text").simulate("keydown", {
                     keyCode: keycode
@@ -186,7 +181,7 @@
                 expect(callback).not.toHaveBeenCalled();
             });
 
-            it("a textarea input.", function() {
+            it("textarea input.", function() {
                 loadFixtures("generic/input_textarea.html");
                 $("#input_textarea").simulate("keydown", {
                     keyCode: keycode
@@ -364,10 +359,6 @@
             describe(name, function() {
                 it("should have found immediatly.", function() {
                     loadFixtures(data.fixture);
-
-                    if (name === "selector_all") {
-                        console.log(document.querySelectorAll(data.query));
-                    }
 
                     data.get_query_func()(data.query, found_callback, 0, not_found_callback);
                     expect(found_callback).toHaveBeenCalledWith(data.match(data.query));

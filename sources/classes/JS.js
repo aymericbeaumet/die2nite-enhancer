@@ -80,8 +80,10 @@ var JS = (function() {
     jsonToDOM.defaultNamespace = jsonToDOM.namespaces.html;
 
     var keydown_event_ = {
-        previous_keycode: 0,
+        previous_keycode: null,
         previous_keycode_timestamp: 0,
+        already_bind: false,
+        callback: null
     };
 
     /**
@@ -214,32 +216,49 @@ var JS = (function() {
          * previous_keycode will be null if it doesn't exists.
          * @param integer time_limit The maximum amount of time (in ms) to wait
          * between two binds.
-         * @param DOMNode node The DOM node to listen on
          */
-        keydown_event: function(callback, time_limit, node)
+        keydown_event: function(callback, time_limit)
         {
-            // defaut 1000ms between two key strokes
-            time_limit = time_limit || 1000;
-            node = node || document;
+            keydown_event_.callback = callback;
 
-            node.addEventListener('keydown', function(event) {
+            // Ensure it can only be bound once (though the callback can still
+            // be updated)
+            if (keydown_event_.already_bind) {
+                return;
+            }
+            keydown_event_.already_bind = true;
+
+            // defaut 1000ms between two key strokes
+            time_limit = (typeof time_limit === "number") ? time_limit : 1000;
+
+            document.addEventListener('keydown', function(event) {
                 // Cancel event if the cursor is in an input field or textarea
                 if (event.target.nodeName === 'INPUT' || event.target.nodeName === 'TEXTAREA') {
                     return;
                 }
 
-                // Cancel event if elapsed time is too long between two key strokes
+                // Cancel previous keycode if the elapsed time is too long
+                // between the last two keystrokes
                 if (event.timeStamp - keydown_event_.previous_keycode_timestamp > time_limit) {
-                    keydown_event_.previous_keycode = null;
+                    JS.reset_previous_keycode();
                 }
 
                 // Invoke callback
-                callback(event.keyCode, keydown_event_.previous_keycode);
+                keydown_event_.callback(event.keyCode, keydown_event_.previous_keycode);
 
                 // Save keycode
                 keydown_event_.previous_keycode = event.keyCode;
                 keydown_event_.previous_keycode_timestamp = event.timeStamp;
             }, false);
+        },
+
+        /**
+         * Reset the keydown_event_ object. Forget about the last key stroke.
+         */
+        reset_previous_keycode: function()
+        {
+            keydown_event_.previous_keycode = null;
+            keydown_event_.previous_keycode_timestamp = 0;
         },
 
         /**
