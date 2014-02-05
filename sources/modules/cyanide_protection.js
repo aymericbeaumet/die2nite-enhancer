@@ -66,17 +66,15 @@ Module.register(function() {
 
                     // else list all the possible objects usable by the player
                     JS.wait_for_selector_all('a.toolAction > span > strong', function(nodes) {
-                        var action;
-
                         nodes.forEach(function(node) {
                             // Skip the node if not a 'strong' element
-                            if (nodes[node].nodeName !== 'STRONG') {
+                            if (node.nodeName !== 'STRONG') {
                                 return;
                             }
 
                             // Hide the node if cyanure
-                            if (/^Cyanide|Cyanure|Cianuro$/.test(nodes[node].textContent)) {
-                                action = nodes[node].parentNode.parentNode;
+                            if (/^Cyanide|Cyanure|Cianuro$/.test(node.textContent)) {
+                                var action = node.parentNode.parentNode;
                                 action.style.display = 'none';
                             }
                         });
