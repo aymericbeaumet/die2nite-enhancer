@@ -374,7 +374,7 @@ module.exports = function(grunt) {
                 configFile: path.join(config.testsDir, "karma.conf.js"),
             },
 
-            run: {
+            continuous: {
                 singleRun: true,
                 browsers: ["PhantomJS", "Firefox"],
                 reporters: ["dots", "coverage"],
@@ -392,7 +392,7 @@ module.exports = function(grunt) {
             },
 
             // Should be launched by `grunt:dev`
-            daemon: {
+            background: {
                 background: true
             }
         },
@@ -409,7 +409,7 @@ module.exports = function(grunt) {
                 files: [
                     "tests/**/*"
                 ],
-                tasks: ["karma:daemon:run"]
+                tasks: ["karma:background:run"]
             },
             pack: {
                 // if a source file is modified, re-statically check the files,
@@ -417,7 +417,7 @@ module.exports = function(grunt) {
                 files: [
                     "sources/**/*.js"
                 ],
-                tasks: ["static_check", "karma:daemon:run", "pack"]
+                tasks: ["static_check", "karma:continuous:run", "pack"]
             }
         },
 
@@ -491,7 +491,7 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask("test", "Launch the static tests and the unit tests.", function(target) {
-        var tests = ["static_check", "unit"];
+        var tests = ["static_check", "karma:continuous"];
 
         // if no target provided, launch all the tests
         if (typeof target === "undefined") {
@@ -510,11 +510,9 @@ module.exports = function(grunt) {
 
     grunt.registerTask("static_check", "Statically check the JS files.", ["compile", "jsvalidate", "jshint"]);
 
-    grunt.registerTask("unit", "Launch the unit tests.", ["karma:run"]);
-
     grunt.registerTask("compile", "Concatenate the JavaScript files into one.", ["clean:all", "concat:compiled_script"]);
 
-    grunt.registerTask("dev", "Watch for modifications and recompile/relaunch tests on the fly.", ["karma:daemon:start", "watch"]);
+    grunt.registerTask("dev", "Watch for modifications and recompile/relaunch tests on the fly.", ["karma:background:start", "watch"]);
 
 
     /*
