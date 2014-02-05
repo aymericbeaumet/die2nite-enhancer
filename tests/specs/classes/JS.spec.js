@@ -617,4 +617,37 @@
         });
     });
 
+
+
+    describe("JS.jsonToDOM", function() {
+        var click_callback;
+        var json;
+
+        beforeEach(function() {
+            loadFixtures("generic/simple_div.html");
+            click_callback = jasmine.createSpy("click_callback");
+            json = [
+                "div", { id: "test_div", "class": "test_div", onclick: click_callback },
+                    ["p", {}]
+            ];
+        });
+
+        afterEach(function() {
+            click_callback = null;
+        });
+
+        it("should create a DOM tree from a JavaScript object", function() {
+            var dom = JS.jsonToDOM(json, document);
+
+            $("#simple_div").append(dom);
+
+            expect($("div#simple_div > div#test_div.test_div")).toBeInDOM();
+            expect($("div#simple_div > div#test_div.test_div > p")).toBeInDOM();
+
+            expect(click_callback).not.toHaveBeenCalled();
+            $("#test_div").simulate("click");
+            expect(click_callback).toHaveBeenCalled();
+        });
+    });
+
 })();
