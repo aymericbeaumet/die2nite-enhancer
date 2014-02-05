@@ -523,7 +523,7 @@
 
 
     describe("JS.dispatch_event", function() {
-        var event_type = "this_is_a_custom_event";
+        var event_name = "this_is_a_custom_event";
         var event_detail = { jasmine: true };
         var callback;
         var node;
@@ -532,11 +532,11 @@
             loadFixtures("generic/simple_div.html");
             callback = jasmine.createSpy("callback");
             node = document.getElementById("simple_div");
-            node.addEventListener(event_type, callback);
+            node.addEventListener(event_name, callback);
         });
 
         afterEach(function() {
-            node.removeEventListener(event_type, callback);
+            node.removeEventListener(event_name, callback);
             node = null;
             callback = null;
         });
@@ -545,6 +545,20 @@
             // TODO: PhantomJS doesn't know about CustomEvent...
             //JS.dispatch_event(event_type, event_detail, node);
             //expect(callback).toHaveBeenCalled();
+        });
+    });
+
+
+
+    describe("JS.assign_attribute", function() {
+        it("should assign a value to the corresponding key in the given object", function() {
+            var context = {};
+            var key = "key";
+            var value = "value";
+
+            JS.assign_attribute.call(context, key, value);
+
+            expect(context[key]).toBe(value);
         });
     });
 
