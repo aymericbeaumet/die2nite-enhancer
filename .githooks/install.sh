@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
 # exit in case of error
 set -e
 
-cd "$(dirname "${BASH_SOURCE[0]}")"
+cd "$(dirname "$0")"
 
 HOOK_EXTENSION='hook'
 
