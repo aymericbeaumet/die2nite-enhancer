@@ -236,7 +236,7 @@
         });
 
         it("should have injected the CSS.", function() {
-            expect(injected.text()).toEqual(to_be_injected);
+            expect(injected.text()).toBe(to_be_injected);
         });
     });
 
@@ -258,7 +258,7 @@
             it("the string as is.", function() {
                 var to_be_inserted = "window['" + proof_variable_key + "'] = '" + proof_variable_content + "'";
                 JS.injectJS(to_be_inserted);
-                expect(window[proof_variable_key]).toEqual(proof_variable_content);
+                expect(window[proof_variable_key]).toBe(proof_variable_content);
             });
 
             it("the string as an auto-called closure.", function() {
@@ -267,7 +267,7 @@
                     window.proof_variable = "Build a ship before you burn a bridge.";
                 };
                 JS.injectJS(to_be_inserted);
-                expect(window[proof_variable_key]).toEqual(proof_variable_content);
+                expect(window[proof_variable_key]).toBe(proof_variable_content);
             });
         });
     });
@@ -504,6 +504,26 @@
                 var ret = JS.regex_test(new RegExp(regex), string);
                 expect(ret).toBe(false);
             });
+        });
+    });
+
+
+
+    describe("JS.each", function() {
+        it("should iterate over an object", function() {
+            var callback = jasmine.createSpy("callback");
+            var obj = {
+                a: "content_a",
+                b: "content_b",
+                c: "content_c",
+                d: "content_d"
+            };
+
+            JS.each(obj, function(key, value) {
+                expect(obj[key]).toBe(value);
+                callback();
+            });
+            expect(callback.calls.length).toBe(Object.keys(obj).length);
         });
     });
 
