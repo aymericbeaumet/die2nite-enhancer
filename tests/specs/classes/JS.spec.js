@@ -562,4 +562,34 @@
         });
     });
 
+
+
+    describe("JS.insert_after", function() {
+        var new_node;
+        var new_node_id = "new_node";
+        var previous_node;
+
+        beforeEach(function() {
+            loadFixtures("generic/simple_div.html");
+
+            previous_node = document.getElementById("simple_div");
+
+            new_node = document.createElement("div");
+            new_node.id = new_node_id;
+        });
+
+        afterEach(function() {
+            $(new_node).remove();
+        });
+
+        it("should insert a node after another", function() {
+            expect(document.getElementById(new_node_id)).toBeNull();
+
+            JS.insert_after(document.getElementById("simple_div"), new_node);
+
+            expect($(new_node)).toBeInDOM();
+            expect(new_node.previousSibling).toBe(previous_node);
+        });
+    });
+
 })();
