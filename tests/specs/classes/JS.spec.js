@@ -592,4 +592,17 @@
         });
     });
 
+
+
+    describe("JS.parse_xml", function() {
+        var xml = '<?xml version="1.0" encoding="UTF-8"?><note><to>Tove</to><from>Jani</from><heading>Reminder</heading><body>Don\'t forget me this weekend!</body></note>';
+
+        // This function uses the native DOMParser, so I consider a non-null
+        // return as a proof of success.
+        it("should parse an XML string", function() {
+            var ret = JS.parse_xml(xml);
+            expect(ret).not.toBeNull();
+        });
+    });
+
 })();
