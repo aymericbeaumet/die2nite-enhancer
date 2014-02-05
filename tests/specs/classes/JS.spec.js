@@ -527,4 +527,32 @@
         });
     });
 
+
+
+    describe("JS.dispatch_event", function() {
+        var event_type = "this_is_a_custom_event";
+        var event_detail = { jasmine: true };
+        var callback;
+        var node;
+
+        beforeEach(function() {
+            loadFixtures("generic/simple_div.html");
+            callback = jasmine.createSpy("callback");
+            node = document.getElementById("simple_div");
+            node.addEventListener(event_type, callback);
+        });
+
+        afterEach(function() {
+            node.removeEventListener(event_type, callback);
+            node = null;
+            callback = null;
+        });
+
+        it("should dispatch an event on the given node", function() {
+            // TODO: PhantomJS doesn't know about CustomEvent...
+            //JS.dispatch_event(event_type, event_detail, node);
+            //expect(callback).toHaveBeenCalled();
+        });
+    });
+
 })();
