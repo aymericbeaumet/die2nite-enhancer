@@ -461,4 +461,50 @@
         }
     });
 
+
+
+    describe("JS.redirect", function() {
+        // Cannot test it as it is just a window.location.href assignment.
+    });
+
+
+
+    describe("JS.reload", function() {
+        // Cannot test it as it is just a location.reload() call.
+    });
+
+
+
+    describe("JS.regex_test", function() {
+        var string = "I have nothing to declare but my genius.";
+
+        describe("should match with a correct pattern given as a", function() {
+            var regex = "^I have nothing";
+
+            it("string", function() {
+                var ret = JS.regex_test(regex, string);
+                expect(ret).toBe(true);
+            });
+
+            it("RegExp object", function() {
+                var ret = JS.regex_test(new RegExp(regex), string);
+                expect(ret).toBe(true);
+            });
+        });
+
+        describe("should not match with a non-correct pattern given as", function() {
+            var regex = "^I have nothing$";
+
+            it("string", function() {
+                var ret = JS.regex_test(regex, string);
+                expect(ret).toBe(false);
+            });
+
+            it("RegExp object", function() {
+                var ret = JS.regex_test(new RegExp(regex), string);
+                expect(ret).toBe(false);
+            });
+        });
+    });
+
 })();
