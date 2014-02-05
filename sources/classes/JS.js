@@ -135,14 +135,7 @@ var JS = (function() {
          */
         network_request: function(method, urn, data, headers, on_success, on_failure) {
 
-            var uri;
-
-            // if the URL (protocol + domain) is missing, add it to form the URI
-            if (/^\/[^\/].+$/.test(urn)) {
-                uri = window.location.protocol + '//' + window.location.host + urn;
-            } else { // just use the given URN as the URI
-                uri = urn;
-            }
+            var uri = JS.form_uri(null, urn);
 
             // Google Chrome script / GreaseMonkey
             if (typeof GM_xmlhttpRequest !== 'undefined') {
@@ -441,10 +434,7 @@ var JS = (function() {
          */
         redirect: function(urn)
         {
-            var url = window.location.protocol + '//' + window.location.host;
-            var uri = url + urn;
-
-            window.location.href = uri;
+            window.location.href = JS.form_uri(null, urn);
         },
 
         /**
@@ -561,6 +551,25 @@ var JS = (function() {
                 array[i] = obj[i];
             }
             return array;
+        },
+
+        /**
+         * Form the complete URI from the URL and the URN.
+         * @param string url Can be null, in this case fetched from
+         * window.location
+         * @param string urn The URN
+         * @return string The URN prefixed by the URL (if needed)
+         */
+        form_uri: function(url, urn)
+        {
+            // if the URN is relative, prefix it with the URL
+            if (/^\/[^\/]/.test(urn)) {
+                url = url || window.location.protocol + '//' + window.location.host;
+                return url + urn;
+            }
+
+            // else leave it as is
+            return urn;
         },
 
         jsonToDOM: jsonToDOM

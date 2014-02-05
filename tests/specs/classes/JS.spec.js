@@ -619,6 +619,25 @@
 
 
 
+    describe("JS.form_uri", function() {
+        it("should prefix with the URL for a relative URI", function() {
+            expect(JS.form_uri(null, "/my_path")).
+                toBe(window.location.protocol + "//" + window.location.host + "/my_path");
+        });
+
+        it("should not prefix with the URL for a complete URI", function() {
+            expect(JS.form_uri(null, "https://github.com/new_path")).
+                toBe("https://github.com/new_path");
+        });
+
+        it("should just concatenate the two parts if the URL is provided", function() {
+            expect(JS.form_uri("https://google.com", "/plus")).
+                toBe("https://google.com/plus");
+        });
+    });
+
+
+
     describe("JS.jsonToDOM", function() {
         var click_callback;
         var json;
