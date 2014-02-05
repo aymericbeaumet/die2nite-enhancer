@@ -417,14 +417,7 @@
                 });
 
                 it("should not have found.", function() {
-                    data.get_query_func()(data.query, function(el) {
-                        found_callback(el);
-                        flag = true;
-                    }, 0, function() {
-                        not_found_callback();
-                        flag = true;
-                    });
-
+                    data.get_query_func()(data.query, found_callback, 0, not_found_callback);
                     expect(found_callback).not.toHaveBeenCalled();
                     expect(not_found_callback).toHaveBeenCalled();
                 });
