@@ -429,7 +429,7 @@ var JS = (function() {
         wait_for_selector_all: function(selector, callback, max, not_found_callback)
         {
             return wait_for_(function search() {
-                    return JS.to_array(document.querySelectorAll(selector));
+                    return JS.nodelist_to_array(document.querySelectorAll(selector));
                 }, function is_found(result) {
                     return JS.is_defined(result) && result.length > 0;
                 }, callback, max, not_found_callback);
@@ -541,14 +541,13 @@ var JS = (function() {
         },
 
         /**
-         * Convert any object to an array.
+         * Convert a nodelist to an array.
          * @link http://stackoverflow.com/a/2735133/1071486
          * @param Object obj The object to convert.
          */
-        to_array: function(obj) {
+        nodelist_to_array: function(obj) {
             var array = [];
-            // iterate backwards ensuring that length is an UInt32
-            for (var i = obj.length >>> 0; i--;) {
+            for (var i = 0, max = obj.length; i < max; i++) {
                 array[i] = obj[i];
             }
             return array;

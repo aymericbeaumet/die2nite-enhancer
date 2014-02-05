@@ -605,4 +605,16 @@
         });
     });
 
+
+
+    describe("JS.nodelist_to_array", function() {
+        var nodelist = document.querySelectorAll('div');
+        var array = $.makeArray(nodelist);
+
+        it("should return an array from a nodelist", function() {
+            var ret = JS.nodelist_to_array(nodelist);
+            expect(JSON.stringify(ret)).toBe(JSON.stringify(array));
+        });
+    });
+
 })();
