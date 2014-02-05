@@ -497,13 +497,23 @@ var JS = (function() {
         {
             detail = detail || null;
             node = node || document;
+            var bubbles = true;
+            var cancelable = true;
 
-            var event_param = {};
-            event_param.detail = detail;
-            event_param.bubbles = true;
-            event_param.cancelable = true;
+            var event;
 
-            node.dispatchEvent(new CustomEvent(key, event_param));
+            if (typeof CustomEvent === "function") {
+                event = new CustomEvent(key, {
+                    detail: detail,
+                    bubbles: bubbles,
+                    cancelable: cancelable
+                });
+            } else { // deprecated
+                event = document.createEvent("CustomEvent");
+                event.initCustomEvent(key, bubbles, cancelable, detail);
+            }
+
+            node.dispatchEvent(event);
         },
 
         /**

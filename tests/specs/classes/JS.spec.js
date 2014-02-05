@@ -2,7 +2,7 @@
 
     "use strict";
 
-    // TODO: find a way to test with GM_xmlhttpRequest and safari (-> fixture)
+    // TODO: find a way to test with GM_xmlhttpRequest and safari (-> fixture ?)
     describe("JS.network_request", function() {
         var url = window.location.protocol + "//" + window.location.host;
         var urn = "/base/tests/bootstrap.js"; // random file, the test will be done based on its content
@@ -457,13 +457,13 @@
 
 
     describe("JS.redirect", function() {
-        // Cannot test it as it is just a window.location.href assignment.
+        // TODO: Cannot test it as it is just a window.location.href assignment.
     });
 
 
 
     describe("JS.reload", function() {
-        // Cannot test it as it is just a location.reload() call.
+        // TODO: Cannot test it as it is just a location.reload() call.
     });
 
 
@@ -542,9 +542,9 @@
         });
 
         it("should dispatch an event on the given node", function() {
-            // TODO: PhantomJS doesn't know about CustomEvent...
-            //JS.dispatch_event(event_type, event_detail, node);
-            //expect(callback).toHaveBeenCalled();
+            JS.dispatch_event(event_name, event_detail, node);
+            expect(callback).toHaveBeenCalled();
+            expect(callback.mostRecentCall.args[0].detail.jasmine).toBe(event_detail.jasmine);
         });
     });
 
