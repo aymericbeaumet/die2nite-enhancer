@@ -81,9 +81,8 @@ var JS = (function() {
 
     var keydown_event_ = {
         previous_keycode: null,
-        previous_keycode_timestamp: 0,
-        already_bind: false,
-        callback: null
+        previous_keycode_timestamp: 0, // ms
+        already_bind: false
     };
 
     /**
@@ -228,7 +227,11 @@ var JS = (function() {
          */
         keydown_event: function(callback, time_limit)
         {
+            // Update/set the callback
             keydown_event_.callback = callback;
+
+            // defaut 1000ms between two key strokes
+            keydown_event_.time_limit = (typeof time_limit === "number") ? time_limit : 1000;
 
             // Ensure it can only be bound once (though the callback can still
             // be updated)
@@ -237,18 +240,17 @@ var JS = (function() {
             }
             keydown_event_.already_bind = true;
 
-            // defaut 1000ms between two key strokes
-            time_limit = (typeof time_limit === "number") ? time_limit : 1000;
-
             document.addEventListener('keydown', function(event) {
                 // Cancel event if the cursor is in an input field or textarea
                 if (event.target.nodeName === 'INPUT' || event.target.nodeName === 'TEXTAREA') {
                     return;
                 }
 
+                var current_timestamp = +new Date(); // ms
+
                 // Cancel previous keycode if the elapsed time is too long
                 // between the last two keystrokes
-                if (event.timeStamp - keydown_event_.previous_keycode_timestamp > time_limit) {
+                if (current_timestamp - keydown_event_.previous_keycode_timestamp > keydown_event_.time_limit) {
                     JS.reset_previous_keycode();
                 }
 
@@ -257,7 +259,7 @@ var JS = (function() {
 
                 // Save keycode
                 keydown_event_.previous_keycode = event.keyCode;
-                keydown_event_.previous_keycode_timestamp = event.timeStamp;
+                keydown_event_.previous_keycode_timestamp = current_timestamp;
             }, false);
         },
 
