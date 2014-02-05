@@ -116,11 +116,14 @@ Module.register(function() {
                         'position: fixed;' +
                         'z-index: 15;' +
                     '}' +
+
+                    // the bar is 32px height, so as we hide it, we need to pull up
+                    // the interface
                     '#gamebody div.infoBar {' +
-                        'top: 111px;' +
+                        'top: 111px;' + // 143 - 32
                     '}' +
                     'a#backReboot {' +
-                        'top: 178px;' +
+                        'top: 178px;' + // 200 - 32
                     '}'
                 );
 
