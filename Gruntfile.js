@@ -400,7 +400,7 @@ module.exports = function(grunt) {
 
         coveralls: {
             options: {
-                coverage_dir: "coverage/Firefox 26.0.0 (Linux)/"
+                coverage_dir: "coverage/Firefox 19.0.0 (Linux)/"
             }
         },
 
