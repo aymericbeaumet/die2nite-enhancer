@@ -24,11 +24,14 @@ function Storage()
 Storage.key_prefix = '';
 
 /**
- * Define a new prefix.
+ * Define a new prefix. A string is mandatory, otherwise the setter aborts.
  * @param string new_prefix The new prefix
  */
 Storage.set_key_prefix = function(new_prefix)
 {
+    if (typeof new_prefix !== "string") {
+        return;
+    }
     Storage.key_prefix = new_prefix;
 };
 
