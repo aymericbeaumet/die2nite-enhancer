@@ -1,0 +1,5 @@
+{
+  "app_description": {
+    "message": "<%= i18n.description.fr %>"
+  }
+}

@@ -2,7 +2,8 @@
   "name": "<%= full_name %>",
   "short_name": "<%= short_name %>",
   "version": "<%= version %>",
-  "description": "<%= description %>",
+  "description": "__MSG_app_description__",
+  "default_locale": "<%= default_locale %>",
   "developer": {
     "name": "<%= author.name %> <<%= author.email %>>",
     "url": "<%= author.url %>"
