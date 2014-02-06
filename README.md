@@ -1,6 +1,6 @@
 ## Die2Nite Enhancer
 
-[![Build Status](https://travis-ci.org/abeaumet/die2nite_enhancer.png)](https://travis-ci.org/abeaumet/die2nite_enhancer) [![Coverage Status](https://coveralls.io/repos/abeaumet/die2nite_enhancer/badge.png?branch=master)](https://coveralls.io/r/abeaumet/die2nite_enhancer?branch=master) [![Dependency Status](https://david-dm.org/abeaumet/die2nite_enhancer.png)](https://david-dm.org/abeaumet/die2nite_enhancer) [![devDependency Status](https://david-dm.org/abeaumet/die2nite_enhancer/dev-status.png)](https://david-dm.org/abeaumet/die2nite_enhancer#info=devDependencies)
+[![Build Status](https://travis-ci.org/abeaumet/die2nite_enhancer.png)](https://travis-ci.org/abeaumet/die2nite_enhancer) [![Coverage Status](https://coveralls.io/repos/abeaumet/die2nite_enhancer/badge.png?branch=master)](https://coveralls.io/r/abeaumet/die2nite_enhancer?branch=master) [![Dependency Status](https://david-dm.org/abeaumet/die2nite_enhancer.png?theme=shields.io)](https://david-dm.org/abeaumet/die2nite_enhancer) [![devDependency Status](https://david-dm.org/abeaumet/die2nite_enhancer/dev-status.png?theme=shields.io)](https://david-dm.org/abeaumet/die2nite_enhancer#info=devDependencies)
 
 Die2Nite Enhancer is an extension allowing you to improve your game experience on the browser game [Die2Nite](http://www.die2nite.com/).
 
