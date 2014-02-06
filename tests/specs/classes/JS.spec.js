@@ -2,7 +2,6 @@
 
     "use strict";
 
-    // TODO: find a way to test with safari (-> fixture ?)
     describe("JS.network_request", function() {
         var method = "GET",
             url = window.location.protocol + "//" + window.location.host,
