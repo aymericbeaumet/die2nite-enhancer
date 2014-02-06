@@ -2,6 +2,14 @@
   "full_name": "Die2Nite Enhancer",
   "short_name": "D2NE",
 
+  "default_locale": "en",
+
+  "i18n": {
+    "description": {
+      "fr": "Die2Nite Enhancer est une extension vous permettant d’améliorer votre expérience de jeu sur le jeu Hordes."
+    }
+  },
+
   "matching_urls": [
     "www.die2nite.com",
     "www.hordes.fr",
