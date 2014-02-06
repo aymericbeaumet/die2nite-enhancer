@@ -315,7 +315,8 @@ var D2N = (function() {
          * Check if the user is outside and camping.
          * @return boolean true if the user is outside and camping, otherwise false
          */
-        is_camping: function() {
+        is_camping: function()
+        {
             return D2N.is_outside() &&
                 document.getElementsByClassName('left').length < 1;
         },
@@ -351,7 +352,8 @@ var D2N = (function() {
          * Check if on Zombinoia.
          * @return boolean true if on Zombinoia, else false
          */
-        is_on_zombinoia: function() {
+        is_on_zombinoia: function()
+        {
             return window.location.hostname === 'www.zombinoia.com';
         },
 
@@ -359,7 +361,8 @@ var D2N = (function() {
          * Check if on Dieverdammten.
          * @return boolean true if on Dieverdammten, else false
          */
-        is_on_dieverdammten: function() {
+        is_on_dieverdammten: function()
+        {
             return window.location.hostname === 'www.dieverdammten.de';
         },
 
@@ -368,7 +371,8 @@ var D2N = (function() {
          * @param integer directory_id The external tool id
          * @param Function callback The callback to pass the api key
          */
-        get_api_key: function(directory_id, callback_success, callback_failure) {
+        get_api_key: function(directory_id, callback_success, callback_failure)
+        {
             // Fetch the session key
             D2N.get_session_key(function(sk) {
                 JS.network_request('GET', '/disclaimer?id=' + directory_id + ';sk=' + sk, null, null,
@@ -385,6 +389,37 @@ var D2N = (function() {
                     }
                 );
             });
+        },
+
+        /**
+         * Remove a player action (in house or outside).
+         * @param string/RegExp pattern The action name
+         */
+        remove_player_action: function(pattern)
+        {
+            // if not at home or outside (the two only places where a player
+            // can use an object), abort
+            if (!(D2N.is_on_page_in_city('home') || D2N.is_outside())) {
+                return;
+            }
+
+            // else list all the possible objects usable by the player
+            JS.wait_for_selector_all('a.toolAction > span > strong', function(nodes) {
+                nodes.forEach(function(node) {
+                    // Skip the node if not a 'strong' element
+                    if (node.nodeName !== 'STRONG') {
+                        return;
+                    }
+
+                    // Hide the node if matching the pattern
+                    if ((typeof pattern === "string" && node.textContent === pattern) ||
+                        (pattern instanceof RegExp && pattern.test(node.textContent))) {
+
+                        var action = node.parentNode.parentNode;
+                        action.style.display = 'none';
+                    }
+                });
+            }, 5);
         }
 
     };

@@ -16,10 +16,16 @@ Module.register(function() {
         i18n[I18N.LANG.EN] = {};
         i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Enable cyanide protection';
         i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Avoid to eat cyanide by accident by deleting the link to use it.';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_cyanide'] = 'Cyanide';
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Protéger contre le cyanure';
         i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Evite de s\'empoisonner au cyanure par accident en supprimant le lien permettant son utilisation.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_cyanide'] = 'Cyanure';
+
+        i18n[I18N.LANG.ES][MODULE_NAME + '_cyanide'] = 'Cianuro';
+
+        i18n[I18N.LANG.DE][MODULE_NAME + '_cyanide'] = 'Cyanide';
 
         I18N.set(i18n);
     }
@@ -58,27 +64,7 @@ Module.register(function() {
 
             load: function() {
                 document.addEventListener('d2n_gamebody_reload', function() {
-                    // if not at home or outside (the two only places where a player
-                    // can use an object), abort
-                    if (!(D2N.is_on_page_in_city('home') || D2N.is_outside())) {
-                        return;
-                    }
-
-                    // else list all the possible objects usable by the player
-                    JS.wait_for_selector_all('a.toolAction > span > strong', function(nodes) {
-                        nodes.forEach(function(node) {
-                            // Skip the node if not a 'strong' element
-                            if (node.nodeName !== 'STRONG') {
-                                return;
-                            }
-
-                            // Hide the node if cyanure
-                            if (/^Cyanide|Cyanure|Cianuro$/.test(node.textContent)) {
-                                var action = node.parentNode.parentNode;
-                                action.style.display = 'none';
-                            }
-                        });
-                    }, 5);
+                    D2N.remove_player_action(I18N.get(MODULE_NAME + '_cyanide'));
                 }, false);
             }
         }
