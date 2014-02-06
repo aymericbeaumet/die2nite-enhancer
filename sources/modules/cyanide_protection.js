@@ -23,8 +23,10 @@ Module.register(function() {
         i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Evite de s\'empoisonner au cyanure par accident en supprimant le lien permettant son utilisation.';
         i18n[I18N.LANG.FR][MODULE_NAME + '_cyanide'] = 'Cyanure';
 
+        i18n[I18N.LANG.ES] = {};
         i18n[I18N.LANG.ES][MODULE_NAME + '_cyanide'] = 'Cianuro';
 
+        i18n[I18N.LANG.ES] = {};
         i18n[I18N.LANG.DE][MODULE_NAME + '_cyanide'] = 'Cyanide';
 
         I18N.set(i18n);
