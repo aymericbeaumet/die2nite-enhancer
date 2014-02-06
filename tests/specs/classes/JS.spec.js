@@ -11,6 +11,70 @@
             request_timeout = 500, // ms
             callback_success, callback_failure;
 
+        describe("[GM_xmlhttpRequest]", function() {
+            beforeEach(function() {
+                window.GM_xmlhttpRequest = jasmine.createSpy("GM_xmlhttpRequest");
+            });
+
+            afterEach(function() {
+                window.GM_xmlhttpRequest = null;
+                delete window.GM_xmlhttpRequest;
+            });
+
+            it("should call the GreaseMonkey helper", function() {
+                JS.network_request(method, urn, "", {}, function(){}, function(){});
+
+                expect(window.GM_xmlhttpRequest).toHaveBeenCalled();
+
+                var args = window.GM_xmlhttpRequest.mostRecentCall.args;
+                expect(args[0].method).toBe(method);
+                expect(args[0].url).toBe(JS.form_uri(null, urn));
+                expect(args[0].data).toBe("");
+                expect(Object.keys(args[0].headers).length).toBe(0);
+                expect(args[0].onload).toEqual(jasmine.any(Function));
+                expect(args[0].onerror).toEqual(jasmine.any(Function));
+            });
+        });
+
+        describe("[Safari]", function() {
+            beforeEach(function() {
+                window.safari = {};
+                window.safari.self = {};
+                window.safari.self.addEventListener = jasmine.createSpy("safari.self.addEventListener");
+                window.safari.self.tab = {};
+                window.safari.self.tab.dispatchMessage = jasmine.createSpy("safari.self.tab.dispatchMessage");
+            });
+
+            afterEach(function() {
+                window.safari = null;
+                delete window.safari;
+            });
+
+            it("should dispatch on safari.self.tab if cross domain", function() {
+                var uri = "http://github.com";
+
+                JS.network_request(method, uri, "", {}, function(){}, function(){});
+
+                expect(window.safari.self.tab.dispatchMessage).toHaveBeenCalled();
+                var args = window.safari.self.tab.dispatchMessage.mostRecentCall.args;
+                expect(args[0]).toBe("do_network_request");
+                expect(args[1]).toEqual(jasmine.any(Object));
+                expect(args[1].method).toBe(method);
+                expect(args[1].url).toBe(uri);
+                expect(args[1].data).toBe("");
+                expect(Object.keys(args[1].headers).length).toBe(0);
+                expect(args[1].request_id).toMatch(/^[0-9]{13,}.+$/);
+            });
+
+            it("should not dispatch on safari.self if not cross domain", function() {
+                var uri = "/non/cross/domain";
+
+                JS.network_request(method, uri, "", {}, function(){}, function(){});
+
+                expect(window.safari.self.tab.dispatchMessage).not.toHaveBeenCalled();
+            });
+        });
+
         describe("[XMLHttpRequest]", function() {
             var reference_content = $.ajax({
                 type: method,
@@ -89,27 +153,6 @@
                         test_xml_http_request(method, url + bad_urn, false);
                     });
                 });
-            });
-        });
-
-        describe("[GM_xmlhttpRequest]", function() {
-            beforeEach(function() {
-                window.GM_xmlhttpRequest = jasmine.createSpy("GM_xmlhttpRequest");
-            });
-
-            afterEach(function() {
-                window.GM_xmlhttpRequest = null;
-                delete window.GM_xmlhttpRequest;
-            });
-
-            it("should call the GreaseMonkey helper", function() {
-                JS.network_request(method, urn, "", {}, function(){}, function(){});
-
-                expect(window.GM_xmlhttpRequest).toHaveBeenCalled();
-
-                var args = window.GM_xmlhttpRequest.mostRecentCall.args;
-                expect(args[0].method).toBe(method);
-                expect(args[0].url).toBe(JS.form_uri(null, urn));
             });
         });
     });
@@ -556,11 +599,11 @@
             loadFixtures("generic/simple_div.html");
             callback = jasmine.createSpy("callback");
             node = document.getElementById("simple_div");
-            node.addEventListener(event_name, callback);
+            node.addEventListener(event_name, callback, false);
         });
 
         afterEach(function() {
-            node.removeEventListener(event_name, callback);
+            node.removeEventListener(event_name, callback, false);
             node = null;
             callback = null;
         });
@@ -568,7 +611,7 @@
         it("should dispatch an event on the given node", function() {
             JS.dispatch_event(event_name, event_detail, node);
             expect(callback).toHaveBeenCalled();
-            expect(callback.mostRecentCall.args[0].detail.jasmine).toBe(event_detail.jasmine);
+            expect(callback.mostRecentCall.args[0].detail).toBe(event_detail);
         });
     });
 
@@ -690,6 +733,8 @@
             expect(click_callback).not.toHaveBeenCalled();
             $("#test_div").simulate("click");
             expect(click_callback).toHaveBeenCalled();
+
+            $("#simple_div").remove();
         });
     });
 

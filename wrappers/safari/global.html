@@ -6,7 +6,7 @@
       // Wait for a message
       safari.application.addEventListener('message', function(event) {
 
-          // If a network is asked to be performed
+          // If a network request is asked to be performed
           if (event.name === 'do_network_request') {
               var param = event.message;
               var method = param.method,

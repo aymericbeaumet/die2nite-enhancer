@@ -183,7 +183,7 @@ var JS = (function() {
                     }, false);
                 }
 
-                var request_unique_id = +new Date();
+                var request_unique_id = +new Date() + Math.random() + uri;
 
                 // Save callbacks to keep the context
                 safari_callbacks_ = safari_callbacks_ || {};
@@ -606,7 +606,7 @@ var JS = (function() {
         },
 
         /**
-         * Check if the given URI is an other domain.
+         * Check if the given URI is another domain.
          * @param string uri The URI to check.
          * @return boolean true if on a different domain, else false
          */
