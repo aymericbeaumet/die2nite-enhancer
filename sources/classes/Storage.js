@@ -36,6 +36,16 @@ Storage.set_key_prefix = function(new_prefix)
 };
 
 /**
+ * Set a value in the storage.
+ * @param string key The key to insert or distort
+ * @param mixed value The value to put in
+ */
+Storage.set = function(key, value)
+{
+    localStorage[Storage.key_prefix + key] = value + ''; // explicit string cast
+};
+
+/**
  * Get a value from the storage.
  * @param string key The key to fetch
  * @return string The related value
@@ -46,14 +56,4 @@ Storage.get = function(key)
     var ret = localStorage[Storage.key_prefix + key];
 
     return (typeof ret === 'undefined') ? null : ret;
-};
-
-/**
- * Set a value in the storage.
- * @param string key The key to insert or distort
- * @param mixed value The value to put in
- */
-Storage.set = function(key, value)
-{
-    localStorage[Storage.key_prefix + key] = value + ''; // explicit string cast
 };
