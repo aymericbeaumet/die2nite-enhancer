@@ -1,6 +1,8 @@
 v0.1.1
 - Re-enable Safari support
 - Fix Safari cross-domain requests problem
+- Add unit tests for sources/classes/{JS,Storage}.js
+- More JavaScript code is now linted
 
 v0.1.0
 - Switch to Grunt to build the project
