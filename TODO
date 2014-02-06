@@ -14,7 +14,3 @@ Features:
 - Confirm the update by a notification (alert, ...)
 - Inform the user that it will be less information in pandemonium (remove the
   sync button in pande?)
-
-Bugs:
-- Re-enable Safari support
-- Find a solution to fix Safari XmlHttpRequest problem with external tools

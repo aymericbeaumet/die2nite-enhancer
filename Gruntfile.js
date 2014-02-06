@@ -416,7 +416,8 @@ module.exports = function(grunt) {
                 // if a source file is modified, re-statically check the files,
                 // relaunch the tests and finally re-pack
                 files: [
-                    "sources/**/*.js"
+                    "sources/**/*.js",
+                    "wrappers/**/*"
                 ],
                 tasks: ["static_check", "karma:continuous:run", "pack"]
             }

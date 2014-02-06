@@ -1,3 +1,7 @@
+v0.1.1
+- Re-enable Safari support
+- Fix Safari cross-domain requests problem
+
 v0.1.0
 - Switch to Grunt to build the project
 - Switch to the Lo-Dash template engine

@@ -21,6 +21,11 @@ var JS = (function() {
     var wait_for_max_retry_ = 15;
 
     /**
+     * Store the Safari callbacks.
+     */
+    var safari_callbacks_ = null;
+
+    /**
      * Safely insert code through JSON.
      * @link https://developer.mozilla.org/en-US/Add-ons/Overlay_Extensions/XUL_School/DOM_Building_and_HTML_Insertion
      */
@@ -149,23 +154,51 @@ var JS = (function() {
                 });
             }
 
-            // Safari needs to dispatch the request to the global page
-            if (typeof safari !== 'undefined') {
-                safari.addEventListener('message', function(event) {
-                    switch (event.name) {
-                        case 'network_request_succeed':
-                            return on_success(event.message);
+            // Safari needs to dispatch the request to the global page if the
+            // request is Cross Domain
+            if (typeof safari !== 'undefined' && JS.is_cross_domain(uri)) {
+                // Only register the listener once
+                if (safari_callbacks_ === null) {
+                    safari.self.addEventListener('message', function(event) {
+                        var request_id = event.message.request_id;
 
-                        case 'network_request_failed':
-                            return on_failure();
-                    }
-                }, false);
+                        // if the callback for the given URI can't be found, abort
+                        if (!(request_id in safari_callbacks_)) {
+                            return;
+                        }
 
-                return safari.tab.dispatchMessage('do_network_request', {
+                        switch (event.name) {
+                            case 'network_request_succeed':
+                                safari_callbacks_[request_id].on_success(event.message.response_text);
+                                break;
+
+                            case 'network_request_failed':
+                                safari_callbacks_[request_id].on_failure();
+                                break;
+                        }
+
+                        // Delete the callback
+                        safari_callbacks_[request_id] = null;
+                        delete safari_callbacks_[request_id];
+                    }, false);
+                }
+
+                var request_unique_id = +new Date();
+
+                // Save callbacks to keep the context
+                safari_callbacks_ = safari_callbacks_ || {};
+                safari_callbacks_[request_unique_id] = {
+                    on_success: on_success,
+                    on_failure: on_failure
+                };
+
+                // Ask to the global page to do the request
+                return safari.self.tab.dispatchMessage('do_network_request', {
                     method: method,
                     url: uri,
                     data: '' + data,
-                    headers: headers
+                    headers: headers,
+                    request_id: request_unique_id
                 });
             }
 
@@ -570,6 +603,17 @@ var JS = (function() {
 
             // else leave it as is
             return urn;
+        },
+
+        /**
+         * Check if the given URI is an other domain.
+         * @param string uri The URI to check.
+         * @return boolean true if on a different domain, else false
+         */
+        is_cross_domain: function(uri)
+        {
+            var regex = "^(?:/.+|" + window.location.protocol + "//" + window.location.host + ")";
+            return !JS.regex_test(regex, uri);
         },
 
         jsonToDOM: jsonToDOM

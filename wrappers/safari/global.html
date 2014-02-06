@@ -3,32 +3,41 @@
   <head>
     <script type="application/javascript">
 
-      // Wait for a network request to perform
+      // Wait for a message
       safari.application.addEventListener('message', function(event) {
-        if (event.name !== 'do_network_request') {
-          return;
-        }
 
-        param = event.message;
+          // If a network is asked to be performed
+          if (event.name === 'do_network_request') {
+              var param = event.message;
+              var method = param.method,
+                  uri = param.url,
+                  data = param.data,
+                  headers = param.headers,
+                  request_id = param.request_id;
 
-        event.target.page.dispatchMessage('log', param);
-
-        var xmlhttp = new XMLHttpRequest();
-        //xmlhttp.setDisableHeaderCheck(true); // mandatory as cookie are set
-        xmlhttp.open(param.method, param.url, true);
-        for (var header in param.headers) {
-          xmlhttp.setRequestHeader(header, param.headers[header]);
-        }
-        xmlhttp.onreadystatechange = function() {
-          if (xmlhttp.readyState === 4) {
-            if (xmlhttp.status >= 200 && xmlhttp.status < 300) {
-              return event.target.page.dispatchMessage('network_request_succeed',
-                                                       xmlhttp.responseText);
-            }
-            return event.target.page.dispatchMessage('network_request_failed');
+              // Do the request
+              var xmlhttp = new XMLHttpRequest();
+              xmlhttp.open(method, uri, true);
+              for (var header in headers) {
+                  if (headers.hasOwnProperty(header)) {
+                      xmlhttp.setRequestHeader(header, headers[header]);
+                  }
+              }
+              xmlhttp.onreadystatechange = function() {
+                  if (xmlhttp.readyState === 4) {
+                      if (xmlhttp.status >= 200 && xmlhttp.status < 300) {
+                          return event.target.page.dispatchMessage('network_request_succeed', {
+                            request_id: request_id,
+                            response_text: xmlhttp.responseText
+                          });
+                      }
+                      return event.target.page.dispatchMessage('network_request_failed', {
+                          request_id: request_id
+                      });
+                  }
+              };
+              xmlhttp.send(data);
           }
-        };
-        xmlhttp.send(param.data);
       }, false);
 
     </script>

@@ -693,4 +693,24 @@
         });
     });
 
+
+
+    describe("JS.is_cross_domain", function() {
+        var page_protocol = window.location.protocol;
+        var page_opposite_protocol = (page_protocol === "http:") ? "https:" : "http:";
+        var page_host = window.location.host;
+
+        it("should valid these tests as Cross Domain", function() {
+            expect(JS.is_cross_domain("http://google.com")).toBe(true);
+            expect(JS.is_cross_domain("https://github.com")).toBe(true);
+            expect(JS.is_cross_domain(page_opposite_protocol + "//" + page_host)).toBe(true);
+            expect(JS.is_cross_domain(page_opposite_protocol + "//" + page_host + "/test")).toBe(true);
+        });
+
+        it("should not valid these tests as Cross Domain", function() {
+            expect(JS.is_cross_domain(page_protocol + "//" + page_host + "/test")).toBe(false);
+            expect(JS.is_cross_domain("/test")).toBe(false);
+        });
+    });
+
 })();
