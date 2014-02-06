@@ -2,76 +2,79 @@
 
     "use strict";
 
-    // TODO: find a way to test with GM_xmlhttpRequest and safari (-> fixture ?)
+    // TODO: find a way to test with safari (-> fixture ?)
     describe("JS.network_request", function() {
-        var url = window.location.protocol + "//" + window.location.host;
-        var urn = "/base/tests/bootstrap.js"; // random file, the test will be done based on its content
-        var bad_urn = "/this/is/leading/to/nowhere";
-        var request_timeout = 500; // ms
-        var callback_success, callback_failure;
+        var method = "GET",
+            url = window.location.protocol + "//" + window.location.host,
+            urn = "/base/tests/bootstrap.js", // random file, the test will be done based on its content
+            bad_urn = "/i/want/to/hit/a/404",
+            request_timeout = 500, // ms
+            callback_success, callback_failure;
 
-        var reference_content = $.ajax({
-            type: "GET",
-            url: urn,
-            async: false
-        }).responseText;
+        describe("[XMLHttpRequest]", function() {
+            var reference_content = $.ajax({
+                type: method,
+                url: urn,
+                async: false
+            }).responseText;
 
-        /**
-         * Used to perform network request.
-         * @param string method GET, POST, etc...
-         * @param string urn Where does the request have to be performed?
-         * @param boolean expect_success Is it supposed to be a success?
-         */
-        var test_network_request = function(method, urn, expect_success) {
-            var flag = false;
+            /**
+             * Used to perform network request.
+             * @param string method GET, POST, etc...
+             * @param string urn Where does the request have to be performed?
+             * @param boolean expect_success Is it supposed to be a success?
+             */
+            var test_xml_http_request = function(method, urn, expect_success) {
+                var flag = false;
 
-            runs(function() {
-                JS.network_request(method, urn, "", {},
-                   function(content) {
-                       flag = true;
-                       callback_success(content);
-                   },
-                   function() {
-                       flag = true;
-                       callback_failure();
-                   }
-                );
+                runs(function() {
+                    JS.network_request(method, urn, "", {},
+                       function(content) {
+                           flag = true;
+                           callback_success(content);
+                       },
+                       function() {
+                           flag = true;
+                           callback_failure();
+                       }
+                    );
+                });
+
+                waitsFor(function() {
+                    return flag === true;
+                }, "the network request to answer (positively or nagatively)", request_timeout);
+
+                runs(function() {
+                    expect(XMLHttpRequest.prototype.send).toHaveBeenCalled();
+                    if (expect_success) {
+                        expect(callback_success).toHaveBeenCalledWith(reference_content);
+                        expect(callback_failure).not.toHaveBeenCalled();
+                    } else {
+                        expect(callback_success).not.toHaveBeenCalled();
+                        expect(callback_failure).toHaveBeenCalled();
+                    }
+                });
+            };
+
+            beforeEach(function() {
+                spyOn(XMLHttpRequest.prototype, "send").andCallThrough();
+                callback_success = jasmine.createSpy("callback_success");
+                callback_failure = jasmine.createSpy("callback_failure");
             });
 
-            waitsFor(function() {
-                return flag === true;
-            }, "the network request to answer (positively or nagatively)", request_timeout);
-
-            runs(function() {
-                if (expect_success) {
-                    expect(callback_success).toHaveBeenCalledWith(reference_content);
-                    expect(callback_failure).not.toHaveBeenCalled();
-                } else {
-                    expect(callback_success).not.toHaveBeenCalled();
-                    expect(callback_failure).toHaveBeenCalled();
-                }
+            afterEach(function() {
+                callback_success = null;
+                callback_failure = null;
             });
-        };
 
-        beforeEach(function() {
-            callback_success = jasmine.createSpy("callback_success");
-            callback_failure = jasmine.createSpy("callback_failure");
-        });
-
-        afterEach(function() {
-            callback_success = null;
-            callback_failure = null;
-        });
-
-        describe("[XMLHttpRequest()]", function() {
             describe("should success on a valid", function() {
                 describe("HTTP GET request", function() {
                     it("(URN).", function() {
-                        test_network_request("GET", urn, true);
+                        test_xml_http_request(method, urn, true);
                     });
 
                     it("(URL + URN).", function() {
-                        test_network_request("GET", url + urn, true);
+                        test_xml_http_request(method, url + urn, true);
                     });
                 });
             });
@@ -79,13 +82,34 @@
             describe("should fail on a non-valid", function() {
                 describe("HTTP GET request", function() {
                     it("(URN).", function() {
-                        test_network_request("GET", bad_urn, false);
+                        test_xml_http_request(method, bad_urn, false);
                     });
 
                     it("(URL + URN).", function() {
-                        test_network_request("GET", url + bad_urn, false);
+                        test_xml_http_request(method, url + bad_urn, false);
                     });
                 });
+            });
+        });
+
+        describe("[GM_xmlhttpRequest]", function() {
+            beforeEach(function() {
+                window.GM_xmlhttpRequest = jasmine.createSpy("GM_xmlhttpRequest");
+            });
+
+            afterEach(function() {
+                window.GM_xmlhttpRequest = null;
+                delete window.GM_xmlhttpRequest;
+            });
+
+            it("should call the GreaseMonkey helper", function() {
+                JS.network_request(method, urn, "", {}, function(){}, function(){});
+
+                expect(window.GM_xmlhttpRequest).toHaveBeenCalled();
+
+                var args = window.GM_xmlhttpRequest.mostRecentCall.args;
+                expect(args[0].method).toBe(method);
+                expect(args[0].url).toBe(JS.form_uri(null, urn));
             });
         });
     });
