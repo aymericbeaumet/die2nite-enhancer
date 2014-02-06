@@ -382,7 +382,8 @@ module.exports = function(grunt) {
                 // CoverAlls
 
                 preprocessors: {
-                    "sources/classes/*.js" : ["coverage"]
+                    "sources/classes/*.js" : ["coverage"],
+                    "sources/modules/*.js" : ["coverage"]
                 },
 
                 coverageReporter: {
@@ -399,7 +400,7 @@ module.exports = function(grunt) {
 
         coveralls: {
             options: {
-                coverage_dir: "coverage/PhantomJS 1.9.7 (Linux)/"
+                coverage_dir: "coverage/Firefox 26.0.0 (Linux)/"
             }
         },
 
