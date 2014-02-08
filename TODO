@@ -1,7 +1,5 @@
 Features:
 - Autosync
-- Highlight the recommended construction
-- Watch for script update
 - Remove warning when taking an object in bank (keep it if anti-abuse protection)
 - Interpret image/video urls in forum posts
 - Remove scroll bar on soul distinctions
@@ -11,6 +9,5 @@ Features:
 - Move the escort buttons to a more conveniant place
 - Add moon/sun depending of the hour of the day
 - Check/Uncheck every checkbox in a category/on the whole panel
-- Confirm the update by a notification (alert, ...)
 - Inform the user that it will be less information in pandemonium (remove the
   sync button in pande?)
