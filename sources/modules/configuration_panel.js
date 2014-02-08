@@ -126,27 +126,31 @@ Module.register(function() {
                     ["div", {},
                         null,
                         ["label", { "for": input_id }, I18N.get(value.short_desc_I18N)],
-                        ["a", { "class": "d2ne_tooltip", "href": "javascript:void(0)", "tooltip": I18N.get(value.full_desc_I18N)},
+                        ["a", { "class": "d2ne_tooltip", "href": "javascript:void(0)", "tooltip": I18N.get(value.full_desc_I18N) },
                             ["img", { "src": I18N.get(MODULE_NAME + '_help_image_url'), "alt": "" }],
                         ]
                     ];
 
+                var node = ["/* node_html_type */", { /* node attributes */ }];
                 switch (value.type) {
                     case Module.PROPERTY.BOOLEAN:
-                        var node = ["input", { "id": input_id, "type": "checkbox" }];
-
-                        node[1][INPUT_DATA_MODULE_KEY] = module.name;
-                        node[1][INPUT_DATA_MODULE_PROPERTY_KEY] = key;
+                        node[0] = "input";
+                        node[1].type = "checkbox";
 
                         if (input_value === true) {
                             node[1].checked = ''; // declare a checked attribute
                         }
-                        json_node[2] = node;
                         break;
 
                     default:
                         return;
                 }
+
+                node[1].id = input_id;
+                node[1][INPUT_DATA_MODULE_KEY] = module.name;
+                node[1][INPUT_DATA_MODULE_PROPERTY_KEY] = key;
+
+                json_node[2] = node;
 
                 // Store the node
                 var c = null;
@@ -281,8 +285,8 @@ Module.register(function() {
                 'text-align: left;' +
                 'border-bottom: 1px dotted rgba(221, 171, 118, 0.8);' +
                 'padding-bottom: 4px;' +
-                'margin-bottom: 5px;' +
-                'margin-top: 4px;' +
+                'margin-bottom: 4px;' +
+                'margin-top: 7px;' +
             '}' +
             '#d2ne_configuration_panel div > div > div > h4 > img {' +
                 'vertical-align: -11%;' +
@@ -291,32 +295,33 @@ Module.register(function() {
 
             '#d2ne_configuration_panel div > div {' +
                 'position: relative;' +
+                'line-height: 22px;' +
             '}' +
-            '#d2ne_configuration_panel div > div > div > a > img {' +
-                'position: absolute;' +
-                'top: 0;' +
-                'bottom: 0;' +
-                'right: 0;' +
-                'margin: auto;' +
+
+            '#d2ne_configuration_panel input[type="checkbox"] {' +
+                'margin: 0;' +
+                'margin-left: 2px;' +
                 'margin-right: 4px;' +
             '}' +
 
             'a.d2ne_tooltip {' +
-                'display: inline;' +
-                'cursor: help' +
+                'cursor: help;' +
+                'position: absolute;' +
+                'top: 3px;' +
+                'right: 0;' +
             '}' +
             'a.d2ne_tooltip img {' +
                 'border: 1px solid #5c2b20;' +
+                'margin-right: 2px;' +
             '}' +
             'a.d2ne_tooltip img:hover {' +
                 'border: 1px solid #ffffff;' +
             '}' +
             'a.d2ne_tooltip:hover:after {' +
                 'line-height: normal;' +
-                'z-index: 98;' +
                 'position: absolute;' +
-                'top: 3px;' +
-                'right: -305px;' +
+                'top: 0;' +
+                'left: 55px;' +
                 'content: attr(tooltip);' +
                 'font-family: Verdana;' +
                 'font-size: 12px;' +
@@ -341,7 +346,7 @@ Module.register(function() {
                 'padding-top: 2px;' +
                 'height: 19px;' +
                 'margin: 0;' +
-                'margin-top: 5px;' +
+                'margin-top: 8px;' +
             '}'
         );
     }
