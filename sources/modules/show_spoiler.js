@@ -1,6 +1,6 @@
 Module.register(function() {
 
-    var MODULE_NAME = 'show_spoiler.js';
+    var MODULE_NAME = 'show_spoiler';
 
     /******************
      * Module context *

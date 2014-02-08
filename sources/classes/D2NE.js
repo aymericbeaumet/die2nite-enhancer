@@ -131,7 +131,7 @@ var D2NE = (function() {
             });
 
             initialise_modules();
-            load_modules();
+            load_modules(); // The modules are loaded here
         }
 
     };

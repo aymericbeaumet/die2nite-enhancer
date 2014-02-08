@@ -402,7 +402,7 @@ var JS = (function() {
         wait_for_class: function(class_name, callback, max, not_found_callback)
         {
             return wait_for_(function search() {
-                    return document.getElementsByClassName(class_name);
+                    return JS.nodelist_to_array(document.getElementsByClassName(class_name));
                 }, function is_found(result) {
                     return JS.is_defined(result) && result.length > 0;
                 }, callback, max, not_found_callback);
@@ -420,7 +420,7 @@ var JS = (function() {
         wait_for_tag: function(tag, callback, max, not_found_callback)
         {
             return wait_for_(function search() {
-                    return document.getElementsByTagName(tag);
+                    return JS.nodelist_to_array(document.getElementsByTagName(tag));
                 }, function is_found(result) {
                     return JS.is_defined(result) && result.length > 0;
                 }, callback, max, not_found_callback);

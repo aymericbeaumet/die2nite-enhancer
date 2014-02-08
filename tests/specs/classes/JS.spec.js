@@ -416,13 +416,13 @@
                 fixture: "generic/simple_div.html",
                 get_query_func: function() { return JS.wait_for_class; },
                 query: "simple_div",
-                match: function(q) { return document.getElementsByClassName(q); }
+                match: function(q) { return $.makeArray(document.getElementsByClassName(q)); }
             },
             tag: {
                 fixture: "generic/simple_video.html", // the tag must not be used anywhere else
                 get_query_func: function() { return JS.wait_for_tag; },
                 query: "video",
-                match: function(q) { return document.getElementsByTagName(q); }
+                match: function(q) { return $.makeArray(document.getElementsByTagName(q)); }
             },
             selector: {
                 fixture: "generic/simple_div.html",

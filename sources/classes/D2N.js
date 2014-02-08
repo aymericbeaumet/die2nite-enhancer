@@ -47,8 +47,7 @@ var D2N = (function() {
 
 
     /**
-     * Wait for a gamebody reload and call the function to the emit the
-     * corresponding event then.
+     * Wait for a gamebody reload and emit the corresponding event then.
      */
     function add_gamebody_reload_event()
     {
@@ -100,8 +99,7 @@ var D2N = (function() {
     }
 
     /**
-     * Wait for an ap change and call the function to the emit the corresponding
-     * event then.
+     * Wait for an ap change and call emit the corresponding event then.
      */
     function add_ap_change_event()
     {
@@ -143,6 +141,45 @@ var D2N = (function() {
         });
     }
 
+    /**
+     * Emit a forum topic event.
+     * @param DOMNode[] nodes All the forum posts on the current page
+     */
+    function emit_forum_topic_event(nodes)
+    {
+        JS.dispatch_event('d2n_forum_topic', {
+            posts: nodes
+        });
+    }
+
+    /**
+     * Wait for a forum topic to load and emit the corresponding event then.
+     */
+    function add_forum_topic_event()
+    {
+        if (!D2N.is_on_forum()) {
+            return;
+        }
+
+        var watch_for_forum_topic = function() {
+            if (!D2N.is_on_forum_topic()) {
+                return;
+            }
+
+            JS.wait_for_id('tid_forum_right', function(node) {
+                JS.wait_for_class('tid_post', function(nodes) {
+                    emit_forum_topic_event(nodes);
+                });
+            });
+        };
+        watch_for_forum_topic();
+
+        window.addEventListener('hashchange', function() {
+            watch_for_forum_topic();
+        });
+    }
+
+
 /*
  * public:
  */
@@ -169,6 +206,16 @@ var D2N = (function() {
         is_on_forum: function()
         {
             return (window.location.pathname === '/tid/forum');
+        },
+
+        /**
+         * Check if the player is on a forum topic.
+         * @return bool true if on a forum topic, false otherwise
+         */
+        is_on_forum_topic: function()
+        {
+            return D2N.is_on_forum() &&
+                /^#!view\/\d+\|thread\/\d+(?:\?p=\d+)?$/.test(window.location.hash);
         },
 
         /**
@@ -330,6 +377,7 @@ var D2N = (function() {
         {
             add_gamebody_reload_event();
             add_ap_change_event();
+            add_forum_topic_event();
         },
 
         /**

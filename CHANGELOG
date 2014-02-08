@@ -3,6 +3,7 @@ v0.1.2
 modules load
 - The Chrome and Opera extensions are now localised
 - Add the hability to show the spoilers without mouse hover
+- Add the possibility to replace forum image links by the concerned image
 
 v0.1.1
 - Re-enable Safari support
