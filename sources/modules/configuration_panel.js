@@ -126,8 +126,9 @@ Module.register(function() {
                     ["div", {},
                         null,
                         ["label", { "for": input_id }, I18N.get(value.short_desc_I18N)],
-                        ["a", { "class": "d2ne_tooltip", "href": "javascript:void(0)", "tooltip": I18N.get(value.full_desc_I18N) },
+                        ["a", { "class": "d2ne_tooltip", "href": "javascript:void(0)" },
                             ["img", { "src": I18N.get(MODULE_NAME + '_help_image_url'), "alt": "" }],
+                            ["span", {}, I18N.get(value.full_desc_I18N)]
                         ]
                     ];
 
@@ -309,7 +310,9 @@ Module.register(function() {
                 'position: absolute;' +
                 'top: 3px;' +
                 'right: 0;' +
+                'display: inline-block;' +
             '}' +
+
             'a.d2ne_tooltip img {' +
                 'border: 1px solid #5c2b20;' +
                 'margin-right: 2px;' +
@@ -317,12 +320,14 @@ Module.register(function() {
             'a.d2ne_tooltip img:hover {' +
                 'border: 1px solid #ffffff;' +
             '}' +
-            'a.d2ne_tooltip:hover:after {' +
+
+            'a.d2ne_tooltip span {' +
+                'visibility: hidden;' +
                 'line-height: normal;' +
+                'z-index: 999;' +
                 'position: absolute;' +
                 'top: 0;' +
-                'left: 55px;' +
-                'content: attr(tooltip);' +
+                'left: 53px;' +
                 'font-family: Verdana;' +
                 'font-size: 12px;' +
                 'color: #ffffff;' +
@@ -333,6 +338,9 @@ Module.register(function() {
                 'background-repeat: no-repeat;' +
                 'width: 250px;' +
                 'padding: 5px 10px 9px 30px;' +
+            '}' +
+            'a.d2ne_tooltip img:hover + span {' +
+                'visibility: visible;' +
             '}' +
 
             '#d2ne_configuration_panel > div > div > div:last-child {' +
@@ -379,7 +387,7 @@ Module.register(function() {
                 ]
             ], document);
 
-        configuration_panel_extensible_zone_node_ = config_panel_div.childNodes[0].childNodes[1].childNodes[1];
+            configuration_panel_extensible_zone_node_ = config_panel_div.childNodes[0].childNodes[1].childNodes[1];
 
             // Insert panel
             node.insertBefore(config_panel_div, node.firstChild);
@@ -388,7 +396,7 @@ Module.register(function() {
             var config_panel_toggled_elements_cache = document.querySelectorAll('#d2ne_configuration_panel > div > h1 > span, #d2ne_configuration_panel > div > div');
             var config_panel_toggled_elements_cache_length = config_panel_toggled_elements_cache.length;
 
-            // Show panel on hover
+            // Show panel on over
             config_panel_div.addEventListener('mouseover', function() {
                 config_panel_div.style['z-index'] = '11'; // This fix is needed for the spanish version, as the hero adds has a z-index of 10
                 for (var i = 0; i < config_panel_toggled_elements_cache_length; i += 1) {
