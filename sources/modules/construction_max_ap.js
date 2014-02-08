@@ -24,6 +24,19 @@ Module.register(function() {
         I18N.set(i18n);
     }
 
+    function change_ap()
+    {
+        D2N.get_number_of_ap(function(ap) {
+            JS.wait_for_selector('tr.banner.root_wall1', function() {
+                var fields = JS.nodelist_to_array(document.querySelectorAll('div[id^="moreForm_"] form input[type="text"]'));
+
+                fields.forEach(function(field) {
+                    field.value = ap;
+                });
+            });
+        });
+    }
+
 
     /************************
      * Module configuration *
@@ -57,25 +70,10 @@ Module.register(function() {
             },
 
             load: function() {
-                var change_ap = function() {
-                    if (!D2N.is_on_page_in_city('buildings')) {
-                        return;
-                    }
-
-                    D2N.get_number_of_ap(function(ap) {
-                        JS.wait_for_selector('tr.banner.root_wall1', function() {
-                            var fields = document.querySelectorAll('div[id^="moreForm_"] form input[type="text"]');
-                            var fields_length = fields.length;
-
-                            for (var i = 0; i < fields_length; i += 1) {
-                                fields[i].value = ap;
-                            }
-                        });
-                    });
-                };
-
                 document.addEventListener('d2n_apchange', function() {
-                    change_ap();
+                    if (D2N.is_on_page_in_city('buildings')) {
+                        change_ap();
+                    }
                 }, false);
             }
         }
