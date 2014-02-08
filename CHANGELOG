@@ -1,3 +1,7 @@
+v0.1.2
+- Fix a bug making the custom events sometimes fire their events after the
+modules load
+
 v0.1.1
 - Re-enable Safari support
 - Fix Safari cross-domain requests problem
@@ -12,7 +16,7 @@ v0.1.0
 - The external tools sync button is more beautifuly integrated
 - Add the possibility to drop all the bag content in one click while outside
 - Fix a bug sometimes occuring and making the modules adding content to the
-  gamebody fail
+gamebody fail
 
 v0.0.10
 - Allow to block the Twitter share on the Gazette

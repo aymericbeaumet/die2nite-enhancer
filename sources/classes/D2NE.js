@@ -122,12 +122,15 @@ var D2NE = (function() {
             configure_storage_class();
             configure_internationalisation_class();
 
+            // Will be executed once all the modules will be loaded
+            document.addEventListener('d2ne_all_modules_loaded', function() {
+                D2N.is_logged(function(is_logged) { if (is_logged) {
+                    D2N.add_custom_events();
+                }});
+            });
+
             initialise_modules();
             load_modules();
-
-            D2N.is_logged(function(is_logged) { if (is_logged) {
-                D2N.add_custom_events();
-            }});
         }
 
     };
