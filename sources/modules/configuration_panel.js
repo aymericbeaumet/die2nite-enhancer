@@ -266,11 +266,25 @@ Module.register(function() {
                 'margin-bottom: 5px;' +
             '}' +
 
+            '#d2ne_configuration_panel h1 span {' +
+                'display: none;' +
+            '}' +
+            '#d2ne_configuration_panel:hover h1 span {' +
+                'display: inline;' +
+            '}' +
+
             '#d2ne_configuration_panel > div {' +
                 'line-height: 23px;' +
                 'border: 1px solid #f0d79e;' +
                 'padding-left: 5px;' +
                 'padding-right: 5px;' +
+            '}' +
+
+            '#d2ne_configuration_panel > div > div {' +
+                'display: none;' +
+            '}' +
+            '#d2ne_configuration_panel:hover > div > div {' +
+                'display: block;' +
             '}' +
 
             '#d2ne_configuration_panel p {' +
@@ -366,10 +380,10 @@ Module.register(function() {
                 ["div", {},
                     ["h1", {},
                         ["img", { "src": "/gfx/forum/smiley/h_city_up.gif", "alt": "" }],
-                        ["span", { "style": "display: none;" }, ' ' + I18N.get(MODULE_NAME + '_title')]
+                        ["span", {}, ' ' + I18N.get(MODULE_NAME + '_title')]
                     ],
 
-                    ["div", { "style": "display: none;" },
+                    ["div", {},
                         ["p", {}, I18N.get(MODULE_NAME + '_description')],
 
                         ["div", {}],
@@ -391,26 +405,6 @@ Module.register(function() {
 
             // Insert panel
             node.insertBefore(config_panel_div, node.firstChild);
-
-            // Show/Hide config panel cache
-            var config_panel_toggled_elements_cache = document.querySelectorAll('#d2ne_configuration_panel > div > h1 > span, #d2ne_configuration_panel > div > div');
-            var config_panel_toggled_elements_cache_length = config_panel_toggled_elements_cache.length;
-
-            // Show panel on over
-            config_panel_div.addEventListener('mouseover', function() {
-                config_panel_div.style['z-index'] = '11'; // This fix is needed for the spanish version, as the hero adds has a z-index of 10
-                for (var i = 0; i < config_panel_toggled_elements_cache_length; i += 1) {
-                    config_panel_toggled_elements_cache[i].style.display = 'inline';
-                }
-            }, false);
-
-            // Hide panel on mouse out
-            config_panel_div.addEventListener('mouseout', function() {
-                for (var i = 0; i < config_panel_toggled_elements_cache_length; i += 1) {
-                    config_panel_toggled_elements_cache[i].style.display = 'none';
-                }
-                config_panel_div.style['z-index'] = '9'; // See previous function comment
-            }, false);
         });
     }
 
