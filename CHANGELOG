@@ -2,6 +2,7 @@ v0.1.2
 - Fix a bug making the custom events sometimes fire their events after the
 modules load
 - The Chrome and Opera extensions are now localised
+- Add the hability to show the spoilers without mouse hover
 
 v0.1.1
 - Re-enable Safari support

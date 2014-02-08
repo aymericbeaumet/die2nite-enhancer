@@ -36,6 +36,7 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_citizen_category'] = 'Citizen';
         i18n[I18N.LANG.EN][MODULE_NAME + '_hero_category'] = 'Hero';
         i18n[I18N.LANG.EN][MODULE_NAME + '_external_tool_category'] = 'External Tools';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_forum_category'] = 'Forum';
         i18n[I18N.LANG.EN][MODULE_NAME + '_interface_category'] = 'Interface';
         i18n[I18N.LANG.EN][MODULE_NAME + '_various_category'] = 'Various';
         i18n[I18N.LANG.EN][MODULE_NAME + '_save_button'] = 'Save';
@@ -47,6 +48,7 @@ Module.register(function() {
         i18n[I18N.LANG.FR][MODULE_NAME + '_citizen_category'] = 'Citoyen';
         i18n[I18N.LANG.FR][MODULE_NAME + '_hero_category'] = 'Héros';
         i18n[I18N.LANG.FR][MODULE_NAME + '_external_tool_category'] = 'Outils Externes';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_forum_category'] = 'Forum';
         i18n[I18N.LANG.FR][MODULE_NAME + '_interface_category'] = 'Interface';
         i18n[I18N.LANG.FR][MODULE_NAME + '_various_category'] = 'Divers';
         i18n[I18N.LANG.FR][MODULE_NAME + '_save_button'] = 'Sauvegarder';
@@ -81,6 +83,10 @@ Module.register(function() {
             case Module.PROPERTY_CATEGORY.EXTERNAL_TOOL:
                 icon = '/gfx/icons/item_radio_on.gif';
                 text = I18N.get(MODULE_NAME + '_external_tool_category');
+                break;
+            case Module.PROPERTY_CATEGORY.FORUM:
+                icon = '/gfx/icons/r_rp.gif';
+                text = I18N.get(MODULE_NAME + '_forum_category');
                 break;
             case Module.PROPERTY_CATEGORY.INTERFACE:
                 icon = '/gfx/forum/smiley/h_refine.gif';

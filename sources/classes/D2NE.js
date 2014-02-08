@@ -27,6 +27,7 @@ var D2NE = (function() {
         'CITIZEN',
         'HERO',
         'EXTERNAL_TOOL',
+        'FORUM',
         'INTERFACE'
     ];
 
