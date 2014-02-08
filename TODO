@@ -1,7 +1,7 @@
 Features:
 - Autosync
 - Remove warning when taking an object in bank (keep it if anti-abuse protection)
-- Interpret image/video urls in forum posts
+- Interpret video urls in forum posts
 - Remove scroll bar on soul distinctions
 - Auto escort
 - Add more filter in the gazette
@@ -11,3 +11,6 @@ Features:
 - Check/Uncheck every checkbox in a category/on the whole panel
 - Inform the user that it will be less information in pandemonium (remove the
   sync button in pande?)
+
+Bug:
+- The images are sometimes not correctly replaced
