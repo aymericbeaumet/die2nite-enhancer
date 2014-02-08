@@ -37,9 +37,9 @@ Module.register(function() {
             links.forEach(function(link) {
                 if (/\.(?:jpe?g|png|gif|bmp)(?:\?.+)?$/.test(link.href)) { // if an image
                     // create the node img
-                    var new_node = document.createElement('img');
-                    new_node.src = link.href;
-                    new_node.classList.add('d2ne_injected');
+                    var new_node = JS.jsonToDOM(['a', { href: link.href, target: '_blank' },
+                        ['img', { src: link.href, class: 'd2ne_injected' } ]
+                    ], document);
 
                     // insert the image before and remove the link
                     JS.insert_after(link, new_node);
