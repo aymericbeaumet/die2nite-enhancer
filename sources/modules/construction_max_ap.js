@@ -27,12 +27,14 @@ Module.register(function() {
     function change_ap()
     {
         D2N.get_number_of_ap(function(ap) {
-            JS.wait_for_selector('tr.banner.root_wall1', function() {
-                var fields = JS.nodelist_to_array(document.querySelectorAll('div[id^="moreForm_"] form input[type="text"]'));
+            var constructions = JS.nodelist_to_array(document.querySelectorAll('tr.building:not(.done):not(.locked)'));
 
-                fields.forEach(function(field) {
-                    field.value = ap;
-                });
+            constructions.forEach(function(construction) {
+                var ap_remaining = parseInt(construction.getElementsByClassName('rscItem')[0].textContent);
+                var max_ap = (ap_remaining > ap) ? ap : ap_remaining;
+                var ap_field = construction.querySelector('div[id^="moreForm_"] form input[type="text"]');
+
+                ap_field.value = max_ap;
             });
         });
     }
@@ -71,9 +73,10 @@ Module.register(function() {
 
             load: function() {
                 document.addEventListener('d2n_apchange', function() {
-                    if (D2N.is_on_page_in_city('buildings')) {
-                        change_ap();
+                    if (!D2N.is_on_page_in_city('buildings')) {
+                        return;
                     }
+                    change_ap();
                 }, false);
             }
         }

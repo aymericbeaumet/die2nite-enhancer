@@ -4,6 +4,9 @@ modules load
 - The Chrome and Opera extensions are now localised
 - Add the hability to show the spoilers without mouse hover
 - Add the possibility to replace forum image links by the concerned image
+- The construction_max_ap module will not suggest more ap than the remaining for
+each construction
+- Fix the configuration panel help tooltip under Safari
 
 v0.1.1
 - Re-enable Safari support
