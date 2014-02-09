@@ -51,6 +51,10 @@ var D2N = (function() {
      */
     function add_gamebody_reload_event()
     {
+        if (D2N.is_on_forum()) {
+            return;
+        }
+
         var watch_for_gamebody_reload = function(limit) {
             limit = (typeof limit === 'undefined') ? 20 : limit;
 
@@ -107,6 +111,12 @@ var D2N = (function() {
         D2N.is_in_town(function(in_town) {
             if (in_town) {
 
+                emit_ap_change_event(); // dispatch event on first load
+
+                if (D2N.is_on_forum()) {
+                    return;
+                }
+
                 // Store the observer to always have at least 1 active
                 var ap_observer = null;
                 var ap_old_observer = null;
@@ -129,8 +139,6 @@ var D2N = (function() {
                     });
                 };
                 watch_for_ap_change(); // watch on first load
-
-                emit_ap_change_event(); // dispatch event on first load
 
                 // watch again when the page change
                 window.addEventListener('hashchange', function() {
