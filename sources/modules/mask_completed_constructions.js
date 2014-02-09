@@ -40,14 +40,14 @@ Module.register(function() {
     /**
      * Insert hide/show link into the dom.
      */
-    function insert_links_in_dom(nodes)
+    function insert_links_in_dom(node)
     {
         // if the two links are already present, then abort
-        if (nodes[0].childNodes.length > 1) {
+        if (node.childNodes.length > 1) {
             return;
         }
 
-        var right_link = nodes[0].firstChild;
+        var right_link = node.firstChild;
 
         // Clone node and set the wanted properties (to keep the
         // right link behaviour)
@@ -60,7 +60,7 @@ Module.register(function() {
             f();
         }, false);
 
-        nodes[0].insertBefore(link, nodes[0].firstChild);
+        node.insertBefore(link, node.firstChild);
     }
 
     /**
@@ -91,7 +91,7 @@ Module.register(function() {
 
         var f = insert_links_in_dom.bind(this);
         JS.wait_for_class('tinyAction', function(nodes) {
-            f(nodes);
+            f(nodes[nodes.length - 1]);
         });
     }
 
