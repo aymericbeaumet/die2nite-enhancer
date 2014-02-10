@@ -36,8 +36,8 @@ Module.register(function() {
             tool: {
                 directory_id: 1,
                 api_key: null,
-                update_method: 'GET',
-                update_url: 'http://die2nite.gamerz.org.uk/ajax/update_current_zone'
+                update_method: 'POST',
+                update_url: 'http://die2nite.gamerz.org.uk/plugin'
             }
         },
 
@@ -68,15 +68,10 @@ Module.register(function() {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
                     function(response_text) {
-                        try {
-                            var json = JSON.parse(response_text);
-                            if (json.hasOwnProperty('status') && json.status === 1) {
-                                return callback_success();
-                            }
-                            return callback_failure();
-                        } catch (e) {
-                            return callback_failure();
+                        if (/Zone \d+\/\d+ was updated successfully/.test(response_text)) {
+                            return callback_success();
                         }
+                        return callback_failure();
                     },
                     function() {
                         return callback_failure();
