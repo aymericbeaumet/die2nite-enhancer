@@ -62,7 +62,7 @@ Module.register(function() {
             update: function(callback_success, callback_failure) {
                 // Do not update if not outside
                 if (!D2N.is_outside()) {
-                    return callback_success();
+                    return callback_failure();
                 }
 
                 JS.network_request(
