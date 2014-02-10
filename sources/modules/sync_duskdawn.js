@@ -37,7 +37,7 @@ Module.register(function() {
                 directory_id: 14,
                 api_key: null,
                 update_method: 'POST',
-                update_url: 'http://d2n.duskdawn.net/zone'
+                update_url: 'http://d2n.duskdawn.net/zone/extended'
             }
         },
 
@@ -73,10 +73,6 @@ Module.register(function() {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
                     function(response_text) {
-                        var json = JSON.parse(response_text);
-                        if ('errorCode' in json || 'errorMessage' in json) {
-                            return callback_failure();
-                        }
                         return callback_success();
                     },
                     function() {
