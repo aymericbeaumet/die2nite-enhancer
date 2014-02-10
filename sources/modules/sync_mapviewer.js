@@ -73,7 +73,7 @@ Module.register(function() {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
                     function(response_text) {
-                        if (/Zone \d+\/\d+ was updated successfully/.test(response_text)) {
+                        if (/Zone -?\d+\/-?\d+ was updated successfully/.test(response_text)) {
                             return callback_success();
                         }
                         return callback_failure();
