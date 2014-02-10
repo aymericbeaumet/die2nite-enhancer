@@ -9,6 +9,7 @@ modules load
 each construction
 - Fix the configuration panel help tooltip under Safari
 - Fix DuskDawn sync support
+- Fix MapViewer sync support
 
 v0.1.1
 - Re-enable Safari support
