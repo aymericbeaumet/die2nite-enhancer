@@ -82,21 +82,18 @@ Module.register(function() {
 
                         JS.wait_for_selector('#ghost_pages img.hbar', function(node) {
                             var width = parseFloat(node.style.width);
-                            // Notes:
-                            //   - day 0/XX -> 0px
-                            //   - day 5/14 -> 210.714285714286px
-                            //   - day 6/14 -> 252.857142857143px
-                            //   - day 7/14 -> 295px
-                            //   - day 12/14 -> 505.714285714286px
-                            var max_width = 583; //px
-                            var percent = width / max_width * 100;
+                            //  Notes:
+                            //      https://docs.google.com/spreadsheet/ccc?key=0ApXnDqiuh9UWdGVFOUVSTWduemdQMlk2T29RRG1kNlE&usp=sharing
+                            //  Deducted relation:
+                            //      0% <=> 0px
+                            //      100% <=> 590px
+                            var min_width = 0;
+                            var max_width = 590; //px
+                            var percent = parseInt((width - min_width) / (max_width - min_width) * 100);
 
-                            var fill_bar = function() {
-                                JS.wait_for_selector('div.heroUpBar div.hfront', function(node) {
-                                    node.textContent = parseInt(percent) + '%';
-                                });
-                            };
-                            fill_bar();
+                            JS.wait_for_selector('div.heroUpBar div.hfront', function(node) {
+                                node.textContent = percent + '%';
+                            });
                         });
                     });
                 }, false);
