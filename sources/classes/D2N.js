@@ -421,6 +421,18 @@ var D2N = (function() {
         },
 
         /**
+         * Check if on one of the 4 game websites.
+         * @return boolean true if on one of the game websites, else false
+         */
+        is_on_game_website: function()
+        {
+            return D2N.is_on_die2nite() ||
+                D2N.is_on_hordes() ||
+                D2N.is_on_zombinoia() ||
+                D2N.is_on_dieverdammten();
+        },
+
+        /**
          * Get an external tool api key and pass it to the given callback
          * @param integer directory_id The external tool id
          * @param Function callback The callback to pass the api key
