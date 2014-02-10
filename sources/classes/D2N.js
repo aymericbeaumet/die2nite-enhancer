@@ -151,13 +151,10 @@ var D2N = (function() {
 
     /**
      * Emit a forum topic event.
-     * @param DOMNode[] nodes All the forum posts on the current page
      */
-    function emit_forum_topic_event(nodes)
+    function emit_forum_topic_event()
     {
-        JS.dispatch_event('d2n_forum_topic', {
-            posts: nodes
-        });
+        JS.dispatch_event('d2n_forum_topic');
     }
 
     /**
@@ -169,22 +166,23 @@ var D2N = (function() {
             return;
         }
 
-        var watch_for_forum_topic = function() {
-            if (!D2N.is_on_forum_topic()) {
-                return;
-            }
+        JS.wait_for_id('tid_forum_right', function(node) {
+            var observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.removedNodes.length <= 0) {
+                        return;
+                    }
 
-            JS.wait_for_id('tid_forum_right', function(node) {
-                JS.wait_for_class('tid_post', function(nodes) {
-                    emit_forum_topic_event(nodes);
+                    for (var i = 0, max = mutation.removedNodes.length; i < max; i++) {
+                        if (mutation.removedNodes[i].className === 'tid_loading') {
+                            emit_forum_topic_event();
+                            return;
+                        }
+                    }
                 });
             });
-        };
-        watch_for_forum_topic();
-
-        window.addEventListener('hashchange', function() {
-            watch_for_forum_topic();
-        });
+            observer.observe(node, { childList: true });
+        }, 10);
     }
 
 

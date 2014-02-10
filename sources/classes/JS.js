@@ -13,12 +13,12 @@ var JS = (function() {
     /**
      * Time to wait between two self-call of `wait_for_*` functions.
      */
-    var wait_for_retry_time_ = 100; //ms
+    var wait_for_retry_time_ = 250; //ms
 
     /**
      * Maximum number of retry for the `wait_for_*` functions.
      */
-    var wait_for_max_retry_ = 15;
+    var wait_for_max_retry_ = 10;
 
     /**
      * Store the Safari callbacks.

@@ -11,6 +11,5 @@ Features:
 - Check/Uncheck every checkbox in a category/on the whole panel
 
 Bug:
-- The images are sometimes not correctly replaced
 - `Uncaught TypeError: Cannot set property 'cssFloat' of undefined` on the
 buildings page. The link to hide the constructions is not correctly injected.

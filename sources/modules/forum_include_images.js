@@ -90,7 +90,8 @@ Module.register(function() {
                 );
 
                 document.addEventListener('d2n_forum_topic', function(event) {
-                    replace_images_in_forum_posts(event.detail.posts);
+                    var posts = JS.nodelist_to_array(document.getElementsByClassName('tid_post'));
+                    replace_images_in_forum_posts(posts);
                 });
             }
         }
