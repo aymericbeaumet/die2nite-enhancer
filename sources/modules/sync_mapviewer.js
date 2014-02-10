@@ -60,6 +60,11 @@ Module.register(function() {
             },
 
             update: function(callback_success, callback_failure) {
+                // Do not update if not outside
+                if (!D2N.is_outside()) {
+                    return callback_success();
+                }
+
                 JS.network_request(
                     this.properties.tool.update_method,
                     this.properties.tool.update_url,
