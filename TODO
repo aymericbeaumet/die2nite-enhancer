@@ -9,3 +9,8 @@ Features:
 - Move the escort buttons to a more conveniant place
 - Add moon/sun depending of the hour of the day
 - Check/Uncheck every checkbox in a category/on the whole panel
+
+Bugs:
+- Prevent the script to load on external tools website under Safari
+- Prevent the script to load twice on die2nite.com (occuring with Google Chrome
+userscript)
