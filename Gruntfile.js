@@ -336,7 +336,7 @@ module.exports = function(grunt) {
             },
             pack_chrome_zip: {
                 command: function() {
-                    var cmd = "echo " + grunt.file.expand(path.join(config.chrome_zip.workingDir, "**")).join(" ") + " | tr ' ' '\n' | " + config.path.zip + " -j " + config.chrome_zip.outputFile + " -@";
+                    var cmd = "cd " + config.chrome_zip.workingDir + " && echo " + grunt.file.expand({ cwd: config.chrome_zip.workingDir }, "**").join(" ") + " | tr ' ' '\n' | " + config.path.zip + " " + config.chrome_zip.outputFile + " -@";
                     return cmd;
                 }
             },
