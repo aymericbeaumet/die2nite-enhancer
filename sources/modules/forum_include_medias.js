@@ -31,7 +31,7 @@ Module.register(function() {
      */
     function is_image_link(url)
     {
-        return /\.(?:jpe?g|png|gif|bmp)(?:\?.+)?$/.test(url);
+        return /.+\.(?:jpe?g|png|gif|bmp)(?:\?.+)?(?:#.\+)?$/.test(url);
     }
 
     /**
