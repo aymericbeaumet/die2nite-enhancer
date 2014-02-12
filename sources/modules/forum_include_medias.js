@@ -77,9 +77,7 @@ Module.register(function() {
                 // images
                 if (is_image_link(link.href)) { // if an image
                     // create the node img
-                    new_node = JS.jsonToDOM(['a', { href: link.href, target: '_blank' },
-                        ['img', { src: link.href, class: 'd2ne_injected' } ]
-                    ], document);
+                    new_node = JS.jsonToDOM(['img', { src: link.href, class: 'd2ne_injected' }], document);
 
                 // YouTube
                 } else if (is_youtube_link(link.href)) {
