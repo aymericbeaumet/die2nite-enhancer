@@ -242,7 +242,7 @@ Module.register(function() {
         JS.injectCSS(
 
             '#d2ne_configuration_panel {' +
-                'z-index: 9;' +
+                'z-index: 11;' +
                 'position: absolute;' +
                 'margin-top: 5px;' +
                 'margin-left: 44px;' +
