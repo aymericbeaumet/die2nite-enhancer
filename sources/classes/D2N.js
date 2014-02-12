@@ -167,6 +167,11 @@ var D2N = (function() {
         }
 
         JS.wait_for_id('tid_forum_right', function(node) {
+            // if the posts are already loaded, emit the event
+            if (document.getElementsByClassName('tid_post').length > 0) {
+                emit_forum_topic_event();
+            }
+
             var observer = new MutationObserver(function(mutations) {
                 mutations.forEach(function(mutation) {
                     if (mutation.removedNodes.length <= 0) {
