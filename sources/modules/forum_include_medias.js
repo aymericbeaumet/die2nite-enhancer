@@ -18,7 +18,7 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'In the forum posts, replace the media links by the concerned media (images and YouTube videos).';
 
         i18n[I18N.LANG.FR] = {};
-        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Remplacer les liens de medias par le contenu';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Remplacer les liens de médias par le contenu';
         i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Dans les posts du forum, remplace les liens de média par le média en question (images et vidéos YouTube).';
 
         I18N.set(i18n);
