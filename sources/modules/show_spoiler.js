@@ -60,6 +60,11 @@ Module.register(function() {
                 JS.injectCSS(
                     ".tid_spoil, .tid_spoil:hover {" +
                         "background-image: url('http://data.twinoid.com/img/design/spoiler.png') !important;" +
+                        "color: rgb(216, 216, 216);" +
+                        "display: block;" +
+                        "padding: 10px;" +
+                        "padding: 5px 10px;" +
+                        "cursor: auto;" +
                     "}" +
                     ".tid_wspoil {" +
                         "visibility: visible !important;" +
