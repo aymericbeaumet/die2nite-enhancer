@@ -375,7 +375,7 @@ Module.register(function() {
 
     function insert_configuration_panel_dom()
     {
-        JS.wait_for_id('main', function(node) {
+        JS.wait_for_id('contentBg', function(node) {
             var config_panel_div = JS.jsonToDOM(["div", { "id": "d2ne_configuration_panel" },
                 ["div", {},
                     ["h1", {},
