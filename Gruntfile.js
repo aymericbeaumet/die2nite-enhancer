@@ -27,6 +27,9 @@
  *       Recompile the packages and launch the static analysis and the unit
  *       tests on the fly.
  *
+ *   - `grunt devfast`:
+ *       Recompile the packages on the fly.
+ *
  *   - `grunt dev --userscript --firefox`:
  *       Same as `grunt dev` but only for the specified wrappers (see the `grunt
  *       pack` comment above for the available wrappers).
@@ -514,6 +517,8 @@ module.exports = function(grunt) {
     grunt.registerTask("compile", "Concatenate the JavaScript files into one.", ["clean:all", "concat:compiled_script"]);
 
     grunt.registerTask("dev", "Watch for modifications and recompile/relaunch tests on the fly.", ["karma:background:start", "watch"]);
+
+    grunt.registerTask("devfast", "Watch for modifications and recompile on the fly.", ["watch:pack"]);
 
 
     /*
