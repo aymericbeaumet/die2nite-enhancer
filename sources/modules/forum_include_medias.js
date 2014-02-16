@@ -140,13 +140,15 @@ Module.register(function() {
                         'max-width: 100%;' +
                     '}' +
                     'img.d2ne_injected {' +
+                        'margin: 0 auto;' +
                         'margin-top: 16px;' +
+                        'margin-bottom: 16px;' +
                     '}' +
                     'iframe.d2ne_injected {' +
                         'display: block;' +
                         'margin: 0 auto;' +
                         'margin-top: 16px;' +
-                        'margin-bottom: 0;' +
+                        'margin-bottom: 16px;' +
                         'border: none;' +
                         'box-shadow: 0px 0px 8px black;' +
                         'border-radius: 3px;' +
