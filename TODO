@@ -12,6 +12,7 @@ Features:
 - Replace the media links in the message preview
 - Create tabs in the configuration panel
 - Replace the configuration panel correctly (in appearance)
+- Also replace the endless reparations in the max PA module
 
 Bugs:
 - Prevent the script to load twice on die2nite.com (occuring with Google Chrome
