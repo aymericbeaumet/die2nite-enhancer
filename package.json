@@ -44,7 +44,7 @@
     "jquery": "~2.1.0",
     "jquery-simulate-ext": "git://github.com/j-ulrich/jquery-simulate-ext#93e47e",
     "karma": "~0.10.9",
-    "karma-coverage": "~0.1.5",
+    "karma-coverage": "~0.2",
     "karma-jasmine": "~0.1.5",
     "karma-phantomjs-launcher": "~0.1.1"
   }
