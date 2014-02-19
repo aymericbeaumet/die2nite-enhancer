@@ -27,10 +27,18 @@ Module.register(function() {
     function change_ap()
     {
         D2N.get_number_of_ap(function(ap) {
-            var constructions = JS.nodelist_to_array(document.querySelectorAll('tr.building:not(.done):not(.locked)'));
+            var constructions = JS.nodelist_to_array(document.querySelectorAll('tr.building'));
 
             constructions.forEach(function(construction) {
-                var ap_remaining = parseInt(construction.getElementsByClassName('rscItem')[0].textContent);
+                var ap_remaining = null;
+
+                var tmp = construction.getElementsByClassName('rscItem');
+                if (tmp.length < 1) {
+                    return;
+                }
+
+                ap_remaining = parseInt(tmp[0].textContent);
+
                 var max_ap = (ap_remaining > ap) ? ap : ap_remaining;
                 var ap_field = construction.querySelector('div[id^="moreForm_"] form input[type="text"]');
 

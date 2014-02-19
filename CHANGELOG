@@ -1,3 +1,6 @@
+v0.1.4
+- construction_max_ap now works with repairs
+
 v0.1.3
 - Fix a bug making the forum media links to sometimes not be replaced
 - Fix the configuration panel z-index on the Spanish version
