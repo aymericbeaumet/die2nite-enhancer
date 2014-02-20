@@ -1,5 +1,6 @@
 v0.1.4
 - construction_max_ap now works with repairs
+- the media links are now more intelligently replaced
 
 v0.1.3
 - Fix a bug making the forum media links to sometimes not be replaced

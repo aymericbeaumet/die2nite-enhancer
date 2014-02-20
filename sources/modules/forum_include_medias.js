@@ -25,7 +25,7 @@ Module.register(function() {
     }
 
     /**
-     * Check if the given link is an image.
+     * Check if the given url is an image.
      * @param string url The URL to check
      * @return boolean true if an image, else false
      */
@@ -52,13 +52,23 @@ Module.register(function() {
     }
 
     /**
-     * Check if the given href is a youtube link.
+     * Check if the given url is a youtube link.
      * @param string url The URL to check.
      * @return boolean true if a youtube link, else false
      */
     function is_youtube_link(url)
     {
         return /^(?:https?:\/\/)?(?:www\.)?youtu(?:\.be|be\.com)/.test(url);
+    }
+
+    /**
+     * Check if the given url is an URL.
+     * @param string url The url to check.
+     * @return boolean true if an URL, else false
+     */
+    function is_link(url)
+    {
+        return /^https?:\/\//.test(url);
     }
 
     /**
@@ -96,7 +106,12 @@ Module.register(function() {
                 // Insert the new node if any
                 if (new_node !== null) {
                     JS.insert_after(link, new_node);
-                    JS.remove_DOM_node(link);
+
+                    // And hide the old node if the link is a pure URL (do not
+                    // delete it to keep it in the quotes)
+                    if (is_link(link.textContent)) {
+                        link.style.display = 'none';
+                    }
                 }
             });
         });
@@ -140,9 +155,16 @@ Module.register(function() {
                         'max-width: 100%;' +
                     '}' +
                     'img.d2ne_injected {' +
+                        'float: left;' +
                         'margin: 0 auto;' +
                         'margin-top: 16px;' +
                         'margin-bottom: 16px;' +
+                    '}' +
+                    '.tid_editorContent cite p {' +
+                        'overflow: auto;' +
+                    '}' +
+                    '.tid_editorContent cite img:last-child {' +
+                        'margin-bottom: 0;' +
                     '}' +
                     'iframe.d2ne_injected {' +
                         'display: block;' +
