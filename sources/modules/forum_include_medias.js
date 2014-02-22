@@ -174,6 +174,9 @@ Module.register(function() {
                         'border: none;' +
                         'box-shadow: 0px 0px 8px black;' +
                         'border-radius: 3px;' +
+                    '}' +
+                    '.tid_editorContent .tid_spoil {' +
+                        'clear: both;' +
                     '}'
                 );
 
