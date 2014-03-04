@@ -25,7 +25,7 @@
 
                 expect(window.GM_xmlhttpRequest).toHaveBeenCalled();
 
-                var args = window.GM_xmlhttpRequest.mostRecentCall.args;
+                var args = window.GM_xmlhttpRequest.calls.mostRecent().args;
                 expect(args[0].method).toBe(method);
                 expect(args[0].url).toBe(JS.form_uri(null, urn));
                 expect(args[0].data).toBe("");
@@ -55,7 +55,7 @@
                 JS.network_request(method, uri, "", {}, function(){}, function(){});
 
                 expect(window.safari.self.tab.dispatchMessage).toHaveBeenCalled();
-                var args = window.safari.self.tab.dispatchMessage.mostRecentCall.args;
+                var args = window.safari.self.tab.dispatchMessage.calls.mostRecent().args;
                 expect(args[0]).toBe("do_network_request");
                 expect(args[1]).toEqual(jasmine.any(Object));
                 expect(args[1].method).toBe(method);
@@ -81,46 +81,8 @@
                 async: false
             }).responseText;
 
-            /**
-             * Used to perform network request.
-             * @param string method GET, POST, etc...
-             * @param string urn Where does the request have to be performed?
-             * @param boolean expect_success Is it supposed to be a success?
-             */
-            var test_xml_http_request = function(method, urn, expect_success) {
-                var flag = false;
-
-                runs(function() {
-                    JS.network_request(method, urn, "", {},
-                       function(content) {
-                           flag = true;
-                           callback_success(content);
-                       },
-                       function() {
-                           flag = true;
-                           callback_failure();
-                       }
-                    );
-                });
-
-                waitsFor(function() {
-                    return flag === true;
-                }, "the network request to answer (positively or nagatively)", request_timeout);
-
-                runs(function() {
-                    expect(XMLHttpRequest.prototype.send).toHaveBeenCalled();
-                    if (expect_success) {
-                        expect(callback_success).toHaveBeenCalledWith(reference_content);
-                        expect(callback_failure).not.toHaveBeenCalled();
-                    } else {
-                        expect(callback_success).not.toHaveBeenCalled();
-                        expect(callback_failure).toHaveBeenCalled();
-                    }
-                });
-            };
-
             beforeEach(function() {
-                spyOn(XMLHttpRequest.prototype, "send").andCallThrough();
+                spyOn(XMLHttpRequest.prototype, "send").and.callThrough();
                 callback_success = jasmine.createSpy("callback_success");
                 callback_failure = jasmine.createSpy("callback_failure");
             });
@@ -130,26 +92,59 @@
                 callback_failure = null;
             });
 
+            /**
+             * Used to perform network request.
+             * @param string method GET, POST, etc...
+             * @param string urn Where does the request have to be performed?
+             * @param boolean expect_success Is it supposed to be a success?
+             */
+            var test_xml_http_request = function(method, urn, expect_success, done) {
+
+                var expectation = function() {
+                    expect(XMLHttpRequest.prototype.send).toHaveBeenCalled();
+                    if (expect_success) {
+                        expect(callback_success).toHaveBeenCalledWith(reference_content);
+                        expect(callback_failure).not.toHaveBeenCalled();
+                    } else {
+                        expect(callback_success).not.toHaveBeenCalled();
+                        expect(callback_failure).toHaveBeenCalled();
+                    }
+                    done();
+                };
+
+                JS.network_request(method, urn, "", {},
+                   function(content) {
+                       callback_success(content);
+                       expectation();
+                   },
+                   function() {
+                       callback_failure();
+                       expectation();
+                   }
+                );
+
+            };
+
             describe("should success on a valid", function() {
                 describe("HTTP GET request", function() {
-                    it("(URN).", function() {
-                        test_xml_http_request(method, urn, true);
+                    it("(URN).", function(done) {
+                        test_xml_http_request(method, urn, true, done);
                     });
 
-                    it("(URL + URN).", function() {
-                        test_xml_http_request(method, url + urn, true);
+                    it("(URL + URN).", function(done) {
+                        test_xml_http_request(method, url + urn, true, done);
                     });
                 });
             });
 
             describe("should fail on a non-valid", function() {
                 describe("HTTP GET request", function() {
-                    it("(URN).", function() {
-                        test_xml_http_request(method, bad_urn, false);
+                    it("(URN).", function(done) {
+                        test_xml_http_request(method, bad_urn, false, done);
                     });
 
-                    it("(URL + URN).", function() {
-                        test_xml_http_request(method, url + bad_urn, false);
+                    it("(URL + URN).", function(done) {
+                        test_xml_http_request(method, url + bad_urn, false, done);
                     });
                 });
             });
@@ -458,27 +453,20 @@
                     expect(not_found_callback).not.toHaveBeenCalled();
                 });
 
-                it("should have found after one recursion.", function() {
-                    var flag = false;
+                it("should have found after one recursion.", function(done) {
+                    var expectation = function() {
+                      expect(found_callback).toHaveBeenCalledWith(data.match(data.query));
+                      expect(not_found_callback).not.toHaveBeenCalled();
+                      done();
+                    };
 
-                    runs(function() {
-                        data.get_query_func()(data.query, function(el) {
-                            found_callback(el);
-                            flag = true;
-                        }, 1, function() {
-                            not_found_callback();
-                            flag = true;
-                        });
-                        loadFixtures(data.fixture);
-                    });
-
-                    waitsFor(function() {
-                        return flag === true;
-                    }, "the function to find in less than 2 retries", timeout);
-
-                    runs(function() {
-                        expect(found_callback).toHaveBeenCalledWith(data.match(data.query));
-                        expect(not_found_callback).not.toHaveBeenCalled();
+                    loadFixtures(data.fixture);
+                    data.get_query_func()(data.query, function(el) {
+                        found_callback(el);
+                        expectation();
+                    }, 1, function() {
+                        not_found_callback();
+                        expectation();
                     });
                 });
 
@@ -488,26 +476,20 @@
                     expect(not_found_callback).toHaveBeenCalled();
                 });
 
-                it("should not have found after one recursion.", function() {
-                    var flag = false;
-
-                    runs(function() {
-                        data.get_query_func()(data.query, function(el) {
-                            found_callback(el);
-                            flag = true;
-                        }, 1, function() {
-                            not_found_callback();
-                            flag = true;
-                        });
-                    });
-
-                    waitsFor(function() {
-                        return flag === true;
-                    }, "the function to find in less than 2 retries", timeout);
-
-                    runs(function() {
+                it("should not have found after one recursion.", function(done) {
+                    var expectation = function() {
                         expect(found_callback).not.toHaveBeenCalled();
                         expect(not_found_callback).toHaveBeenCalled();
+                        done();
+                    };
+
+                    data.get_query_func()(data.query, function(el) {
+                        found_callback(el);
+                        expectation();
+                        flag = true;
+                    }, 1, function() {
+                        not_found_callback();
+                        expectation();
                     });
                 });
             });
@@ -582,7 +564,7 @@
                 expect(obj[key]).toBe(value);
                 callback();
             });
-            expect(callback.calls.length).toBe(Object.keys(obj).length);
+            expect(callback.calls.count()).toBe(Object.keys(obj).length);
         });
     });
 
@@ -610,7 +592,7 @@
         it("should dispatch an event on the given node", function() {
             JS.dispatch_event(event_name, event_detail, node);
             expect(callback).toHaveBeenCalled();
-            expect(callback.mostRecentCall.args[0].detail).toBe(event_detail);
+            expect(callback.calls.mostRecent().args[0].detail).toBe(event_detail);
         });
     });
 
