@@ -38,14 +38,14 @@
     "grunt-contrib-jshint": "~0.8.0",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-jsvalidate": "~0.2.2",
-    "grunt-karma": "~0.6.2",
-    "grunt-karma-coveralls": "~2.3.0",
+    "grunt-karma": "~0.7.2",
+    "grunt-karma-coveralls": "~2.4.0",
     "jasmine-jquery": "git://github.com/velesin/jasmine-jquery#1.7.0",
     "jquery": "~2.1.0",
     "jquery-simulate-ext": "git://github.com/j-ulrich/jquery-simulate-ext#93e47e",
-    "karma": "~0.10.9",
+    "karma": "~0.11.14",
     "karma-coverage": "~0.2",
-    "karma-jasmine": "~0.1.5",
+    "karma-jasmine": "~0.2.1",
     "karma-phantomjs-launcher": "~0.1.1"
   }
 }
