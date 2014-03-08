@@ -262,7 +262,7 @@ var D2N = (function() {
          */
         is_outside: function()
         {
-            return /^#outside\?(?:go=outside\/refresh;)?sk=[a-z0-9]{5}$/.test(window.location.hash);
+            return /^#outside\?(?:go=outside\/(?:doors|refresh);)?sk=[a-z0-9]{5}$/.test(window.location.hash);
         },
 
         /**
