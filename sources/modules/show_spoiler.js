@@ -58,14 +58,14 @@ Module.register(function() {
 
             load: function() {
                 JS.injectCSS(
-                    ".tid_spoil, .tid_spoil:hover {" +
+                    ".tid_editorContent .tid_spoil, .tid_editorContent .tid_spoil:hover {" +
                         "background-image: url('http://data.twinoid.com/img/design/spoiler.png') !important;" +
                         "color: rgb(216, 216, 216);" +
                         "display: block;" +
                         "padding: 5px 10px;" +
                         "cursor: auto;" +
                     "}" +
-                    ".tid_spoil *, .tid_wspoil {" +
+                    ".tid_editorContent .tid_spoil *, .tid_editorContent .tid_wspoil {" +
                         "visibility: visible !important;" +
                     "}"
                 );
