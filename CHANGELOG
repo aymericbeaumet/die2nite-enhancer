@@ -8,6 +8,7 @@ v0.1.4
 - Fix a bug making the extension considered you were not outside when at town
 gates
 - Now cache the session key at each page load
+- Remove OEEV sync (RIP)
 
 v0.1.3
 - Fix a bug making the forum media links to sometimes not be replaced
