@@ -30,3 +30,7 @@ In case of a problem, please be sure all your softwares (browser and extensions)
 
 Explain here how to reproduce the problem...
 ```
+
+## License
+
+zlib/libpng © [Aymeric Beaumet](http://beaumet.me)
