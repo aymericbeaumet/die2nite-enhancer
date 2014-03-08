@@ -2,7 +2,6 @@ Features:
 - Autosync
 - Remove warning when taking an object in bank (keep it if anti-abuse protection)
 - Remove scroll bar on soul distinctions
-- Auto escort
 - Add more filter in the gazette
 - Show chest objects from the citizen view (without mouse hover)
 - Move the escort buttons to a more conveniant place
