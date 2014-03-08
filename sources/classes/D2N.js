@@ -37,6 +37,8 @@ var D2N = (function() {
         'www.dieverdammten.de': 'de'
     };
 
+    var session_key_cache_ = null;
+
     /**
      * Emit a gamebody reload event.
      */
@@ -44,7 +46,6 @@ var D2N = (function() {
     {
         JS.dispatch_event('d2n_gamebody_reload');
     }
-
 
     /**
      * Wait for a gamebody reload and emit the corresponding event then.
@@ -330,12 +331,20 @@ var D2N = (function() {
          */
         get_session_key: function(callback)
         {
+            // if the cache defined, give it immediately
+            if (typeof session_key_cache_ === 'string' && session_key_cache_ !== '') {
+                return callback(session_key_cache_);
+            }
+
+            // else fetch it
             JS.wait_for_selector('a.mainButton.newsButton', function(node) {
                 var arr = node.href.split('=');
 
-                // pass rhe string after the last equal which should be the
-                // session key
-                callback(arr[arr.length - 1]);
+                // store the key in the cache
+                session_key_cache_ = arr[arr.length - 1];
+
+                // pass it to the callback
+                return callback(session_key_cache_);
             });
         },
 
