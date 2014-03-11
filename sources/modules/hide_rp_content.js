@@ -58,7 +58,7 @@ Module.register(function() {
 
             load: function() {
                 JS.injectCSS(
-                    '.ambiant, .flavor {' +
+                    '.ambiant, .flavor, .outSpot {' +
                         'display: none;' +
                     '}'
                 );
