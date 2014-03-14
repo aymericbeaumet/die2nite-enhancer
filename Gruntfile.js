@@ -421,7 +421,7 @@ module.exports = function(grunt) {
                     "sources/**/*.js",
                     "wrappers/**/*"
                 ],
-                tasks: ["static_check", "karma:continuous:run", "pack"]
+                tasks: ["static_check", "pack"]
             }
         },
 
