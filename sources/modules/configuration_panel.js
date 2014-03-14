@@ -255,7 +255,7 @@ Module.register(function() {
                 'max-width: 430px;' +
             '}' +
 
-            '#d2ne_configuration_panel h1 {' +
+            '#d2ne_configuration_panel > div.wrapper > h1 {' +
                 'height: auto;' +
                 'font-size: 8pt;' +
                 'text-transform: none;' +
@@ -265,33 +265,33 @@ Module.register(function() {
                 'margin: 0;' +
                 'padding: 0;' +
             '}' +
-            '#d2ne_configuration_panel:hover h1 {' +
+            '#d2ne_configuration_panel:hover > div.wrapper > h1 {' +
                 'border-bottom: 1px solid #b37c4a;' +
                 'margin-bottom: 5px;' +
             '}' +
 
-            '#d2ne_configuration_panel h1 span {' +
+            '#d2ne_configuration_panel > div.wrapper > h1 > span {' +
                 'display: none;' +
             '}' +
-            '#d2ne_configuration_panel:hover h1 span {' +
+            '#d2ne_configuration_panel:hover > div.wrapper > h1 > span {' +
                 'display: inline;' +
             '}' +
 
-            '#d2ne_configuration_panel > div {' +
+            '#d2ne_configuration_panel > div.wrapper {' +
                 'line-height: 23px;' +
                 'border: 1px solid #f0d79e;' +
                 'padding-left: 5px;' +
                 'padding-right: 5px;' +
             '}' +
 
-            '#d2ne_configuration_panel > div > div {' +
+            '#d2ne_configuration_panel > div.wrapper > div {' +
                 'display: none;' +
             '}' +
-            '#d2ne_configuration_panel:hover > div > div {' +
+            '#d2ne_configuration_panel:hover > div.wrapper > div {' +
                 'display: block;' +
             '}' +
 
-            '#d2ne_configuration_panel p {' +
+            '#d2ne_configuration_panel > div.wrapper > div > p {' +
                 'padding-bottom: 7px;' +
                 'margin-bottom: 3px;' +
                 'font-size: 9pt;' +
@@ -300,19 +300,19 @@ Module.register(function() {
                 'border-bottom: 1px dashed #ddab76;' +
             '}' +
 
-            '#d2ne_configuration_panel div > div > div > h4 {' +
+            '#d2ne_configuration_panel > div.wrapper > div > div.extensible > h4 {' +
                 'text-align: left;' +
                 'border-bottom: 1px dotted rgba(221, 171, 118, 0.8);' +
                 'padding-bottom: 4px;' +
                 'margin-bottom: 4px;' +
                 'margin-top: 7px;' +
             '}' +
-            '#d2ne_configuration_panel div > div > div > h4 > img {' +
+            '#d2ne_configuration_panel > div.wrapper > div > div.extensible > h4 > img {' +
                 'vertical-align: -11%;' +
                 'margin-right: 5px;' +
             '}' +
 
-            '#d2ne_configuration_panel div > div {' +
+            '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div {' +
                 'position: relative;' +
                 'line-height: 22px;' +
             '}' +
@@ -361,7 +361,7 @@ Module.register(function() {
                 'visibility: visible;' +
             '}' +
 
-            '#d2ne_configuration_panel > div > div > div:last-child {' +
+            '#d2ne_configuration_panel > div.wrapper > div > div:last-child {' +
                 'text-align: right;' +
             '}' +
 
@@ -381,7 +381,7 @@ Module.register(function() {
     {
         JS.wait_for_id('contentBg', function(node) {
             var config_panel_div = JS.jsonToDOM(["div", { "id": "d2ne_configuration_panel" },
-                ["div", {},
+                ["div", { "class": "wrapper" },
                     ["h1", {},
                         ["img", { "src": "/gfx/forum/smiley/h_city_up.gif", "alt": "" }],
                         ["span", {}, ' ' + I18N.get(MODULE_NAME + '_title')]
@@ -390,7 +390,7 @@ Module.register(function() {
                     ["div", {},
                         ["p", {}, I18N.get(MODULE_NAME + '_description')],
 
-                        ["div", {}],
+                        ["div", { "class": "extensible" }],
 
                         ["p", {},
                             ["a", { "href": "javascript:void(0)", "class": "button",
