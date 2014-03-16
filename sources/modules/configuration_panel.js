@@ -308,15 +308,11 @@ Module.register(function() {
                 'margin-top: 10px;' +
             '}' +
 
-            '#d2ne_configuration_panel > div.wrapper > div > div.extensible > h4:first-child {' +
-                'margin-top: 0;' +
-            '}' +
             '#d2ne_configuration_panel > div.wrapper > div > div.extensible > h4 {' +
                 'text-align: left;' +
                 'border-bottom: 1px dotted rgba(221, 171, 118, 0.8);' +
                 'padding-bottom: 4px;' +
                 'margin-bottom: 4px;' +
-                'margin-top: 7px;' +
                 'width: 430px;' +
             '}' +
             '#d2ne_configuration_panel > div.wrapper > div > div.extensible > h4 > img {' +
@@ -332,7 +328,7 @@ Module.register(function() {
 
             '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div > a.helpLink {' +
                 'position: absolute;' +
-                'top: 0;' +
+                'bottom: -4px;' +
                 'right: 0;' +
             '}' +
 
