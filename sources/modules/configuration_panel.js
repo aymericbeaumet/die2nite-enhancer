@@ -332,12 +332,13 @@ Module.register(function() {
 
             '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div > a.helpLink {' +
                 'position: absolute;' +
-                'top: 3px;' +
+                'top: 0;' +
                 'right: 0;' +
             '}' +
 
             '#tooltip {' +
                 'z-index: 15 !important;' +
+                'pointer-events: none;' +
             '}' +
 
             '#d2ne_configuration_panel input[type="checkbox"] {' +
