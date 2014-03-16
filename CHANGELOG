@@ -1,5 +1,7 @@
 v0.1.5
 - The RP content is now properly hidden again
+- Split the configuration panel in two columns
+- Use the native Die2Nite tooltips
 
 v0.1.4
 - Construction_max_ap now works with repairs
