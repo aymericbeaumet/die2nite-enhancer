@@ -318,7 +318,6 @@ Module.register(function() {
                 'margin-bottom: 4px;' +
                 'margin-top: 7px;' +
                 'width: 430px;' +
-                'float: left;' +
             '}' +
             '#d2ne_configuration_panel > div.wrapper > div > div.extensible > h4 > img {' +
                 'vertical-align: -11%;' +
@@ -329,7 +328,6 @@ Module.register(function() {
                 'position: relative;' +
                 'line-height: 22px;' +
                 'width: 430px;' +
-                'float: left;' +
             '}' +
 
             '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div > a.helpLink {' +
