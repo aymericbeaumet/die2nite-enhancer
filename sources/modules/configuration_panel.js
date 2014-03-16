@@ -126,7 +126,7 @@ Module.register(function() {
                     ["div", {},
                         null,
                         ["label", { "for": input_id }, I18N.get(value.short_desc_I18N)],
-                        ["a", { "class": "helpLink", "href": "#", "onclick": "return false;",
+                        ["a", { "class": "helpLink d2ne", "href": "#", "onclick": "return false;",
                                   "onmouseover": "js.HordeTip.showHelp(this, " + JSON.stringify(I18N.get(value.full_desc_I18N)) + ");",
                                   "onmouseout": "js.HordeTip.hide()" },
                             ["img", { "src": I18N.get(MODULE_NAME + '_help_image_url') }]
