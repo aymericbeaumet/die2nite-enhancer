@@ -18,8 +18,8 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Hide the banner on the top of the screen when in city or outside.';
 
         i18n[I18N.LANG.FR] = {};
-        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Cacher la bannière en ville ou dehors';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Cache l\'image en haut de l\'écran représentant le lieu où vous êtes quand vous vous situez en ville ou dehors.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Cacher la bannière';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Cache l\'image en haut de l\'écran représentant le lieu où vous êtes (en ville ou dehors sur un bâtiment).';
 
         I18N.set(i18n);
     }

@@ -18,8 +18,8 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'While in the construction page, use your actual number of AP instead of the default 1 AP.';
 
         i18n[I18N.LANG.FR] = {};
-        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Construire avec un maximum de PA';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Utilise le maximum de PA disponible pour les constructions au lieu de 1 par défaut.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Construire et réparer avec un maximum de PA';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Pré-remplit la case pour construire ou réparer un chantier avec le maximum de PA disponible au lieu de 1 par défaut.';
 
         I18N.set(i18n);
     }

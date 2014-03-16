@@ -19,7 +19,7 @@ Module.register(function() {
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Colorer les PA';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Ajoute une bordure avec une couleur spécifique (du rouge au vert) en fonction du nombre de PA restant.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Ajoute une bordure autour du nombre de PA. La couleur (du rouge au vert) varie en fonction du nombre de PA restant.';
 
         I18N.set(i18n);
     }

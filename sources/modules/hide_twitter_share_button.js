@@ -19,7 +19,7 @@ Module.register(function() {
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Cacher le bouton de partage Twitter';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Cache le bouton de partage sur Twitter sur la page de la Gazette.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Cache le bouton de partage Twitter sur la page de la Gazette.';
 
         I18N.set(i18n);
     }

@@ -18,8 +18,8 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Show the spoilers content without hovering with your mouse.';
 
         i18n[I18N.LANG.FR] = {};
-        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Afficher les spoilers sans la souris';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Affiche le contenu des spoilers sans avoir besoin de passer la souris sur le champ.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Afficher les spoilers sans passer la souris';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Affiche le contenu des spoilers sans avoir besoin de passer la souris.';
 
         I18N.set(i18n);
     }

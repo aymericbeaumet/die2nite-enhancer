@@ -18,8 +18,8 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Automatically enable the escort mode when outside.';
 
         i18n[I18N.LANG.FR] = {};
-        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Escorte automatique';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Active automatiquement le mode escorte quand vous êtes à l\'extérieur.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Attendre une escorte automatiquement';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Active automatiquement le mode escorte lorsque vous êtes hors de la ville.';
 
         I18N.set(i18n);
     }

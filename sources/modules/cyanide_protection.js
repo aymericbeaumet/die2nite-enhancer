@@ -20,7 +20,7 @@ Module.register(function() {
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Protéger contre le cyanure';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Evite de s\'empoisonner au cyanure par accident en supprimant le lien permettant son utilisation.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Supprime le lien permettant l\'utilisation du cyanure pour éviter les accidents.';
         i18n[I18N.LANG.FR][MODULE_NAME + '_cyanide'] = 'Cyanure';
 
         i18n[I18N.LANG.ES] = {};

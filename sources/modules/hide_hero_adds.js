@@ -19,7 +19,7 @@ Module.register(function() {
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Cacher les publicités pour le mode héros';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Cache les publicités pour le mode héros sur tout le site. C\'est pratique si vous êtes déjà héros ou si vous ne comptez pas le devenir.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Cache les publicités pour le mode héros. C\'est pratique si vous êtes déjà héros ou si vous ne comptez pas le devenir.';
 
         I18N.set(i18n);
     }

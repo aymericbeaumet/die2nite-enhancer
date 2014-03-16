@@ -20,8 +20,8 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_confirm'] = 'Are you sure you want to drop all your objects on the ground? Others players will be able to take them.';
 
         i18n[I18N.LANG.FR] = {};
-        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Vider son sac en une fois';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Permet de vider son sac en un seul clic à l\'extérieur.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Permettre de vider son sac en une fois';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Lorsque vous êtes à l\'extérieur, il peut être pratique de vider votre sac en une fois. Cette option rend le bouton "Sac à Dos" cliquable et permet de vider son contenu entier dans l\'Outre-Monde.';
         i18n[I18N.LANG.FR][MODULE_NAME + '_tooltip'] = 'Cliquez pour déposer tous vos objets par terre.';
         i18n[I18N.LANG.FR][MODULE_NAME + '_confirm'] = 'Êtes-vous sûr de vouloir déposer vos objets par terre ? D\'autres joueurs seront en mesure d\'en prendre possession.';
 

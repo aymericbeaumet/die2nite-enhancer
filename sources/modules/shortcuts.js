@@ -18,7 +18,7 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Let you use keyboard shortcuts in town to quickly access important places (e.g.: banks, gates).';
 
         i18n[I18N.LANG.FR] = {};
-        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Activer les raccourcis';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Activer les raccourcis clavier';
         i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Active des raccourcis claviers pour accéder rapidement aux places importantes en ville (e.g.: la banque, les portes).';
 
         I18N.set(i18n);

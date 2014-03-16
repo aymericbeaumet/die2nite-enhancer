@@ -18,8 +18,8 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'When the escort mode is enabled, you can directly be taken further away and your rucksack objects can be manipulated.';
 
         i18n[I18N.LANG.FR] = {};
-        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Activer directement les bonnes options d\'escorte';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Quand le mode escorte est activé, vous pouvez directement être éloigné de la ville et les objets de votre sac peuvent être manipulés.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Activer les bonnes options d\'escorte automatiquement';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Quand le mode escorte est activé, vous pouvez automatiquement être éloigné de la ville et les objets de votre sac peuvent être manipulés.';
 
         I18N.set(i18n);
     }

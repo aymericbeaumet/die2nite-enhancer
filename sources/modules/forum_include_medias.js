@@ -19,7 +19,7 @@ Module.register(function() {
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Remplacer les liens de médias par le contenu';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Dans les posts du forum, remplace les liens de média par le média en question (images et vidéos YouTube).';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Dans les posts du forum, remplace les liens de média par le média concerné (e.g.: images, vidéos YouTube).';
 
         I18N.set(i18n);
     }
