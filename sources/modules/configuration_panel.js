@@ -126,10 +126,8 @@ Module.register(function() {
                     ["div", {},
                         null,
                         ["label", { "for": input_id }, I18N.get(value.short_desc_I18N)],
-                        ["a", { "class": "d2ne_tooltip", "href": "javascript:void(0)" },
-                            ["img", { "src": I18N.get(MODULE_NAME + '_help_image_url'), "alt": "" }],
-                            ["span", {}, I18N.get(value.full_desc_I18N)]
-                        ]
+                        ["img", { "class": "d2ne_tooltip", "src": I18N.get(MODULE_NAME + '_help_image_url'), "alt": "" }],
+                        ["span", {}, I18N.get(value.full_desc_I18N)]
                     ];
 
                 var node = ["/* node_html_type */", { /* node attributes */ }];
@@ -252,7 +250,7 @@ Module.register(function() {
                 'margin-left: 44px;' +
                 'background-color: #5c2b20;' +
                 'border: 1px solid #000000;' +
-                'max-width: 430px;' +
+                'max-width: 885px;' +
             '}' +
 
             '#d2ne_configuration_panel > div.wrapper > h1 {' +
@@ -300,12 +298,24 @@ Module.register(function() {
                 'border-bottom: 1px dashed #ddab76;' +
             '}' +
 
+            '#d2ne_configuration_panel > div.wrapper > div > div.extensible {' +
+                '-moz-column-count: 2;' +
+                '-webkit-column-count: 2;' +
+                'column-count: 2;' +
+                'margin-top: 10px;' +
+            '}' +
+
+            '#d2ne_configuration_panel > div.wrapper > div > div.extensible > h4:first-child {' +
+                'margin-top: 0;' +
+            '}' +
             '#d2ne_configuration_panel > div.wrapper > div > div.extensible > h4 {' +
                 'text-align: left;' +
                 'border-bottom: 1px dotted rgba(221, 171, 118, 0.8);' +
                 'padding-bottom: 4px;' +
                 'margin-bottom: 4px;' +
                 'margin-top: 7px;' +
+                'width: 430px;' +
+                'float: left;' +
             '}' +
             '#d2ne_configuration_panel > div.wrapper > div > div.extensible > h4 > img {' +
                 'vertical-align: -11%;' +
@@ -315,6 +325,8 @@ Module.register(function() {
             '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div {' +
                 'position: relative;' +
                 'line-height: 22px;' +
+                'width: 430px;' +
+                'float: left;' +
             '}' +
 
             '#d2ne_configuration_panel input[type="checkbox"] {' +
@@ -331,21 +343,25 @@ Module.register(function() {
                 'display: inline-block;' +
             '}' +
 
-            'a.d2ne_tooltip img {' +
+            'img.d2ne_tooltip {' +
                 'border: 1px solid #5c2b20;' +
                 'margin-right: 2px;' +
+                'position: absolute;' +
+                'right: 0;' +
+                'top: 3px;' +
             '}' +
-            'a.d2ne_tooltip img:hover {' +
+            'img.d2ne_tooltip:hover {' +
                 'border: 1px solid #ffffff;' +
+                'cursor: help;' +
             '}' +
 
-            'a.d2ne_tooltip span {' +
+            'img.d2ne_tooltip + span {' +
                 'visibility: hidden;' +
                 'line-height: normal;' +
                 'z-index: 999;' +
                 'position: absolute;' +
-                'top: 0;' +
-                'left: 53px;' +
+                'top: 3px;' +
+                'right: 47px;' +
                 'font-family: Verdana;' +
                 'font-size: 12px;' +
                 'color: #ffffff;' +
@@ -357,7 +373,7 @@ Module.register(function() {
                 'width: 250px;' +
                 'padding: 5px 10px 9px 30px;' +
             '}' +
-            'a.d2ne_tooltip img:hover + span {' +
+            'img.d2ne_tooltip:hover + span {' +
                 'visibility: visible;' +
             '}' +
 
