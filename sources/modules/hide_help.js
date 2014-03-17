@@ -58,7 +58,7 @@ Module.register(function() {
 
             load: function() {
                 JS.injectCSS(
-                    '#mapTips, a.button[href^="#city/exp?editor=1;sk="] + p, .helpLink:not(.d2ne), #generic_section > div > em:last-of-type, .help, .heroHelp {' +
+                    '#mapTips, a.button[href^="#city/exp?editor=1;sk="] + p, .helpLink:not(.d2ne), #generic_section > div > em:last-of-type, .help, .heroHelp, .tid_goalHelp {' +
                         'display: none;' +
                     '}'
                 );
