@@ -6,6 +6,9 @@ Module.register(function() {
      * Module context *
      ******************/
 
+    var VIDEO_WIDTH = 400;
+    var VIDEO_HEIGHT = 300;
+
     /**
      * Add the i18n strings for this module.
      */
@@ -25,17 +28,24 @@ Module.register(function() {
     }
 
     /**
-     * Check if the given url is an image.
-     * @param string url The URL to check
-     * @return boolean true if an image, else false
+     * Return the id from a dailymotion url.
+     * @link http://stackoverflow.com/questions/12387389/how-to-parse-dailymotion-video-url-in-javascript
+     * @param string video_url
+     * @return integer the video id
+     * @return null if can not extract it
      */
-    function is_image_link(url)
+    function get_dailymotion_video_id(video_url)
     {
-        return /.+\.(?:jpe?g|png|gif|bmp)(?:\?.+)?(?:#.\+)?$/.test(url);
+        var results = video_url.match(/dailymotion.com\/(?:(?:video|hub)\/([^_]+))?[^#]*(?:#video=([^_&]+))?/);
+
+        if (!results || results.length < 2) {
+            return null;
+        }
+        return results[2] || results[1];
     }
 
     /**
-     * Return the id from a YouTube video.
+     * Return the id from a youtube video.
      * @link http://linuxpanda.wordpress.com/2013/07/24/ultimate-best-regex-pattern-to-get-grab-parse-youtube-video-id-from-any-youtube-link-url/
      * @param string video_url
      * @return integer the video id
@@ -43,22 +53,22 @@ Module.register(function() {
      */
     function get_youtube_video_id(video_url)
     {
-        var results = video_url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=|\/ytscreeningroom\?v=|\/feeds\/api\/videos\/|\/user\S*[^\w\-\s]|\S*[^\w\-\s]))([\w\-]{11})[a-z0-9;:@?&%=+\/\$_.-]*/i);
+        var results = video_url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=|\/ytscreeningroom\?v=|\/feeds\/api\/videos\/|\/user\s*[^\w\-\s]|\s*[^\w\-\s]))([\w\-]{11})[a-z0-9;:@?&%=+\/\$_.-]*/i);
 
-        if (results.length < 2) {
+        if (!results || results.length < 2) {
             return null;
         }
         return results[1];
     }
 
     /**
-     * Check if the given url is a youtube link.
-     * @param string url The URL to check.
-     * @return boolean true if a youtube link, else false
+     * Check if the given url is an image.
+     * @param string url The URL to check
+     * @return boolean true if an image url, else false
      */
-    function is_youtube_link(url)
+    function is_image_link(url)
     {
-        return /^(?:https?:\/\/)?(?:www\.)?youtu(?:\.be|be\.com)/.test(url);
+        return /.+\.(?:jpe?g|png|gif|bmp)(?:\?.+)?(?:#.\+)?$/.test(url);
     }
 
     /**
@@ -77,6 +87,9 @@ Module.register(function() {
      */
     function replace_medias_in_forum_posts(posts)
     {
+        var id;
+        var embed_link;
+
         posts.forEach(function(post) {
             var links = JS.nodelist_to_array(post.querySelectorAll('.tid_editorContent a[href]'));
 
@@ -90,13 +103,14 @@ Module.register(function() {
                     new_node = JS.jsonToDOM(['img', { src: link.href, class: 'd2ne_injected' }], document);
 
                 // YouTube
-                } else if (is_youtube_link(link.href)) {
-                    var video_id = get_youtube_video_id(link.href);
-                    if (video_id === null) {
-                        return;
-                    }
-                    var embed_link = '//www.youtube-nocookie.com/embed/' + video_id + '?rel=0';
-                    new_node = JS.jsonToDOM(['iframe', { width: 400, height: 300, src: embed_link, frameborder: 0, allowfullscreen: '', class: 'd2ne_injected' }], document);
+                } else if ((id = get_youtube_video_id(link.href)) !== null) {
+                    embed_link = '//www.youtube-nocookie.com/embed/' + id + '?rel=0';
+                    new_node = JS.jsonToDOM(['iframe', { width: VIDEO_WIDTH, height: VIDEO_HEIGHT, src: embed_link, frameborder: 0, allowfullscreen: '', class: 'd2ne_injected' }], document);
+
+                // Dailymotion
+                } else if ((id = get_dailymotion_video_id(link.href)) !== null) {
+                    embed_link = '//www.dailymotion.com/embed/video/' + id;
+                    new_node = JS.jsonToDOM(['iframe', { width: VIDEO_WIDTH, height: VIDEO_HEIGHT, src: embed_link, frameborder: 0, logo: 0, related: 0, class: 'd2ne_injected' }], document);
 
                 // abort for this link
                 } else {
