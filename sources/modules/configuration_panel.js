@@ -337,6 +337,9 @@ Module.register(function() {
                 '-webkit-column-width: 100%;' +
                 '-moz-column-width: 100%;' +
                 'column-width: 100%;' +
+                // TODO: remove this ugly Webkit fix, mandatory as
+                // -webkit-column-count is bugged
+                '-webkit-margin-after: -40px;' +
             '}' +
 
             '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div.category_container {' +
@@ -349,7 +352,7 @@ Module.register(function() {
                 'border-bottom: 1px dotted rgba(221, 171, 118, 0.8);' +
                 'padding-bottom: 4px;' +
                 'margin-bottom: 4px;' +
-                'margin-top: 7px;' +
+                'margin-top: 5px;' +
             '}' +
             '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div.category_container > h4 > img {' +
                 'vertical-align: -11%;' +
