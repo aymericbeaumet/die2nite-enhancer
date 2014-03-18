@@ -19,13 +19,13 @@ Module.register(function() {
 
         i18n[I18N.LANG.EN] = {};
         i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Prevent bank abuse';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Display a an anti-abuse counter on the bank page.';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Display a an anti-abuse counter on the bank page';
         i18n[I18N.LANG.EN][MODULE_NAME + '_label'] = 'Anti-abuse counter:';
         i18n[I18N.LANG.EN][MODULE_NAME + '_reset_in'] = 'reset in';
         i18n[I18N.LANG.EN][MODULE_NAME + '_prevent'] = 'Please wait until the end of the countdown before to try again.';
 
         i18n[I18N.LANG.FR] = {};
-        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Prévenir la protection anti-abus.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Activer le compteur anti-abus';
         i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Sur la page de la banque, affiche un compteur pour prévenir les abus et empêche de prendre plus de 5 objets toutes les 15 minutes.';
         i18n[I18N.LANG.FR][MODULE_NAME + '_label'] = 'Compteur anti-abus :';
         i18n[I18N.LANG.FR][MODULE_NAME + '_reset_in'] = 'reset dans';
