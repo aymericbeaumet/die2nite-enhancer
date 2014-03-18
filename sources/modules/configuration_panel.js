@@ -337,6 +337,9 @@ Module.register(function() {
                 '-webkit-column-width: 100%;' +
                 '-moz-column-width: 100%;' +
                 'column-width: 100%;' +
+                '-webkit-column-gap: 20px;' +
+                '-moz-column-gap: 20px;' +
+                'column-gap: 20px;' +
                 // TODO: remove this ugly Webkit fix, mandatory as
                 // -webkit-column-count is bugged
                 '-webkit-margin-after: -55px;' +
