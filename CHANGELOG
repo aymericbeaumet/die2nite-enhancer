@@ -3,6 +3,7 @@ v0.1.5
 - Split the configuration panel in two columns
 - Use the native Die2Nite tooltips
 - Remove the soul distinctions scrollbar
+- Add a bank anti-abuse counter/protection
 
 v0.1.4
 - Construction_max_ap now works with repairs
