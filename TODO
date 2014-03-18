@@ -5,8 +5,5 @@ Features:
 - Show chest objects from the citizen view (without mouse hover)
 - Move the escort buttons to a more conveniant place
 - Add moon/sun depending of the hour of the day
-- Check/Uncheck every checkbox in a category/on the whole panel
 - Set a correct tabindex in the configuration panel
 - Replace the media links in the message preview
-- Create tabs in the configuration panel
-- Replace the configuration panel correctly (in appearance)
