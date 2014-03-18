@@ -339,7 +339,7 @@ Module.register(function() {
                 'column-width: 100%;' +
                 // TODO: remove this ugly Webkit fix, mandatory as
                 // -webkit-column-count is bugged
-                '-webkit-margin-after: -40px;' +
+                '-webkit-margin-after: -55px;' +
             '}' +
 
             '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div.category_container {' +
