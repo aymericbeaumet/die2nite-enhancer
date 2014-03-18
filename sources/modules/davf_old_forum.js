@@ -6,9 +6,6 @@ Module.register(function() {
      * Module context *
      ******************/
 
-    var VIDEO_WIDTH = 400;
-    var VIDEO_HEIGHT = 300;
-
     /**
      * Add the i18n strings for this module.
      */
