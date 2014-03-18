@@ -171,16 +171,18 @@ Module.register(function() {
         Module.PROPERTY_CATEGORY_PRIORITY_ORDER.forEach(function(category_name) {
             var category_id = Module.PROPERTY_CATEGORY[category_name];
             var category = categories[category_id];
+            var category_container = JS.jsonToDOM(["div", { class: "category_container" }], document);
 
             if (!JS.is_defined(category)) {
                 return;
             }
 
-            configuration_panel_extensible_zone_node_.appendChild(JS.jsonToDOM(get_category_title(category_id), document));
+            category_container.appendChild(JS.jsonToDOM(get_category_title(category_id), document));
 
             category.forEach(function(json_node) {
-                configuration_panel_extensible_zone_node_.appendChild(JS.jsonToDOM(json_node, document));
+                category_container.appendChild(JS.jsonToDOM(json_node, document));
             });
+            configuration_panel_extensible_zone_node_.appendChild(category_container);
         });
     }
 
@@ -206,32 +208,41 @@ Module.register(function() {
         var module_name = null;
         var property = null;
         var input_data = null;
+        var container_node = null;
 
-        for (var i = 0, max = configuration_panel_extensible_zone_node_.childElementCount; i < max; i += 1) {
+        for (var i = 0, maxi = configuration_panel_extensible_zone_node_.childElementCount; i < maxi; i += 1) {
             // skip if not div
-            if (configuration_panel_extensible_zone_node_.childNodes[i].tagName.toLowerCase() !== 'div') {
+            if (configuration_panel_extensible_zone_node_.childNodes[i].tagName !== 'DIV') {
                 continue;
             }
 
-            input_node = configuration_panel_extensible_zone_node_.childNodes[i].firstChild;
-            module_name = input_node.getAttribute(INPUT_DATA_MODULE_KEY);
-            module = Module.get(module_name);
-            property = input_node.getAttribute(INPUT_DATA_MODULE_PROPERTY_KEY);
+            container_node = configuration_panel_extensible_zone_node_.childNodes[i];
+            for (var j = 0, maxj = container_node.childElementCount; j < maxj; j += 1) {
+                // skip if not div
+                if (container_node.childNodes[j].tagName !== 'DIV') {
+                    continue;
+                }
 
-            // Get the value
-            switch (module.configurable[property].type) {
-                case Module.PROPERTY.BOOLEAN:
-                    input_data = input_node.checked;
-                    break;
+                input_node = container_node.childNodes[j].firstChild;
+                module_name = input_node.getAttribute(INPUT_DATA_MODULE_KEY);
+                module = Module.get(module_name);
+                property = input_node.getAttribute(INPUT_DATA_MODULE_PROPERTY_KEY);
 
-                default:
-                    input_data = null;
-                    break;
+                // Get the value
+                switch (module.configurable[property].type) {
+                    case Module.PROPERTY.BOOLEAN:
+                        input_data = input_node.checked;
+                        break;
+
+                    default:
+                        input_data = null;
+                        break;
+                }
+
+                // Inject it into the object and save
+                module.properties[property] = input_data;
+                module.save_properties();
             }
-
-            // Inject it into the object and save
-            module.properties[property] = input_data;
-            module.save_properties();
         }
     }
 
@@ -253,7 +264,7 @@ Module.register(function() {
                 'margin-left: 44px;' +
                 'background-color: #5c2b20;' +
                 'border: 1px solid #000000;' +
-                'max-width: 885px;' +
+                'max-width: 862px;' +
             '}' +
 
             '#d2ne_configuration_panel > div.wrapper > h1 {' +
@@ -302,31 +313,37 @@ Module.register(function() {
             '}' +
 
             '#d2ne_configuration_panel > div.wrapper > div > div.extensible {' +
-                '-moz-column-count: 2;' +
                 '-webkit-column-count: 2;' +
+                '-moz-column-count: 2;' +
                 'column-count: 2;' +
+                '-webkit-column-width: 100%;' +
+                '-moz-column-width: 100%;' +
+                'column-width: 100%;' +
                 'margin-top: 10px;' +
             '}' +
 
-            '#d2ne_configuration_panel > div.wrapper > div > div.extensible > h4 {' +
+            '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div.category_container {' +
+                'display: inline-block;' +
+                'width: 100%;' +
+            '}' +
+
+            '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div.category_container > h4 {' +
                 'text-align: left;' +
                 'border-bottom: 1px dotted rgba(221, 171, 118, 0.8);' +
                 'padding-bottom: 4px;' +
                 'margin-bottom: 4px;' +
-                'width: 430px;' +
             '}' +
-            '#d2ne_configuration_panel > div.wrapper > div > div.extensible > h4 > img {' +
+            '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div.category_container > h4 > img {' +
                 'vertical-align: -11%;' +
                 'margin-right: 5px;' +
             '}' +
 
-            '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div {' +
+            '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div.category_container > div {' +
                 'position: relative;' +
                 'line-height: 22px;' +
-                'width: 430px;' +
             '}' +
 
-            '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div > a.helpLink {' +
+            '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div.category_container > div > a.helpLink {' +
                 'position: absolute;' +
                 'bottom: -4px;' +
                 'right: 0;' +
