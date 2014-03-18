@@ -29,7 +29,7 @@ Module.register(function() {
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Replier la barre Twinoid';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Permet de gagnr de la place en repliant la barre Twinoid. Rapprochez votre souris du bord supérieur de l\'écran pour l\'afficher de nouveau.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Permet de gagner de la place en repliant la barre Twinoid. Rapprochez votre souris du bord supérieur de l\'écran pour l\'afficher de nouveau.';
 
         I18N.set(i18n);
     }
