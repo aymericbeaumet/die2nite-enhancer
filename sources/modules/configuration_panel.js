@@ -283,6 +283,7 @@ Module.register(function() {
                 'background-color: #5c2b20;' +
                 'border: 1px solid #000000;' +
                 'max-width: 862px;' +
+                'font-size: 0.9em;' +
             '}' +
 
             '#d2ne_configuration_panel > div.wrapper > h1 {' +
