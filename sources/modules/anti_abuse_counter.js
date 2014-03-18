@@ -25,8 +25,8 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_prevent'] = 'Please wait until the end of the countdown before to try again.';
 
         i18n[I18N.LANG.FR] = {};
-        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Prévenir les abus en banque';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Sur la page de la banque, affiche un compteur pour prévenir les abus.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Prévenir la protection anti-abus.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Sur la page de la banque, affiche un compteur pour prévenir les abus et empêche de prendre plus de 5 objets toutes les 15 minutes.';
         i18n[I18N.LANG.FR][MODULE_NAME + '_label'] = 'Compteur anti-abus :';
         i18n[I18N.LANG.FR][MODULE_NAME + '_reset_in'] = 'reset dans';
         i18n[I18N.LANG.FR][MODULE_NAME + '_prevent'] = 'Il serait préférable d\'attendre la fin du décompte avant d\'essayer à nouveau.';
