@@ -94,14 +94,14 @@ Module.register(function() {
                     '.tid_userSheet.tid_mine .tid_editable:hover {' +
                         'outline: 1px dotted white !important;' +
                     '}' +
-                    'div.tid_bubble {' +
-                        'background-color: #79432b !important;' +
-                        'color: #ddab76 !important;' +
-                        'box-shadow: 0px 0px 2px #79432b !important;' +
-                        '-webkit-box-shadow: 0px 0px 2px #79432b !important;' +
-                        'border: 0px solid transparent !important;' +
-                        'border-radius: 4px;' +
-                    '}' +
+                    //'div.tid_bubble {' +
+                        //'background-color: #79432b !important;' +
+                        //'color: #ddab76 !important;' +
+                        //'box-shadow: 0px 0px 2px #79432b !important;' +
+                        //'-webkit-box-shadow: 0px 0px 2px #79432b !important;' +
+                        //'border: 0px solid transparent !important;' +
+                        //'border-radius: 4px;' +
+                    //'}' +
                     '.tid_userSheet.tid_mine .tid_editable .tid_editIcon {' +
                         'margin-top: -6px !important;' +
                         'margin-left: -10px !important;' +
@@ -114,19 +114,19 @@ Module.register(function() {
                         '-webkit-border-radius: 4px !important;' +
                         'border: 1px solid #ddab76 !important;' +
                     '}' +
-                    '.tid_userStatus .tid_bubble .tid_content .tid_editorContent a {' +
-                        'color: #ddab76 !important;' +
-                    '}' +
-                    '.tid_userStatus .tid_bubble .tid_content .tid_editorContent a:hover {' +
-                        'color: white !important;' +
-                    '}' +
-                    '.tid_bubble  a {' +
-                        'text-decoration: underline !important;' +
-                    '}' +
-                    '.tid_userStatus .tid_bubble  .tid_editorContent strong {' +
-                        'color: #afb3cf !important;' +
-                        'font-weight: bold !important;' +
-                    '}' +
+                    //'.tid_userStatus .tid_bubble .tid_content .tid_editorContent a {' +
+                        //'color: #ddab76 !important;' +
+                    //'}' +
+                    //'.tid_userStatus .tid_bubble .tid_content .tid_editorContent a:hover {' +
+                        //'color: white !important;' +
+                    //'}' +
+                    //'.tid_bubble  a {' +
+                        //'text-decoration: underline !important;' +
+                    //'}' +
+                    //'.tid_userStatus .tid_bubble  .tid_editorContent strong {' +
+                        //'color: #afb3cf !important;' +
+                        //'font-weight: bold !important;' +
+                    //'}' +
                     '.tid_userSheet.tid_mine .tid_editable:hover {' +
                         'outline: 1px dotted #ddab76 !important;' +
                     '}' +
