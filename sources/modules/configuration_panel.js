@@ -34,8 +34,11 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_description'] = 'Die2Nite Enhancer allows you to enhance your game experience, every features can be controlled from this panel.';
         i18n[I18N.LANG.EN][MODULE_NAME + '_help_image_url'] = '/gfx/loc/en/helpLink.gif';
         i18n[I18N.LANG.EN][MODULE_NAME + '_citizen_category'] = 'Citizen';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_hero_category'] = 'Hero';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_bank_category'] = 'Bank';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_construction_category'] = 'Construction Sites';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_outside_category'] = 'Outside';
         i18n[I18N.LANG.EN][MODULE_NAME + '_external_tool_category'] = 'External Tools';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_soul_category'] = 'Soul page';
         i18n[I18N.LANG.EN][MODULE_NAME + '_forum_category'] = 'Forum';
         i18n[I18N.LANG.EN][MODULE_NAME + '_interface_category'] = 'Interface';
         i18n[I18N.LANG.EN][MODULE_NAME + '_various_category'] = 'Various';
@@ -45,13 +48,16 @@ Module.register(function() {
         i18n[I18N.LANG.FR][MODULE_NAME + '_title'] = 'Die2Nite Enhancer - Paramètres';
         i18n[I18N.LANG.FR][MODULE_NAME + '_description'] = 'Die2Nite Enhancer vous permet d\'améliorer votre expérience de jeu, toutes les fonctionnalités peuvent être controlées depuis ce panneau de configuration.';
         i18n[I18N.LANG.FR][MODULE_NAME + '_help_image_url'] = '/gfx/loc/fr/helpLink.gif';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_citizen_category'] = 'Citoyen';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_hero_category'] = 'Héros';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_external_tool_category'] = 'Outils Externes';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_forum_category'] = 'Forum';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_interface_category'] = 'Interface';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_various_category'] = 'Divers';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_save_button'] = 'Sauvegarder';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_citizen_category'] = 'Citoyen';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_bank_category'] = 'Banque';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_construction_category'] = 'Chantiers';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_outside_category'] = 'Outre-Monde';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_external_tool_category'] = 'Outils Externes';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_soul_category'] = 'Page d\'âme';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_forum_category'] = 'Forum';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_interface_category'] = 'Interface';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_various_category'] = 'Divers';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_save_button'] = 'Sauvegarder';
 
         i18n[I18N.LANG.ES] = {};
         i18n[I18N.LANG.ES][MODULE_NAME + '_help_image_url'] = '/gfx/loc/es/helpLink.gif';
@@ -73,23 +79,35 @@ Module.register(function() {
 
         switch (category_name) {
             case Module.PROPERTY_CATEGORY.CITIZEN:
-                icon = '/gfx/forum/smiley/h_basic.gif';
+                icon = '/gfx/icons/r_goodg.gif';
                 text = I18N.get(MODULE_NAME + '_citizen_category');
                 break;
-            case Module.PROPERTY_CATEGORY.HERO:
-                icon = '/gfx/icons/small_hero.gif';
-                text = I18N.get(MODULE_NAME + '_hero_category');
+            case Module.PROPERTY_CATEGORY.BANK:
+                icon = '/gfx/icons/item_money.gif';
+                text = I18N.get(MODULE_NAME + '_bank_category');
+                break;
+            case Module.PROPERTY_CATEGORY.CONSTRUCTION:
+                icon = '/gfx/forum/smiley/h_refine.gif';
+                text = I18N.get(MODULE_NAME + '_construction_category');
+                break;
+            case Module.PROPERTY_CATEGORY.OUTSIDE:
+                icon = '/gfx/icons/r_camp.gif';
+                text = I18N.get(MODULE_NAME + '_outside_category');
                 break;
             case Module.PROPERTY_CATEGORY.EXTERNAL_TOOL:
                 icon = '/gfx/icons/item_radio_on.gif';
                 text = I18N.get(MODULE_NAME + '_external_tool_category');
+                break;
+            case Module.PROPERTY_CATEGORY.SOUL:
+                icon = '/gfx/icons/small_ghost_blue.gif';
+                text = I18N.get(MODULE_NAME + '_soul_category');
                 break;
             case Module.PROPERTY_CATEGORY.FORUM:
                 icon = '/gfx/icons/r_rp.gif';
                 text = I18N.get(MODULE_NAME + '_forum_category');
                 break;
             case Module.PROPERTY_CATEGORY.INTERFACE:
-                icon = '/gfx/forum/smiley/h_refine.gif';
+                icon = '/gfx/icons/item_iphone.gif';
                 text = I18N.get(MODULE_NAME + '_interface_category');
                 break;
             default:
@@ -319,7 +337,6 @@ Module.register(function() {
                 '-webkit-column-width: 100%;' +
                 '-moz-column-width: 100%;' +
                 'column-width: 100%;' +
-                'margin-top: 10px;' +
             '}' +
 
             '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div.category_container {' +
@@ -332,6 +349,7 @@ Module.register(function() {
                 'border-bottom: 1px dotted rgba(221, 171, 118, 0.8);' +
                 'padding-bottom: 4px;' +
                 'margin-bottom: 4px;' +
+                'margin-top: 7px;' +
             '}' +
             '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div.category_container > h4 > img {' +
                 'vertical-align: -11%;' +

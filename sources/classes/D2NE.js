@@ -25,7 +25,10 @@ var D2NE = (function() {
      */
     var MODULE_PROPERTY_CATEGORIES = [
         'CITIZEN',
-        'HERO',
+        'BANK',
+        'CONSTRUCTION',
+        'SOUL',
+        'OUTSIDE',
         'EXTERNAL_TOOL',
         'FORUM',
         'INTERFACE'
