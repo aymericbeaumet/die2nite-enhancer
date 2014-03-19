@@ -57,18 +57,31 @@ Module.register(function() {
             },
 
             load: function() {
-                JS.injectCSS(
-                    ".tid_editorContent .tid_spoil, .tid_editorContent .tid_spoil:hover {" +
-                        "background-image: url('http://data.twinoid.com/img/design/spoiler.png') !important;" +
-                        "color: rgb(216, 216, 216);" +
-                        "display: block;" +
-                        "padding: 5px 10px;" +
-                        "cursor: auto;" +
-                    "}" +
-                    ".tid_editorContent .tid_spoil *, .tid_editorContent .tid_wspoil {" +
-                        "visibility: visible !important;" +
-                    "}"
-                );
+                var css =
+                    '.tid_editorContent .tid_spoil {';
+
+                // If davf's module is loaded, we need to adapt the CSS rules
+                var old_forum_tags = Module.get('davf_old_forum_tags');
+                if (old_forum_tags !== null && old_forum_tags.is_enabled()) {
+                    css +=
+                        'background-image: url("/gfx/design/spoiler.gif") !important;' +
+                        'background-color:transparent !important;' +
+                        'color : #98a675 !important;';
+
+                // If not loaded, just do the normal ones
+                } else {
+                    css +=
+                        'background-image: url("http://data.twinoid.com/img/design/spoiler_hover.png");';
+                }
+
+                css +=
+                    '}' +
+                    '.tid_editorContent .tid_spoil *, .tid_editorContent .tid_wspoil {' +
+                        'visibility: visible !important;' +
+                    '}' +
+                '';
+
+                JS.injectCSS(css);
             }
         }
 
