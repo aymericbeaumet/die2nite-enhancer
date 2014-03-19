@@ -66,7 +66,9 @@ Module.register(function() {
 
     function on_object_click(event)
     {
-        if (['IMG', 'A'].indexOf(event.target.nodeName) < 0) {
+        // The click must occur on the object icon, the object number or the
+        // link
+        if (['IMG', 'SPAN', 'A'].indexOf(event.target.nodeName) < 0) {
             return;
         }
         if (this.properties.attempt_left < 1) {

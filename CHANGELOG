@@ -1,3 +1,6 @@
+v0.2.1
+- Fix bank anti-abuse on stacked objects
+
 v0.2.0
 - The RP content is now properly hidden again
 - Split the configuration panel in two columns
