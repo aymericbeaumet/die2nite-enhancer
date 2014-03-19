@@ -10,3 +10,4 @@ Features:
 Improvment of existing features:
 - Replace the media links in the message preview
 - Anti-abuse only when the object is in the bag (not just after the click)
+- Repair keyboard shortcuts
