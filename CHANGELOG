@@ -6,7 +6,7 @@ v0.2.0
 - Add a bank anti-abuse counter/protection
 - Add Dailymotion and Vimeo to the recognized media links
 - Split the configuration panel intro more categories
-- Add 3 Davf scripts (old forum, old forums tags, old soul)
+- Add 4 Davf scripts (old forum, old forums tags, old soul, old Twinoid elements)
 - Now also take in consideration the number of CP while repairing and
 constructing buildings
 
