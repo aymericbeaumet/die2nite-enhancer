@@ -94,7 +94,7 @@ var JS = (function() {
      * Generic wait_for_ function. See wait_for_id for the purpose of this
      * function.
      * @param function search A closure returning the searched element
-     * @param function is_found A close taking the searched element and
+     * @param function is_found A closure taking the searched element and
      * returning true or false whether it was found or not
      * @param function callback The function to call if the element was found
      * @param integer max The maximum number of retry if the first search fails

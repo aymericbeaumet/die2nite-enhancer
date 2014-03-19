@@ -7,6 +7,8 @@ v0.2.0
 - Add Dailymotion and Vimeo to the recognized media links
 - Split the configuration panel intro more categories
 - Add 3 Davf scripts (old forum, old forums tags, old soul)
+- Now also take in consideration the number of CP while repairing and
+constructing buildings
 
 v0.1.4
 - Construction_max_ap now works with repairs

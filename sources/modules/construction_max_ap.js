@@ -26,7 +26,7 @@ Module.register(function() {
 
     function change_ap()
     {
-        D2N.get_number_of_ap(function(ap) {
+        D2N.get_number_of_ap_cp(function(ap) {
             var constructions = JS.nodelist_to_array(document.querySelectorAll('tr.building'));
 
             constructions.forEach(function(construction) {

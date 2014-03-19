@@ -367,14 +367,46 @@ var D2N = (function() {
         },
 
         /**
-         * Call the given callback with the number of AP.
-         * @param callback callback The function to call
+         * Call the given callback with the number of AP (Action Points)
+         * @param callback callback The function to be called
          */
         get_number_of_ap: function(callback)
         {
-            JS.wait_for_selector('#movesCounter > div', function(node) {
+            JS.wait_for_selector('#movesCounter > div:nth-child(1)', function(node) {
                 var ap = parseInt(node.textContent.split('/')[0]);
                 callback(ap);
+            });
+        },
+
+        /**
+         * Call the given callback with the number of CP (Construction Points).
+         * @param callback callback The function to be called, pass null if the
+         * player doesn't have a CP div (it means he/she's not a Technician)
+         */
+        get_number_of_cp: function(callback)
+        {
+            JS.wait_for_selector('#movesCounter > div:nth-child(2)', function(node) {
+                var cp = parseInt(node.textContent.split('/')[0]);
+                callback(cp);
+            }, 1, function onNotfound() {
+                callback(null);
+            });
+        },
+
+        /**
+         * Call the given callback with the total number of AP + CP.
+         * @param callback callback The function to be called
+         */
+        get_number_of_ap_cp: function(callback)
+        {
+            D2N.get_number_of_ap(function(ap) {
+                D2N.get_number_of_cp(function(cp) {
+                    var total = ap;
+                    if (typeof cp === 'number') {
+                        total += cp;
+                    }
+                    callback(total);
+                });
             });
         },
 
