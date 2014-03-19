@@ -15,8 +15,8 @@ Module.register(function() {
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_name'] = 'BigBroth\'Hordes';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Activer la synchronisation BBH';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Ajoute la possibilité de synchroniser avec BigBroth\'Hordes.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Activer la synchronisation BBH (hors-Pandémonium)';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Ajoute la possibilité de synchroniser avec BigBroth\'Hordes. Ne fonctionne pas en Pandémonium.';
 
         I18N.set(i18n);
     }
