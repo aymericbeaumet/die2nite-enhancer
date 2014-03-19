@@ -62,7 +62,8 @@ Module.register(function() {
             load: function() {
                 JS.injectCSS(
                     // From: http://userstyles.org/styles/97547/hordes-me-ancienne
-                    // Integrated: March 18th, 2014
+                    // Credit: Davf, thanks to him for giving his permission to use his CSS
+                    // Integrated on: Mar 18, 2014
                     '.passwidth {' +
                         'margin-top: 200px !important;' +
                     '}' +

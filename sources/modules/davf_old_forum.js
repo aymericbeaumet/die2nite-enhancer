@@ -59,7 +59,8 @@ Module.register(function() {
             load: function() {
                 JS.injectCSS(
                     // From: http://userstyles.org/styles/97652/hordes-forum-ancien
-                    // Integrated: March 18th, 2014
+                    // Credit: Davf, thanks to him for giving his permission to use his CSS
+                    // Integrated on: Mar 18, 2014
                     '#tid_forum .tid_forumThread .tid_actionBar .tid_pages {' +
                         'width: 248px !important;' +
                     '}' +

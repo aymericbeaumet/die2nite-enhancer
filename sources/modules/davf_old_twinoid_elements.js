@@ -59,7 +59,8 @@ Module.register(function() {
             load: function() {
                 JS.injectCSS(
                     // From: http://userstyles.org/styles/99207/hordes-elements-twinoidien
-                    // Integrated: Mar 19th, 2014
+                    // Credit: Davf, thanks to him for giving his permission to use his CSS
+                    // Integrated on: Mar 19, 2014
                     '#tid_userMenu > div.tid_content {' +
                         'background-color: #5c2b20 !important;' +
                         'background-image: none !important;' +

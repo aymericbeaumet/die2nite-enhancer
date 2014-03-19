@@ -59,7 +59,8 @@ Module.register(function() {
             load: function() {
                 JS.injectCSS(
                     // From: http://userstyles.org/styles/97674/hordes-balises-ancienne
-                    // Integrated: March 18th, 2014
+                    // Credit: Davf, thanks to him for giving his permission to use his CSS
+                    // Integrated on: Mar 18, 2014
                     '.tid_editorContent .tid_spoil {' +
                         'cursor: help !important;' +
                         'background-image: url("http://data.hordes.fr/gfx/design/spoiler.gif") !important;' +
