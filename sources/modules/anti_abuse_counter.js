@@ -66,8 +66,6 @@ Module.register(function() {
 
     function on_object_click(event)
     {
-        console.log('[CLICK]');
-        console.log(event);
         if (['IMG', 'A'].indexOf(event.target.nodeName) < 0) {
             return;
         }
