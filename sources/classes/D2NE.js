@@ -24,7 +24,7 @@ var D2NE = (function() {
      * The different module property categories (the order matters).
      */
     var MODULE_PROPERTY_CATEGORIES = [
-        'CITIZEN',
+        'GENERAL',
         'BANK',
         'CONSTRUCTION',
         'SOUL',

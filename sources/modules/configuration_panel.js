@@ -33,7 +33,7 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_title'] = 'Die2Nite Enhancer - Settings';
         i18n[I18N.LANG.EN][MODULE_NAME + '_description'] = 'Die2Nite Enhancer allows you to enhance your game experience, every features can be controlled from this panel.';
         i18n[I18N.LANG.EN][MODULE_NAME + '_help_image_url'] = '/gfx/loc/en/helpLink.gif';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_citizen_category'] = 'Citizen';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_general_category'] = 'General';
         i18n[I18N.LANG.EN][MODULE_NAME + '_bank_category'] = 'Bank';
         i18n[I18N.LANG.EN][MODULE_NAME + '_construction_category'] = 'Construction Sites';
         i18n[I18N.LANG.EN][MODULE_NAME + '_outside_category'] = 'Outside';
@@ -48,7 +48,7 @@ Module.register(function() {
         i18n[I18N.LANG.FR][MODULE_NAME + '_title'] = 'Die2Nite Enhancer - Paramètres';
         i18n[I18N.LANG.FR][MODULE_NAME + '_description'] = 'Die2Nite Enhancer vous permet d\'améliorer votre expérience de jeu, toutes les fonctionnalités peuvent être controlées depuis ce panneau de configuration.';
         i18n[I18N.LANG.FR][MODULE_NAME + '_help_image_url'] = '/gfx/loc/fr/helpLink.gif';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_citizen_category'] = 'Citoyen';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_general_category'] = 'Général';
         i18n[I18N.LANG.EN][MODULE_NAME + '_bank_category'] = 'Banque';
         i18n[I18N.LANG.EN][MODULE_NAME + '_construction_category'] = 'Chantiers';
         i18n[I18N.LANG.EN][MODULE_NAME + '_outside_category'] = 'Outre-Monde';
@@ -78,9 +78,9 @@ Module.register(function() {
         var text = null;
 
         switch (category_name) {
-            case Module.PROPERTY_CATEGORY.CITIZEN:
-                icon = '/gfx/icons/r_goodg.gif';
-                text = I18N.get(MODULE_NAME + '_citizen_category');
+            case Module.PROPERTY_CATEGORY.GENERAL:
+                icon = '/gfx/icons/item_chair.gif';
+                text = I18N.get(MODULE_NAME + '_general_category');
                 break;
             case Module.PROPERTY_CATEGORY.BANK:
                 icon = '/gfx/icons/item_money.gif';

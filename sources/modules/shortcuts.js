@@ -72,7 +72,7 @@ Module.register(function() {
 
         configurable: {
             enabled: {
-                category: Module.PROPERTY_CATEGORY.CITIZEN,
+                category: Module.PROPERTY_CATEGORY.GENERAL,
                 type: Module.PROPERTY.BOOLEAN,
                 short_desc_I18N: MODULE_NAME + '_short_desc',
                 full_desc_I18N: MODULE_NAME + '_full_desc'
