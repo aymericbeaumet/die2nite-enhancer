@@ -36,66 +36,116 @@ Module.register(function() {
         var listener = function() {
             document.removeEventListener('d2n_gamebody_reload', listener);
 
-            ret.rootURL = window.location.host;
-            ret.id = citizen_id;
+            var extract_username = function(next) {
+                JS.wait_for_selector('div.tid_userName > span:last-child', function(node) {
+                    ret.username = node.textContent;
+                    next();
+                });
+            };
 
-            console.log('1');
-            // Extract username
-            JS.wait_for_selector('div.tid_userName > span:last-child', function(node) {
-                ret.username = node.textContent;
-
-                console.log('2');
-                // Extract icon
-                JS.wait_for_selector('span.tid_userTitle > img', function(node) {
+            var extract_icon = function(next) {
+                JS.wait_for_selector('img.tid_avatarImg', function(node) {
                     ret.icon = node.src;
+                    next();
+                });
+            };
 
-                    console.log('3');
-                    // Extract title
-                    JS.wait_for_selector('span.tid_userTitle', function(node) {
-                        ret.title = node.textContent.trim();
+            var extract_title = function(next) {
+                JS.wait_for_selector('span.tid_userTitle', function(node) {
+                    ret.title = node.textContent.trim();
+                    next();
+                });
+            };
 
-                        console.log('4');
-                        // Extract like
-                        JS.wait_for_selector('span.tid_likeButtonCompact', function(node) {
-                            ret.profileLikes = parseInt(node.textContent);
+            var extract_profile_likes = function(next) {
+                JS.wait_for_selector('span.tid_likeButtonCompact', function(node) {
+                    ret.profileLikes = parseInt(node.textContent);
+                    if (typeof ret.profileLikes !== 'number' || isNaN(ret.profileLikes)) {
+                        ret.profileLikes = 0;
+                    }
+                    next();
+                });
+            };
 
-                            console.log('5');
-                            // Extract avatar
-                            JS.wait_for_selector('img.tid_avatarImg', function(node) {
-                                ret.avatarURL = node.src;
+            var extract_avatar_url = function(next) {
+                JS.wait_for_selector('img.tid_avatarImg', function(node) {
+                    ret.avatarURL = node.src;
+                    next();
+                });
+            };
 
-                                console.log('6');
-                                // Extract sex
-                                JS.wait_for_selector('div.tid_age > img:first-child', function(node) {
-                                    ret.sex = (node.src.match(/\/male.png$/) !== null) ? 'male' : 'female';
+            var extract_sex = function(next) {
+                JS.wait_for_selector('div.tid_age > img:first-child', function(node) {
+                    var m = node.src.match(/\/([a-z]+)\.png$/);
+                    switch (m) {
+                        case 'male':
+                            ret.sex = 'male'; break;
+                        case 'female':
+                            ret.sex = 'female'; break;
+                    }
+                    next();
+                });
+            };
 
-                                    console.log('7');
-                                    // Extract age
-                                    JS.wait_for_selector('div.tid_age', function(node) {
-                                        ret.age = parseInt(node.textContent);
+            var extract_age = function(next) {
+                JS.wait_for_selector('div.tid_age', function(node) {
+                    ret.age = parseInt(node.textContent);
+                    if (typeof ret.age !== 'number' || isNaN(ret.age)) {
+                        delete ret.age;
+                    }
+                    next();
+                });
+            };
 
-                                        console.log('8');
-                                        // Extract city
-                                        JS.wait_for_selector('div.tid_city', function(node) {
-                                            ret.city = node.textContent.trim();
+            var extract_city = function(next) {
+                JS.wait_for_selector('div.tid_city', function(node) {
+                    ret.city = node.textContent.trim();
+                    if (ret.city === '--') {
+                        delete ret.city;
+                    }
+                    next();
+                });
+            };
 
-                                            console.log('9');
-                                            // Extract country
-                                            JS.wait_for_selector('div.tid_country', function(node) {
-                                                ret.country = node.textContent.trim();
+            var extract_country = function(next) {
+                JS.wait_for_selector('div.tid_country', function(node) {
+                    ret.country = node.textContent.trim();
+                    if (ret.country === '--') {
+                        delete ret.country;
+                    }
+                    next();
+                });
+            };
 
-                                                console.log('10');
-                                                // Extract description
-                                                JS.wait_for_selector('div.tid_userStatus div.tid_content p', function(node) {
-                                                    ret.descriptionHTML = node.innerHTML;
+            var extract_description = function(next) {
+                JS.wait_for_selector('div.tid_userStatus div.tid_content p', function(node) {
+                    ret.descriptionHTML = node.innerHTML;
+                    next();
+                }, 1, next);
+            };
 
-                                                    console.log('11');
-                                                    // Extract soul score
-                                                    JS.wait_for_selector('div.score > strong', function(node) {
-                                                        ret.soulScore = parseInt(node.textContent);
+            var extract_soul_score = function(next) {
+                JS.wait_for_selector('div.score > strong', function(node) {
+                    ret.soulScore = parseInt(node.textContent);
+                    next();
+                });
+            };
 
-                                                        console.log('12');
-                                                        // done extracting data for this user
+            ret.D2NEVersion = '<%= version %>';
+            ret.rootURL = window.location.host;
+            ret.id = parseInt(citizen_id);
+
+            extract_username(function() {
+                extract_icon(function() {
+                    extract_title(function() {
+                        extract_profile_likes(function() {
+                            extract_avatar_url(function() {
+                                extract_sex(function() {
+                                    extract_age(function() {
+                                        extract_city(function() {
+                                            extract_country(function() {
+                                                extract_description(function() {
+                                                    extract_soul_score(function() {
                                                         on_finish(ret);
                                                     });
                                                 });
@@ -106,7 +156,6 @@ Module.register(function() {
                             });
                         });
                     });
-
                 });
             });
         };
@@ -131,12 +180,16 @@ Module.register(function() {
 
                 console.log('CURRENT CITIZEN: ' + i);
                 extract_citizen_info(citizens_id[i], sk, function(citizen_info) {
+                    console.log('PUSH');
+                    console.log(citizen_info);
                     ret.push(citizen_info);
                     handler(i + 1);
                 });
             };
 
+            // TODO: reset to 0
             handler(0);
+            //handler(9);
         });
     }
 
@@ -169,6 +222,7 @@ Module.register(function() {
             var after_getting_back_to_citizens_list = function() {
                 document.removeEventListener('d2n_gamebody_reload', after_getting_back_to_citizens_list, false);
 
+                console.log(citizens_info);
                 prompt(I18N.get(MODULE_NAME + '_result_prompt'), JSON.stringify(citizens_info));
             };
             document.addEventListener('d2n_gamebody_reload', after_getting_back_to_citizens_list, false);
