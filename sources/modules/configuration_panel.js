@@ -341,9 +341,6 @@ Module.register(function() {
                 '-webkit-column-gap: 20px;' +
                 '-moz-column-gap: 20px;' +
                 'column-gap: 20px;' +
-                // TODO: remove this ugly Webkit fix, mandatory as
-                // -webkit-column-count is bugged
-                '-webkit-margin-after: -45px;' +
             '}' +
 
             '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div.category_container {' +
