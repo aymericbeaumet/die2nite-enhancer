@@ -350,15 +350,11 @@ Module.register(function() {
 
             load: function() {
                 document.addEventListener('d2n_gamebody_reload', function() {
-                    if (!D2N.is_on_page_in_city('citizens')) {
-                        return;
+                    if (D2N.is_on_page_in_city('citizens')) {
+                        if (!JS.is_defined(document.getElementById(EXTRACT_CITIZENS_DATA_BUTTON_ID))) {
+                            inject_button();
+                        }
                     }
-
-                    if (JS.is_defined(document.getElementById(EXTRACT_CITIZENS_DATA_BUTTON_ID))) {
-                        return;
-                    }
-
-                    inject_button();
                 }, false);
             }
         }
