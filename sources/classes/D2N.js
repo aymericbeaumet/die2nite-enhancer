@@ -528,6 +528,23 @@ var D2N = (function() {
                     }
                 });
             }, 5);
+        },
+
+        /**
+         * Redirect to a citizen soul.
+         * @param integer citizen_id
+         * @param string random (optional) A random string to be appended
+         */
+        redirect_to_citizen_soul: function(citizen_id, random)
+        {
+            D2N.get_session_key(function(session_key) {
+                var url = '/#ghost/city?go=ghost/user?uid=' + citizen_id + ';sk=' + session_key;
+                if (typeof random === 'string' && random.length > 0) {
+                    url += '?' + random;
+                }
+                console.log('REDIRECT TO: "' + url + '"');
+                JS.redirect(url);
+            });
         }
 
     };
