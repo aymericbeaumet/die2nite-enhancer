@@ -542,7 +542,6 @@ var D2N = (function() {
                 if (typeof random === 'string' && random.length > 0) {
                     url += '?' + random;
                 }
-                console.log('REDIRECT TO: "' + url + '"');
                 JS.redirect(url);
             });
         }
