@@ -6,7 +6,7 @@ Module.register(function() {
      * Module context *
      ******************/
 
-    var EXTRACT_CITIZENS_DATA_BUTTON_ID = 'd2ne_extract_citizen_data';
+    var EXTRACT_BUTTON_ID = 'd2ne_extract_citizen_data';
 
     var SOUL_TIMEOUT = 5000; //ms
 
@@ -18,14 +18,16 @@ Module.register(function() {
         var i18n = {};
 
         i18n[I18N.LANG.EN] = {};
-        i18n[I18N.LANG.EN][MODULE_NAME + '_activation_button_citizens_list'] = 'Extract alive citizens data';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_extract_alive_citizens_data_button_text'] = 'Extract alive citizens data';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_extract_soul_data_button_text'] = 'Extract the soul data';
         i18n[I18N.LANG.EN][MODULE_NAME + '_warning'] = 'This could take some time, please do not stop the process. Do you want to continue?';
         i18n[I18N.LANG.EN][MODULE_NAME + '_work_in_progress'] = 'Work in progress...';
         i18n[I18N.LANG.EN][MODULE_NAME + '_citizen'] = 'Citizen';
         i18n[I18N.LANG.EN][MODULE_NAME + '_result_notif'] = 'Results:';
 
         i18n[I18N.LANG.FR] = {};
-        i18n[I18N.LANG.FR][MODULE_NAME + '_activation_button_citizens_list'] = 'Extraire les données des citoyens vivants';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_extract_alive_citizens_button_text'] = 'Extraire les données des citoyens vivants';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_extract_soul_data_button_text'] = 'Extraire les données de l\'âme';
         i18n[I18N.LANG.FR][MODULE_NAME + '_warning'] = 'Cette opération peut prendre quelques temps, merci de ne pas interrompre le processus. Voulez-vous continuer ?';
         i18n[I18N.LANG.FR][MODULE_NAME + '_work_in_progress'] = 'Récupération en cours...';
         i18n[I18N.LANG.FR][MODULE_NAME + '_citizen'] = 'Citoyen';
@@ -194,7 +196,9 @@ Module.register(function() {
             var ret = {};
             ret.D2NEVersion = '<%= version %>';
             ret.rootURL = window.location.host;
-            ret.id = parseInt(citizen_id);
+            if (citizen_id) {
+                ret.id = parseInt(citizen_id);
+            }
             ret.time = Math.floor(new Date() / 1000);
 
             extract_username(ret, function next() {
@@ -232,15 +236,21 @@ Module.register(function() {
             });
         };
 
-        // If timeout is reached, try to extract the data again
-        timeout = setTimeout(function() {
-            document.removeEventListener('d2n_gamebody_reload', listener);
-            extract_citizen_info(citizen_id, on_finish);
-        }, SOUL_TIMEOUT);
+        if (citizen_id) {
+            // If timeout is reached, try to extract the data again
+            timeout = setTimeout(function() {
+                document.removeEventListener('d2n_gamebody_reload', listener);
+                extract_citizen_info(citizen_id, on_finish);
+            }, SOUL_TIMEOUT);
 
-        document.addEventListener('d2n_gamebody_reload', listener, false);
-        D2N.redirect_to_citizen_soul(citizen_id, '' + (Math.floor(new Date() / 1000)));
+            document.addEventListener('d2n_gamebody_reload', listener, false);
+            D2N.redirect_to_citizen_soul(citizen_id, '' + (Math.floor(new Date() / 1000)));
+        } else {
+            listener();
+        }
     }
+
+    /****/
 
     function extract_citizens_info(citizens_id, onFinish)
     {
@@ -281,7 +291,24 @@ Module.register(function() {
         return ret;
     }
 
-    function on_button_click()
+    /****/
+
+    function on_soul_button_click()
+    {
+        D2N.notification(I18N.get(MODULE_NAME + '_work_in_progress'));
+
+        extract_citizen_info(null, function(citizen_info) {
+            D2N.notification(JS.jsonToDOM(['div', {},
+                I18N.get(MODULE_NAME + '_result_notif'),
+                ['textarea', { onclick: 'this.select()',
+                               style: 'width: 100%; max-width: 100%; height: initial; margin: 0 auto; margin-top: 5px; margin-bottom: 3px; padding: 0;' },
+                    JSON.stringify(citizen_info)
+                ]
+            ], document));
+        });
+    }
+
+    function on_town_citizens_button_click()
     {
         if (confirm(I18N.get(MODULE_NAME + '_warning')) === false) {
             return;
@@ -308,20 +335,28 @@ Module.register(function() {
         });
     }
 
-    function get_button()
+    /****/
+
+    function get_button(i18n_key, on_click)
     {
-        return JS.jsonToDOM(["a", { id: EXTRACT_CITIZENS_DATA_BUTTON_ID, class: "button",
-                                    onclick: on_button_click },
+        return JS.jsonToDOM(["a", { id: EXTRACT_BUTTON_ID, class: "button",
+                                    onclick: on_click },
             ["img", { "src": "/gfx/icons/item_book_gen_letter.gif" }],
-            ' ' + I18N.get(MODULE_NAME + '_activation_button_citizens_list')
+            ' ' + I18N.get(MODULE_NAME + i18n_key)
         ], document);
     }
 
-    function inject_button()
+    function inject_soul_button()
     {
-        // Add notifier
+        JS.wait_for_selector('div.footSearch', function(el) {
+            el.parentNode.insertBefore(get_button('_extract_soul_data_button_text', on_soul_button_click), el);
+        });
+    }
+
+    function inject_town_citizens_button()
+    {
         JS.wait_for_selector('div.citizens', function(el) {
-            el.appendChild(get_button());
+            el.appendChild(get_button('_extract_alive_citizens_data_button_text', on_town_citizens_button_click));
         });
     }
 
@@ -350,10 +385,14 @@ Module.register(function() {
 
             load: function() {
                 document.addEventListener('d2n_gamebody_reload', function() {
+                    if (JS.is_defined(document.getElementById(EXTRACT_BUTTON_ID))) {
+                        return;
+                    }
+
                     if (D2N.is_on_page_in_city('citizens')) {
-                        if (!JS.is_defined(document.getElementById(EXTRACT_CITIZENS_DATA_BUTTON_ID))) {
-                            inject_button();
-                        }
+                        inject_town_citizens_button();
+                    } else if (/^#ghost\/city\?go=ghost\/user(?:\?uid=\d+)?;sk=/.test(window.location.hash)) {
+                        inject_soul_button();
                     }
                 }, false);
             }

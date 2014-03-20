@@ -574,6 +574,9 @@ var D2N = (function() {
             // Get the notification container
             var notif_container = document.getElementById('notification');
 
+            // Scroll to the top
+            scroll(0, 0);
+
             // Display the notification
             notif_container.classList.add('showNotif');
         }
