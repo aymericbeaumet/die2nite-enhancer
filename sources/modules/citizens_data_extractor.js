@@ -20,14 +20,16 @@ Module.register(function() {
         i18n[I18N.LANG.EN] = {};
         i18n[I18N.LANG.EN][MODULE_NAME + '_extract_alive_citizens_data_button_text'] = 'Extract alive citizens data';
         i18n[I18N.LANG.EN][MODULE_NAME + '_extract_soul_data_button_text'] = 'Extract the soul data';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_extract_game_history_button_text'] = 'Extract citizens data';
         i18n[I18N.LANG.EN][MODULE_NAME + '_warning'] = 'This could take some time, please do not stop the process. Do you want to continue?';
         i18n[I18N.LANG.EN][MODULE_NAME + '_work_in_progress'] = 'Work in progress...';
         i18n[I18N.LANG.EN][MODULE_NAME + '_citizen'] = 'Citizen';
         i18n[I18N.LANG.EN][MODULE_NAME + '_result_notif'] = 'Results:';
 
         i18n[I18N.LANG.FR] = {};
-        i18n[I18N.LANG.FR][MODULE_NAME + '_extract_alive_citizens_button_text'] = 'Extraire les données des citoyens vivants';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_extract_alive_citizens_data_button_text'] = 'Extraire les données des citoyens vivants';
         i18n[I18N.LANG.FR][MODULE_NAME + '_extract_soul_data_button_text'] = 'Extraire les données de l\'âme';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_extract_game_history_button_text'] = 'Extract les données des citoyens';
         i18n[I18N.LANG.FR][MODULE_NAME + '_warning'] = 'Cette opération peut prendre quelques temps, merci de ne pas interrompre le processus. Voulez-vous continuer ?';
         i18n[I18N.LANG.FR][MODULE_NAME + '_work_in_progress'] = 'Récupération en cours...';
         i18n[I18N.LANG.FR][MODULE_NAME + '_citizen'] = 'Citoyen';
@@ -237,9 +239,16 @@ Module.register(function() {
         };
 
         if (citizen_id) {
-            // If timeout is reached, try to extract the data again
+            // If timeout is reached, try to extract the data again. Except if
+            // the account is deleted
             timeout = setTimeout(function() {
                 document.removeEventListener('d2n_gamebody_reload', listener);
+
+                // If the account is deleted, abort
+                if (document.querySelector('.tid_noTid') !== null) {
+                    return on_finish(null);
+                }
+
                 extract_citizen_info(citizen_id, on_finish);
             }, SOUL_TIMEOUT);
 
@@ -267,16 +276,20 @@ Module.register(function() {
                 I18N.get(MODULE_NAME + '_citizen') + ' ' + (i + 1) + '/' + max);
 
             extract_citizen_info(citizens_id[i], function(citizen_info) {
-                ret.push(citizen_info);
+                if (citizen_info !== null) {
+                    ret.push(citizen_info);
+                }
                 handler(i + 1);
             });
         };
         handler(0);
     }
 
-    function extract_citizens_id()
+    /****/
+
+    function extract_citizens_id(selector)
     {
-        var citizens_link = document.querySelectorAll('a.tid_user[href^="/#ghost/city?go=ghost/user?uid="]');
+        var citizens_link = document.querySelectorAll(selector);
         var ret = [];
         var regex = /uid=(\d+)/;
         var regex_results;
@@ -308,7 +321,7 @@ Module.register(function() {
         });
     }
 
-    function on_town_citizens_button_click()
+    function on_citizens_list_button_click(selector, final_redirection)
     {
         if (confirm(I18N.get(MODULE_NAME + '_warning')) === false) {
             return;
@@ -316,7 +329,7 @@ Module.register(function() {
 
         D2N.notification(I18N.get(MODULE_NAME + '_work_in_progress'));
 
-        var citizens_id = extract_citizens_id();
+        var citizens_id = extract_citizens_id(selector);
         extract_citizens_info(citizens_id, function(citizens_info) {
 
             var after_getting_back_to_citizens_list = function() {
@@ -331,19 +344,28 @@ Module.register(function() {
             };
             document.addEventListener('d2n_gamebody_reload', after_getting_back_to_citizens_list, false);
 
-            D2N.go_to_city_page('citizens');
+            JS.redirect(final_redirection);
         });
     }
 
     /****/
 
-    function get_button(i18n_key, on_click)
+    function get_button(i18n_key, on_click, style)
     {
-        return JS.jsonToDOM(["a", { id: EXTRACT_BUTTON_ID, class: "button",
+        return JS.jsonToDOM(["a", { id: EXTRACT_BUTTON_ID, class: "button", style: '' + style,
                                     onclick: on_click },
             ["img", { "src": "/gfx/icons/item_book_gen_letter.gif" }],
             ' ' + I18N.get(MODULE_NAME + i18n_key)
         ], document);
+    }
+
+    function inject_game_history_button()
+    {
+        JS.wait_for_selector('div.ghost div.footer', function(el) {
+            el.appendChild(get_button('_extract_game_history_button_text', function() {
+                on_citizens_list_button_click('td.name > a[href^="#ghost/user?uid="]', window.location.hash);
+            }, 'margin-left: 30px;'));
+        });
     }
 
     function inject_soul_button()
@@ -356,7 +378,9 @@ Module.register(function() {
     function inject_town_citizens_button()
     {
         JS.wait_for_selector('div.citizens', function(el) {
-            el.appendChild(get_button('_extract_alive_citizens_data_button_text', on_town_citizens_button_click));
+            el.appendChild(get_button('_extract_alive_citizens_data_button_text', function() {
+                on_citizens_list_button_click('a.tid_user[href^="/#ghost/city?go=ghost/user?uid="]', window.location.hash);
+            }));
         });
     }
 
@@ -393,6 +417,8 @@ Module.register(function() {
                         inject_town_citizens_button();
                     } else if (/^#ghost\/city\?go=ghost\/user(?:\?uid=\d+)?;sk=/.test(window.location.hash)) {
                         inject_soul_button();
+                    } else if (/^#ghost\/city\?go=ghost\/ingame\?id=\d+;sk=/.test(window.location.hash)) {
+                        inject_game_history_button();
                     }
                 }, false);
             }
