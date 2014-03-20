@@ -616,6 +616,18 @@ var JS = (function() {
             return !JS.regex_test(regex, uri);
         },
 
+        /**
+         * Delete all the children of the given node.
+         * @link http://stackoverflow.com/a/3955238/1071486
+         * @param DOMElement node
+         */
+        delete_all_children: function(node)
+        {
+            while (node.firstChild) {
+                node.removeChild(node.firstChild);
+            }
+        },
+
         jsonToDOM: jsonToDOM
 
     };

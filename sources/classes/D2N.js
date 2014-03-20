@@ -544,6 +544,28 @@ var D2N = (function() {
                 }
                 JS.redirect(url);
             });
+        },
+
+        /**
+         * Display a notification in the native D2N way.
+         * @param DOMElement el The element to insert in the notification
+         */
+        notification: function(newElement)
+        {
+            // Get notification div
+            var notif = document.getElementById('notificationText');
+
+            // Empty it
+            JS.delete_all_children(notif);
+
+            // Add the new content
+            notif.appendChild(newElement);
+
+            // Get the notification container
+            var notif_container = document.getElementById('notification');
+
+            // Display the notification
+            notif_container.classList.add('showNotif');
         }
 
     };

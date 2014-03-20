@@ -20,12 +20,12 @@ Module.register(function() {
         i18n[I18N.LANG.EN] = {};
         i18n[I18N.LANG.EN][MODULE_NAME + '_activation_button_citizens_list'] = 'Extract alive citizens data';
         i18n[I18N.LANG.EN][MODULE_NAME + '_warning'] = 'This could take some time, please do not stop the process. Do you want to continue?';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_result_prompt'] = 'Below are the data of the town citizens:';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_result_notif'] = 'Below are the data of the town citizens:';
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_activation_button_citizens_list'] = 'Extraire les données des citoyens vivants';
         i18n[I18N.LANG.FR][MODULE_NAME + '_warning'] = 'Cette opération peut prendre quelques temps, merci de ne pas interrompre le processus. Voulez-vous continuer ?';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_result_prompt'] = 'Voici les données des citoyens en ville :';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_result_notif'] = 'Voici les données des citoyens en ville :';
 
         I18N.set(i18n);
     }
@@ -284,7 +284,13 @@ Module.register(function() {
 
             var after_getting_back_to_citizens_list = function() {
                 document.removeEventListener('d2n_gamebody_reload', after_getting_back_to_citizens_list, false);
-                prompt(I18N.get(MODULE_NAME + '_result_prompt'), JSON.stringify(citizens_info));
+                D2N.notification(JS.jsonToDOM(['div', {},
+                    I18N.get(MODULE_NAME + '_result_notif'),
+                    ['textarea', { onclick: 'this.select()',
+                                   style: 'width: 100%; max-width: 100%; height: initial; margin: 0 auto; margin-top: 5px; margin-bottom: 3px; padding: 0;' },
+                        JSON.stringify(citizens_info)
+                    ]
+                ], document));
             };
             document.addEventListener('d2n_gamebody_reload', after_getting_back_to_citizens_list, false);
 
