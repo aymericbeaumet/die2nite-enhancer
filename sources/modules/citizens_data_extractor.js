@@ -20,12 +20,16 @@ Module.register(function() {
         i18n[I18N.LANG.EN] = {};
         i18n[I18N.LANG.EN][MODULE_NAME + '_activation_button_citizens_list'] = 'Extract alive citizens data';
         i18n[I18N.LANG.EN][MODULE_NAME + '_warning'] = 'This could take some time, please do not stop the process. Do you want to continue?';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_result_notif'] = 'Below are the data of the town citizens:';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_work_in_progress'] = 'Work in progress...';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_citizen'] = 'Citizen';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_result_notif'] = 'Results:';
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_activation_button_citizens_list'] = 'Extraire les données des citoyens vivants';
         i18n[I18N.LANG.FR][MODULE_NAME + '_warning'] = 'Cette opération peut prendre quelques temps, merci de ne pas interrompre le processus. Voulez-vous continuer ?';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_result_notif'] = 'Voici les données des citoyens en ville :';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_work_in_progress'] = 'Récupération en cours...';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_citizen'] = 'Citoyen';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_result_notif'] = 'Résultats :';
 
         I18N.set(i18n);
     }
@@ -248,6 +252,10 @@ Module.register(function() {
                 return onFinish(ret);
             }
 
+            // Notify of the progress
+            D2N.notification(I18N.get(MODULE_NAME + '_work_in_progress') + ' ' +
+                I18N.get(MODULE_NAME + '_citizen') + ' ' + (i + 1) + '/' + max);
+
             extract_citizen_info(citizens_id[i], function(citizen_info) {
                 ret.push(citizen_info);
                 handler(i + 1);
@@ -278,6 +286,8 @@ Module.register(function() {
         if (confirm(I18N.get(MODULE_NAME + '_warning')) === false) {
             return;
         }
+
+        D2N.notification(I18N.get(MODULE_NAME + '_work_in_progress'));
 
         var citizens_id = extract_citizens_id();
         extract_citizens_info(citizens_id, function(citizens_info) {

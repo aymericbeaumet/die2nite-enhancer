@@ -548,10 +548,20 @@ var D2N = (function() {
 
         /**
          * Display a notification in the native D2N way.
-         * @param DOMElement el The element to insert in the notification
+         * @param DOMElement el The element to insert in the notification. If a
+         * string is given, it is wrapped into a simple div.
          */
-        notification: function(newElement)
+        notification: function(new_element)
         {
+            var el;
+
+            // Wrapped the new element if needed
+            if (typeof new_element === 'string') {
+                el = JS.jsonToDOM(['div', {}, new_element], document);
+            } else {
+                el = new_element;
+            }
+
             // Get notification div
             var notif = document.getElementById('notificationText');
 
@@ -559,7 +569,7 @@ var D2N = (function() {
             JS.delete_all_children(notif);
 
             // Add the new content
-            notif.appendChild(newElement);
+            notif.appendChild(el);
 
             // Get the notification container
             var notif_container = document.getElementById('notification');
