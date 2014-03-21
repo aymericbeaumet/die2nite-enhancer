@@ -25,15 +25,17 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_work_in_progress'] = 'Work in progress...';
         i18n[I18N.LANG.EN][MODULE_NAME + '_citizen'] = 'Citizen';
         i18n[I18N.LANG.EN][MODULE_NAME + '_result_notif'] = 'Results:';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_use_die2nite_picto_diff'] = 'You can use this results here.';
 
         i18n[I18N.LANG.FR] = {};
-        i18n[I18N.LANG.FR][MODULE_NAME + '_extract_alive_citizens_data_button_text'] = 'Extraire les données des citoyens vivants';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_extract_alive_citizens_data_button_text'] = 'Extraire les données des vivants';
         i18n[I18N.LANG.FR][MODULE_NAME + '_extract_soul_data_button_text'] = 'Extraire les données de l\'âme';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_extract_game_history_button_text'] = 'Extract les données des citoyens';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_extract_game_history_button_text'] = 'Extraire les données des citoyens';
         i18n[I18N.LANG.FR][MODULE_NAME + '_warning'] = 'Cette opération peut prendre quelques temps, merci de ne pas interrompre le processus. Voulez-vous continuer ?';
         i18n[I18N.LANG.FR][MODULE_NAME + '_work_in_progress'] = 'Récupération en cours...';
         i18n[I18N.LANG.FR][MODULE_NAME + '_citizen'] = 'Citoyen';
         i18n[I18N.LANG.FR][MODULE_NAME + '_result_notif'] = 'Résultats :';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_use_die2nite_picto_diff'] = 'Vous pouvez utiliser ces résultats ici.';
 
         I18N.set(i18n);
     }
@@ -316,6 +318,9 @@ Module.register(function() {
                 ['textarea', { onclick: 'this.select()',
                                style: 'width: 100%; max-width: 100%; height: initial; margin: 0 auto; margin-top: 5px; margin-bottom: 3px; padding: 0;' },
                     JSON.stringify(citizen_info)
+                ],
+                ['a', { href: 'http://beaumet.me/die2nite_picto_diff/', target: '_blank' },
+                    I18N.get(MODULE_NAME + '_use_die2nite_picto_diff')
                 ]
             ], document));
         });
@@ -339,6 +344,9 @@ Module.register(function() {
                     ['textarea', { onclick: 'this.select()',
                                    style: 'width: 100%; max-width: 100%; height: initial; margin: 0 auto; margin-top: 5px; margin-bottom: 3px; padding: 0;' },
                         JSON.stringify(citizens_info)
+                    ],
+                    ['a', { href: 'http://beaumet.me/die2nite_picto_diff/', target: '_blank' },
+                        I18N.get(MODULE_NAME + '_use_die2nite_picto_diff')
                     ]
                 ], document));
             };
