@@ -315,7 +315,7 @@ Module.register(function() {
         extract_citizen_info(null, function(citizen_info) {
             D2N.notification(JS.jsonToDOM(['div', {},
                 I18N.get(MODULE_NAME + '_result_notif'),
-                ['textarea', { onclick: 'this.select()',
+                ['textarea', { readonly: '', onclick: 'this.select()',
                                style: 'width: 100%; max-width: 100%; height: initial; margin: 0 auto; margin-top: 5px; margin-bottom: 3px; padding: 0;' },
                     JSON.stringify(citizen_info)
                 ],
@@ -341,7 +341,7 @@ Module.register(function() {
                 document.removeEventListener('d2n_gamebody_reload', after_getting_back_to_citizens_list, false);
                 D2N.notification(JS.jsonToDOM(['div', {},
                     I18N.get(MODULE_NAME + '_result_notif'),
-                    ['textarea', { onclick: 'this.select()',
+                    ['textarea', { readonly: '', onclick: 'this.select()',
                                    style: 'width: 100%; max-width: 100%; height: initial; margin: 0 auto; margin-top: 5px; margin-bottom: 3px; padding: 0;' },
                         JSON.stringify(citizens_info)
                     ],
