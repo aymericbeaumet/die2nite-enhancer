@@ -329,6 +329,26 @@ module.exports = function(grunt) {
                         filter: "isFile",
                         expand: true,
                         flatten: true
+                    },
+                    {
+                        src: path.join(config.iconsDir, "icon32.png"),
+                        dest: path.join(config.safari.workingDir, "Icon-32.png")
+                    },
+                    {
+                        src: path.join(config.iconsDir, "icon48.png"),
+                        dest: path.join(config.safari.workingDir, "Icon-48.png")
+                    },
+                    {
+                        src: path.join(config.iconsDir, "icon64.png"),
+                        dest: path.join(config.safari.workingDir, "Icon-64.png")
+                    },
+                    {
+                        src: path.join(config.iconsDir, "icon96.png"),
+                        dest: path.join(config.safari.workingDir, "Icon-96.png")
+                    },
+                    {
+                        src: path.join(config.iconsDir, "icon128.png"),
+                        dest: path.join(config.safari.workingDir, "Icon-128.png")
                     }
                 ]
             }
