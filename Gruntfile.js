@@ -279,6 +279,13 @@ module.exports = function(grunt) {
                         filter: "isFile",
                         expand: true,
                         flatten: true
+                    },
+                    {
+                        cwd: config.iconsDir,
+                        src: ["icon48.png", "icon64.png"],
+                        dest: config.firefox.workingDir,
+                        filter: "isFile",
+                        expand: true
                     }
                 ]
             },
