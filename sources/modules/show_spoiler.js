@@ -49,7 +49,7 @@ Module.register(function() {
 
         actions: {
             can_run: function() {
-                return true;
+                return !D2NE.is_restricted_mode();
             },
 
             init: function() {
