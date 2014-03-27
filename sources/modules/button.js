@@ -18,10 +18,12 @@ Module.register(function() {
         i18n[I18N.LANG.EN] = {};
         i18n[I18N.LANG.EN][MODULE_NAME + '_description'] = 'Die2Nite Enhancer allows you to enhance your game experience.';
         i18n[I18N.LANG.EN][MODULE_NAME + '_configuration_panel_button'] = 'Configuration Panel';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_contact_button'] = 'Contact the developer';
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_description'] = 'Die2Nite Enhancer vous permet d\'améliorer votre expérience de jeu.';
         i18n[I18N.LANG.FR][MODULE_NAME + '_configuration_panel_button'] = 'Panneau de configuration';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_contact_button'] = 'Contacter le développeur';
 
         I18N.set(i18n);
     }
@@ -95,7 +97,8 @@ Module.register(function() {
 
             ["div", {},
                 ["p", {}, I18N.get(MODULE_NAME + '_description')],
-                ["a", { class: "button", href: '/' + D2NE_CONFIG_HASH }, I18N.get(MODULE_NAME + '_configuration_panel_button') ]
+                ["a", { class: "button", href: '/' + D2NE_CONFIG_HASH }, I18N.get(MODULE_NAME + '_configuration_panel_button') ],
+                ["a", { class: "button", href: 'mailto:aymeric@beaumet.me?Subject=[D2NE]%20' }, I18N.get(MODULE_NAME + '_contact_button') ]
             ]
         ], document);
 
