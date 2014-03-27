@@ -1,6 +1,6 @@
 Module.register(function() {
 
-    var MODULE_NAME = 'configuration_panel';
+    var MODULE_NAME = 'button';
 
     /******************
      * Module context *
@@ -16,14 +16,26 @@ Module.register(function() {
         var i18n = {};
 
         i18n[I18N.LANG.EN] = {};
+        i18n[I18N.LANG.EN][MODULE_NAME + '_title'] = 'Die2Nite Enhancer';
         i18n[I18N.LANG.EN][MODULE_NAME + '_description'] = 'Die2Nite Enhancer allows you to enhance your game experience.';
         i18n[I18N.LANG.EN][MODULE_NAME + '_configuration_panel_button'] = 'Configuration Panel';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_contact_button'] = 'Contact the developer';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_contact_link'] = 'Contact the developer';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_support_link'] = 'Support the developer';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_bug_tracker_link'] = 'Bug tracker';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_license_link'] = 'License';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_version'] = 'Version';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_google_chrome_link'] = 'Google Chrome';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_firefox_link'] = 'Mozilla Firefox';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_opera_link'] = 'Opera';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_safari_link'] = 'Safari';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_userscript_link'] = 'Userscript';
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_description'] = 'Die2Nite Enhancer vous permet d\'améliorer votre expérience de jeu.';
         i18n[I18N.LANG.FR][MODULE_NAME + '_configuration_panel_button'] = 'Panneau de configuration';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_contact_button'] = 'Contacter le développeur';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_contact_link'] = 'Contacter le développeur';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_support_link'] = 'Supporter le développeur';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_version'] = 'Version';
 
         I18N.set(i18n);
     }
@@ -81,8 +93,53 @@ Module.register(function() {
                 'display: block;' +
             '}' +
 
+            '#d2ne_button p {' +
+                'margin: 0;' +
+            '}' +
+
+            '#d2ne_button ul {' +
+                'margin: 0;' +
+                'padding: 0;' +
+                'list-style: none;' +
+                'margin-bottom: 8px;' +
+                'font-size: 13px;' +
+            '}' +
+
+            '#d2ne_button ul li {' +
+                'margin: 0;' +
+                'padding: 0;' +
+            '}' +
+
+            '#d2ne_button li img {' +
+                'width: 16px;' +
+                'height: 16px;' +
+                'margin-right: 5px;' +
+                'vertical-align: -11%;' +
+            '}' +
+
+            '#d2ne_button li a {' +
+                'display: block;' +
+                'width: 205px;' +
+                'height: 18px;' +
+                'overflow: hidden;' +
+                'text-decoration: none;' +
+            '}' +
+            '#d2ne_button li a:hover {' +
+                'background-color: #696486;' +
+            '}' +
+
+            '#d2ne_button li a span {' +
+                'text-decoration: underline;' +
+            '}' +
+
             '#d2ne_button a.button {' +
-                'margin-bottom: 4px;' +
+                'margin: 0 auto;' +
+            '}' +
+
+            '#d2ne_button hr {' +
+                'margin: 0;' +
+                'margin: 10px 0;' +
+                'border-bottom: 1px solid rgba(148, 87, 52, 0.21);' +
             '}'
         );
     }
@@ -97,8 +154,45 @@ Module.register(function() {
 
             ["div", {},
                 ["p", {}, I18N.get(MODULE_NAME + '_description')],
+
+                ["hr", {}],
+
                 ["a", { class: "button", href: '/' + D2NE_CONFIG_HASH }, I18N.get(MODULE_NAME + '_configuration_panel_button') ],
-                ["a", { class: "button", href: 'mailto:aymeric@beaumet.me?Subject=[D2NE]%20' }, I18N.get(MODULE_NAME + '_contact_button') ]
+
+                ["hr", {}],
+
+                ["ul", {},
+                    ["li", {},
+                        ["a", { href: 'mailto:aymeric@beaumet.me?Subject=[D2NE]%20' },
+                            ["img", { src: '/gfx/icons/small_mail.gif' }],
+                            ["span", {}, I18N.get(MODULE_NAME + '_contact_link')]
+                        ]
+                    ],
+                    ["li", {},
+                        ["a", { href: 'https://www.gittip.com/aymericbeaumet/', target: '_blank' },
+                            ["img", { src: '/gfx/icons/item_fest.gif' }],
+                            ["span", {}, I18N.get(MODULE_NAME + '_support_link')]
+                        ]
+                    ],
+                    ["li", {},
+                        ["a", { href: '<%= bugs.url %>', target: '_blank' },
+                            ["img", { src: '/gfx/icons/small_rocket.gif' }],
+                            ["span", {}, I18N.get(MODULE_NAME + '_bug_tracker_link')]
+                        ]
+                    ],
+                    ["li", {},
+                        ["a", { href: '<%= licenses[0].url %>', target: '_blank' },
+                            ["img", { src: '/gfx/icons/small_nice_lock.gif' }],
+                            ["span", {}, I18N.get(MODULE_NAME + '_license_link')]
+                        ]
+                    ],
+                    ["li", {},
+                        ["a", { href: '<%= homepage %>', target: '_blank' },
+                            ["img", { src: (D2NE.is_restricted_mode() ? '/gfx/icons/item_tamed_pet.gif' : '/gfx/icons/item_tamed_pet_drug.gif') }],
+                            ["span", {}, I18N.get(MODULE_NAME + '_version') + ' <%= version %>']
+                        ]
+                    ]
+                ]
             ]
         ], document);
 
