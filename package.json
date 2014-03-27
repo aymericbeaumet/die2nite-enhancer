@@ -18,7 +18,7 @@
   "licenses": [
     {
       "type": "zlib/libpng",
-      "url": "https://github.com/aymericbeaumet/die2nite_enhancer/blob/master/LICENSE"
+      "url": "http://opensource.org/licenses/Zlib"
     }
   ],
   "scripts": {

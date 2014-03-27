@@ -1,7 +1,10 @@
-v0.2.1
-- Fix bank anti-abuse on stacked objects
+v0.2.2
 - Add Firefox icon
 - Add Safari icon
+- The configuration panel is no longer a popup
+
+v0.2.1
+- Fix bank anti-abuse on stacked objects
 
 v0.2.0
 - The RP content is now properly hidden again

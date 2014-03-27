@@ -6,6 +6,8 @@ Module.register(function() {
      * Module context *
      ******************/
 
+    var D2NE_CONFIG_HASH = '#d2ne/configuration';
+
     /**
      * Inject in the input field to store the corresponding module name.
      */
@@ -17,12 +19,6 @@ Module.register(function() {
     var INPUT_DATA_MODULE_PROPERTY_KEY = 'data-module-property';
 
     /**
-     * The node where the module configuration div have to be inserted. This
-     * variable is filled during the loading.
-     */
-    var configuration_panel_extensible_zone_node_ = null;
-
-    /**
      * Add the i18n strings for this module.
      */
     function add_i18n()
@@ -30,8 +26,7 @@ Module.register(function() {
         var i18n = {};
 
         i18n[I18N.LANG.EN] = {};
-        i18n[I18N.LANG.EN][MODULE_NAME + '_title'] = 'Die2Nite Enhancer - Settings';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_description'] = 'Die2Nite Enhancer allows you to enhance your game experience, every features can be controlled from this panel.';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_title'] = 'D2NE - Configuration Panel';
         i18n[I18N.LANG.EN][MODULE_NAME + '_help_image_url'] = '/gfx/loc/en/helpLink.gif';
         i18n[I18N.LANG.EN][MODULE_NAME + '_general_category'] = 'General';
         i18n[I18N.LANG.EN][MODULE_NAME + '_bank_category'] = 'Bank';
@@ -45,8 +40,7 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_save_button'] = 'Save';
 
         i18n[I18N.LANG.FR] = {};
-        i18n[I18N.LANG.FR][MODULE_NAME + '_title'] = 'Die2Nite Enhancer - Paramètres';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_description'] = 'Die2Nite Enhancer vous permet d\'améliorer votre expérience de jeu, toutes les fonctionnalités peuvent être controlées depuis ce panneau de configuration.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_title'] = 'D2NE - Panneau de configuration';
         i18n[I18N.LANG.FR][MODULE_NAME + '_help_image_url'] = '/gfx/loc/fr/helpLink.gif';
         i18n[I18N.LANG.FR][MODULE_NAME + '_general_category'] = 'Général';
         i18n[I18N.LANG.FR][MODULE_NAME + '_bank_category'] = 'Banque';
@@ -66,6 +60,64 @@ Module.register(function() {
         i18n[I18N.LANG.DE][MODULE_NAME + '_help_image_url'] = '/gfx/loc/de/helpLink.gif';
 
         I18N.set(i18n);
+    }
+
+    /**
+     * Called after a successfull save. Basically redirect the user to the
+     * appropriate page.
+     */
+    function after_save()
+    {
+        var current_domain_regex = new RegExp('^http://' + window.location.host);
+
+        // if a previous page exist and is on the same domain, go for it
+        if (document.referrer && current_domain_regex.test(document.referrer)) {
+            window.history.back();
+
+        // else reload the current page
+        } else {
+            JS.reload();
+        }
+    }
+
+    /**
+     * Fetch the configuration from the configuration panel and inject it in the
+     * local storage.
+     */
+    function save_configuration()
+    {
+        var configuration_panel = document.getElementById('d2ne_configuration_panel');
+
+        for (var i = 0, max = configuration_panel.childElementCount; i < max; i += 1) {
+            var el = configuration_panel.childNodes[i];
+
+            // skip if not div
+            if (el.tagName !== 'DIV') {
+                continue;
+            }
+
+            // Grab input dom element
+            var input_node = el.firstChild;
+            var module_name = input_node.getAttribute(INPUT_DATA_MODULE_KEY);
+            var module = Module.get(module_name);
+            var property = input_node.getAttribute(INPUT_DATA_MODULE_PROPERTY_KEY);
+
+            // Get the value
+            var input_data;
+            switch (module.configurable[property].type) {
+                case Module.PROPERTY.BOOLEAN:
+                    input_data = input_node.checked;
+                    break;
+
+                default:
+                    input_data = null;
+                    break;
+            }
+
+            // Inject it into the object and save
+            module.properties[property] = input_data;
+            module.save_properties();
+        }
     }
 
     /**
@@ -123,9 +175,9 @@ Module.register(function() {
     }
 
     /**
-     * Load the modules in the configuration panel.
+     * Get and sort the modules into categories.
      */
-    function load_modules_in_configuration_panel()
+    function get_modules_json_in_categories()
     {
         var categories = {};
 
@@ -185,252 +237,103 @@ Module.register(function() {
             });
         });
 
-        // Iterate over categories and insert
+        return categories;
+    }
+
+    function insert_configuration_panel_dom()
+    {
+        var configuration_panel_json = ["div", { id: "d2ne_configuration_panel" }];
+
+        configuration_panel_json.push(['h1', {}, I18N.get(MODULE_NAME + '_title')]);
+
+        // Iterate over each module in each category
+        var categories = get_modules_json_in_categories();
         Module.PROPERTY_CATEGORY_PRIORITY_ORDER.forEach(function(category_name) {
             var category_id = Module.PROPERTY_CATEGORY[category_name];
             var category = categories[category_id];
-            var category_container = JS.jsonToDOM(["div", { class: "category_container" }], document);
 
             if (!JS.is_defined(category)) {
                 return;
             }
 
-            category_container.appendChild(JS.jsonToDOM(get_category_title(category_id), document));
+            configuration_panel_json.push(get_category_title(category_id));
 
             category.forEach(function(json_node) {
-                category_container.appendChild(JS.jsonToDOM(json_node, document));
+                configuration_panel_json.push(json_node);
             });
-            configuration_panel_extensible_zone_node_.appendChild(category_container);
+        });
+
+        configuration_panel_json.push(
+            ["a", { href: "javascript:void(0)", class: "button", onclick: function() { save_configuration(); after_save(); } },
+                I18N.get(MODULE_NAME + '_save_button')
+            ]
+        );
+
+        JS.wait_for_id('gameBodyLight', function(node) {
+            JS.delete_all_children(node);
+            node.appendChild(JS.jsonToDOM(configuration_panel_json, document));
         });
     }
 
-    /**
-     * Listen for the event dispatched when all the modules are loaded.
-     */
-    function add_callback_when_all_modules_loaded()
-    {
-        // Set a callback when all the modules are loaded
-        document.addEventListener('d2ne_all_modules_loaded', function() {
-            load_modules_in_configuration_panel();
-        });
-    }
-
-    /**
-     * Fetch the configuration from the configuration panel and inject it in the
-     * local storage.
-     */
-    function save_configuration()
-    {
-        var input_node = null;
-        var module = null;
-        var module_name = null;
-        var property = null;
-        var input_data = null;
-        var container_node = null;
-
-        for (var i = 0, maxi = configuration_panel_extensible_zone_node_.childElementCount; i < maxi; i += 1) {
-            // skip if not div
-            if (configuration_panel_extensible_zone_node_.childNodes[i].tagName !== 'DIV') {
-                continue;
-            }
-
-            container_node = configuration_panel_extensible_zone_node_.childNodes[i];
-            for (var j = 0, maxj = container_node.childElementCount; j < maxj; j += 1) {
-                // skip if not div
-                if (container_node.childNodes[j].tagName !== 'DIV') {
-                    continue;
-                }
-
-                input_node = container_node.childNodes[j].firstChild;
-                module_name = input_node.getAttribute(INPUT_DATA_MODULE_KEY);
-                module = Module.get(module_name);
-                property = input_node.getAttribute(INPUT_DATA_MODULE_PROPERTY_KEY);
-
-                // Get the value
-                switch (module.configurable[property].type) {
-                    case Module.PROPERTY.BOOLEAN:
-                        input_data = input_node.checked;
-                        break;
-
-                    default:
-                        input_data = null;
-                        break;
-                }
-
-                // Inject it into the object and save
-                module.properties[property] = input_data;
-                module.save_properties();
-            }
-        }
-    }
-
-    /**
-     * Inject the configuration panel CSS.
-     */
-    function inject_configuration_panel_css()
+    function insert_configuration_panel_style()
     {
         JS.injectCSS(
-
-            '#sites {' +
-                'z-index: 14;' +
-            '}' +
-
             '#d2ne_configuration_panel {' +
-                'z-index: 13;' +
-                'position: absolute;' +
-                'margin-top: 5px;' +
-                'margin-left: 44px;' +
-                'background-color: #5c2b20;' +
-                'border: 1px solid #000000;' +
-                'max-width: 862px;' +
-                'font-size: 0.9em;' +
+                'border: 1px solid #b37c4a;' +
+                'width: 500px;' +
+                'margin: 0 auto;' +
+                'padding: 15px;' +
+                'background: #5C3110;' +
             '}' +
 
-            '#d2ne_configuration_panel > div.wrapper > h1 {' +
-                'height: auto;' +
-                'font-size: 8pt;' +
-                'text-transform: none;' +
-                'font-variant: small-caps;' +
+            '#d2ne_configuration_panel h1 {' +
+                'padding-left: 0;' +
+                'margin: 0 auto;' +
+                'text-align: center;' +
                 'background: none;' +
-                'cursor: help;' +
-                'margin: 0;' +
-                'padding: 0;' +
-            '}' +
-            '#d2ne_configuration_panel:hover > div.wrapper > h1 {' +
-                'border-bottom: 1px solid #b37c4a;' +
-                'margin-bottom: 5px;' +
+                'height: initial;' +
             '}' +
 
-            '#d2ne_configuration_panel > div.wrapper > h1 > span {' +
-                'display: none;' +
-            '}' +
-            '#d2ne_configuration_panel:hover > div.wrapper > h1 > span {' +
-                'display: inline;' +
-            '}' +
-
-            '#d2ne_configuration_panel > div.wrapper {' +
-                'line-height: 23px;' +
-                'border: 1px solid #f0d79e;' +
-                'padding-left: 5px;' +
-                'padding-right: 5px;' +
-            '}' +
-
-            '#d2ne_configuration_panel > div.wrapper > div {' +
-                'display: none;' +
-            '}' +
-            '#d2ne_configuration_panel:hover > div.wrapper > div {' +
-                'display: block;' +
-            '}' +
-
-            '#d2ne_configuration_panel > div.wrapper > div > p {' +
-                'padding-bottom: 7px;' +
-                'margin-bottom: 3px;' +
-                'font-size: 9pt;' +
-                'line-height: 11pt;' +
-                'text-align: justify;' +
-                'border-bottom: 1px dashed #ddab76;' +
-            '}' +
-
-            '#d2ne_configuration_panel > div.wrapper > div > div.extensible {' +
-                '-webkit-column-count: 2;' +
-                '-moz-column-count: 2;' +
-                'column-count: 2;' +
-                '-webkit-column-width: 100%;' +
-                '-moz-column-width: 100%;' +
-                'column-width: 100%;' +
-                '-webkit-column-gap: 20px;' +
-                '-moz-column-gap: 20px;' +
-                'column-gap: 20px;' +
-            '}' +
-
-            '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div.category_container {' +
-                'display: inline-block;' +
-                'width: 100%;' +
-            '}' +
-
-            '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div.category_container > h4 {' +
+            '#d2ne_configuration_panel h4 {' +
                 'text-align: left;' +
-                'border-bottom: 1px dotted rgba(221, 171, 118, 0.8);' +
-                'padding-bottom: 4px;' +
-                'margin-bottom: 4px;' +
-                'margin-top: 5px;' +
+                'padding-top: 4px;' +
+                'padding-bottom: 3px;' +
+                'width: 100%;' +
+                'margin: 0 auto;' +
+                'margin-top: 25px;' +
+                'margin-bottom: 10px;' +
+                'border: 1px dotted rgba(179, 124, 74, 0.5);' +
+                'background-color: rgb(112, 62, 33);' +
             '}' +
-            '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div.category_container > h4 > img {' +
-                'vertical-align: -11%;' +
+
+            '#d2ne_configuration_panel div {' +
+                'margin-bottom: 1px;' +
+            '}' +
+
+            '#d2ne_configuration_panel h4 img {' +
                 'margin-right: 5px;' +
+                'vertical-align: -20%;' +
             '}' +
 
-            '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div.category_container > div {' +
-                'position: relative;' +
-                'line-height: 22px;' +
-            '}' +
-
-            '#d2ne_configuration_panel > div.wrapper > div > div.extensible > div.category_container > div > a.helpLink {' +
-                'position: absolute;' +
-                'bottom: -4px;' +
-                'right: 0;' +
-            '}' +
-
-            '#tooltip {' +
-                'z-index: 15 !important;' +
-                'pointer-events: none;' +
-            '}' +
-
-            '#d2ne_configuration_panel input[type="checkbox"] {' +
-                'margin: 0;' +
-                'margin-left: 2px;' +
-                'margin-right: 4px;' +
-            '}' +
-
-            '#d2ne_configuration_panel > div.wrapper > div > div:last-child {' +
-                'text-align: right;' +
+            '#d2ne_configuration_panel a.helpLink {' +
+                'float: right;' +
             '}' +
 
             '#d2ne_configuration_panel a.button {' +
-                'width: auto;' +
+                'margin: 0 auto;' +
+                'margin-top: 20px;' +
                 'text-align: center;' +
-                'padding: 0;' +
-                'padding-top: 2px;' +
-                'height: 19px;' +
-                'margin: 0;' +
-                'margin-top: 8px;' +
             '}'
         );
     }
 
-    function insert_configuration_panel_dom()
+    function change_page_title()
     {
-        JS.wait_for_id('contentBg', function(node) {
-            var config_panel_div = JS.jsonToDOM(["div", { "id": "d2ne_configuration_panel" },
-                ["div", { "class": "wrapper" },
-                    ["h1", {},
-                        ["img", { "src": "/gfx/forum/smiley/h_city_up.gif", "alt": "" }],
-                        ["span", {}, ' ' + I18N.get(MODULE_NAME + '_title')]
-                    ],
+        var old_title = document.title;
+        var split_title = old_title.split(':');
+        var new_title = split_title[0] + ': ' + I18N.get(MODULE_NAME + '_title');
 
-                    ["div", {},
-                        ["p", {}, I18N.get(MODULE_NAME + '_description')],
-
-                        ["div", { "class": "extensible" }],
-
-                        ["p", {},
-                            ["a", { "href": "javascript:void(0)", "class": "button",
-                                    "onclick": function() { save_configuration(); JS.reload(); } },
-                                I18N.get(MODULE_NAME + '_save_button')]
-                        ],
-
-                        ["div", {},
-                            ["a", { "href": "<%= homepage %>", "target": "_blank" }, "<%= full_name %> v<%= version %>"]
-                        ]
-                    ]
-                ]
-            ], document);
-
-            configuration_panel_extensible_zone_node_ = config_panel_div.childNodes[0].childNodes[1].childNodes[1];
-
-            // Insert panel
-            node.insertBefore(config_panel_div, node.firstChild);
-        });
+        document.title = new_title;
     }
 
     /************************
@@ -452,13 +355,32 @@ Module.register(function() {
             },
 
             init: function() {
-                add_callback_when_all_modules_loaded();
                 add_i18n();
             },
 
             load: function() {
-                inject_configuration_panel_css();
-                insert_configuration_panel_dom();
+                insert_configuration_panel_style();
+
+                // Wait until all the modules are loaded
+                document.addEventListener('d2ne_all_modules_loaded', function() {
+                    // If already on the good page, load the configuration panel
+                    if (window.location.hash === D2NE_CONFIG_HASH) {
+                        change_page_title();
+                        insert_configuration_panel_dom();
+                    }
+
+                    // If loading the configuration panel URL, load it too
+                    window.addEventListener('hashchange', function() {
+                        var listener = function() {
+                            document.removeEventListener('d2n_gamebody_reload', listener, false);
+                            if (window.location.hash === D2NE_CONFIG_HASH) {
+                                change_page_title();
+                                insert_configuration_panel_dom();
+                            }
+                        };
+                        document.addEventListener('d2n_gamebody_reload', listener, false);
+                    }, false);
+                });
             }
         }
 
