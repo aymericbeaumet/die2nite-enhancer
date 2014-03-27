@@ -336,6 +336,12 @@ Module.register(function() {
         document.title = new_title;
     }
 
+    function on_configuration_panel_page()
+    {
+        change_page_title();
+        insert_configuration_panel_dom();
+    }
+
     /************************
      * Module configuration *
      ************************/
@@ -365,8 +371,7 @@ Module.register(function() {
                 document.addEventListener('d2ne_all_modules_loaded', function() {
                     // If already on the good page, load the configuration panel
                     if (window.location.hash === D2NE_CONFIG_HASH) {
-                        change_page_title();
-                        insert_configuration_panel_dom();
+                        on_configuration_panel_page();
                     }
 
                     // If loading the configuration panel URL, load it too
@@ -374,8 +379,7 @@ Module.register(function() {
                         var listener = function() {
                             document.removeEventListener('d2n_gamebody_reload', listener, false);
                             if (window.location.hash === D2NE_CONFIG_HASH) {
-                                change_page_title();
-                                insert_configuration_panel_dom();
+                                on_configuration_panel_page();
                             }
                         };
                         document.addEventListener('d2n_gamebody_reload', listener, false);
