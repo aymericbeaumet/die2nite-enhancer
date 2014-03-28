@@ -133,7 +133,7 @@ Module.register(function() {
             '}' +
 
             '#d2ne_button a.button {' +
-                'margin: 0 auto;' +
+                'margin: 12px 0;' +
             '}' +
 
             '#d2ne_button hr {' +
@@ -155,13 +155,9 @@ Module.register(function() {
             ["div", {},
                 ["p", {}, I18N.get(MODULE_NAME + '_description')],
 
-                ["hr", {}],
-
                 ["a", { class: "button", onclick: function() {
                     JS.dispatch_event('d2ne_load_configuration_panel');
                 }}, I18N.get(MODULE_NAME + '_configuration_panel_button') ],
-
-                ["hr", {}],
 
                 ["ul", {},
                     ["li", {},
