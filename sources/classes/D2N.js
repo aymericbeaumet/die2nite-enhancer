@@ -579,6 +579,22 @@ var D2N = (function() {
 
             // Display the notification
             notif_container.classList.add('showNotif');
+        },
+
+        /**
+         * Show an empty notification.
+         */
+        show_empty_notification: function()
+        {
+            document.getElementById('notification').classList.add('showNotif');
+        },
+
+        /**
+         * Hide empty notification.
+         */
+        hide_empty_notification: function()
+        {
+            document.getElementById('notification').classList.remove('showNotif');
         }
 
     };

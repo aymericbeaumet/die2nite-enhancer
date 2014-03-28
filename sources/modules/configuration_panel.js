@@ -38,6 +38,7 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_interface_category'] = 'Interface';
         i18n[I18N.LANG.EN][MODULE_NAME + '_various_category'] = 'Various';
         i18n[I18N.LANG.EN][MODULE_NAME + '_save_button'] = 'Save';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_close_button'] = 'Close';
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_title'] = 'Die2Nite Enhancer - Panneau de configuration';
@@ -52,6 +53,7 @@ Module.register(function() {
         i18n[I18N.LANG.FR][MODULE_NAME + '_interface_category'] = 'Interface';
         i18n[I18N.LANG.FR][MODULE_NAME + '_various_category'] = 'Divers';
         i18n[I18N.LANG.FR][MODULE_NAME + '_save_button'] = 'Sauvegarder';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_close_button'] = 'Fermer';
 
         i18n[I18N.LANG.ES] = {};
         i18n[I18N.LANG.ES][MODULE_NAME + '_help_image_url'] = '/gfx/loc/es/helpLink.gif';
@@ -224,6 +226,13 @@ Module.register(function() {
 
     function insert_configuration_panel_dom()
     {
+        var el;
+        if ((el = document.getElementById('d2ne_configuration_panel'))) {
+            el.style.display = 'block';
+            D2N.show_empty_notification();
+            return;
+        }
+
         var configuration_panel_json = ["div", {}];
 
         configuration_panel_json.push(['h1', {}, I18N.get(MODULE_NAME + '_title')]);
@@ -251,13 +260,23 @@ Module.register(function() {
             ]
         );
 
+        configuration_panel_json.push(
+            ["a", { href: "javascript:void(0)", class: "button", onclick: function() {
+                                                                              scroll(0, 0);
+                                                                              D2N.hide_empty_notification();
+                                                                              document.getElementById('d2ne_configuration_panel').style.display = 'none'; }
+                                                                          },
+                I18N.get(MODULE_NAME + '_close_button')
+            ]
+        );
+
         JS.wait_for_class('bigBg2', function(node) {
             node[0].appendChild(JS.jsonToDOM(["div", { id: 'd2ne_configuration_panel' },
                 ["div"],
                 configuration_panel_json,
                 ["div"]
             ], document));
-            document.getElementById('notification').classList.add('showNotif');
+            D2N.show_empty_notification();
         });
     }
 
@@ -344,6 +363,9 @@ Module.register(function() {
                 'margin: 0 auto;' +
                 'margin-top: 20px;' +
                 'text-align: center;' +
+            '}' +
+            '#d2ne_configuration_panel a.button + a.button {' +
+                'margin-top: 5px;' +
             '}'
         );
     }
@@ -374,12 +396,7 @@ Module.register(function() {
                 insert_configuration_panel_style();
 
                 document.addEventListener('d2ne_load_configuration_panel', function() {
-                    var el;
-                    if ((el = document.getElementById('d2ne_configuration_panel'))) {
-                        el.style.display = 'block';
-                    } else {
-                        insert_configuration_panel_dom();
-                    }
+                    insert_configuration_panel_dom();
                 }, false);
 
                 document.addEventListener('d2ne_hide_configuration_panel', function() {
