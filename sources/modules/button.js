@@ -24,17 +24,14 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_bug_tracker_link'] = 'Bug tracker';
         i18n[I18N.LANG.EN][MODULE_NAME + '_license_link'] = 'License';
         i18n[I18N.LANG.EN][MODULE_NAME + '_version'] = 'Version';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_google_chrome_link'] = 'Google Chrome';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_firefox_link'] = 'Mozilla Firefox';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_opera_link'] = 'Opera';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_safari_link'] = 'Safari';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_userscript_link'] = 'Userscript';
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_description'] = 'Die2Nite Enhancer vous permet d\'améliorer votre expérience de jeu.';
         i18n[I18N.LANG.FR][MODULE_NAME + '_configuration_panel_button'] = 'Panneau de configuration';
         i18n[I18N.LANG.FR][MODULE_NAME + '_contact_link'] = 'Contacter le développeur';
         i18n[I18N.LANG.FR][MODULE_NAME + '_support_link'] = 'Supporter le développeur';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_bug_tracker_link'] = 'Bug tracker';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_license_link'] = 'License';
         i18n[I18N.LANG.FR][MODULE_NAME + '_version'] = 'Version';
 
         I18N.set(i18n);
@@ -134,12 +131,6 @@ Module.register(function() {
 
             '#d2ne_button a.button {' +
                 'margin: 12px auto;' +
-            '}' +
-
-            '#d2ne_button hr {' +
-                'margin: 0;' +
-                'margin: 10px 0;' +
-                'border-bottom: 1px solid rgba(148, 87, 52, 0.21);' +
             '}'
         );
     }
