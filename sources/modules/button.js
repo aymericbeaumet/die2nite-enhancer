@@ -157,7 +157,9 @@ Module.register(function() {
 
                 ["hr", {}],
 
-                ["a", { class: "button", href: '/' + D2NE_CONFIG_HASH }, I18N.get(MODULE_NAME + '_configuration_panel_button') ],
+                ["a", { class: "button", onclick: function() {
+                    JS.dispatch_event('d2ne_load_configuration_panel');
+                }}, I18N.get(MODULE_NAME + '_configuration_panel_button') ],
 
                 ["hr", {}],
 

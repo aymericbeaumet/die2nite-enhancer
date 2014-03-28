@@ -26,7 +26,7 @@ Module.register(function() {
         var i18n = {};
 
         i18n[I18N.LANG.EN] = {};
-        i18n[I18N.LANG.EN][MODULE_NAME + '_title'] = 'D2NE - Configuration Panel';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_title'] = 'Die2Nite Enhancer - Configuration Panel';
         i18n[I18N.LANG.EN][MODULE_NAME + '_help_image_url'] = '/gfx/loc/en/helpLink.gif';
         i18n[I18N.LANG.EN][MODULE_NAME + '_general_category'] = 'General';
         i18n[I18N.LANG.EN][MODULE_NAME + '_bank_category'] = 'Bank';
@@ -40,7 +40,7 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_save_button'] = 'Save';
 
         i18n[I18N.LANG.FR] = {};
-        i18n[I18N.LANG.FR][MODULE_NAME + '_title'] = 'D2NE - Panneau de configuration';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_title'] = 'Die2Nite Enhancer - Panneau de configuration';
         i18n[I18N.LANG.FR][MODULE_NAME + '_help_image_url'] = '/gfx/loc/fr/helpLink.gif';
         i18n[I18N.LANG.FR][MODULE_NAME + '_general_category'] = 'Général';
         i18n[I18N.LANG.FR][MODULE_NAME + '_bank_category'] = 'Banque';
@@ -63,30 +63,12 @@ Module.register(function() {
     }
 
     /**
-     * Called after a successfull save. Basically redirect the user to the
-     * appropriate page.
-     */
-    function after_save()
-    {
-        var current_domain_regex = new RegExp('^http://' + window.location.host);
-
-        // if a previous page exist and is on the same domain, go for it
-        if (document.referrer && current_domain_regex.test(document.referrer)) {
-            window.history.back();
-
-        // else reload the current page
-        } else {
-            JS.reload();
-        }
-    }
-
-    /**
      * Fetch the configuration from the configuration panel and inject it in the
      * local storage.
      */
     function save_configuration()
     {
-        var configuration_panel = document.getElementById('d2ne_configuration_panel');
+        var configuration_panel = document.querySelector('#d2ne_configuration_panel > div:nth-child(2)');
 
         for (var i = 0, max = configuration_panel.childElementCount; i < max; i += 1) {
             var el = configuration_panel.childNodes[i];
@@ -168,7 +150,7 @@ Module.register(function() {
                 break;
         }
 
-        return ["h4", {},
+        return ["h2", {},
                    ["img", { src: icon }],
                    text
                ];
@@ -242,7 +224,7 @@ Module.register(function() {
 
     function insert_configuration_panel_dom()
     {
-        var configuration_panel_json = ["div", { id: "d2ne_configuration_panel" }];
+        var configuration_panel_json = ["div", {}];
 
         configuration_panel_json.push(['h1', {}, I18N.get(MODULE_NAME + '_title')]);
 
@@ -264,53 +246,90 @@ Module.register(function() {
         });
 
         configuration_panel_json.push(
-            ["a", { href: "javascript:void(0)", class: "button", onclick: function() { save_configuration(); after_save(); } },
+            ["a", { href: "javascript:void(0)", class: "button", onclick: function() { save_configuration(); scroll(0, 0); JS.reload(); } },
                 I18N.get(MODULE_NAME + '_save_button')
             ]
         );
 
-        JS.wait_for_id('gameBodyLight', function(node) {
-            JS.delete_all_children(node);
-            node.appendChild(JS.jsonToDOM(configuration_panel_json, document));
+        JS.wait_for_class('bigBg2', function(node) {
+            node[0].appendChild(JS.jsonToDOM(["div", { id: 'd2ne_configuration_panel' },
+                ["div"],
+                configuration_panel_json,
+                ["div"]
+            ], document));
+            document.getElementById('notification').classList.add('showNotif');
         });
     }
 
     function insert_configuration_panel_style()
     {
         JS.injectCSS(
+            // Mandatory to still see the tooltips above the configuration panel
+            '#tooltip {' +
+                'z-index: 242 !important;' +
+            '}' +
+
             '#d2ne_configuration_panel {' +
-                'border: 1px solid #b37c4a;' +
-                'width: 500px;' +
+                'width: 598px;' +
+                'position: absolute;' +
+                'z-index: 142;' +
+                'left: 0;' +
+                'right: 0;' +
+                'top: 70px;' +
                 'margin: 0 auto;' +
-                'padding: 15px;' +
-                'background: #5C3110;' +
+                'margin-bottom: 70px;' +
+            '}' +
+
+            '#d2ne_configuration_panel > div:nth-child(1) {' +
+                'background-image: url("/gfx/design/panel_header.gif");' +
+                'height: 18px;' +
+                '-webkit-border-top-left-radius: 48px;' +
+                '-moz-border-top-left-radius: 48px;' +
+                'border-top-left-radius: 48px;' +
+                '-webkit-border-top-right-radius: 48px 30px;' +
+                '-moz-border-top-right-radius: 48px 30px;' +
+                'border-top-right-radius: 48px 30px;' +
+                'border: none;' +
+            '}' +
+
+            '#d2ne_configuration_panel > div:nth-child(3) {' +
+                'background-image: url("/gfx/design/panel_footer.gif");' +
+                'height: 16px;' +
+                '-webkit-border-bottom-left-radius: 48px;' +
+                '-moz-border-bottom-left-radius: 48px;' +
+                'border-bottom-left-radius: 48px;' +
+                '-webkit-border-bottom-right-radius: 48px 30px;' +
+                '-moz-border-bottom-right-radius: 48px 30px;' +
+                'border-bottom-right-radius: 48px 30px;' +
+                'border: none;' +
+            '}' +
+
+            '#d2ne_configuration_panel > div:nth-child(2) {' +
+                'padding: 3px 30px;' +
+                'padding-left: 26px;' +
+                'background: url("/gfx/design/panel_bg.gif");' +
             '}' +
 
             '#d2ne_configuration_panel h1 {' +
-                'padding-left: 0;' +
                 'margin: 0 auto;' +
-                'text-align: center;' +
-                'background: none;' +
                 'height: initial;' +
+                'padding-bottom: 15px;' +
+                'padding-left: 51px;' +
             '}' +
 
-            '#d2ne_configuration_panel h4 {' +
-                'text-align: left;' +
-                'padding-top: 4px;' +
-                'padding-bottom: 3px;' +
+            '#d2ne_configuration_panel h2 {' +
+                'padding: 3px;' +
+                'padding-top: 0;' +
                 'width: 100%;' +
-                'margin: 0 auto;' +
-                'margin-top: 25px;' +
-                'margin-bottom: 10px;' +
                 'border: 1px dotted rgba(179, 124, 74, 0.5);' +
                 'background-color: rgb(112, 62, 33);' +
             '}' +
 
-            '#d2ne_configuration_panel div {' +
+            '#d2ne_configuration_panel div div {' +
                 'margin-bottom: 1px;' +
             '}' +
 
-            '#d2ne_configuration_panel h4 img {' +
+            '#d2ne_configuration_panel h2 img {' +
                 'margin-right: 5px;' +
                 'vertical-align: -20%;' +
             '}' +
@@ -325,21 +344,6 @@ Module.register(function() {
                 'text-align: center;' +
             '}'
         );
-    }
-
-    function change_page_title()
-    {
-        var old_title = document.title;
-        var split_title = old_title.split(':');
-        var new_title = split_title[0] + ': ' + I18N.get(MODULE_NAME + '_title');
-
-        document.title = new_title;
-    }
-
-    function on_configuration_panel_page()
-    {
-        change_page_title();
-        insert_configuration_panel_dom();
     }
 
     /************************
@@ -367,24 +371,19 @@ Module.register(function() {
             load: function() {
                 insert_configuration_panel_style();
 
-                // Wait until all the modules are loaded
-                document.addEventListener('d2ne_all_modules_loaded', function() {
-                    // If already on the good page, load the configuration panel
-                    if (window.location.hash === D2NE_CONFIG_HASH) {
-                        on_configuration_panel_page();
+                document.addEventListener('d2ne_load_configuration_panel', function() {
+                    var el;
+                    if ((el = document.getElementById('d2ne_configuration_panel'))) {
+                        el.style.display = 'block';
+                    } else {
+                        insert_configuration_panel_dom();
                     }
+                }, false);
 
-                    // If loading the configuration panel URL, load it too
-                    window.addEventListener('hashchange', function() {
-                        var listener = function() {
-                            document.removeEventListener('d2n_gamebody_reload', listener, false);
-                            if (window.location.hash === D2NE_CONFIG_HASH) {
-                                on_configuration_panel_page();
-                            }
-                        };
-                        document.addEventListener('d2n_gamebody_reload', listener, false);
-                    }, false);
-                });
+                document.addEventListener('d2ne_hide_configuration_panel', function() {
+                    var el = document.getElementById('d2ne_configuration_panel');
+                    el.style.display = 'none';
+                }, false);
             }
         }
 
