@@ -324,8 +324,8 @@ Module.register(function() {
             '}' +
 
             '#d2ne_configuration_panel > div:nth-child(2) {' +
-                'padding: 3px 30px;' +
-                'padding-left: 26px;' +
+                'padding: 0px 25px;' +
+                'padding-left: 27px;' +
                 'background: url("/gfx/design/panel_bg.gif");' +
             '}' +
 
@@ -337,8 +337,7 @@ Module.register(function() {
             '}' +
 
             '#d2ne_configuration_panel h2 {' +
-                'padding: 3px;' +
-                'padding-top: 0;' +
+                'padding-bottom: 3px;' +
                 'width: 100%;' +
                 'border: 1px dotted rgba(179, 124, 74, 0.5);' +
                 'border-bottom: 1px solid rgba(179, 124, 74, 0.6);' +
@@ -346,13 +345,14 @@ Module.register(function() {
                 'background-color: rgb(112, 62, 33);' +
             '}' +
 
-            '#d2ne_configuration_panel div div {' +
-                'margin-bottom: 1px;' +
-            '}' +
-
             '#d2ne_configuration_panel h2 img {' +
+                'margin-left: 5px;' +
                 'margin-right: 5px;' +
                 'vertical-align: -20%;' +
+            '}' +
+
+            '#d2ne_configuration_panel div div {' +
+                'margin-bottom: 1px;' +
             '}' +
 
             '#d2ne_configuration_panel a.helpLink {' +
