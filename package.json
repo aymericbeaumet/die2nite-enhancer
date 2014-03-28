@@ -1,6 +1,6 @@
 {
   "name": "die2nite_enhancer",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "homepage": "https://github.com/aymericbeaumet/die2nite_enhancer/",
   "description": "Die2Nite Enhancer improves your game experience on Die2Nite.",
   "author": {
@@ -18,7 +18,7 @@
   "licenses": [
     {
       "type": "zlib/libpng",
-      "url": "https://github.com/aymericbeaumet/die2nite_enhancer/blob/master/LICENSE"
+      "url": "http://opensource.org/licenses/Zlib"
     }
   ],
   "scripts": {

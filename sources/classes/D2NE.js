@@ -10,6 +10,8 @@ var D2NE = (function() {
  * private:
  */
 
+    var RESTRICTED_MODE_KEY = 'restricted_mode';
+
     /**
      * The different module types (the order matters).
      */
@@ -135,6 +137,25 @@ var D2NE = (function() {
 
             initialise_modules();
             load_modules(); // The modules are loaded here
+        },
+
+        /**
+         * Set the restricted mode.
+         * @param boolean value true if enabled, false otherwise
+         */
+        set_restricted_mode: function(value)
+        {
+            Storage.set(RESTRICTED_MODE_KEY, value);
+        },
+
+        /**
+         * Check if the restricted mode is enabled.
+         * @return boolean true if the mode is enabled.
+         */
+        is_restricted_mode: function()
+        {
+            var v = Storage.get(RESTRICTED_MODE_KEY) || 'true';
+            return v === 'true';
         }
 
     };

@@ -316,11 +316,7 @@ var D2N = (function() {
                 D2N.get_session_key(function(sk) {
                     var page_url = pages_url_[page];
 
-                    if (D2N.is_on_forum()) { // if on the forum, redirect to the desired page
-                        JS.redirect('/#city/enter?go=' + page_url + ';sk=' + sk);
-                    } else { // else just download the content with an ajax request
-                        JS.injectJS('js.XmlHttp.get(' + JSON.stringify(page_url + '?sk=' + sk) + ');');
-                    }
+                    JS.redirect('/#city/enter?go=' + page_url + ';sk=' + sk);
                 });
             });
         },
@@ -532,6 +528,73 @@ var D2N = (function() {
                     }
                 });
             }, 5);
+        },
+
+        /**
+         * Redirect to a citizen soul.
+         * @param integer citizen_id
+         * @param string random (optional) A random string to be appended
+         */
+        redirect_to_citizen_soul: function(citizen_id, random)
+        {
+            D2N.get_session_key(function(session_key) {
+                var url = '/#ghost/city?go=ghost/user?uid=' + citizen_id + ';sk=' + session_key;
+                if (typeof random === 'string' && random.length > 0) {
+                    url += '?' + random;
+                }
+                JS.redirect(url);
+            });
+        },
+
+        /**
+         * Display a notification in the native D2N way.
+         * @param DOMElement el The element to insert in the notification. If a
+         * string is given, it is wrapped into a simple div.
+         */
+        notification: function(new_element)
+        {
+            var el;
+
+            // Wrapped the new element if needed
+            if (typeof new_element === 'string') {
+                el = JS.jsonToDOM(['div', {}, new_element], document);
+            } else {
+                el = new_element;
+            }
+
+            // Get notification div
+            var notif = document.getElementById('notificationText');
+
+            // Empty it
+            JS.delete_all_children(notif);
+
+            // Add the new content
+            notif.appendChild(el);
+
+            // Get the notification container
+            var notif_container = document.getElementById('notification');
+
+            // Scroll to the top
+            scroll(0, 0);
+
+            // Display the notification
+            notif_container.classList.add('showNotif');
+        },
+
+        /**
+         * Show an empty notification.
+         */
+        show_empty_notification: function()
+        {
+            document.getElementById('notification').classList.add('showNotif');
+        },
+
+        /**
+         * Hide empty notification.
+         */
+        hide_empty_notification: function()
+        {
+            document.getElementById('notification').classList.remove('showNotif');
         }
 
     };

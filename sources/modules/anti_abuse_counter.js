@@ -38,7 +38,7 @@ Module.register(function() {
     function get_notifier_div()
     {
         var current_time = Math.floor(+new Date() / 1000);
-        var time_left = this.properties.end_of_abuse - current_time;
+        var time_left = this.properties.end_of_abuse - current_time + 1;
         var hour_left = Math.floor(time_left / 60);
         var min_left = Math.floor(time_left % 60);
 
