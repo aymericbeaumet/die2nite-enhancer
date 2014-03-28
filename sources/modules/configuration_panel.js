@@ -304,6 +304,7 @@ Module.register(function() {
                 'top: 70px;' +
                 'margin: 0 auto;' +
                 'margin-bottom: 70px;' +
+                'background-color: rgb(122, 73, 40);' +
             '}' +
 
             '#d2ne_configuration_panel > div:nth-child(1) {' +
