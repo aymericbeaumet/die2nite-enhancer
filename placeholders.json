@@ -18,11 +18,13 @@
   ],
 
   "cross_origin_xhr_permissions": [
+    "die2nite-chatty.herokuapp.com",
+
     "d2n.duskdawn.net",
     "die2nite.gamerz.org.uk",
 
-    "bbh.fred26.fr",
-    "www.oeev-hordes.com"
+    "bbh.fred26.fr"
+
   ],
 
   "compiled_script": "compiled.js",

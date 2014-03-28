@@ -628,6 +628,29 @@ var JS = (function() {
             }
         },
 
+        /**
+         * Load an external script and call the callback when it's done.
+         * @link http://stackoverflow.com/a/950146/1071486
+         * @param string url The script URL
+         * @param function callback The callback to called once it's done
+         */
+        loadScript: function(url, callback)
+        {
+            // Adding the script tag to the head as suggested before
+            var head = document.getElementsByTagName('head')[0];
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = url;
+
+            // Then bind the event to the callback function.
+            // There are several events for cross browser compatibility.
+            script.onreadystatechange = callback;
+            script.onload = callback;
+
+            // Fire the loading
+            head.appendChild(script);
+        },
+
         jsonToDOM: jsonToDOM
 
     };

@@ -595,6 +595,40 @@ var D2N = (function() {
         hide_empty_notification: function()
         {
             document.getElementById('notification').classList.remove('showNotif');
+        },
+
+        /**
+         * Return the city name.
+         */
+        get_city_name: function()
+        {
+            var el = document.querySelector('#clock .name');
+
+            if (!el) {
+                return 'unknown';
+            }
+            return el.textContent.trim();
+        },
+
+        /**
+         * Return the server name.
+         */
+        get_server_name: function()
+        {
+            return window.location.hostname;
+        },
+
+        /**
+         * Return the player name.
+         */
+        get_player_name: function()
+        {
+            var el = document.querySelector('#tid_openRight .tid_name');
+
+            if (!el) {
+                return null;
+            }
+            return el.textContent.trim();
         }
 
     };
