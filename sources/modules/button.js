@@ -133,7 +133,7 @@ Module.register(function() {
             '}' +
 
             '#d2ne_button a.button {' +
-                'margin: 12px 0;' +
+                'margin: 12px auto;' +
             '}' +
 
             '#d2ne_button hr {' +

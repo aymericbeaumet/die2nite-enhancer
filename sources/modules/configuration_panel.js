@@ -254,21 +254,24 @@ Module.register(function() {
             });
         });
 
-        configuration_panel_json.push(
-            ["a", { href: "javascript:void(0)", class: "button", onclick: function() { save_configuration(); scroll(0, 0); JS.reload(); } },
-                I18N.get(MODULE_NAME + '_save_button')
+        configuration_panel_json.push(["table", {},
+            ["tr", {},
+                ["td", {},
+                    ["a", { href: "javascript:void(0)", class: "button", onclick: function() {
+                                                                                      scroll(0, 0);
+                                                                                      D2N.hide_empty_notification();
+                                                                                      document.getElementById('d2ne_configuration_panel').style.display = 'none'; }
+                                                                                  },
+                        I18N.get(MODULE_NAME + '_close_button')
+                    ]
+                ],
+                ["td", {},
+                    ["a", { href: "javascript:void(0)", class: "button", onclick: function() { save_configuration(); scroll(0, 0); JS.reload(); } },
+                        I18N.get(MODULE_NAME + '_save_button')
+                    ]
+                ]
             ]
-        );
-
-        configuration_panel_json.push(
-            ["a", { href: "javascript:void(0)", class: "button", onclick: function() {
-                                                                              scroll(0, 0);
-                                                                              D2N.hide_empty_notification();
-                                                                              document.getElementById('d2ne_configuration_panel').style.display = 'none'; }
-                                                                          },
-                I18N.get(MODULE_NAME + '_close_button')
-            ]
-        );
+        ]);
 
         JS.wait_for_class('bigBg2', function(node) {
             node[0].appendChild(JS.jsonToDOM(["div", { id: 'd2ne_configuration_panel' },
@@ -359,13 +362,14 @@ Module.register(function() {
                 'float: right;' +
             '}' +
 
+            '#d2ne_configuration_panel table {' +
+                'margin: 0 auto;' +
+            '}' +
+
             '#d2ne_configuration_panel a.button {' +
                 'margin: 0 auto;' +
-                'margin-top: 20px;' +
+                'margin-top: 14px;' +
                 'text-align: center;' +
-            '}' +
-            '#d2ne_configuration_panel a.button + a.button {' +
-                'margin-top: 5px;' +
             '}'
         );
     }
