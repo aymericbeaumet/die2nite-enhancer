@@ -117,7 +117,7 @@ Module.register(function() {
             '#d2ne_button li a {' +
                 'display: block;' +
                 'width: 205px;' +
-                'height: 18px;' +
+                'height: 19px;' +
                 'overflow: hidden;' +
                 'text-decoration: none;' +
             '}' +
