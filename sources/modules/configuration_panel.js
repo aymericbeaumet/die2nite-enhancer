@@ -235,7 +235,28 @@ Module.register(function() {
 
         var configuration_panel_json = ["div", {}];
 
+        var buttons = ["table", {},
+            ["tr", {},
+                ["td", {},
+                    ["a", { href: "javascript:void(0)", class: "button", onclick: function() {
+                                                                                      scroll(0, 0);
+                                                                                      D2N.hide_empty_notification();
+                                                                                      document.getElementById('d2ne_configuration_panel').style.display = 'none'; }
+                                                                                  },
+                        I18N.get(MODULE_NAME + '_close_button')
+                    ]
+                ],
+                ["td", {},
+                    ["a", { href: "javascript:void(0)", class: "button", onclick: function() { save_configuration(); scroll(0, 0); JS.reload(); } },
+                        I18N.get(MODULE_NAME + '_save_button')
+                    ]
+                ]
+            ]
+        ];
+
         configuration_panel_json.push(['h1', {}, I18N.get(MODULE_NAME + '_title')]);
+
+        configuration_panel_json.push(buttons);
 
         // Iterate over each module in each category
         var categories = get_modules_json_in_categories();
@@ -254,24 +275,7 @@ Module.register(function() {
             });
         });
 
-        configuration_panel_json.push(["table", {},
-            ["tr", {},
-                ["td", {},
-                    ["a", { href: "javascript:void(0)", class: "button", onclick: function() {
-                                                                                      scroll(0, 0);
-                                                                                      D2N.hide_empty_notification();
-                                                                                      document.getElementById('d2ne_configuration_panel').style.display = 'none'; }
-                                                                                  },
-                        I18N.get(MODULE_NAME + '_close_button')
-                    ]
-                ],
-                ["td", {},
-                    ["a", { href: "javascript:void(0)", class: "button", onclick: function() { save_configuration(); scroll(0, 0); JS.reload(); } },
-                        I18N.get(MODULE_NAME + '_save_button')
-                    ]
-                ]
-            ]
-        ]);
+        configuration_panel_json.push(buttons);
 
         JS.wait_for_class('bigBg2', function(node) {
             node[0].appendChild(JS.jsonToDOM(["div", { id: 'd2ne_configuration_panel' },
@@ -368,7 +372,7 @@ Module.register(function() {
 
             '#d2ne_configuration_panel a.button {' +
                 'margin: 0 auto;' +
-                'margin-top: 14px;' +
+                'margin-top: 11px;' +
                 'text-align: center;' +
             '}'
         );
