@@ -322,6 +322,8 @@ Module.register(function() {
                 'padding-top: 0;' +
                 'width: 100%;' +
                 'border: 1px dotted rgba(179, 124, 74, 0.5);' +
+                'border-bottom: 1px solid rgba(179, 124, 74, 0.6);' +
+                'border-right: 1px solid rgba(179, 124, 74, 0.6);' +
                 'background-color: rgb(112, 62, 33);' +
             '}' +
 
