@@ -37,7 +37,7 @@ Module.register(function() {
     function socket_wait_for_new_message()
     {
       socket_.on('newMessage', function(data) {
-        add_new_message(data.room, data.user, data.message);
+        add_new_message(data.room, data.user, data.content);
       });
     }
 
@@ -47,7 +47,7 @@ Module.register(function() {
           var m;
           for (var i = data.messages.length - 1; i >= 0; i--) {
               m = data.messages[i];
-              add_new_message(m.room, m.user, m.message);
+              add_new_message(m.room, m.user, m.content);
           }
       });
     }
@@ -55,12 +55,12 @@ Module.register(function() {
     /**************************************************************************/
     // Write on the socket
 
-    function socket_emit_send_message(room, user, message)
+    function socket_emit_send_message(room, user, content)
     {
         socket_.emit('sendMessage', {
             room: room,
             user: user,
-            message: message
+            content: content
         });
     }
 
@@ -80,9 +80,9 @@ Module.register(function() {
 
     /**************************************************************************/
 
-    function add_new_message(room, user, message)
+    function add_new_message(room, user, content)
     {
-        var li = JS.jsonToDOM(['li', {}, user + ': ' + message], document);
+        var li = JS.jsonToDOM(['li', {}, user + ': ' + content], document);
         document.getElementById('d2ne_messages_list').appendChild(li);
     }
 
@@ -93,11 +93,11 @@ Module.register(function() {
         if (!input) { return; }
 
         // Ensure that the message is not empty
-        var message = input.value.trim();
-        if (!message || message.length === 0) { return; }
+        var content = input.value.trim();
+        if (!content || content.length === 0) { return; }
 
         // Send the message
-        socket_emit_send_message(window.location.hostname + '|world', D2N.get_player_name(), message);
+        socket_emit_send_message(window.location.hostname + '|world', D2N.get_player_name(), content);
 
         // Empty the input
         input.value = '';
