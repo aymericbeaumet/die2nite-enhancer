@@ -108,22 +108,55 @@ Module.register(function() {
 
     function insert_chat_dom()
     {
-        var json = ["div", { id: 'd2ne_chatty' },
-            ["div", { class: 'd2ne_menu' },
+        var json = ["table", { id: 'd2ne_chatty' },
+            ["tr", { class: 'd2ne_chatty_header' }, ["td", {},
                 I18N.get(MODULE_NAME + '_title'),
-                ["div", { class: 'd2ne_notif' },
-                    2
+            ]],
+            ["tr", { class: 'd2ne_chatty_rooms' }, ["td", {},
+                'ROOMS1 | ROOMS2 | ROOMS3'
+            ]],
+            ["tr", { class: 'd2ne_chatty_messages' }, ["td", {},
+                ["div", {},
+                    ["ul", {},
+                        ["li", {}, 'MESSAGE 1'],
+                        ["li", {}, 'MESSAGE 2'],
+                        ["li", {}, 'MESSAGE 3'],
+                        ["li", {}, 'MESSAGE 4'],
+                        ["li", {}, 'MESSAGE 5'],
+                        ["li", {}, 'MESSAGE 6'],
+                        ["li", {}, 'MESSAGE 7'],
+                        ["li", {}, 'MESSAGE 8'],
+                        ["li", {}, 'MESSAGE 9'],
+                        ["li", {}, 'MESSAGE 10'],
+                        ["li", {}, 'MESSAGE 11'],
+                        ["li", {}, 'MESSAGE 12'],
+                        ["li", {}, 'MESSAGE 13'],
+                        ["li", {}, 'MESSAGE 14'],
+                        ["li", {}, 'MESSAGE 15'],
+                        ["li", {}, 'MESSAGE 16'],
+                        ["li", {}, 'MESSAGE 17'],
+                        ["li", {}, 'MESSAGE 18'],
+                        ["li", {}, 'MESSAGE 19'],
+                        ["li", {}, 'MESSAGE 20'],
+                        ["li", {}, 'MESSAGE 21'],
+                        ["li", {}, 'MESSAGE 22'],
+                        ["li", {}, 'MESSAGE 23'],
+                        ["li", {}, 'MESSAGE 24'],
+                        ["li", {}, 'MESSAGE 25'],
+                        ["li", {}, 'MESSAGE 26'],
+                        ["li", {}, 'MESSAGE 27'],
+                        ["li", {}, 'MESSAGE 28'],
+                        ["li", {}, 'MESSAGE 29'],
+                        ["li", {}, 'MESSAGE 30']
+                    ]
                 ]
-            ],
-            ["div", { class: 'd2ne_messages' },
-                ["ul", { id: 'd2ne_messages_list' }]
-            ],
-            ["div", { class: 'd2ne_input' },
+            ]],
+            ["tr", { class: 'd2ne_chatty_input' }, ["td", {},
                 ["form", { action: 'javascript:void(0);', onsubmit: on_form_submit },
                     ["input", { type: 'text', class: 'field' }],
                     ["a", { class: 'button', onclick: on_form_submit }, I18N.get(MODULE_NAME + '_send_button')]
                 ]
-            ]
+            ]]
         ];
 
         JS.wait_for_tag('body', function(nodes) {
@@ -141,54 +174,46 @@ Module.register(function() {
                 'right: 0;' +
                 'margin: 0 auto;' +
                 'z-index: 2;' +
-                'width: 100%;' +
                 'width: 500px;' +
+                'height: 300px;' +
                 'border: 1px solid yellow;' +
                 'background: green;' +
             '}' +
 
-            '#d2ne_chatty .d2ne_menu {' +
-                'height: 40px;' +
-                'width: 100%;' +
-                'background: orange;' +
-            '}' +
+                '#d2ne_chatty .d2ne_chatty_header td {' +
+                    'height: 40px;' +
+                    'background: orange;' +
+                '}' +
 
-            '#d2ne_chatty .d2ne_notif {' +
-                'position: absolute;' +
-                'right: 0;' +
-                'height: 40px;' +
-                'width: 40px;' +
-            '}' +
+                '#d2ne_chatty .d2ne_chatty_rooms td {' +
+                    'height: 40px;' +
+                    'background: blue;' +
+                '}' +
 
-            '#d2ne_chatty .d2ne_messages {' +
-                'background: pink;' +
-                'height: 200px;' +
-                'width: 100%;' +
-                'overflow-y: scroll;' +
-                'position: relative;' +
-            '}' +
+                '#d2ne_chatty .d2ne_chatty_messages td {' +
+                    'background: pink;' +
+                '}' +
+                    '#d2ne_chatty .d2ne_chatty_messages td div {' +
+                        'overflow-y: scroll;' +
+                        'height: 100%;' +
+                    '}' +
+                    '#d2ne_chatty .d2ne_chatty_messages td ul {' +
+                        'margin: 0;' +
+                        'padding: 0;' +
+                        'list-style: none;' +
+                    '}' +
 
-            '#d2ne_chatty .d2ne_messages ul {' +
-                'height: 200px;' +
-                'overflow-y: scroll;' +
-            '}' +
-
-            '#d2ne_chatty .d2ne_input {' +
-                'height: 30px;' +
-                'width: 100%;' +
-                'background: purple;' +
-            '}' +
-
-            '#d2ne_chatty .d2ne_input a.button {' +
-                'float: right;' +
-                'margin: 0px;' +
-                'padding: 0px;' +
-                'width: 85px;' +
-                'text-align: center;' +
-            '}' +
-
-            '#d2ne_chatty .d2ne_input input {' +
-            '}'
+                '#d2ne_chatty .d2ne_chatty_input td {' +
+                    'height: 30px;' +
+                    'background: purple;' +
+                '}' +
+                    '#d2ne_chatty .d2ne_chatty_input td a.button {' +
+                        'float: right;' +
+                        'margin: 0px;' +
+                        'padding: 0px;' +
+                        'width: 85px;' +
+                        'text-align: center;' +
+                    '}'
         );
     }
 
