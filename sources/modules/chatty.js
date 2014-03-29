@@ -22,11 +22,13 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Allow you to chat with the players in your town.';
         i18n[I18N.LANG.EN][MODULE_NAME + '_title'] = 'Die2Nite Enhancer - Chatty';
         i18n[I18N.LANG.EN][MODULE_NAME + '_send_button'] = 'Send';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_world_room'] = 'World';
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Activer le module de chat';
         i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Vous permet de parler avec les joueurs de votre ville.';
         i18n[I18N.LANG.FR][MODULE_NAME + '_send_button'] = 'Ecrire';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_world_room'] = 'Monde';
 
         I18N.set(i18n);
     }
@@ -80,6 +82,18 @@ Module.register(function() {
 
     /**************************************************************************/
 
+    function join_room(room_name)
+    {
+        var full_name = window.location.name + '|' + room_name;
+
+        // Add the room tab
+        var tab = ['div', { class: 'd2ne_chatty_tab' }, room_name];
+        document.querySelector('.d2ne_chatty_rooms td').appendChild(JS.jsonToDOM(tab, document));
+
+        // Inform the server we want to join the room
+        socket_emit_join_room(room_name);
+    }
+
     function add_new_message(room, user, content)
     {
         var container = document.getElementById('d2ne_messages_list');
@@ -116,7 +130,6 @@ Module.register(function() {
                 I18N.get(MODULE_NAME + '_title'),
             ]],
             ["tr", { class: 'd2ne_chatty_rooms' }, ["td", {},
-                'ROOMS1 | ROOMS2 | ROOMS3'
             ]],
             ["tr", { class: 'd2ne_chatty_messages' }, ["td", {},
                 ["div", {},
@@ -186,12 +199,21 @@ Module.register(function() {
                 '#d2ne_chatty .d2ne_chatty_header td {' +
                     'height: 40px;' +
                     'background: orange;' +
+                    'text-align: center;' +
+                    'vertical-align: middle;' +
                 '}' +
 
                 '#d2ne_chatty .d2ne_chatty_rooms td {' +
                     'height: 40px;' +
                     'background: blue;' +
+                    'vertical-align: middle;' +
                 '}' +
+                    '#d2ne_chatty .d2ne_chatty_rooms td .d2ne_chatty_tab {' +
+                        'float: left;' +
+                    '}' +
+                    '#d2ne_chatty .d2ne_chatty_rooms td .d2ne_chatty_tab + .d2ne_chatty_tab {' +
+                        'padding-left: 10px;' +
+                    '}' +
 
                 '#d2ne_chatty .d2ne_chatty_messages td {' +
                     'background: pink;' +
@@ -261,8 +283,8 @@ Module.register(function() {
                     document.removeEventListener('d2n_gamebody_reload', onPageLoaded, false);
 
                     socket_ = io.connect(SERVER_URL);
-                    socket_emit_join_room(window.location.hostname + '|' + 'world');
-                    socket_emit_join_room(window.location.hostname + '|' + D2N.get_city_name());
+                    join_room(I18N.get(MODULE_NAME + '_world_room'));
+                    join_room(D2N.get_city_name());
                     socket_wait_for_new_message();
                     socket_wait_for_new_room();
                 };
