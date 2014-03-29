@@ -82,14 +82,17 @@ Module.register(function() {
 
     function add_new_message(room, user, content)
     {
+        var container = document.getElementById('d2ne_messages_list');
         var li = JS.jsonToDOM(['li', {}, user + ': ' + content], document);
-        document.getElementById('d2ne_messages_list').appendChild(li);
+
+        container.appendChild(li);
+        JS.scroll_to_bottom(container);
     }
 
     function on_form_submit()
     {
         // Find the input
-        var input = document.querySelector('#d2ne_chatty .d2ne_input input[type="text"]');
+        var input = document.querySelector('#d2ne_chatty .d2ne_chatty_input input[type="text"]');
         if (!input) { return; }
 
         // Ensure that the message is not empty
