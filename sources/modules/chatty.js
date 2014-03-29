@@ -8,6 +8,8 @@ Module.register(function() {
 
     var SERVER_URL = 'http://die2nite-chatty.herokuapp.com';
 
+    var socket_ = null;
+
     /**
      * Add the i18n strings for this module.
      */
@@ -27,6 +29,106 @@ Module.register(function() {
         i18n[I18N.LANG.FR][MODULE_NAME + '_send_button'] = 'Ecrire';
 
         I18N.set(i18n);
+    }
+
+    /**************************************************************************/
+    // Read from the socket
+
+    function socket_wait_for_new_message()
+    {
+      socket_.on('newMessage', function(data) {
+        add_new_message(data.room, data.user, data.message);
+      });
+    }
+
+    function socket_wait_for_new_room()
+    {
+      socket_.on('newRoom', function(data) {
+          var m;
+          for (var i = data.messages.length - 1; i >= 0; i--) {
+              m = data.messages[i];
+              add_new_message(m.room, m.user, m.message);
+          }
+      });
+    }
+
+    /**************************************************************************/
+    // Write on the socket
+
+    function socket_emit_send_message(room, user, message)
+    {
+        socket_.emit('sendMessage', {
+            room: room,
+            user: user,
+            message: message
+        });
+    }
+
+    function socket_emit_leave_room(roomName)
+    {
+        socket_.emit('leaveRoom', {
+            room: roomName
+        });
+    }
+
+    function socket_emit_join_room(roomName)
+    {
+        socket_.emit('joinRoom', {
+            room: roomName
+        });
+    }
+
+    /**************************************************************************/
+
+    function add_new_message(room, user, message)
+    {
+        var li = JS.jsonToDOM(['li', {}, user + ': ' + message], document);
+        document.getElementById('d2ne_messages_list').appendChild(li);
+    }
+
+    function on_form_submit()
+    {
+        // Find the input
+        var input = document.querySelector('#d2ne_chatty .d2ne_input input[type="text"]');
+        if (!input) { return; }
+
+        // Ensure that the message is not empty
+        var message = input.value.trim();
+        if (!message || message.length === 0) { return; }
+
+        // Send the message
+        socket_emit_send_message(window.location.hostname + '|world', D2N.get_player_name(), message);
+
+        // Empty the input
+        input.value = '';
+
+        // Cancel form submit
+        return false;
+    }
+
+    function insert_chat_dom()
+    {
+        var json = ["div", { id: 'd2ne_chatty' },
+            ["div", { class: 'd2ne_menu' },
+                I18N.get(MODULE_NAME + '_title'),
+                ["div", { class: 'd2ne_notif' },
+                    2
+                ]
+            ],
+            ["div", { class: 'd2ne_messages' },
+                ["ul", { id: 'd2ne_messages_list' }]
+            ],
+            ["div", { class: 'd2ne_input' },
+                ["form", { action: 'javascript:void(0);', onsubmit: on_form_submit },
+                    ["input", { type: 'text', class: 'field' }],
+                    ["a", { class: 'button', onclick: on_form_submit }, I18N.get(MODULE_NAME + '_send_button')]
+                ]
+            ]
+        ];
+
+        JS.wait_for_tag('body', function(nodes) {
+            nodes[0].appendChild(JS.jsonToDOM(json, document));
+        });
     }
 
     function insert_chat_style()
@@ -90,83 +192,6 @@ Module.register(function() {
         );
     }
 
-    function insert_chat_dom()
-    {
-        var json = ["div", { id: 'd2ne_chatty' },
-            ["div", { class: 'd2ne_menu' },
-                I18N.get(MODULE_NAME + '_title'),
-                ["div", { class: 'd2ne_notif' },
-                    2
-                ]
-            ],
-            ["div", { class: 'd2ne_messages' },
-                ["ul", { id: 'd2ne_messages_list' }]
-            ],
-            ["div", { class: 'd2ne_input' },
-                ["form", { action: 'javascript:void(0);', onsubmit: on_form_submit },
-                    ["input", { type: 'text', class: 'field' }],
-                    ["a", { class: 'button', onclick: on_form_submit }, I18N.get(MODULE_NAME + '_send_button')]
-                ]
-            ]
-        ];
-
-        JS.wait_for_tag('body', function(nodes) {
-            nodes[0].appendChild(JS.jsonToDOM(json, document));
-        });
-    }
-
-    function sync_chat()
-    {
-        var cityName = encodeURIComponent(D2N.get_city_name());
-        var serverName = encodeURIComponent(D2N.get_server_name());
-
-        var url = SERVER_URL + '/message?serverName=' + serverName + '&cityName=' + cityName;
-
-        JS.network_request('GET', url, null, null, function on_success(data) {
-            data = JSON.parse(data);
-            var container = document.getElementById('d2ne_messages_list');
-            JS.delete_all_children(container);
-
-            for (var i = 0; i < data.length; i++) {
-                container.insertBefore(JS.jsonToDOM(["li", {}, data[i].playerName + ': ' + data[i].message], document), container.firstChild);
-            }
-
-            container.scrollTop = container.scrollHeight;
-        }, function on_failure() {
-        });
-    }
-
-    function send_message(message)
-    {
-        var serverName = encodeURIComponent(D2N.get_server_name());
-        var cityName = encodeURIComponent(D2N.get_city_name());
-        var playerName = encodeURIComponent(D2N.get_player_name());
-        message = encodeURIComponent(message);
-
-        var url = SERVER_URL + '/message';
-        var data = 'serverName=' + serverName + '&cityName=' + cityName + '&playerName=' + playerName + '&message=' + message;
-        var headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
-
-        JS.network_request('POST', url, data, headers, function on_success() {
-        }, function on_failure() {
-        });
-    }
-
-    function on_form_submit()
-    {
-        var input = document.querySelector('#d2ne_chatty .d2ne_input input[type="text"]');
-        if (!input) { return; }
-
-        var message = input.value.trim();
-        if (!message || message.length === 0) { return; }
-
-        send_message(message);
-        input.value = '';
-
-        // Cancel form submit
-        return false;
-    }
-
 
     /************************
      * Module configuration *
@@ -203,11 +228,17 @@ Module.register(function() {
                 insert_chat_style();
                 insert_chat_dom();
 
-                // Load Socket.io from CloudFlare
-                JS.loadScript('//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js', function() {
-                    // Sync chat once the connection is made
-                    setInterval(function() { sync_chat(); }, 500);
-                });
+                // Only connect the chat module once the page is loaded
+                var onPageLoaded = function() {
+                    document.removeEventListener('d2n_gamebody_reload', onPageLoaded, false);
+
+                    socket_ = io.connect(SERVER_URL);
+                    socket_emit_join_room(window.location.hostname + '|' + 'world');
+                    socket_emit_join_room(window.location.hostname + '|' + D2N.get_city_name());
+                    socket_wait_for_new_message();
+                    socket_wait_for_new_room();
+                };
+                document.addEventListener('d2n_gamebody_reload', onPageLoaded, false);
             }
         }
 

@@ -176,6 +176,7 @@ module.exports = function(grunt) {
             },
             compiled_script: {
                 src: [
+                    path.join(config.compiled_script.inputDir, "libs", "*.js"),
                     path.join(config.compiled_script.inputDir, "header.js"),
                     path.join(config.compiled_script.inputDir, "classes", "*.js"),
                     path.join(config.compiled_script.inputDir, "modules", "*.js"),
