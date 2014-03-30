@@ -198,7 +198,8 @@ Module.register(function() {
 
         if (is_chat_displayed()) {
             // Hide it
-            chat.style.bottom = '-275px'; // -(chat height - header height) = -(300px - 25px) = -160px
+            console.log(chat.scrollHeight);
+            chat.style.bottom = -(chat.scrollHeight - 25) + 'px';
         } else {
             // Show it
             chat.style.bottom = 0;
@@ -266,13 +267,12 @@ Module.register(function() {
         JS.injectCSS(
             '#d2ne_chatty {' +
                 'position: fixed;' +
-                'bottom: -275px;' + // hidden by default
+                'bottom: -281px;' + // -(input height + messages height + tab height)
                 'left: 0;' +
                 'right: 0;' +
                 'margin: 0 auto;' +
                 'z-index: 2;' +
                 'width: 500px;' +
-                'height: 300px;' +
                 'border-collapse: collapse;' +
                 '-webkit-transition: all 0.5s ease;' +
                 '-moz-transition: all 0.5s ease;' +
@@ -302,6 +302,7 @@ Module.register(function() {
                     '}' +
 
                 '#d2ne_chatty .d2ne_chatty_messages td {' +
+                    'height: 205px;' +
                     'background: rgb(105, 74, 80);' +
                 '}' +
                     '#d2ne_chatty .d2ne_chatty_messages td div {' +
