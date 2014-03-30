@@ -28,7 +28,7 @@ Module.register(function() {
         i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Activer le module de chat';
         i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Vous permet de parler avec les joueurs de votre ville.';
         i18n[I18N.LANG.FR][MODULE_NAME + '_send_button'] = 'Ecrire';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_world_room'] = 'Monde';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_world_room'] = 'Monde';
 
         I18N.set(i18n);
     }
@@ -36,20 +36,26 @@ Module.register(function() {
     /**************************************************************************/
     // Read from the socket
 
+    /**
+     * Wait for a new message.
+     */
     function socket_wait_for_new_message()
     {
       socket_.on('newMessage', function(data) {
-        add_new_message(data.room, data.user, data.content);
+          add_new_message(data.room, data.user, data.content);
       });
     }
 
+    /**
+     * Wait for a new room to init.
+     */
     function socket_wait_for_new_room()
     {
       socket_.on('newRoom', function(data) {
           var m;
           for (var i = data.messages.length - 1; i >= 0; i--) {
               m = data.messages[i];
-              add_new_message(m.room, m.user, m.content);
+              add_new_message(data.name, m.user, m.content);
           }
       });
     }
@@ -57,6 +63,9 @@ Module.register(function() {
     /**************************************************************************/
     // Write on the socket
 
+    /**
+     * Send a message to the given room.
+     */
     function socket_emit_send_message(room, user, content)
     {
         socket_.emit('sendMessage', {
@@ -66,6 +75,9 @@ Module.register(function() {
         });
     }
 
+    /**
+     * Leave the given room.
+     */
     function socket_emit_leave_room(roomName)
     {
         socket_.emit('leaveRoom', {
@@ -73,6 +85,9 @@ Module.register(function() {
         });
     }
 
+    /**
+     * Join the given room.
+     */
     function socket_emit_join_room(roomName)
     {
         socket_.emit('joinRoom', {
@@ -82,27 +97,86 @@ Module.register(function() {
 
     /**************************************************************************/
 
-    function join_room(room_name)
+    /**
+     * Return the full name of the active room.
+     */
+    function get_active_room()
     {
-        var full_name = window.location.name + '|' + room_name;
+        var el = document.querySelector('.d2ne_chatty_tab input[type="radio"]:checked');
 
-        // Add the room tab
-        var tab = ['div', { class: 'd2ne_chatty_tab' }, room_name];
-        document.querySelector('.d2ne_chatty_rooms td').appendChild(JS.jsonToDOM(tab, document));
-
-        // Inform the server we want to join the room
-        socket_emit_join_room(room_name);
+        if (!el) {
+            return null;
+        }
+        return el.id.replace(/^tab-room-/, '');
     }
 
+    /**
+     * Display the messages for the active room.
+     */
+    function display_active_room_messages()
+    {
+        // Remove all the d2ne_chatty_active class
+        var els = document.getElementsByClassName('d2ne_chatty_active');
+        for (var i = 0; i < els.length; i++) {
+            els[i].classList.remove('d2ne_chatty_active');
+        }
+
+        // Add the class for the active room
+        var active_room = get_active_room();
+        var el = document.getElementById('messages-room-' + active_room);
+        el.classList.add('d2ne_chatty_active');
+    }
+
+    /**
+     * Add the room tab + messages container. Also subscribe to the new
+     * messages.
+     */
+    function join_room(room_name)
+    {
+        var full_name = window.location.hostname + '|' + room_name;
+
+        // Add the room tab
+        var is_first_tab = document.getElementsByClassName('d2ne_chatty_tab').length === 0;
+        var unique_tab_id = 'tab-room-' + full_name;
+        var tab = ['div', { class: 'd2ne_chatty_tab' },
+            ['input', { name: 'tab-room', type: 'radio', id: unique_tab_id, onclick: function() { display_active_room_messages(); }}],
+            ['label', { for: unique_tab_id }, room_name]
+        ];
+        if (is_first_tab) {
+            tab[2][1].checked = 'checked'; // Check the first radio button
+        }
+        document.querySelector('.d2ne_chatty_rooms td').appendChild(JS.jsonToDOM(tab, document));
+
+        // Add the messages container
+        var unique_messages_id = 'messages-room-' + full_name;
+        var container = ['ul', { class: 'd2ne_chatty_messages_container', id: unique_messages_id }];
+        document.querySelector('.d2ne_chatty_messages > td > div').appendChild(JS.jsonToDOM(container, document));
+
+        // Inform the server we want to join the room
+        socket_emit_join_room(full_name);
+    }
+
+    /**
+     * Add a new message into the container for the given room. Nothing happen
+     * if the room container can not be found.
+     */
     function add_new_message(room, user, content)
     {
-        var container = document.getElementById('d2ne_messages_list');
+        var container = document.getElementById('messages-room-' + room);
         var li = JS.jsonToDOM(['li', {}, user + ': ' + content], document);
+
+        if (!container) {
+            return;
+        }
 
         container.appendChild(li);
         JS.scroll_to_bottom(container);
     }
 
+    /**
+     * Called either when the form is submitted (with enter) or when the send
+     * button is clicked.
+     */
     function on_form_submit()
     {
         // Find the input
@@ -114,7 +188,11 @@ Module.register(function() {
         if (!content || content.length === 0) { return; }
 
         // Send the message
-        socket_emit_send_message(window.location.hostname + '|world', D2N.get_player_name(), content);
+        var active_room = get_active_room();
+        if (!active_room) { // if the active room can not be found, abort
+            return;
+        }
+        socket_emit_send_message(active_room, D2N.get_player_name(), content);
 
         // Empty the input
         input.value = '';
@@ -126,47 +204,18 @@ Module.register(function() {
     function insert_chat_dom()
     {
         var json = ["table", { id: 'd2ne_chatty' },
-            ["tr", { class: 'd2ne_chatty_header' }, ["td", {},
-                I18N.get(MODULE_NAME + '_title'),
-            ]],
-            ["tr", { class: 'd2ne_chatty_rooms' }, ["td", {},
-            ]],
-            ["tr", { class: 'd2ne_chatty_messages' }, ["td", {},
-                ["div", {},
-                    ["ul", {},
-                        ["li", {}, 'MESSAGE 1'],
-                        ["li", {}, 'MESSAGE 2'],
-                        ["li", {}, 'MESSAGE 3'],
-                        ["li", {}, 'MESSAGE 4'],
-                        ["li", {}, 'MESSAGE 5'],
-                        ["li", {}, 'MESSAGE 6'],
-                        ["li", {}, 'MESSAGE 7'],
-                        ["li", {}, 'MESSAGE 8'],
-                        ["li", {}, 'MESSAGE 9'],
-                        ["li", {}, 'MESSAGE 10'],
-                        ["li", {}, 'MESSAGE 11'],
-                        ["li", {}, 'MESSAGE 12'],
-                        ["li", {}, 'MESSAGE 13'],
-                        ["li", {}, 'MESSAGE 14'],
-                        ["li", {}, 'MESSAGE 15'],
-                        ["li", {}, 'MESSAGE 16'],
-                        ["li", {}, 'MESSAGE 17'],
-                        ["li", {}, 'MESSAGE 18'],
-                        ["li", {}, 'MESSAGE 19'],
-                        ["li", {}, 'MESSAGE 20'],
-                        ["li", {}, 'MESSAGE 21'],
-                        ["li", {}, 'MESSAGE 22'],
-                        ["li", {}, 'MESSAGE 23'],
-                        ["li", {}, 'MESSAGE 24'],
-                        ["li", {}, 'MESSAGE 25'],
-                        ["li", {}, 'MESSAGE 26'],
-                        ["li", {}, 'MESSAGE 27'],
-                        ["li", {}, 'MESSAGE 28'],
-                        ["li", {}, 'MESSAGE 29'],
-                        ["li", {}, 'MESSAGE 30']
-                    ]
+            ["tr", { class: 'd2ne_chatty_header' },
+                ["td", {},
+                    I18N.get(MODULE_NAME + '_title'),
                 ]
-            ]],
+            ],
+            ["tr", { class: 'd2ne_chatty_rooms' },
+                ["td", {}]],
+            ["tr", { class: 'd2ne_chatty_messages' },
+                ["td", {},
+                    ["div", {}]
+                ]
+            ],
             ["tr", { class: 'd2ne_chatty_input' }, ["td", {},
                 ["form", { action: 'javascript:void(0);', onsubmit: on_form_submit },
                     ["input", { type: 'text', class: 'field' }],
@@ -226,6 +275,10 @@ Module.register(function() {
                         'margin: 0;' +
                         'padding: 0;' +
                         'list-style: none;' +
+                        'display: none;' +
+                    '}' +
+                    '#d2ne_chatty .d2ne_chatty_messages td ul.d2ne_chatty_active {' +
+                        'display: initial;' +
                     '}' +
 
                 '#d2ne_chatty .d2ne_chatty_input td {' +
@@ -283,10 +336,17 @@ Module.register(function() {
                     document.removeEventListener('d2n_gamebody_reload', onPageLoaded, false);
 
                     socket_ = io.connect(SERVER_URL);
-                    join_room(I18N.get(MODULE_NAME + '_world_room'));
-                    join_room(D2N.get_city_name());
+
                     socket_wait_for_new_message();
                     socket_wait_for_new_room();
+
+                    join_room(I18N.get(MODULE_NAME + '_world_room'));
+                    var city_name = D2N.get_city_name();
+                    if (city_name) {
+                        join_room(city_name);
+                    }
+
+                    display_active_room_messages();
                 };
                 document.addEventListener('d2n_gamebody_reload', onPageLoaded, false);
             }

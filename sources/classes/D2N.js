@@ -605,7 +605,7 @@ var D2N = (function() {
             var el = document.querySelector('#clock .name');
 
             if (!el) {
-                return 'unknown';
+                return null;
             }
             return el.textContent.trim();
         },
