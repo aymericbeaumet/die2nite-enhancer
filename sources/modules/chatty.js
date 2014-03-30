@@ -174,6 +174,38 @@ Module.register(function() {
     }
 
     /**
+     * Return true if the chat is displayed.
+     */
+    function is_chat_displayed()
+    {
+        var chat = document.getElementById('d2ne_chatty');
+
+        if (!chat) {
+            return false;
+        }
+
+        var style = getComputedStyle(chat);
+
+        return parseInt(style.bottom) === 0;
+    }
+
+    /**
+     * Called when the header is clicked.
+     */
+    function on_header_click()
+    {
+        var chat = document.getElementById('d2ne_chatty');
+
+        if (is_chat_displayed()) {
+            // Hide it
+            chat.style.bottom = '-260px'; // -(chat height - header height) = -(300px - 40px) = -160px
+        } else {
+            // Show it
+            chat.style.bottom = 0;
+        }
+    }
+
+    /**
      * Called either when the form is submitted (with enter) or when the send
      * button is clicked.
      */
@@ -204,7 +236,7 @@ Module.register(function() {
     function insert_chat_dom()
     {
         var json = ["table", { id: 'd2ne_chatty' },
-            ["tr", { class: 'd2ne_chatty_header' },
+            ["tr", { class: 'd2ne_chatty_header', onclick: on_header_click },
                 ["td", {},
                     I18N.get(MODULE_NAME + '_title'),
                 ]
@@ -241,8 +273,10 @@ Module.register(function() {
                 'z-index: 2;' +
                 'width: 500px;' +
                 'height: 300px;' +
-                'border: 1px solid yellow;' +
-                'background: green;' +
+                'border-collapse: collapse;' +
+                '-webkit-transition: all 0.5s ease;' +
+                '-moz-transition: all 0.5s ease;' +
+                'transition: all 0.5s ease;' +
             '}' +
 
                 '#d2ne_chatty .d2ne_chatty_header td {' +
@@ -250,6 +284,7 @@ Module.register(function() {
                     'background: orange;' +
                     'text-align: center;' +
                     'vertical-align: middle;' +
+                    'cursor: pointer;' +
                 '}' +
 
                 '#d2ne_chatty .d2ne_chatty_rooms td {' +
