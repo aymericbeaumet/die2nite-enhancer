@@ -600,14 +600,24 @@ var D2N = (function() {
         /**
          * Return the city name.
          */
-        get_city_name: function()
+        get_city_name: function(callback)
         {
-            var el = document.querySelector('#clock .name');
+            var selector = '#clock .name';
 
-            if (!el) {
-                return null;
+            // async
+            if (typeof callback === 'function') {
+                JS.wait_for_selector(selector, function(node) {
+                    callback(node.textContent.trim());
+                }, 5, function() {
+                    callback(null);
+                });
+
+            // sync
+            } else {
+                var el = document.querySelector(selector);
+                if (!el) { return null; }
+                return el.textContent.trim();
             }
-            return el.textContent.trim();
         },
 
         /**

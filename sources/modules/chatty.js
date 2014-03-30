@@ -201,7 +201,6 @@ Module.register(function() {
 
         if (is_chat_displayed()) {
             // Hide it
-            console.log(chat.scrollHeight);
             chat.style.bottom = -(chat.scrollHeight - 25) + 'px';
         } else {
             // Show it
@@ -372,10 +371,8 @@ Module.register(function() {
                 insert_chat_style();
                 insert_chat_dom();
 
-                // Only connect the chat module once the page is loaded
-                var onPageLoaded = function() {
-                    document.removeEventListener('d2n_gamebody_reload', onPageLoaded, false);
-
+                // Only continue when the city name is accessible
+                D2N.get_city_name(function() {
                     socket_ = io.connect(SERVER_URL);
 
                     socket_wait_for_new_message();
@@ -388,8 +385,7 @@ Module.register(function() {
                     }
 
                     display_active_room_messages();
-                };
-                document.addEventListener('d2n_gamebody_reload', onPageLoaded, false);
+                });
             }
         }
 
