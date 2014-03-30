@@ -125,6 +125,9 @@ Module.register(function() {
         var active_room = get_active_room();
         var el = document.getElementById('messages-room-' + active_room);
         el.classList.add('d2ne_chatty_active');
+
+        // Scroll room to top
+        JS.scroll_to_bottom(el.parentNode);
     }
 
     /**
