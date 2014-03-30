@@ -277,11 +277,13 @@ Module.register(function() {
                 '-webkit-transition: all 0.5s ease;' +
                 '-moz-transition: all 0.5s ease;' +
                 'transition: all 0.5s ease;' +
+                'border: 1px solid orange;' +
+                'border-bottom: none;' +
             '}' +
 
                 '#d2ne_chatty .d2ne_chatty_header td {' +
                     'height: 40px;' +
-                    'background: orange;' +
+                    'background: rgb(41, 35, 26);' +
                     'text-align: center;' +
                     'vertical-align: middle;' +
                     'cursor: pointer;' +
@@ -289,7 +291,7 @@ Module.register(function() {
 
                 '#d2ne_chatty .d2ne_chatty_rooms td {' +
                     'height: 40px;' +
-                    'background: blue;' +
+                    'background: rgb(63, 56, 32);' +
                     'vertical-align: middle;' +
                 '}' +
                     '#d2ne_chatty .d2ne_chatty_rooms td .d2ne_chatty_tab {' +
@@ -300,7 +302,7 @@ Module.register(function() {
                     '}' +
 
                 '#d2ne_chatty .d2ne_chatty_messages td {' +
-                    'background: pink;' +
+                    'background: rgb(105, 74, 80);' +
                 '}' +
                     '#d2ne_chatty .d2ne_chatty_messages td div {' +
                         'overflow-y: scroll;' +
@@ -318,7 +320,7 @@ Module.register(function() {
 
                 '#d2ne_chatty .d2ne_chatty_input td {' +
                     'height: 30px;' +
-                    'background: purple;' +
+                    'background: rgb(80, 51, 80);' +
                 '}' +
                     '#d2ne_chatty .d2ne_chatty_input td a.button {' +
                         'float: right;' +
