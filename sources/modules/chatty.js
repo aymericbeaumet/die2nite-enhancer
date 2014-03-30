@@ -198,7 +198,7 @@ Module.register(function() {
 
         if (is_chat_displayed()) {
             // Hide it
-            chat.style.bottom = '-260px'; // -(chat height - header height) = -(300px - 40px) = -160px
+            chat.style.bottom = '-275px'; // -(chat height - header height) = -(300px - 25px) = -160px
         } else {
             // Show it
             chat.style.bottom = 0;
@@ -266,7 +266,7 @@ Module.register(function() {
         JS.injectCSS(
             '#d2ne_chatty {' +
                 'position: fixed;' +
-                'bottom: 0;' +
+                'bottom: -275px;' + // hidden by default
                 'left: 0;' +
                 'right: 0;' +
                 'margin: 0 auto;' +
@@ -282,7 +282,7 @@ Module.register(function() {
             '}' +
 
                 '#d2ne_chatty .d2ne_chatty_header td {' +
-                    'height: 40px;' +
+                    'height: 25px;' +
                     'background: rgb(41, 35, 26);' +
                     'text-align: center;' +
                     'vertical-align: middle;' +
