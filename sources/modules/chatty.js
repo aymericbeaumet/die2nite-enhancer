@@ -6,7 +6,7 @@ Module.register(function() {
      * Module context *
      ******************/
 
-    var SERVER_URL = 'http://die2nite-chatty.herokuapp.com';
+    var SERVER_URL = 'http://chatty.d2ne.beaumet.me';
 
     var socket_ = null;
 
