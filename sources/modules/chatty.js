@@ -170,7 +170,7 @@ Module.register(function() {
         }
 
         container.appendChild(li);
-        JS.scroll_to_bottom(container);
+        JS.scroll_to_bottom(container.parentNode);
     }
 
     /**
