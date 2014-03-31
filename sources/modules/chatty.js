@@ -280,7 +280,7 @@ Module.register(function() {
                 'left: 0;' +
                 'right: 0;' +
                 'margin: 0 auto;' +
-                'z-index: 2;' +
+                'z-index: 9;' +
                 'width: 500px;' +
                 'border-collapse: collapse;' +
                 '-webkit-transition: all 0.5s ease;' +
