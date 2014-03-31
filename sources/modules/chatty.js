@@ -42,7 +42,7 @@ Module.register(function() {
     function socket_wait_for_new_message()
     {
       socket_.on('newMessage', function(data) {
-          add_new_message(data.room, data.user, data.content);
+          add_new_message(data.room, data.date, data.user, data.content);
       });
     }
 
@@ -55,7 +55,7 @@ Module.register(function() {
           var m;
           for (var i = data.messages.length - 1; i >= 0; i--) {
               m = data.messages[i];
-              add_new_message(data.name, m.user, m.content);
+              add_new_message(data.name, m.date, m.user, m.content);
           }
       });
     }
@@ -163,10 +163,17 @@ Module.register(function() {
      * Add a new message into the container for the given room. Nothing happen
      * if the room container can not be found.
      */
-    function add_new_message(room, user, content)
+    function add_new_message(room, date, user, content)
     {
+        var dateObject = new Date(date);
+        var hours = ('00' + dateObject.getHours()).slice(-2);
+        var minutes = ('00' + dateObject.getMinutes()).slice(-2);
+
         var container = document.getElementById('messages-room-' + room);
-        var li = JS.jsonToDOM(['li', {}, user + ': ' + content], document);
+        var li = JS.jsonToDOM(['li', {},
+            ['span', { title: dateObject.toLocaleDateString() + ' ' + dateObject.toLocaleTimeString() }, '[' + hours + ':' + minutes + ']'],
+            ' ' + user + ': ' + content
+        ], document);
 
         if (!container) {
             return;
