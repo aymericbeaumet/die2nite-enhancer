@@ -167,14 +167,14 @@ Module.register(function() {
             }
         }
         new_content += '</ul>';
-
+        console.log(new_content);
         // Update the listeners
         JS.injectJS(
             'var el = document.getElementById(' + JSON.stringify(element_id) + ');' +
-            'el.onmouseover = function() {' +
-                'return js.HordeTip.showSpecialTip(this, \'simpleTip\', \'\', ' + JSON.stringify(new_content) + ', event);' +
+            'el.onmouseover = function(event) {' +
+                'return js.HordeTip.showSpecialTip(this, \'helpTip\', \'\', ' + JSON.stringify(new_content) + ', event);' +
             '};' +
-            'el.onmouseout = function() {' +
+            'el.onmouseout = function(event) {' +
                 'return js.HordeTip.hide(event);' +
             '};'
         );

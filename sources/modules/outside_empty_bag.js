@@ -127,10 +127,10 @@ Module.register(function() {
                         // add the tooltip
                         JS.injectJS(
                             'var el = document.querySelector(\'ul.tools.shortTools.bagInv > li:nth-child(2)\');' +
-                            'el.onmouseover = function() {' +
-                                'return js.HordeTip.showSpecialTip(this, \'simpleTip\', \'\', ' + JSON.stringify(I18N.get(MODULE_NAME + '_tooltip')) + ', event);' +
+                            'el.onmouseover = function(event) {' +
+                                'return js.HordeTip.showSpecialTip(this, \'helpTip\', \'\', ' + JSON.stringify(I18N.get(MODULE_NAME + '_tooltip')) + ', event);' +
                             '};' +
-                            'el.onmouseout = function() {' +
+                            'el.onmouseout = function(event) {' +
                                 'return js.HordeTip.hide(event);' +
                             '};'
                         );
