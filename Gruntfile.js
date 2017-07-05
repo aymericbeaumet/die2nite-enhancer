@@ -407,7 +407,7 @@ module.exports = function(grunt) {
 
             continuous: {
                 singleRun: true,
-                browsers: ["PhantomJS", "Firefox"],
+                browsers: ["Firefox"],
                 reporters: ["dots", "coverage"],
 
                 // CoverAlls
