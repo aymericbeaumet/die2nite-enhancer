@@ -42,6 +42,7 @@
     "grunt-jsvalidate": "~0.2.2",
     "grunt-karma": "^2.0.0",
     "grunt-karma-coveralls": "^2.5.4",
+    "jasmine-core": "^2.6.4",
     "jasmine-jquery": "git://github.com/velesin/jasmine-jquery.git#2.1.1",
     "jquery": "^3.2.1",
     "jquery-simulate-ext": "git://github.com/j-ulrich/jquery-simulate-ext.git#93e47e",
