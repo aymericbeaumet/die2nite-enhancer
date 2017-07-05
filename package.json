@@ -1,6 +1,6 @@
 {
   "name": "die2nite_enhancer",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "homepage": "https://github.com/aymericbeaumet/die2nite_enhancer/",
   "description": "Die2Nite Enhancer improves your game experience on Die2Nite.",
   "author": {
@@ -27,14 +27,14 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "grunt": "~0.4.4",
-    "grunt-cli": "~0.1.13",
-    "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-copy": "~0.5.0",
-    "grunt-shell": "~0.6.4",
-    "merge": "~1.1.2",
-    "userhome": "~0.1.0"
+    "grunt": "^1.0.1",
+    "grunt-cli": "^1.2.0",
+    "grunt-contrib-clean": "^1.1.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-shell": "^2.1.0",
+    "merge": "^1.2.0",
+    "userhome": "^1.0.0"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "^1.1.0",
