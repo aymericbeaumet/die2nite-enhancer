@@ -379,7 +379,7 @@ module.exports = function(grunt) {
             pack_opera: {
                 command: function() {
                     var cmd =
-                        "'" + config.path.chrome + "' " + config.opera.workingDir + " " + config.path.chrome_pem + "' '" + config.buildDir + "'" + ";" +
+                        "'" + config.path.chrome + "' '" + config.opera.workingDir + "' '" + config.path.chrome_pem + "' '" + config.buildDir + "'" + ";" +
                         "mv '" + path.join(config.buildDir, "opera.crx") + "' '" + config.opera.outputFile + "'";
                     return cmd;
                 }
@@ -406,7 +406,7 @@ module.exports = function(grunt) {
 
             continuous: {
                 singleRun: true,
-                browsers: ["PhantomJS", "Firefox"],
+                browsers: ["Firefox"],
                 reporters: ["dots", "coverage"],
 
                 // CoverAlls
