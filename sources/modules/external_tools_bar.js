@@ -171,10 +171,10 @@ Module.register(function() {
         // Update the listeners
         JS.injectJS(
             'var el = document.getElementById(' + JSON.stringify(element_id) + ');' +
-            'el.onmouseover = function() {' +
+            'el.onmouseover = function(event) {' +
                 'return js.HordeTip.showSpecialTip(this, \'simpleTip\', \'\', ' + JSON.stringify(new_content) + ', event);' +
             '};' +
-            'el.onmouseout = function() {' +
+            'el.onmouseout = function(event) {' +
                 'return js.HordeTip.hide(event);' +
             '};'
         );

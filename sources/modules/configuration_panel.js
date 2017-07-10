@@ -92,7 +92,6 @@ Module.register(function() {
                 case Module.PROPERTY.BOOLEAN:
                     input_data = input_node.checked;
                     break;
-
                 default:
                     input_data = null;
                     break;
