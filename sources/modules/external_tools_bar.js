@@ -390,7 +390,6 @@ Module.register(function() {
                 'color: #f0d79e;' +
                 'cursor: help;' +
             '}'
-
         );
     }
 
@@ -424,6 +423,8 @@ Module.register(function() {
         properties: {
             enabled: true
         },
+
+        container_id: EXTERNAL_TOOLS_BAR_UPDATE_CONTAINER_ID,
 
         actions: {
             can_run: function() {
