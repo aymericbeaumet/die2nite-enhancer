@@ -496,8 +496,7 @@ module.exports = function(grunt) {
         var _packs = grunt.config("_pack");
         for (var key in _packs) {
             if (_packs.hasOwnProperty(key) &&
-                typeof grunt.option(key) !== "undefined" &&
-                grunt.option(key) === true) {
+                typeof grunt.option(key) !== "undefined" && grunt.option(key) === true) {
 
                 options = true;
                 grunt.task.run("copy:" + key);
