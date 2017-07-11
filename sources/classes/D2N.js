@@ -252,8 +252,7 @@ var D2N = (function() {
         {
             return JS.regex_test(
                 '^#city',
-                window.location.hash
-            );
+                window.location.hash);
         },
 
         /**
@@ -263,7 +262,7 @@ var D2N = (function() {
          */
         is_outside: function()
         {
-            return /^#outside\?(?:go=outside\/(?:doors|refresh);)?sk=[a-z0-9]{5}$/.test(window.location.hash);
+            return (/^#outside\?(?:go=outside\/(?:doors|refresh);)?sk=[a-z0-9]{5}$/).test(window.location.hash);
         },
 
         /**
@@ -297,8 +296,7 @@ var D2N = (function() {
         {
             return JS.regex_test(
                 '^#ghost\\?go=' + pages_url_[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$',
-                window.location.hash
-            );
+                window.location.hash);
         },
 
         /**
@@ -412,8 +410,7 @@ var D2N = (function() {
          */
         is_camping: function()
         {
-            return D2N.is_outside() &&
-                document.getElementsByClassName('left').length < 1;
+            return D2N.is_outside() && document.getElementsByClassName('left').length < 1;
         },
 
         /**

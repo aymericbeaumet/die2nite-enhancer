@@ -11,7 +11,7 @@
  *
  *   - `grunt pack --chrome --firefox`
  *       Same as `grunt pack` but only for the specified wrappers (available
- *       wrappers: 'chrome', 'chrome_zip', 'firefox', 'opera', 'safari' and
+ *       wrappers: 'chrome', 'chrome_zip', 'firefox', 'firefoxWebExt', 'opera', 'safari' and
  *       'userscript').
  *
  *   - `grunt test`
@@ -83,6 +83,7 @@ module.exports = function(grunt) {
         chrome: {},
         chrome_zip: {},
         firefox: {},
+        firefoxWebExt: {},
         opera: {},
         safari: {}
     };
@@ -92,6 +93,7 @@ module.exports = function(grunt) {
     config.chrome.outputFile = path.join(config.buildDir, "chrome.crx");
     config.chrome_zip.outputFile = path.join(config.buildDir, "chrome.zip");
     config.firefox.outputFile = path.join(config.buildDir, "firefox.xpi");
+    config.firefoxWebExt.outputFile = path.join(config.buildDir, "firefoxWebExt.xpi");
     config.opera.outputFile = path.join(config.buildDir, "opera.nex");
     config.safari.outputFile = path.join(config.buildDir, "safari.safariextz");
 
@@ -100,6 +102,7 @@ module.exports = function(grunt) {
     config.chrome.workingDir = path.join(config.buildDir, "chrome");
     config.chrome_zip.workingDir = path.join(config.buildDir, "chrome");
     config.firefox.workingDir = path.join(config.buildDir, "firefox");
+    config.firefoxWebExt.workingDir = path.join(config.buildDir, "firefoxWebExt");
     config.opera.workingDir = path.join(config.buildDir, "opera");
     config.safari.workingDir = path.join(config.buildDir, "safari.safariextension");
 
@@ -108,6 +111,7 @@ module.exports = function(grunt) {
     config.chrome.inputDir = path.join(config.wrappersDir, "chrome");
     config.chrome_zip.inputDir = path.join(config.wrappersDir, "chrome");
     config.firefox.inputDir = path.join(config.wrappersDir, "firefox");
+    config.firefoxWebExt.inputDir = path.join(config.wrappersDir, "firefoxWebExt");
     config.opera.inputDir = path.join(config.wrappersDir, "opera");
     config.safari.inputDir = path.join(config.wrappersDir, "safari");
 
@@ -140,6 +144,11 @@ module.exports = function(grunt) {
                     grunt.task.run("shell:pack_firefox");
                 }
             },
+            firefoxWebExt: {
+                custom: function(workingDir, OutputFile) {
+                    grunt.task.run("shell:pack_firefoxWebExt");
+                }
+            },
             opera: {
                 custom: function(workingDir, OutputFile) {
                     grunt.task.run("shell:pack_opera");
@@ -166,6 +175,7 @@ module.exports = function(grunt) {
             chrome: [config.chrome.workingDir],
             chrome_zip: [config.chrome_zip.workingDir],
             firefox: [config.firefox.workingDir],
+            firefoxWebExt: [config.firefoxWebExt.workingDir],
             opera: [config.opera.workingDir],
             safari: [config.safari.workingDir]
         },
@@ -290,6 +300,31 @@ module.exports = function(grunt) {
                     }
                 ]
             },
+            firefoxWebExt: {
+                files: [
+                    {
+                        cwd: config.firefoxWebExt.inputDir,
+                        src: ["**"],
+                        dest: config.firefoxWebExt.workingDir,
+                        filter: "isFile",
+                        expand: true
+                    },
+                    {
+                        src: [config.compiled_script.outputFile],
+                        dest: path.join(config.firefoxWebExt.workingDir, "data"),
+                        filter: "isFile",
+                        expand: true,
+                        flatten: true
+                    },
+                    {
+                        cwd: config.iconsDir,
+                        src: ["icon48.png", "icon96.png"],
+                        dest: config.firefoxWebExt.workingDir,
+                        filter: "isFile",
+                        expand: true
+                    }
+                ]
+            },
             opera: {
                 files: [
                     {
@@ -373,7 +408,14 @@ module.exports = function(grunt) {
             },
             pack_firefox: {
                 command: function () {
-                    var cmd = "cd '" + config.firefox.workingDir + "' && '" + config.path.cfx + "' xpi --output-file='" + config.firefox.outputFile + "'";
+                    var cmd = "cd " + config.firefox.workingDir + " && " + config.path.cfx + " xpi --output-file='" + config.firefox.outputFile + "'";
+                    return cmd;
+                }
+            },
+            pack_firefoxWebExt: {
+                command: function () {
+                    var cmd = "cd " + config.firefoxWebExt.workingDir + " && echo " + grunt.file.expand({ cwd: config.firefoxWebExt.workingDir }, "**").join(" ") + " | tr ' ' '\n' | " + config.path.zip + " " + config.firefoxWebExt.outputFile + " -@";
+                    console.log(cmd);
                     return cmd;
                 }
             },
@@ -494,6 +536,7 @@ module.exports = function(grunt) {
         // Browse all the possible _pack. Pack it if the concerned wrapper
         // options is found and enabled.
         var _packs = grunt.config("_pack");
+
         for (var key in _packs) {
             if (_packs.hasOwnProperty(key) &&
                 typeof grunt.option(key) !== "undefined" && grunt.option(key) === true) {

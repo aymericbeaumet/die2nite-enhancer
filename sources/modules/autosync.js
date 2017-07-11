@@ -74,8 +74,8 @@ Module.register(function() {
                         return;
                     }
 
-                    JS.wait_for_id("d2ne_external_tools_bar_update_container", function(node){
-                        var module = Module.get("external_tools_bar");
+                    var module = Module.get("external_tools_bar");
+                    JS.wait_for_id(module.container_id, function(node){
 
                         if (module === null || !module.is_enabled()) {
                             return;
