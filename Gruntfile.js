@@ -465,7 +465,7 @@ module.exports = function(grunt) {
                         'Gruntfile.js',
                         path.join(config.testsDir, '**', '*.js'),
                         config.compiled_script.outputFile
-                    ],
+                    ]
                 }
             }
         },

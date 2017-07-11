@@ -45,7 +45,7 @@ Module.register(function() {
         type: Module.TYPE.CONTAINER,
 
         properties: {
-            enabled: true
+            enabled: false
         },
 
         configurable: {
@@ -69,15 +69,21 @@ Module.register(function() {
             load: function() {
                 var loaded = false;
 
-                if (!D2N.is_on_page_in_city('bank') && !D2N.is_outside()) {
-                    return;
-                }
+                document.addEventListener('d2n_gamebody_reload', function() {
+                    if (!D2N.is_on_page_in_city('bank') && !D2N.is_outside()) {
+                        return;
+                    }
 
-                var module = Module.get("external_tools_bar");
+                    JS.wait_for_id("d2ne_external_tools_bar_update_container", function(node){
+                        var module = Module.get("external_tools_bar");
 
-                if (!module.is_enabled()) {
-                    return;
-                }
+                        if (module === null || !module.is_enabled()) {
+                            return;
+                        }
+
+                        module.actions.refresh();
+                    });
+                }.bind(this), false);
             }
         }
 
