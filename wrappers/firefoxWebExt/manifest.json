@@ -18,7 +18,7 @@
     }
   ],
   
-  "permissions":["storage", "webRequest", "activeTab", <% for (var i = 0, max = cross_origin_xhr_permissions.length; i < max; i += 1) {%>"http://<%- cross_origin_xhr_permissions[i] %>/*"<% if (i < (max - 1)) { %>,<% } %><% } %>],
+  "permissions":["storage", <% for (var i = 0, max = cross_origin_xhr_permissions.length; i < max; i += 1) {%>"http://<%- cross_origin_xhr_permissions[i] %>/*"<% if (i < (max - 1)) { %>,<% } %><% } %>],
 
   "applications": {
     "gecko": {
