@@ -168,6 +168,7 @@ module.exports = function(grunt) {
                 config.chrome.workingDir,
                 config.chrome_zip.workingDir,
                 config.firefox.workingDir,
+                config.firefoxWebExt.workingDir,
                 config.opera.workingDir,
                 config.safari.workingDir
             ],
