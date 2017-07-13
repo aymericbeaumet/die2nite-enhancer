@@ -1,0 +1,29 @@
+{
+
+  "manifest_version": 2,
+  "name": "<%= full_name %>",
+  "version": "<%= version %>",
+
+  "description": "<%= description %>",
+
+  "icons": {
+    "48": "icon48.png",
+    "96": "icon96.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": [<% for (var i = 0, max = matching_urls.length; i < max; i += 1) {%>"http://<%- matching_urls[i] %>/*"<% if (i < (max - 1)) { %>,<% } %><% } %>],
+      "js": ["data/compiled.js"]
+    }
+  ],
+  
+  "permissions":["storage", <% for (var i = 0, max = cross_origin_xhr_permissions.length; i < max; i += 1) {%>"http://<%- cross_origin_xhr_permissions[i] %>/*"<% if (i < (max - 1)) { %>,<% } %><% } %>],
+
+  "applications": {
+    "gecko": {
+      "id": "<%= firefox.identifier %>@beaumet.me"
+    }
+  }
+
+}

@@ -34,9 +34,21 @@ Module.register(function() {
     */
     function load_module()
     {
-        Module.iterate_on_type(Module.TYPE.EXTERNAL_TOOL, function(module) {
+        document.addEventListener('d2n_gamebody_reload', function(event) {
+            if (!D2N.is_on_page_in_city('bank') && !D2N.is_outside()) {
+                return;
+            }
 
-        });
+            var module = Module.get("external_tools_bar");
+            JS.wait_for_id(module.container_id, function(node){
+
+                if (module === null || !module.is_enabled()) {
+                    return;
+                }
+
+                module.actions.refresh();
+            });
+        }.bind(this), false);
     }
 
     return {
@@ -67,23 +79,7 @@ Module.register(function() {
             },
 
             load: function() {
-                var loaded = false;
-
-                document.addEventListener('d2n_gamebody_reload', function() {
-                    if (!D2N.is_on_page_in_city('bank') && !D2N.is_outside()) {
-                        return;
-                    }
-
-                    var module = Module.get("external_tools_bar");
-                    JS.wait_for_id(module.container_id, function(node){
-
-                        if (module === null || !module.is_enabled()) {
-                            return;
-                        }
-
-                        module.actions.refresh();
-                    });
-                }.bind(this), false);
+                load_module();
             }
         }
 

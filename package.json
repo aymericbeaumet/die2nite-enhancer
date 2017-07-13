@@ -23,7 +23,7 @@
   ],
   "license": "Zlib",
   "scripts": {
-    "postinstall": ".githooks/install.sh",
+    "postinstall": "sh .githooks/install.sh",
     "test": "grunt test"
   },
   "dependencies": {
