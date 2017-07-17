@@ -13,12 +13,12 @@
 
   "content_scripts": [
     {
-      "matches": [<% for (var i = 0, max = matching_urls.length; i < max; i += 1) {%>"http://<%- matching_urls[i] %>/*"<% if (i < (max - 1)) { %>,<% } %><% } %>],
+      "matches": [<% for (var i = 0, max = matching_urls.length; i < max; i += 1) {%>"*://<%- matching_urls[i] %>/*"<% if (i < (max - 1)) { %>,<% } %><% } %>],
       "js": ["data/compiled.js"]
     }
   ],
   
-  "permissions":["storage", <% for (var i = 0, max = cross_origin_xhr_permissions.length; i < max; i += 1) {%>"http://<%- cross_origin_xhr_permissions[i] %>/*"<% if (i < (max - 1)) { %>,<% } %><% } %>],
+  "permissions":["storage", <% for (var i = 0, max = cross_origin_xhr_permissions.length; i < max; i += 1) {%>"*://<%- cross_origin_xhr_permissions[i] %>/*"<% if (i < (max - 1)) { %>,<% } %><% } %>],
 
   "applications": {
     "gecko": {

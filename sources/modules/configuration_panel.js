@@ -31,10 +31,11 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_general_category'] = 'General';
         i18n[I18N.LANG.EN][MODULE_NAME + '_bank_category'] = 'Bank';
         i18n[I18N.LANG.EN][MODULE_NAME + '_construction_category'] = 'Construction Sites';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_citizens_category'] = 'Citizens';
         i18n[I18N.LANG.EN][MODULE_NAME + '_outside_category'] = 'Outside';
         i18n[I18N.LANG.EN][MODULE_NAME + '_external_tool_category'] = 'External Tools';
         i18n[I18N.LANG.EN][MODULE_NAME + '_soul_category'] = 'Soul page';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_forum_category'] = 'Forum';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_forum_category'] = 'Forums';
         i18n[I18N.LANG.EN][MODULE_NAME + '_interface_category'] = 'Interface';
         i18n[I18N.LANG.EN][MODULE_NAME + '_various_category'] = 'Various';
         i18n[I18N.LANG.EN][MODULE_NAME + '_save_button'] = 'Save';
@@ -46,10 +47,11 @@ Module.register(function() {
         i18n[I18N.LANG.FR][MODULE_NAME + '_general_category'] = 'Général';
         i18n[I18N.LANG.FR][MODULE_NAME + '_bank_category'] = 'Banque';
         i18n[I18N.LANG.FR][MODULE_NAME + '_construction_category'] = 'Chantiers';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_citizens_category'] = 'Citoyens';
         i18n[I18N.LANG.FR][MODULE_NAME + '_outside_category'] = 'Outre-Monde';
         i18n[I18N.LANG.FR][MODULE_NAME + '_external_tool_category'] = 'Outils Externes';
         i18n[I18N.LANG.FR][MODULE_NAME + '_soul_category'] = 'Page d\'âme';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_forum_category'] = 'Forum';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_forum_category'] = 'Forums';
         i18n[I18N.LANG.FR][MODULE_NAME + '_interface_category'] = 'Interface';
         i18n[I18N.LANG.FR][MODULE_NAME + '_various_category'] = 'Divers';
         i18n[I18N.LANG.FR][MODULE_NAME + '_save_button'] = 'Sauvegarder';
@@ -124,6 +126,10 @@ Module.register(function() {
             case Module.PROPERTY_CATEGORY.CONSTRUCTION:
                 icon = '/gfx/forum/smiley/h_refine.gif';
                 text = I18N.get(MODULE_NAME + '_construction_category');
+                break;
+            case Module.PROPERTY_CATEGORY.CITIZENS:
+                icon = '/gfx/forum/smiley/h_human.gif';
+                text = I18N.get(MODULE_NAME + '_citizens_category');
                 break;
             case Module.PROPERTY_CATEGORY.OUTSIDE:
                 icon = '/gfx/icons/r_camp.gif';

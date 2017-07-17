@@ -30,6 +30,7 @@ var D2NE = (function() {
         'BANK',
         'CONSTRUCTION',
         'SOUL',
+        'CITIZENS',
         'OUTSIDE',
         'EXTERNAL_TOOL',
         'FORUM',
