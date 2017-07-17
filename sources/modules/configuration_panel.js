@@ -55,7 +55,7 @@ Module.register(function() {
         i18n[I18N.LANG.FR][MODULE_NAME + '_interface_category'] = 'Interface';
         i18n[I18N.LANG.FR][MODULE_NAME + '_various_category'] = 'Divers';
         i18n[I18N.LANG.FR][MODULE_NAME + '_save_button'] = 'Sauvegarder';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_close_button'] = 'Fermer';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_close_button'] = 'Fermer';
 
         i18n[I18N.LANG.ES] = {};
         i18n[I18N.LANG.ES][MODULE_NAME + '_help_image_url'] = '/gfx/loc/es/helpLink.gif';
