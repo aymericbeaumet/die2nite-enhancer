@@ -110,6 +110,15 @@ Module.register(function() {
             hide_completed_constructions: false
         },
 
+        configurable: {
+            enabled: {
+                category: Module.PROPERTY_CATEGORY.CONSTRUCTION,
+                type: Module.PROPERTY.BOOLEAN,
+                short_desc_I18N: MODULE_NAME + '_short_desc',
+                full_desc_I18N: MODULE_NAME + '_full_desc'
+            }
+        },
+
         actions: {
             can_run: function() {
                 return true;

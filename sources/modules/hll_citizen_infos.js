@@ -1,6 +1,6 @@
 Module.register(function() {
 
-    var MODULE_NAME = 'sync_hll';
+    var MODULE_NAME = 'hll_citizen_infos';
 
     /******************
      * Module context *
@@ -18,6 +18,8 @@ Module.register(function() {
         i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Permet d\'afficher les recommandations et plaintes d\'un citoyen sur le site externe Hordes La Loi.';
         i18n[I18N.LANG.FR][MODULE_NAME + '_column_head'] = 'HLL';
         i18n[I18N.LANG.FR][MODULE_NAME + '_unknown'] = 'Inconnue';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_council_title'] = 'Conseils';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_complain_title'] = 'Plaintes';
 
         I18N.set(i18n);
     }
@@ -29,7 +31,7 @@ Module.register(function() {
         var citizens = xmlDoc.getElementsByTagName("citizen");
 
         // Adding header
-        var tableCitizens = document.querySelectorAll("#generic_section table tr");
+        var tableCitizens = document.querySelectorAll("div.citizens table tr");
         var head = document.createElement("th");
         head.innerHTML = I18N.get(MODULE_NAME + '_column_head');
         tableCitizens[0].appendChild(head);
@@ -69,25 +71,26 @@ Module.register(function() {
             
             var complaints = citizens[i].getElementsByTagName("complaints")[0];
             var complaintsNb = complaints.getAttribute("nb");
-
-            details    += "<div style='color: limegreen;'>Conseils : " + councilsNb + "</div>";
+            // Display the council number & the details
+            details    += "<div style='color: limegreen;'>" + I18N.get(MODULE_NAME + '_council_title') + " : " + councilsNb + "</div>";
             var lstCouncils = councils.childNodes;
             var j = 0;
             if(lstCouncils.length > 0){
                 details += "<ul>";
                 for(j = 0 ; j < lstCouncils.length ; j++){
 
-                    details += "<li>" + lstCouncils[j].getAttribute("lib") + " (" +  lstCouncils[j].childNodes.length + ")</li>";
+                    details += "<li>" + lstCouncils[j].getAttribute("lib") + " (" + lstCouncils[j].getAttribute("nb") + ")</li>";
                 }
                 details += "</ul>";
             }
-            details    += "<div style='color: red;'>Plaintes : " + complaintsNb + "</div>";
+            // Display the complaints number & the details
+            details    += "<div style='color: red;'>" + I18N.get(MODULE_NAME + '_complain_title') + " : " + complaintsNb + "</div>";
             var lstComplaints = complaints.childNodes;
             if(lstComplaints.length > 0){
                 details += "<ul>";
                 for(j = 0 ; j < lstComplaints.length ; j++){
 
-                    details += "<li>" + lstComplaints[j].getAttribute("lib") + " (" +  lstComplaints[j].childNodes.length + ")</li>";
+                    details += "<li>" + lstComplaints[j].getAttribute("lib") + " (" +  lstComplaints[j].getAttribute("nb") + ")</li>";
                 }
                 details += "</ul>";
             }
@@ -111,14 +114,9 @@ Module.register(function() {
     {
         var citizens_link = document.querySelectorAll(selector);
         var ret = [];
-        var regex = /uid=(\d+)/;
-        var regex_results;
 
-        for (var i = 0, max = citizens_link.length; i < max; i++) {
-            regex_results = regex.exec(citizens_link[i].href);
-            if (regex_results.length > 1) {
-                ret.push(regex_results[1]);
-            }
+        for (var i = 0; i < citizens_link.length; i++) {
+            ret.push(citizens_link[i].getAttribute("tid_id"));
         }
 
         return ret;
@@ -134,7 +132,13 @@ Module.register(function() {
         type: Module.TYPE.INTERFACE_ENHANCEMENT,
 
         properties: {
-            enabled: false
+            enabled: false,
+            tool: {
+                directory_id: 97,
+                api_key: null,
+                update_method: 'GET',
+                update_url: 'https://hordes-la-loi.fr/xml/users/twin-search.xml:'
+            }
         },
 
         configurable: {
@@ -163,11 +167,10 @@ Module.register(function() {
 
                     JS.wait_for_selector('div.citizens', function(el) {
                         var citizens = extract_citizens_id('a.tid_user[href^="/#ghost/city?go=ghost/user?uid="]');
-
                         JS.network_request(
-                            "GET",
-                            "https://hordes-la-loi.fr/xml/users/search.xml:" + citizens.join(','),
-                            null,
+                            this.properties.tool.update_method,
+                            this.properties.tool.update_url + citizens.join(','),
+                            'key=' + this.properties.tool.api_key,
                             null,
                             add_citizens_note,
                             network_failure
@@ -176,6 +179,5 @@ Module.register(function() {
                 }, false);
             }
         }
-
     };
 });

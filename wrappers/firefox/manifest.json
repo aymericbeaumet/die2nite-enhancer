@@ -22,7 +22,7 @@
 
   "applications": {
     "gecko": {
-      "id": "<%= firefox.identifier %>@beaumet.me"
+      "id": "<%= firefox.identifier %>"
     }
   }
 
