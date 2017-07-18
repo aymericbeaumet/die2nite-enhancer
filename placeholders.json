@@ -6,7 +6,8 @@
 
   "i18n": {
     "description": {
-      "fr": "Die2Nite Enhancer améliore votre expérience de jeu sur Hordes."
+      "fr": "Die2Nite Enhancer améliore votre expérience de jeu sur Hordes.",
+      "en": "Die2Nite Enhancer improves your gaming experience on Die2Nite"
     }
   },
 
@@ -35,7 +36,7 @@
   },
 
   "firefox": {
-    "identifier": "jid1-bTAmRdxiqQRANQ"
+    "identifier": "jid1-bTAmRdxiqQRANQ@beaumet.me"
   },
 
   "safari": {
