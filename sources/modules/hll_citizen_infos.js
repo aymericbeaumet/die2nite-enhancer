@@ -40,7 +40,7 @@ Module.register(function() {
         for(var i = 0 ; i < citizens.length ; i++){
             var percent = citizens[i].getAttribute("percent");
             var id = citizens[i].getAttribute("id");
-
+            
             var red = 255;
             var green = 255;
             var blue = 0;
@@ -76,21 +76,21 @@ Module.register(function() {
             var lstCouncils = councils.childNodes;
             var j = 0;
             if(lstCouncils.length > 0){
-                details += "<ul>";
+                details += "<ul style='margin-bottom: 5px;list-style-type: circle;'>";
                 for(j = 0 ; j < lstCouncils.length ; j++){
 
-                    details += "<li>" + lstCouncils[j].getAttribute("lib") + " (" + lstCouncils[j].getAttribute("nb") + ")</li>";
+                    details += "<li style='background: none;'>" + lstCouncils[j].getAttribute("lib") + " (" + lstCouncils[j].getAttribute("nb") + ")</li>";
                 }
                 details += "</ul>";
             }
+
             // Display the complaints number & the details
             details    += "<div style='color: red;'>" + I18N.get(MODULE_NAME + '_complain_title') + " : " + complaintsNb + "</div>";
             var lstComplaints = complaints.childNodes;
             if(lstComplaints.length > 0){
-                details += "<ul>";
+                details += "<ul style='list-style-type: circle;'>";
                 for(j = 0 ; j < lstComplaints.length ; j++){
-
-                    details += "<li>" + lstComplaints[j].getAttribute("lib") + " (" +  lstComplaints[j].getAttribute("nb") + ")</li>";
+                    details += "<li style='background: none;'>" + lstComplaints[j].getAttribute("lib") + " (" +  lstComplaints[j].getAttribute("nb") + ")</li>";
                 }
                 details += "</ul>";
             }
@@ -107,7 +107,7 @@ Module.register(function() {
 
 
     function network_failure(){
-
+    	console.log("network fail");
     }
 
     function extract_citizens_id(selector)
@@ -160,6 +160,7 @@ Module.register(function() {
             },
 
             load: function() {
+            	var module = this;
                 document.addEventListener('d2n_gamebody_reload', function() {
                     if (!D2N.is_on_page_in_city('citizens')) {
                         return;
@@ -168,9 +169,9 @@ Module.register(function() {
                     JS.wait_for_selector('div.citizens', function(el) {
                         var citizens = extract_citizens_id('a.tid_user[href^="/#ghost/city?go=ghost/user?uid="]');
                         JS.network_request(
-                            this.properties.tool.update_method,
-                            this.properties.tool.update_url + citizens.join(','),
-                            'key=' + this.properties.tool.api_key,
+                            module.properties.tool.update_method,
+                            module.properties.tool.update_url + citizens.join(','),
+                            'key=' + module.properties.tool.api_key,
                             null,
                             add_citizens_note,
                             network_failure
