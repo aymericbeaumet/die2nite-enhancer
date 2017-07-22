@@ -180,12 +180,15 @@ Module.register(function() {
             JS.each(module.configurable, function(key, value) {
                 var input_id = 'd2ne_module_' + module.name + '_' + key;
                 var input_value = module.properties[key];
-
+                var onclick = "";
+                if(value.url !== undefined){
+                    onclick = "window.open('" + value.url + "');";
+                }
                 var json_node =
                     ["div", {},
                         null,
                         ["label", { "for": input_id }, I18N.get(value.short_desc_I18N)],
-                        ["a", { "class": "helpLink d2ne", "href": "#", "onclick": "return false;",
+                        ["a", { "class": "helpLink d2ne", "href": "#", "onclick": onclick + "return false;",
                                   "onmouseover": "js.HordeTip.showHelp(this, " + JSON.stringify(I18N.get(value.full_desc_I18N)) + ");",
                                   "onmouseout": "js.HordeTip.hide()" },
                             ["img", { "src": I18N.get(MODULE_NAME + '_help_image_url') }]

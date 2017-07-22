@@ -18,11 +18,11 @@ Module.register(function() {
 
         i18n[I18N.LANG.EN] = {};
         i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Old soul design for the pictogram (by Davf)';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'More information here [fr]: http://userstyles.org/styles/97547/hordes-me-ancienne. Script by Davf, integrated with his permission.';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'More information here [fr]: http://userstyles.org/styles/97547/hordes-me-ancienne. Script by Davf, integrated with his permission. Click to open link.';
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Hordes Âme Ancienne (par Davf)';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Plus d\'information ici : http://userstyles.org/styles/97547/hordes-me-ancienne. Script par Davf, intégré avec sa permission.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Plus d\'information ici : http://userstyles.org/styles/97547/hordes-me-ancienne. Script par Davf, intégré avec sa permission. Cliquez pour ouvrir le lien.';
 
         I18N.set(i18n);
     }
@@ -46,7 +46,8 @@ Module.register(function() {
                 category: Module.PROPERTY_CATEGORY.SOUL,
                 type: Module.PROPERTY.BOOLEAN,
                 short_desc_I18N: MODULE_NAME + '_short_desc',
-                full_desc_I18N: MODULE_NAME + '_full_desc'
+                full_desc_I18N: MODULE_NAME + '_full_desc',
+                url: "http://userstyles.org/styles/97547/hordes-me-ancienne"
             }
         },
 
