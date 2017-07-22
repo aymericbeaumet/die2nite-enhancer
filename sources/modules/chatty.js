@@ -6,7 +6,7 @@ Module.register(function() {
      * Module context *
      ******************/
 
-    var SERVER_URL = 'http://chatty.d2ne.beaumet.me:8080';
+    var SERVER_URL = 'http://chatty.d2ne.beaumet.me';
 
     var socket_ = null;
 
