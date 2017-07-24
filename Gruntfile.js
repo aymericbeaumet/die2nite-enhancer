@@ -492,7 +492,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask("devfast", "Watch for modifications and recompile on the fly.", ["watch:pack"]);
 
-    grunt.registerTask("copyfast", "Watch for modifications and recopy on the fly.", ["watch:copy"]);
+    grunt.registerTask("copyfast", "Watch for modifications and recopy on the fly.", ["copy", "watch:copy"]);
 
 
     /*

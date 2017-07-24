@@ -15,11 +15,11 @@ Module.register(function() {
 
         i18n[I18N.LANG.EN] = {};
         i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Enable shortcuts';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Let you use keyboard shortcuts in town to quickly access important places (e.g.: banks, gates).';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Let you use keyboard shortcuts in town to quickly access important places. The shortcuts are listed below : <br /><dl><dt>G + O</dt><dd>Overview</dd><dt>G + H</dt><dd>Home</dd><dt>G + W</dt><dd>Well</dd><dt>G + B</dt><dd>Bank</dd><dt>G + C</dt><dd>Citizens</dd><dt>G + D</dt><dd>Buildings</dd><dt>G + G</dt><dd>Gates</dd><dt>G + P</dt><dd>Town upgrades</dd><dt>G + T</dt><dd>Watchtower</dd><dt>G + M</dt><dd>Workshop</dd><dt>G + L</dt><dd>Night watch</dd></dl>';
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Activer les raccourcis clavier';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Active des raccourcis claviers pour accéder rapidement aux places importantes en ville (e.g.: la banque, les portes).';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Active des raccourcis claviers pour accéder rapidement aux places importantes en ville. Les raccourcis sont listés ci-dessous : <br /><dl><dt>G + O</dt><dd>Vue d\'ensemble</dd><dt>G + H</dt><dd>Maison</dd><dt>G + W</dt><dd>Puits</dd><dt>G + B</dt><dd>Banque</dd><dt>G + C</dt><dd>Citoyens</dd><dt>G + D</dt><dd>Constructions</dd><dt>G + G</dt><dd>Portes</dd><dt>G + P</dt><dd>Évolutions</dd><dt>G + T</dt><dd>Tour de guet</dd><dt>G + M</dt><dd>Atelier</dd><dt>G + L</dt><dd>Veille</dd></dl>';
 
         I18N.set(i18n);
     }
