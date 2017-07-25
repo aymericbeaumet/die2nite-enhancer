@@ -174,7 +174,7 @@ Module.register(function() {
         JS.injectJS(
             'var el = document.getElementById(' + JSON.stringify(element_id) + ');' +
             'el.onmouseover = function(event) {' +
-                'return js.HordeTip.showSpecialTip(this, \'simpleTip\', \'\', ' + JSON.stringify(new_content) + ', event);' +
+                'return js.HordeTip.showSpecialTip(this, \'helpTip\', \'\', ' + JSON.stringify(new_content) + ', event);' +
             '};' +
             'el.onmouseout = function(event) {' +
                 'return js.HordeTip.hide(event);' +

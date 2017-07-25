@@ -103,11 +103,12 @@ Module.register(function() {
             info.innerHTML = "<a href='https://hordes-la-loi.fr/users/" + id + "/' target='_blank' style='color: rgb(" + red + "," + green + "," + blue + ");'>" + percent + "</a>";
             tableCitizens[i+1].appendChild(info);
         }
+        document.getElementById("loading_section").style.display = "none";
     }
 
 
     function network_failure(){
-
+        document.getElementById("loading_section").style.display = "none";
     }
 
     function extract_citizens_id(selector)
@@ -160,17 +161,22 @@ Module.register(function() {
             },
 
             load: function() {
+                var method = this.properties.tool.update_method;
+                var url = this.properties.tool.update_url;
+                var key = this.properties.tool.api_key;
                 document.addEventListener('d2n_gamebody_reload', function() {
                     if (!D2N.is_on_page_in_city('citizens')) {
                         return;
                     }
 
+                    document.getElementById("loading_section").style.display = "block";
+
                     JS.wait_for_selector('div.citizens', function(el) {
                         var citizens = extract_citizens_id('a.tid_user[href^="/#ghost/city?go=ghost/user?uid="]');
                         JS.network_request(
-                            this.properties.tool.update_method,
-                            this.properties.tool.update_url + citizens.join(','),
-                            'key=' + this.properties.tool.api_key,
+                            method,
+                            url + citizens.join(','),
+                            'key=' + key,
                             null,
                             add_citizens_note,
                             network_failure
