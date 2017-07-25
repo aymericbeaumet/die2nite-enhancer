@@ -60,8 +60,7 @@ Module.register(function() {
                 JS.injectCSS(
                     '#mapTips, a.button[href^="#city/exp?editor=1;sk="] + p, .helpLink:not(.d2ne), #generic_section > div > em:last-of-type, .help, .heroHelp, .tid_goalHelp {' +
                         'display: none;' +
-                    '}'
-                );
+                    '}');
 
                 document.addEventListener('d2n_gamebody_reload', function() {
                     if (!(D2N.is_on_page_in_city('guard'))) {

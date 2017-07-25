@@ -65,9 +65,8 @@ Module.register(function() {
                         'font-size: 16pt;' +
                         'padding-top: 10px;' +
                         'color: #f0d79e;' +
-                        'text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;' +
-                    '}'
-                );
+                        'text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;' +
+                    '}');
 
                 document.addEventListener('d2n_gamebody_reload', function() {
                     if (!(D2N.is_on_page('ghost') || D2N.is_on_page('ghost_exp'))) {

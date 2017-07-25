@@ -196,7 +196,7 @@ Module.register(function() {
                         'margin-top: 16px;' +
                         'margin-bottom: 16px;' +
                     '}' +
-                    '.tid_editorContent cite p {' +
+                    '.tid_editorContent cite, .tid_editorContent cite p {' +
                         'overflow: auto;' +
                     '}' +
                     '.tid_editorContent cite img:last-child {' +

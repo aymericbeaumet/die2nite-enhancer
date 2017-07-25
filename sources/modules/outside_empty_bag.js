@@ -109,8 +109,7 @@ Module.register(function() {
                 JS.injectCSS(
                     'ul.tools.shortTools.bagInv > li:nth-child(2) {' +
                         'cursor: pointer;' +
-                    '}'
-                );
+                    '}');
 
                 document.addEventListener('d2n_gamebody_reload', function() {
                     // if not outside, abort
@@ -128,12 +127,11 @@ Module.register(function() {
                         JS.injectJS(
                             'var el = document.querySelector(\'ul.tools.shortTools.bagInv > li:nth-child(2)\');' +
                             'el.onmouseover = function(event) {' +
-                                'return js.HordeTip.showSpecialTip(this, \'helpTip\', \'\', ' + JSON.stringify(I18N.get(MODULE_NAME + '_tooltip')) + ', event);' +
+                                'return js.HordeTip.showSpecialTip(this, \'simpleTip\', \'\', ' + JSON.stringify(I18N.get(MODULE_NAME + '_tooltip')) + ', event);' +
                             '};' +
                             'el.onmouseout = function(event) {' +
                                 'return js.HordeTip.hide(event);' +
-                            '};'
-                        );
+                            '};');
 
                     });
                 }, false);

@@ -252,8 +252,7 @@ var D2N = (function() {
         {
             return JS.regex_test(
                 '^#city',
-                window.location.hash
-            );
+                window.location.hash);
         },
 
         /**
@@ -263,7 +262,7 @@ var D2N = (function() {
          */
         is_outside: function()
         {
-            return /^#outside\?(?:go=outside\/(?:doors|refresh);)?sk=[a-z0-9]{5}$/.test(window.location.hash);
+            return (/^#outside\?(?:go=outside\/(?:doors|refresh);)?sk=[a-z0-9]{5}$/).test(window.location.hash);
         },
 
         /**
@@ -297,8 +296,7 @@ var D2N = (function() {
         {
             return JS.regex_test(
                 '^#ghost\\?go=' + pages_url_[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$',
-                window.location.hash
-            );
+                window.location.hash);
         },
 
         /**
@@ -412,8 +410,7 @@ var D2N = (function() {
          */
         is_camping: function()
         {
-            return D2N.is_outside() &&
-                document.getElementsByClassName('left').length < 1;
+            return D2N.is_outside() && document.getElementsByClassName('left').length < 1;
         },
 
         /**
@@ -595,6 +592,50 @@ var D2N = (function() {
         hide_empty_notification: function()
         {
             document.getElementById('notification').classList.remove('showNotif');
+        },
+
+        /**
+         * Return the city name.
+         */
+        get_city_name: function(callback)
+        {
+            var selector = '#clock .name';
+
+            // async
+            if (typeof callback === 'function') {
+                JS.wait_for_selector(selector, function(node) {
+                    callback(node.textContent.trim());
+                }, 5, function() {
+                    callback(null);
+                });
+
+            // sync
+            } else {
+                var el = document.querySelector(selector);
+                if (!el) { return null; }
+                return el.textContent.trim();
+            }
+        },
+
+        /**
+         * Return the server name.
+         */
+        get_server_name: function()
+        {
+            return window.location.hostname;
+        },
+
+        /**
+         * Return the player name.
+         */
+        get_player_name: function()
+        {
+            var el = document.querySelector('#tid_openRight .tid_name');
+
+            if (!el) {
+                return null;
+            }
+            return el.textContent.trim();
         }
 
     };

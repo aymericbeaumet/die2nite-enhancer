@@ -152,8 +152,7 @@ Module.register(function() {
                 JS.injectCSS(
                     '#' + ANTI_ABUSE_NOTIFIER_ID + ' {' +
                         'cursor: auto;' +
-                    '}'
-                );
+                    '}');
 
                 if (JS.is_defined(this.properties.attempt_left) !== true) {
                     this.properties.attempt_left = 5;

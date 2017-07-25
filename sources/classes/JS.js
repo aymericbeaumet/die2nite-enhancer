@@ -628,6 +628,16 @@ var JS = (function() {
             }
         },
 
+        /**
+         * Scroll to the bottom of the given element.
+         * @link http://stackoverflow.com/a/270628/1071486
+         * @param DOMElement node
+         */
+        scroll_to_bottom: function(node)
+        {
+            node.scrollTop = node.scrollHeight;
+        },
+
         jsonToDOM: jsonToDOM
 
     };

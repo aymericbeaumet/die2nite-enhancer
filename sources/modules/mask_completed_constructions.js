@@ -35,6 +35,7 @@ Module.register(function() {
     {
         this.properties.hide_completed_constructions = !this.properties.hide_completed_constructions;
         this.save_properties();
+        JS.reload();
     }
 
     /**
@@ -43,16 +44,17 @@ Module.register(function() {
     function insert_links_in_dom(node)
     {
         // if the two links are already present, then abort
-        if (node.childNodes.length > 1) {
+        // 
+        var btn = document.getElementById("btnShowHide");
+        if(btn !== null)
             return;
-        }
-
-        var right_link = node.firstChild;
 
         // Clone node and set the wanted properties (to keep the
         // right link behaviour)
-        var link = right_link.cloneNode(false);
-        link.style.cssFloat = 'left';
+        
+        var link = document.createElement("a");
+        link.id = "btnShowHide";
+        link.className = "button";
         link.textContent = this.properties.hide_completed_constructions ? I18N.get(MODULE_NAME + '_link_show') : I18N.get(MODULE_NAME + '_link_hide');
 
         var f = on_link_click.bind(this);
@@ -60,7 +62,7 @@ Module.register(function() {
             f();
         }, false);
 
-        node.insertBefore(link, node.firstChild);
+        node.parentNode.insertBefore(link, node.nextSibling);
     }
 
     /**
@@ -90,8 +92,8 @@ Module.register(function() {
         }
 
         var f = insert_links_in_dom.bind(this);
-        JS.wait_for_class('tinyAction', function(nodes) {
-            f(nodes[nodes.length - 1]);
+        JS.wait_for_selector('#generic_section .button', function(node) {
+            f(node);
         });
     }
 

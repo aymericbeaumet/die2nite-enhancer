@@ -15,11 +15,11 @@ Module.register(function() {
 
         i18n[I18N.LANG.EN] = {};
         i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Enable shortcuts';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Let you use keyboard shortcuts in town to quickly access important places (e.g.: banks, gates).';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Let you use keyboard shortcuts in town to quickly access important places. The shortcuts are listed below : <br /><dl><dt>G + O</dt><dd>Overview</dd><dt>G + H</dt><dd>Home</dd><dt>G + W</dt><dd>Well</dd><dt>G + B</dt><dd>Bank</dd><dt>G + C</dt><dd>Citizens</dd><dt>G + D</dt><dd>Buildings</dd><dt>G + G</dt><dd>Gates</dd><dt>G + P</dt><dd>Town upgrades</dd><dt>G + T</dt><dd>Watchtower</dd><dt>G + M</dt><dd>Workshop</dd><dt>G + L</dt><dd>Night watch</dd></dl>';
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Activer les raccourcis clavier';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Active des raccourcis claviers pour accéder rapidement aux places importantes en ville (e.g.: la banque, les portes).';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Active des raccourcis claviers pour accéder rapidement aux places importantes en ville. Les raccourcis sont listés ci-dessous : <br /><dl><dt>G + O</dt><dd>Vue d\'ensemble</dd><dt>G + H</dt><dd>Maison</dd><dt>G + W</dt><dd>Puits</dd><dt>G + B</dt><dd>Banque</dd><dt>G + C</dt><dd>Citoyens</dd><dt>G + D</dt><dd>Constructions</dd><dt>G + G</dt><dd>Portes</dd><dt>G + P</dt><dd>Évolutions</dd><dt>G + T</dt><dd>Tour de guet</dd><dt>G + M</dt><dd>Atelier</dd><dt>G + L</dt><dd>Veille</dd></dl>';
 
         I18N.set(i18n);
     }
@@ -30,7 +30,7 @@ Module.register(function() {
      * @param integer previous_keycode The last-but-one keycode
      */
     function on_keydown_event(keycode, previous_keycode) {
-        if (previous_keycode !== this.properties.binds.main) {
+        if (previous_keycode !== this.properties.mainBind) {
             return;
         }
 
@@ -52,10 +52,10 @@ Module.register(function() {
 
         properties: {
             enabled: false,
+            // This bind has to be pressed first
+            mainBind: 71, // 'G'
             binds: {
-                // This bind has to be pressed first
-                main: 71, // 'G'
-                // Page specific bind (have to be preceded by a 'main' bind stoke)
+                // Page specific bind (have to be preceded by a 'main' bind stroke)
                 overview: 79, // 'O'
                 home: 72, // 'H'
                 well: 87, // 'W'

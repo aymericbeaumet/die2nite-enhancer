@@ -17,12 +17,12 @@ Module.register(function() {
         var i18n = {};
 
         i18n[I18N.LANG.EN] = {};
-        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Old school design for the pictogram (by Davf)';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'More information here [fr]: http://userstyles.org/styles/97547/hordes-me-ancienne. Script by Davf, integrated with his permission.';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Old soul design for the pictogram (by Davf)';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'More information here [fr]: http://userstyles.org/styles/97547/hordes-me-ancienne. Script by Davf, integrated with his permission. Click to open link.';
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Hordes Âme Ancienne (par Davf)';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Plus d\'information ici : http://userstyles.org/styles/97547/hordes-me-ancienne. Script par Davf, intégré avec sa permission.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Plus d\'information ici : http://userstyles.org/styles/97547/hordes-me-ancienne. Script par Davf, intégré avec sa permission. Cliquez pour ouvrir le lien.';
 
         I18N.set(i18n);
     }
@@ -46,7 +46,8 @@ Module.register(function() {
                 category: Module.PROPERTY_CATEGORY.SOUL,
                 type: Module.PROPERTY.BOOLEAN,
                 short_desc_I18N: MODULE_NAME + '_short_desc',
-                full_desc_I18N: MODULE_NAME + '_full_desc'
+                full_desc_I18N: MODULE_NAME + '_full_desc',
+                url: "http://userstyles.org/styles/97547/hordes-me-ancienne"
             }
         },
 
@@ -163,13 +164,13 @@ Module.register(function() {
                     '}' +
                     '.guser .left {' +
                         'width: 300px;' +
-                        'background-image: url("http://data.hordes.fr/gfx/design/rewardsBg_bg.gif") !important;' +
+                        'background-image: url("/gfx/design/rewardsBg_bg.gif") !important;' +
                         'background-repeat: repeat-y !important;' +
                         'margin-bottom: auto !important;' +
                         'background-position: 20px 0px !important;' +
                     '}' +
                     '.tid_userGoals {' +
-                        'background-image: url("http://data.hordes.fr/gfx/loc/fr/rewardsBg_header.gif") !important;' +
+                        'background-image: url("/gfx/loc/' + D2N.get_website_language() + '/rewardsBg_header.gif") !important;' +
                         'background-repeat: no-repeat !important;' +
                         'margin-bottom: 0px !important;' +
                         '-moz-box-shadow: none !important;' +
@@ -180,7 +181,7 @@ Module.register(function() {
                         'width: 260px !important;' +
                     '}' +
                     '.tid_userGoals_footerLeft.tid_bg2 {' +
-                        'background-image: url("http://data.hordes.fr/gfx/design/rewardsBg_footer.gif") !important;' +
+                        'background-image: url("/gfx/design/rewardsBg_footer.gif") !important;' +
                         'height: 47px !important;' +
                         'margin-top: -22px !important;' +
                     '}' +
@@ -246,7 +247,7 @@ Module.register(function() {
                         'background-color: transparent !important;' +
                     '}' +
                     '.tid_goal.tid_bg3.tid_tip.tid_rare.tid_parsed {' +
-                        'background-image: url("http://data.hordes.fr/gfx/icons/rewardBg_rare.gif") !important;' +
+                        'background-image: url("/gfx/icons/rewardBg_rare.gif") !important;' +
                     '}' +
                     '.tid_userGoals .tid_goals .tid_mode_icons .tid_goal .tid_count {' +
                         'margin-top: 19px !important;   ' +

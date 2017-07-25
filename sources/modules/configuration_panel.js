@@ -31,10 +31,11 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_general_category'] = 'General';
         i18n[I18N.LANG.EN][MODULE_NAME + '_bank_category'] = 'Bank';
         i18n[I18N.LANG.EN][MODULE_NAME + '_construction_category'] = 'Construction Sites';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_citizens_category'] = 'Citizens';
         i18n[I18N.LANG.EN][MODULE_NAME + '_outside_category'] = 'Outside';
         i18n[I18N.LANG.EN][MODULE_NAME + '_external_tool_category'] = 'External Tools';
         i18n[I18N.LANG.EN][MODULE_NAME + '_soul_category'] = 'Soul page';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_forum_category'] = 'Forum';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_forum_category'] = 'Forums';
         i18n[I18N.LANG.EN][MODULE_NAME + '_interface_category'] = 'Interface';
         i18n[I18N.LANG.EN][MODULE_NAME + '_various_category'] = 'Various';
         i18n[I18N.LANG.EN][MODULE_NAME + '_save_button'] = 'Save';
@@ -46,14 +47,15 @@ Module.register(function() {
         i18n[I18N.LANG.FR][MODULE_NAME + '_general_category'] = 'Général';
         i18n[I18N.LANG.FR][MODULE_NAME + '_bank_category'] = 'Banque';
         i18n[I18N.LANG.FR][MODULE_NAME + '_construction_category'] = 'Chantiers';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_citizens_category'] = 'Citoyens';
         i18n[I18N.LANG.FR][MODULE_NAME + '_outside_category'] = 'Outre-Monde';
         i18n[I18N.LANG.FR][MODULE_NAME + '_external_tool_category'] = 'Outils Externes';
         i18n[I18N.LANG.FR][MODULE_NAME + '_soul_category'] = 'Page d\'âme';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_forum_category'] = 'Forum';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_forum_category'] = 'Forums';
         i18n[I18N.LANG.FR][MODULE_NAME + '_interface_category'] = 'Interface';
         i18n[I18N.LANG.FR][MODULE_NAME + '_various_category'] = 'Divers';
         i18n[I18N.LANG.FR][MODULE_NAME + '_save_button'] = 'Sauvegarder';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_close_button'] = 'Fermer';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_close_button'] = 'Fermer';
 
         i18n[I18N.LANG.ES] = {};
         i18n[I18N.LANG.ES][MODULE_NAME + '_help_image_url'] = '/gfx/loc/es/helpLink.gif';
@@ -92,7 +94,6 @@ Module.register(function() {
                 case Module.PROPERTY.BOOLEAN:
                     input_data = input_node.checked;
                     break;
-
                 default:
                     input_data = null;
                     break;
@@ -125,6 +126,10 @@ Module.register(function() {
             case Module.PROPERTY_CATEGORY.CONSTRUCTION:
                 icon = '/gfx/forum/smiley/h_refine.gif';
                 text = I18N.get(MODULE_NAME + '_construction_category');
+                break;
+            case Module.PROPERTY_CATEGORY.CITIZENS:
+                icon = '/gfx/forum/smiley/h_human.gif';
+                text = I18N.get(MODULE_NAME + '_citizens_category');
                 break;
             case Module.PROPERTY_CATEGORY.OUTSIDE:
                 icon = '/gfx/icons/r_camp.gif';
@@ -175,12 +180,15 @@ Module.register(function() {
             JS.each(module.configurable, function(key, value) {
                 var input_id = 'd2ne_module_' + module.name + '_' + key;
                 var input_value = module.properties[key];
-
+                var onclick = "";
+                if(value.url !== undefined){
+                    onclick = "window.open('" + value.url + "');";
+                }
                 var json_node =
                     ["div", {},
                         null,
                         ["label", { "for": input_id }, I18N.get(value.short_desc_I18N)],
-                        ["a", { "class": "helpLink d2ne", "href": "#", "onclick": "return false;",
+                        ["a", { "class": "helpLink d2ne", "href": "#", "onclick": onclick + "return false;",
                                   "onmouseover": "js.HordeTip.showHelp(this, " + JSON.stringify(I18N.get(value.full_desc_I18N)) + ");",
                                   "onmouseout": "js.HordeTip.hide()" },
                             ["img", { "src": I18N.get(MODULE_NAME + '_help_image_url') }]
@@ -304,6 +312,7 @@ Module.register(function() {
                 'top: 70px;' +
                 'margin: 0 auto;' +
                 'margin-bottom: 70px;' +
+                'background-color: rgb(122, 73, 40);' +
             '}' +
 
             '#d2ne_configuration_panel > div:nth-child(1) {' +

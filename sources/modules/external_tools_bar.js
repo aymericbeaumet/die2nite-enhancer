@@ -148,26 +148,28 @@ Module.register(function() {
         var new_content = '';
 
         // set the content
-        new_content += '<ul id="' + EXTERNAL_TOOLS_TOOLTIP_LIST_ID + '" style="margin-top: 0;">';
+        new_content += '<div id="' + EXTERNAL_TOOLS_TOOLTIP_LIST_ID + '" style="margin-top: 0;">';
         for (var tool in update_state_) {
             if (update_state_.hasOwnProperty(tool)) {
                 // if done and success
                 if (update_state_[tool].done === true) {
                     if (update_state_[tool].error === false) {
-                        new_content += '<li style="color: #27F037;">';
+                        new_content += '<div style="color: #27F037;">';
                     } else {
-                        new_content += '<li style="color: #EE1515;">';
+                        new_content += '<div style="color: #EE1515;">';
                     }
+                } else if(update_state_[tool].updating === true) {
+                    new_content += '<div style="color: #ffd500;">';
                 } else {
-                    new_content += '<li>';
+                    new_content += '<div>';
                 }
 
                 // Include title
-                new_content += update_state_[tool].name + '</li>';
+                new_content += update_state_[tool].name + '</div>';
             }
         }
-        new_content += '</ul>';
-        console.log(new_content);
+        new_content += '</div>';
+
         // Update the listeners
         JS.injectJS(
             'var el = document.getElementById(' + JSON.stringify(element_id) + ');' +
@@ -205,7 +207,8 @@ Module.register(function() {
                 module: module,
                 name: I18N.get(module.name + '_name'),
                 done: false,
-                error: false
+                error: false,
+                updating: false,
             };
         });
     }
@@ -246,7 +249,7 @@ Module.register(function() {
 
         // Reset update state
         reset_update();
-
+        
         // We are actually doing an update
         set_update_in_progress(true);
 
@@ -260,16 +263,19 @@ Module.register(function() {
 
         JS.each(update_state_, function(module_name, state) {
             var module = state.module;
-
+            state.updating = true;
+            
             module.actions.update.call(module, function on_success() {
                 state.done = true;
                 state.error = false;
+                state.updating = false;
 
                 return progress_callback();
 
             }, function on_failure() {
                 state.done = true;
                 state.error = true;
+                state.updating = false;
 
                 return progress_callback();
             });
@@ -384,7 +390,6 @@ Module.register(function() {
                 'color: #f0d79e;' +
                 'cursor: help;' +
             '}'
-
         );
     }
 
@@ -419,6 +424,8 @@ Module.register(function() {
             enabled: true
         },
 
+        container_id: EXTERNAL_TOOLS_BAR_UPDATE_CONTAINER_ID,
+
         actions: {
             can_run: function() {
                 return true;
@@ -448,6 +455,10 @@ Module.register(function() {
                         loaded = true;
                     }
                 });
+            },
+
+            refresh: function(){
+                on_update_button_click();
             }
         }
 
