@@ -54,13 +54,10 @@ Module.register(function() {
                 percent = (+percent);
                 if(percent > 0){
                     red = (100 - percent) / 100 * 255;
-                    green = (percent / 100) * 255;
-                } else if (percent < 0) {
-                    red = (-percent / 100) * 255;
-                    green = (100  + percent) / 100 * 255;
+                    green = 255;
                 } else {
                     red = 255;
-                    green = 255;
+                    green = (100 + percent) / 100 * 255;
                 }
             }
 

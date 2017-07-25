@@ -30,7 +30,7 @@ Module.register(function() {
      * @param integer previous_keycode The last-but-one keycode
      */
     function on_keydown_event(keycode, previous_keycode) {
-        if (previous_keycode !== this.properties.binds.main) {
+        if (previous_keycode !== this.properties.mainBind) {
             return;
         }
 
@@ -52,10 +52,10 @@ Module.register(function() {
 
         properties: {
             enabled: false,
+            // This bind has to be pressed first
+            mainBind: 71, // 'G'
             binds: {
-                // This bind has to be pressed first
-                main: 71, // 'G'
-                // Page specific bind (have to be preceded by a 'main' bind stoke)
+                // Page specific bind (have to be preceded by a 'main' bind stroke)
                 overview: 79, // 'O'
                 home: 72, // 'H'
                 well: 87, // 'W'
