@@ -146,7 +146,7 @@ Module.register(function() {
             ["div", {},
                 ["p", {}, I18N.get(MODULE_NAME + '_description')],
 
-                ["a", { class: "button", onclick: function() {
+                ["a", { "class": "button", onclick: function() {
                     JS.dispatch_event('d2ne_load_configuration_panel');
                 }}, I18N.get(MODULE_NAME + '_configuration_panel_button') ],
 

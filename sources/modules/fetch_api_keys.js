@@ -95,7 +95,7 @@ Module.register(function() {
         type: Module.TYPE.BUSINESS_LOGIC,
 
         properties: {
-            enabled: true,
+            enabled: true
         },
 
         actions: {

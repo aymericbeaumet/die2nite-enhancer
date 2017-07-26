@@ -62,7 +62,8 @@ Module.register(function() {
             update: function(callback_success, callback_failure) {
                 // Do not update if not outside
                 if (!D2N.is_outside()) {
-                    return callback_failure();
+                    callback_failure();
+                    return;
                 }
 
                 JS.network_request(
@@ -73,10 +74,10 @@ Module.register(function() {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
                     function(response_text) {
-                        return callback_success();
+                        callback_success();
                     },
                     function() {
-                        return callback_failure();
+                        callback_failure();
                     }
                 );
             }

@@ -85,7 +85,7 @@ Module.register(function() {
      */
     function is_image_link(url)
     {
-        return /.+\.(?:jpe?g|png|gif|bmp)(?:\?.+)?(?:#.\+)?$/.test(url);
+        return (/.+\.(?:jpe?g|png|gif|bmp)(?:\?.+)?(?:#.\+)?$/).test(url);
     }
 
     /**
@@ -95,7 +95,7 @@ Module.register(function() {
      */
     function is_link(url)
     {
-        return /^https?:\/\//.test(url);
+        return (/^https?:\/\//).test(url);
     }
 
     /**
@@ -117,22 +117,22 @@ Module.register(function() {
                 // images
                 if (is_image_link(link.href)) { // if an image
                     // create the node img
-                    new_node = JS.jsonToDOM(['img', { class: 'd2ne_injected', src: link.href }], document);
+                    new_node = JS.jsonToDOM(['img', { "class": 'd2ne_injected', src: link.href }], document);
 
                 // YouTube
                 } else if ((id = get_youtube_video_id(link.href)) !== null) {
                     embed_link = '//www.youtube-nocookie.com/embed/' + id + '?rel=0';
-                    new_node = JS.jsonToDOM(['iframe', { class: 'd2ne_injected', width: VIDEO_WIDTH, height: VIDEO_HEIGHT, src: embed_link, frameborder: 0, webkitallowfullscreen: '', mozallowfullscreen: '', allowfullscreen: '' }], document);
+                    new_node = JS.jsonToDOM(['iframe', { "class": 'd2ne_injected', width: VIDEO_WIDTH, height: VIDEO_HEIGHT, src: embed_link, frameborder: 0, webkitallowfullscreen: '', mozallowfullscreen: '', allowfullscreen: '' }], document);
 
                 // Vimeo
                 } else if ((id = get_vimeo_video_id(link.href)) !== null) {
                     embed_link = '//player.vimeo.com/video/' + id;
-                    new_node = JS.jsonToDOM(['iframe', { class: 'd2ne_injected', width: VIDEO_WIDTH, height: VIDEO_HEIGHT, src: embed_link, frameborder: 0, webkitallowfullscreen: '', mozallowfullscreen: '', allowfullscreen: '' }], document);
+                    new_node = JS.jsonToDOM(['iframe', { "class": 'd2ne_injected', width: VIDEO_WIDTH, height: VIDEO_HEIGHT, src: embed_link, frameborder: 0, webkitallowfullscreen: '', mozallowfullscreen: '', allowfullscreen: '' }], document);
 
                 // Dailymotion
                 } else if ((id = get_dailymotion_video_id(link.href)) !== null) {
                     embed_link = '//www.dailymotion.com/embed/video/' + id;
-                    new_node = JS.jsonToDOM(['iframe', { class: 'd2ne_injected', width: VIDEO_WIDTH, height: VIDEO_HEIGHT, src: embed_link, frameborder: 0, webkitallowfullscreen: '', mozallowfullscreen: '', allowfullscreen: '', related: 0 }], document);
+                    new_node = JS.jsonToDOM(['iframe', { "class": 'd2ne_injected', width: VIDEO_WIDTH, height: VIDEO_HEIGHT, src: embed_link, frameborder: 0, webkitallowfullscreen: '', mozallowfullscreen: '', allowfullscreen: '', related: 0 }], document);
 
                 // abort for this link
                 } else {

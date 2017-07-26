@@ -208,7 +208,7 @@ Module.register(function() {
                 name: I18N.get(module.name + '_name'),
                 done: false,
                 error: false,
-                updating: false,
+                updating: false
             };
         });
     }

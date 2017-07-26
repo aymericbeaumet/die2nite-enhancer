@@ -141,9 +141,9 @@ Module.register(function() {
         // Add the room tab
         var is_first_tab = document.getElementsByClassName('d2ne_chatty_tab').length === 0;
         var unique_tab_id = 'tab-room-' + full_name;
-        var tab = ['div', { class: 'd2ne_chatty_tab' },
-            ['input', { name: 'tab-room', type: 'radio', id: unique_tab_id, onclick: function() { display_active_room_messages(); }}],
-            ['label', { for: unique_tab_id }, room_name]
+        var tab = ['div', { "class": 'd2ne_chatty_tab' },
+            ['input', { "name": 'tab-room', "type": 'radio', "id": unique_tab_id, "onclick": function() { display_active_room_messages(); }}],
+            ['label', { "for": unique_tab_id }, room_name]
         ];
         if (is_first_tab) {
             tab[2][1].checked = 'checked'; // Check the first radio button
@@ -152,7 +152,7 @@ Module.register(function() {
 
         // Add the messages container
         var unique_messages_id = 'messages-room-' + full_name;
-        var container = ['ul', { class: 'd2ne_chatty_messages_container', id: unique_messages_id }];
+        var container = ['ul', { "class": 'd2ne_chatty_messages_container', id: unique_messages_id }];
         document.querySelector('.d2ne_chatty_messages > td > div').appendChild(JS.jsonToDOM(container, document));
 
         // Inform the server we want to join the room
@@ -246,22 +246,22 @@ Module.register(function() {
     function insert_chat_dom()
     {
         var json = ["table", { id: 'd2ne_chatty' },
-            ["tr", { class: 'd2ne_chatty_header', onclick: on_header_click },
+            ["tr", { "class": 'd2ne_chatty_header', onclick: on_header_click },
                 ["td", {},
-                    I18N.get(MODULE_NAME + '_title'),
+                    I18N.get(MODULE_NAME + '_title')
                 ]
             ],
-            ["tr", { class: 'd2ne_chatty_rooms' },
+            ["tr", { "class": 'd2ne_chatty_rooms' },
                 ["td", {}]],
-            ["tr", { class: 'd2ne_chatty_messages' },
+            ["tr", { "class": 'd2ne_chatty_messages' },
                 ["td", {},
                     ["div", {}]
                 ]
             ],
-            ["tr", { class: 'd2ne_chatty_input' }, ["td", {},
+            ["tr", { "class": 'd2ne_chatty_input' }, ["td", {},
                 ["form", { action: 'javascript:void(0);', onsubmit: on_form_submit },
-                    ["input", { type: 'text', class: 'field' }],
-                    ["a", { class: 'button', onclick: on_form_submit }, I18N.get(MODULE_NAME + '_send_button')]
+                    ["input", { type: 'text', "class": 'field' }],
+                    ["a", { "class": 'button', onclick: on_form_submit }, I18N.get(MODULE_NAME + '_send_button')]
                 ]
             ]]
         ];

@@ -246,7 +246,7 @@ Module.register(function() {
         var buttons = ["table", {},
             ["tr", {},
                 ["td", {},
-                    ["a", { href: "javascript:void(0)", class: "button", onclick: function() {
+                    ["a", { href: "javascript:void(0)", "class": "button", onclick: function() {
                                                                                       scroll(0, 0);
                                                                                       D2N.hide_empty_notification();
                                                                                       document.getElementById('d2ne_configuration_panel').style.display = 'none'; }
@@ -255,7 +255,7 @@ Module.register(function() {
                     ]
                 ],
                 ["td", {},
-                    ["a", { href: "javascript:void(0)", class: "button", onclick: function() { save_configuration(); scroll(0, 0); JS.reload(); } },
+                    ["a", { href: "javascript:void(0)", "class": "button", onclick: function() { save_configuration(); scroll(0, 0); JS.reload(); } },
                         I18N.get(MODULE_NAME + '_save_button')
                     ]
                 ]
