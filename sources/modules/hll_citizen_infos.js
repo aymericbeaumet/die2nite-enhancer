@@ -26,8 +26,7 @@ Module.register(function() {
 
     function add_citizens_note(response){
         // Parsing XML answer
-        var parser = new DOMParser();
-        var xmlDoc = parser.parseFromString(response, "text/xml");
+        var xmlDoc = JS.parse_xml(response);
         var citizens = xmlDoc.getElementsByTagName("citizen");
 
         // Adding header

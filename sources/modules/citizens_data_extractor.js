@@ -251,7 +251,7 @@ Module.register(function() {
                     return on_finish(null);
                 }
 
-                extract_citizen_info(citizen_id, on_finish);
+                return extract_citizen_info(citizen_id, on_finish);
             }, SOUL_TIMEOUT);
 
             document.addEventListener('d2n_gamebody_reload', listener, false);
@@ -277,7 +277,7 @@ Module.register(function() {
             D2N.notification(I18N.get(MODULE_NAME + '_work_in_progress') + ' ' +
                 I18N.get(MODULE_NAME + '_citizen') + ' ' + (i + 1) + '/' + max);
 
-            extract_citizen_info(citizens_id[i], function(citizen_info) {
+            return extract_citizen_info(citizens_id[i], function(citizen_info) {
                 if (citizen_info !== null) {
                     ret.push(citizen_info);
                 }
@@ -360,7 +360,7 @@ Module.register(function() {
 
     function get_button(i18n_key, on_click, style)
     {
-        return JS.jsonToDOM(["a", { id: EXTRACT_BUTTON_ID, class: "button", style: '' + style,
+        return JS.jsonToDOM(["a", { id: EXTRACT_BUTTON_ID, "class": "button", style: '' + style,
                                     onclick: on_click },
             ["img", { "src": "/gfx/icons/item_book_gen_letter.gif" }],
             ' ' + I18N.get(MODULE_NAME + i18n_key)

@@ -62,7 +62,8 @@ Module.register(function() {
             update: function(callback_success, callback_failure) {
                 // Do not update if not outside
                 if (!D2N.is_outside()) {
-                    return callback_failure();
+                    callback_failure();
+                    return;
                 }
 
                 JS.network_request(
@@ -70,16 +71,17 @@ Module.register(function() {
                     this.properties.tool.update_url,
                     'key=' + this.properties.tool.api_key,
                     {
-                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Content-Type': 'application/x-www-form-urlencoded'
                     },
                     function(response_text) {
                         if (/Zone -?\d+\/-?\d+ was updated successfully/.test(response_text)) {
-                            return callback_success();
+                            callback_success();
+                            return;
                         }
-                        return callback_failure();
+                        callback_failure();
                     },
                     function() {
-                        return callback_failure();
+                        callback_failure();
                     }
                 );
             }
