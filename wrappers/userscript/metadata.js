@@ -11,6 +11,7 @@
 // @icon <%= userscript.icon %>
 // @downloadURL <%= userscript.download_url %>
 // @updateURL <%= userscript.download_url %>
+// @require https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
 //
 <% for (var i = 0, max = matching_urls.length; i < max; i += 1) {
 %>// @match http://<%- matching_urls[i] %>/*

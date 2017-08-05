@@ -1,16 +1,21 @@
 {
+  "manifest_version": 2,
+
   "name": "<%= full_name %>",
   "short_name": "<%= short_name %>",
+  
   "version": "<%= version %>",
+  
   "description": "__MSG_app_description__",
+  
   "default_locale": "<%= default_locale %>",
+  
   "developer": {
     "name": "<%= author.name %> <<%= author.email %>>",
     "url": "<%= author.url %>"
   },
+  
   "homepage_url": "<%= homepage %>",
-
-  "manifest_version": 2,
 
   "icons": {
     "48": "icon48.png",
@@ -20,18 +25,19 @@
   "content_scripts": [{
     "matches": [
       <% for (var i = 0, max = matching_urls.length; i < max; i += 1) {
-      %>"http://<%- matching_urls[i] %>/*"<% if (i < (max - 1)) { %>,
+      %>"*://<%- matching_urls[i] %>/*"<% if (i < (max - 1)) { %>,
       <% } %><% } %>
     ],
-
-    "js": [
-      "<%= compiled_script %>"
-    ]
+    "js": ["jquery.min.js", "<%= compiled_script %>"]
   }],
 
   "permissions": [
     <% for (var i = 0, max = cross_origin_xhr_permissions.length; i < max; i += 1) {
-    %>"http://<%- cross_origin_xhr_permissions[i] %>/*"<% if (i < (max - 1)) { %>,
+    %>"*://<%- cross_origin_xhr_permissions[i] %>/*"<% if (i < (max - 1)) { %>,
     <% } %><% } %>
+  ],
+
+  "web_accessible_resources": [
+    "images/*"
   ]
 }

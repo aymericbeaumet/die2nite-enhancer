@@ -161,6 +161,7 @@ Module.register(function() {
                 var method = this.properties.tool.update_method;
                 var url = this.properties.tool.update_url;
                 var key = this.properties.tool.api_key;
+                
                 document.addEventListener('d2n_gamebody_reload', function() {
                     if (!D2N.is_on_page_in_city('citizens')) {
                         return;
