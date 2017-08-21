@@ -15,12 +15,167 @@ Module.register(function() {
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Camping Predict';
         i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Ajoute les prévisions de Camping Predict. Plus d\'informations ici : http://zenoo.fr/. Script par Zenoo, intégré avec sa permission. Cliquez pour ouvrir le lien.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_city_hard'] = 'Pandémonium';
+
+        i18n[I18N.LANG.FR][MODULE_NAME + '_search_text'] = 'Rechercher';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_search_desc'] = 'Cliquez sur ce lien pour effectuer une recherche sur Camping Predict.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_settings_text'] = 'Paramètres';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_settings_desc'] = 'Cliquez sur ce lien pour modifier vos paramètres Camping Predict.';
+
+        i18n[I18N.LANG.FR][MODULE_NAME + '_improvements'] = 'Aménagements';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_defense_objects'] = 'ODs d\'amélioration';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_hiding_citizens'] = 'Campeurs enterrés';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_improvements_required'] = 'Aménagements nécessaires';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_tomb'] = 'Tombe creusée';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_night'] = 'Nuit';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_pro_camper'] = 'Campeur pro';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_nights_camped'] = 'Nuits campées';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_lighthouse'] = 'Phare';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_devastated'] = 'Dévasté';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_close'] = 'Fermer';
+
+        i18n[I18N.LANG.FR][MODULE_NAME + '_hero_guide'] = 'Manuel de survie';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_hero_hood'] = 'Tenue de camouflage';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_hero_camera'] = 'Appareil photo';
+        
+        i18n[I18N.LANG.FR][MODULE_NAME + '_status_title'] = 'Statut';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_status_very_high'] = 'Optimal';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_status_high'] = 'Élevé';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_status_correct'] = 'Correct';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_status_medium'] = 'Satisfaisant';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_status_decent'] = 'Limité';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_status_limited'] = 'Faible';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_status_very_low'] = 'Très faible';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_status_null'] = 'Quasi nul';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_status_highest'] = 'Correct max';
+
+        i18n[I18N.LANG.FR][MODULE_NAME + '_buildings_none'] = 'Aucun';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_buildings_unknown'] = 'Bâtiment non-déterré';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_buildings_ambulance'] = 'Ambulance';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_buildings_cave'] = 'Caverne';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_buildings_home_depot'] = 'BricoTout';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_buildings_kebab'] = 'Kebab “Chez Coluche”';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_buildings_plane'] = 'Carlingue d\'avion';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_buildings_pump'] = 'Vieille Pompe Hydraulique';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_buildings_small_house'] = 'Petite maison';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_buildings_villa'] = 'Villa délabrée';
+
 
         i18n[I18N.LANG.EN] = {};
         i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Camping Predict';
         i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Add Camping Predict predictions. More informations here [FR]: http://zenoo.fr/. Script by Zenoo, integrated with his permission. Click to open link.';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_city_hard'] = 'Hardcore';
+
+        i18n[I18N.LANG.EN][MODULE_NAME + '_search_text'] = 'Search';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_search_desc'] = 'Click here to search on Camping Predict.';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_settings_text'] = 'Settings';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_settings_desc'] = 'Click here to edit your Camping Predict settings.';
+
+        i18n[I18N.LANG.EN][MODULE_NAME + '_improvements'] = 'Improvements';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_defense_objects'] = 'Improving DO\'s';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_hiding_citizens'] = 'Hiding citizens';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_improvements_required'] = 'Required improvements';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_tomb'] = 'Tomb digged';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_night'] = 'Night';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_pro_camper'] = 'Pro camper';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_nights_camped'] = 'Nights camped';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_lighthouse'] = 'Lighthouse';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_devastated'] = 'Devastated';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_close'] = 'Close';
+
+        i18n[I18N.LANG.EN][MODULE_NAME + '_hero_guide'] = 'Survival Guide';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_hero_hood'] = 'Camouflage suit';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_hero_camera'] = 'Pre-war Camera';
+        
+        i18n[I18N.LANG.EN][MODULE_NAME + '_status_title'] = 'Status';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_status_very_high'] = 'Optimal';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_status_high'] = 'High';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_status_correct'] = 'Correct';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_status_medium'] = 'Largely satisfactory';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_status_decent'] = 'Decent';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_status_limited'] = 'Limited';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_status_very_low'] = 'Really poor';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_status_null'] = 'Hee haw';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_status_highest'] = 'Highest possible';
+
+        i18n[I18N.LANG.EN][MODULE_NAME + '_buildings_none'] = 'None';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_buildings_unknown'] = 'Unsearchable zone';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_buildings_ambulance'] = 'Ambulance';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_buildings_cave'] = 'Cave';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_buildings_home_depot'] = 'Home depot';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_buildings_kebab'] = 'Fraser D\'s Kebab-ish';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_buildings_plane'] = 'Plane Crash Site';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_buildings_pump'] = 'Old Hydraulic Pump';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_buildings_small_house'] = 'Small House';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_buildings_villa'] = 'Derelict Villa';
 
         I18N.set(i18n);
+
+        batList[I18N.get(MODULE_NAME + "_buildings_none")] = 0;
+        batList[I18N.get(MODULE_NAME + "_buildings_unknown")] = 1;
+        batList[I18N.get(MODULE_NAME + "_buildings_plane")] = 2;
+        batList[I18N.get(MODULE_NAME + "_buildings_pump")] = 3;
+        batList[I18N.get(MODULE_NAME + "_buildings_villa")] = 4;
+        batList["Supermarché pillé"] = 5;
+        batList["Laboratoire cosmétique"] = 6;
+        batList["Carcasses de voitures"] = 7;
+        batList["Ancien commissariat"] = 8;
+        batList["Bar Miteux"] = 9;
+        batList["Abri anti-atomique"] = 10;
+        batList["Stand de fête foraine"] = 11;
+        batList[I18N.get(MODULE_NAME + "_buildings_small_house")] = 12;
+        batList["Petit Bois obscur"] = 13;
+        batList["Parking désaffecté"] = 14;
+        batList["Chantier à l'abandon"] = 15;
+        batList["Ecole maternelle brulée"] = 16;
+        batList["Pharmacie Détruite"] = 17;
+        batList["Fast-food"] = 18;
+        batList[I18N.get(MODULE_NAME + "_buildings_home_depot")] = 19;
+        batList["Maison d'un citoyen"] = 20;
+        batList["Centrale hydraulique"] = 21;
+        batList["Armurerie Guns'N'Zombies"] = 22;
+        batList[I18N.get(MODULE_NAME + "_buildings_kebab")] = 23;
+        batList["Ancien Velib"] = 24;
+        batList["Villa de Duke"] = 25;
+        batList[I18N.get(MODULE_NAME + "_buildings_cave")] = 27;
+        batList["Caveau familial"] = 28;
+        batList["Parc à l'abandon"] = 29;
+        batList["Carrière effondrée"] = 30;
+        batList["Route barrée"] = 31;
+        batList["Tranchée aménagée"] = 32;
+        batList["Cache de contrebandiers"] = 33;
+        batList["Entrepôt désaffecté"] = 34;
+        batList["Camion en panne"] = 35;
+        batList[I18N.get(MODULE_NAME + "_buildings_ambulance")] = 36;
+        batList["Cimetière indien"] = 37;
+        batList["Atomic' Café"] = 38;
+        batList["Silos à l'abandon"] = 39;
+        batList["Meubles kiela"] = 40;
+        batList["Epicerie Fargo"] = 41;
+        batList["Mini-Market"] = 42;
+        batList["Abri de chantier"] = 43;
+        batList["Cabane de jardin"] = 44;
+        batList["Bibliothèque de quartier"] = 45;
+        batList["Bureau de poste"] = 46;
+        batList["Hangars de stockage"] = 47;
+        batList["Ancien aérodrome"] = 48;
+        batList["Immeuble délabré"] = 49;
+        batList["Tente d'un citoyen"] = 50;
+        batList["Motel “Dusk”"] = 51;
+        batList["Mine effondrée"] = 52;
+        batList["Gare de triage désertée"] = 53;
+        batList["Vieil hôpital de campagne"] = 54;
+        batList["Avant-poste militaire"] = 55;
+        batList["Camion mairie-mobile"] = 56;
+        batList["Caverne anciennement habitée"] = 57;
+        batList["Char d'assaut en panne"] = 58;
+        batList["Un étrange appareil circulaire"] = 59;
+        batList["Puits abandonné"] = 60;
+        batList["Relais autoroutier"] = 61;
+        batList["Le bar des illusions perdues"] = 62;
+        batList["Bunker abandonné"] = 100;
+        batList["Hôtel abandonné"] = 101;
+        batList["Hôpital abandonné"] = 102;
     }
 
     var finalStatut, correct, customFinalStatut, customCorrect;
@@ -77,73 +232,7 @@ Module.register(function() {
     var permDevastated = localStorage.getItem('permDevastated');
     if(permDevastated === null) permDevastated = 0;
 
-    var batList = {
-        "Aucun": 0, 
-        "Bâtiment non-déterré": 1, 
-        "Carlingue d'avion": 2, 
-        "Vieille Pompe Hydraulique": 3, 
-        "Villa délabrée": 4, 
-        "Supermarché pillé": 5, 
-        "Laboratoire cosmétique": 6, 
-        "Carcasses de voitures": 7, 
-        "Ancien commissariat": 8, 
-        "Bar Miteux": 9, 
-        "Abri anti-atomique": 10,
-        "Stand de fête foraine": 11,
-        "Petite Maison": 12,
-        "Petit Bois obscur": 13,
-        "Parking désaffecté": 14,
-        "Chantier à l'abandon": 15,
-        "Ecole maternelle brulée": 16,
-        "Pharmacie Détruite": 17,
-        "Fast-food": 18,
-        "BricoTout": 19,
-        "Maison d'un citoyen": 20,
-        "Centrale hydraulique": 21,
-        "Armurerie Guns'N'Zombies": 22,
-        "Kebab “Chez Coluche”": 23,
-        "Ancien Velib": 24,
-        "Villa de Duke": 25,
-        "Caverne": 27,
-        "Caveau familial": 28,
-        "Parc à l'abandon": 29,
-        "Carrière effondrée": 30,
-        "Route barrée": 31,
-        "Tranchée aménagée": 32,
-        "Cache de contrebandiers": 33,
-        "Entrepôt désaffecté": 34,
-        "Camion en panne": 35,
-        "Ambulance": 36,
-        "Cimetière indien": 37,
-        "Atomic' Café": 38,
-        "Silos à l'abandon": 39,
-        "Meubles kiela": 40,
-        "Epicerie Fargo": 41,
-        "Mini-Market": 42,
-        "Abri de chantier": 43, 
-        "Cabane de jardin": 44, 
-        "Bibliothèque de quartier": 45, 
-        "Bureau de poste": 46, 
-        "Hangars de stockage": 47, 
-        "Ancien aérodrome": 48, 
-        "Immeuble délabré": 49, 
-        "Tente d'un citoyen": 50, 
-        "Motel “Dusk”": 51, 
-        "Mine effondrée": 52, 
-        "Gare de triage désertée": 53, 
-        "Vieil hôpital de campagne": 54, 
-        "Avant-poste militaire": 55, 
-        "Camion mairie-mobile": 56, 
-        "Caverne anciennement habitée": 57, 
-        "Char d'assaut en panne": 58, 
-        "Un étrange appareil circulaire": 59, 
-        "Puits abandonné": 60, 
-        "Relais autoroutier": 61, 
-        "Le bar des illusions perdues": 62, 
-        "Bunker abandonné": 100, 
-        "Hôtel abandonné": 101, 
-        "Hôpital abandonné": 102, 
-    };
+    var batList = {};
 
     function loadCustomChances()
     {
@@ -172,42 +261,42 @@ Module.register(function() {
 
         if (result >= 0)
         {
-            statut = "Optimal";
+            statut = I18N.get(MODULE_NAME + '_status_very_high');
         }
         else if (result < 0 && result > -2)
         {
-            statut = "Elevé";
+            statut = I18N.get(MODULE_NAME + '_status_high');
         }
         else if (result <= -2 && result > -4)
         {
-            statut = "Correct";
+            statut = I18N.get(MODULE_NAME + '_status_correct');
         }
         else if (result <= -4 && result > -7)
         {
-            statut = "Satisfaisant";
+            statut = I18N.get(MODULE_NAME + '_status_medium');
         }
         else if (result <= -7 && result > -10)
         {
-            statut = "Limité";
+            statut = I18N.get(MODULE_NAME + '_status_decent');
         }
         else if (result <= -10 && result > -14)
         {
-            statut = "Faible";
+            statut = I18N.get(MODULE_NAME + '_status_limited');
         }
         else if (result <= -14 && result > -18)
         {
-            statut = "Très faible";
+            statut = I18N.get(MODULE_NAME + '_status_very_low');
         }
         else if (result <= -18)
         {
-            statut = "Quasi nul";
+            statut = I18N.get(MODULE_NAME + '_status_null');
         }
 
-        var statut2 = status;
+        var statut2 = statut;
 
         if (result >= -2)
         {
-            statut2 = "Correct max";
+            statut2 = I18N.get(MODULE_NAME + "_status_highest");
         }
 
         if(storedJob == 1) customFinalStatut = statut;
@@ -296,11 +385,11 @@ Module.register(function() {
         var km=storedKm;
         if (km >= 0 && km <= 28)
         {
-            var liste = '<option value="0">-------------------Aucun-------------------</span></option>';
-            if (km >= 1 && km <= 24) {liste += '<option value="1">Bâtiment non-déterré</option>';}
+            var liste = '<option value="0">-------------------' + I18N.get(MODULE_NAME + "_buildings_none") + '-------------------</span></option>';
+            if (km >= 1 && km <= 24) {liste += '<option value="1">' + I18N.get(MODULE_NAME + "_buildings_unknown") + '</option>';}
             if (km >= 10 && km <= 13) {liste += '<option value="10">Abri anti-atomique</option>';}
             if (km >= 6 && km <= 9) {liste += '<option value="43">Abri de chantier</option>';}
-            if (km >= 2 && km <= 5) {liste += '<option value="36">Ambulance</option>';}
+            if (km >= 2 && km <= 5) {liste += '<option value="36">' + I18N.get(MODULE_NAME + "_buildings_ambulance") + '</option>';}
             if (km >= 12 && km <= 15) {liste += '<option value="48">Ancien Aerodrome</option>';}
             if (km >= 6 && km <= 9) {liste += '<option value="8">Ancien commissariat</option>';}
             if (km >= 4 && km <= 7) {liste += '<option value="24">Ancien Velib</option>';}
@@ -309,7 +398,7 @@ Module.register(function() {
             if (km >= 16 && km <= 19) {liste += '<option value="55">Avant-Poste Militaire</option>';}
             if (km >= 5 && km <= 8) {liste += '<option value="9">Bar Miteux</option>';}
             if (km >= 6 && km <= 9) {liste += '<option value="45">Bibliothèque de quartier</option>';}
-            if (km >= 5 && km <= 8) {liste += '<option value="19">BricoTout</option>';}
+            if (km >= 5 && km <= 8) {liste += '<option value="19">' + I18N.get(MODULE_NAME + "_buildings_home_depot") + '</option>';}
             if (km >= 5 && km <= 28) {liste += '<option value="100">Bunker abandonné (ruine)</option>';}
             if (km >= 8 && km <= 11) {liste += '<option value="46">Bureau de poste</option>';}
             if (km >= 6 && km <= 9) {liste += '<option value="44">Cabane de jardin</option>';}
@@ -317,10 +406,10 @@ Module.register(function() {
             if (km >= 2 && km <= 5) {liste += '<option value="35">Camion en panne</option>';}
             if (km >= 16 && km <= 19) {liste += '<option value="56">Camion mairie-mobile</option>';}
             if (km >= 3 && km <= 6) {liste += '<option value="7">Carcasses de voitures</option>';}
-            if (km >= 4 && km <= 7) {liste += '<option value="2">Carlingue d\'avion</option>';}
+            if (km >= 4 && km <= 7) {liste += '<option value="2">' + I18N.get(MODULE_NAME + "_buildings_plane") + '</option>';}
             if (km >= 3 && km <= 6) {liste += '<option value="30">Carrière effondrée</option>';}
             if (km >= 3 && km <= 6) {liste += '<option value="28">Caveau familial</option>';}
-            if (km >= 3 && km <= 6) {liste += '<option value="27">Caverne</option>';}
+            if (km >= 3 && km <= 6) {liste += '<option value="27">' + I18N.get(MODULE_NAME + "_buildings_cave") + '</option>';}
             if (km >= 16 && km <= 19) {liste += '<option value="57">Caverne anciennement habitée</option>';}
             if (km >= 5 && km <= 8) {liste += '<option value="21">Centrale hydraulique</option>';}
             if (km >= 4 && km <= 7) {liste += '<option value="15">Chantier à l\'abandon</option>';}
@@ -335,7 +424,7 @@ Module.register(function() {
             if (km >= 5 && km <= 28) {liste += '<option value="102">Hôpital abandonné (ruine)</option>';}
             if (km >= 5 && km <= 28) {liste += '<option value="101">Hôtel abandonné (ruine)</option>';}
             if (km >= 10 && km <= 13) {liste += '<option value="49">Immeuble délabré</option>';}
-            if (km >= 3 && km <= 6) {liste += '<option value="23">Kebab “Chez Coluche”</option>';}
+            if (km >= 3 && km <= 6) {liste += '<option value="23">' + I18N.get(MODULE_NAME + "_buildings_kebab") + '</option>';}
             if (km >= 2 && km <= 5) {liste += '<option value="6">Laboratoire cosmétique</option>';}
             if (km >= 21 && km <= 28) {liste += '<option value="62">Le bar des illusions perdues</option>';}
             if (km >= 1 && km <= 4) {liste += '<option value="20">Maison d\'un citoyen</option>';}
@@ -346,7 +435,7 @@ Module.register(function() {
             if (km >= 4 && km <= 7) {liste += '<option value="29">Parc à l\'abandon</option>';}
             if (km >= 3 && km <= 6) {liste += '<option value="14">Parking désaffecté</option>';}
             if (km >= 2 && km <= 5) {liste += '<option value="13">Petit Bois obscur</option>';}
-            if (km >= 2 && km <= 5) {liste += '<option value="12">Petite Maison</option>';}
+            if (km >= 2 && km <= 5) {liste += '<option value="12">' + I18N.get(MODULE_NAME + "_buildings_small_house") + '</option>';}
             if (km >= 4 && km <= 7) {liste += '<option value="17">Pharmacie Détruite</option>';}
             if (km >= 17 && km <= 20) {liste += '<option value="60">Puits abandonné</option>';}
             if (km >= 8 && km <= 11) {liste += '<option value="61">Relais autoroutier</option>';}
@@ -358,9 +447,9 @@ Module.register(function() {
             if (km >= 5 && km <= 8) {liste += '<option value="32">Tranchée aménagée</option>';}
             if (km >= 21 && km <= 28) {liste += '<option value="59">Un étrange appareil circulaire</option>';}
             if (km >= 16 && km <= 19) {liste += '<option value="54">Vieil hôpital de campagne</option>';}
-            if (km >= 3 && km <= 6) {liste += '<option value="3">Vieille Pompe Hydraulique</option>';}
+            if (km >= 3 && km <= 6) {liste += '<option value="3">' + I18N.get(MODULE_NAME + "_buildings_pump") + '</option>';}
             if (km >= 12 && km <= 15) {liste += '<option value="25">Villa de Duke</option>';}
-            if (km >= 3 && km <= 6) {liste += '<option value="4">Villa délabrée</option>';}
+            if (km >= 3 && km <= 6) {liste += '<option value="4">' + I18N.get(MODULE_NAME + "_buildings_villa") + '</option>';}
 
             $("#storedBat select").html(liste);
         }
@@ -729,37 +818,44 @@ Module.register(function() {
     function loadChances(){
         //RE = 0 / RNE = 1 / PANDE = 2
         var cityType;
-        if($('div#clock div.day span.hard').text() == '[Pandémonium]') cityType = 2;
+        if($('div#clock div.day span.hard').text() == '[' + I18N.get(MODULE_NAME + "_city_hard") + ']') cityType = 2;
         else cityType = 0;
         
         //Mite = 1 / Eclai = 2 / Other = 0
         var job;
 
-        if($('div.infoBar ul.inv li:first-child img[src*="small_more2.gif"]').length == 0){
-            if($('div.infoBar ul.inv li:first-child img').attr('onmouseover').indexOf('Appareil photo') >= 0){ //APAG
-                if($('div.infoBar ul.inv li:eq(1) img').attr('onmouseover').indexOf('Manuel de survie') >= 0) job = 1;
-                else if($('div.infoBar ul.inv li:eq(1) img').attr('onmouseover').indexOf('Tenue de camouflage') >= 0) job = 2;
+        if($('div.infoBar ul.inv li:first-child img[src*="small_more2.gif"]').length == 0) {
+            if($('div.infoBar ul.inv li:first-child img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_camera")) >= 0) {
+                // APAG
+                if($('div.infoBar ul.inv li:eq(1) img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_guide")) >= 0) 
+                    job = 1;
+                else if($('div.infoBar ul.inv li:eq(1) img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_hood")) >= 0) 
+                    job = 2;
+                else 
+                    job = 0;
+            } else {
+                // No APAG
+                if($('div.infoBar ul.inv li:eq(0) img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_guide")) >= 0) 
+                    job = 1;
+                else if($('div.infoBar ul.inv li:eq(0) img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_hood")) >= 0) 
+                    job = 2;
+                else 
+                    job = 0;
+            }
+        } else {
+            if($('div.infoBar ul.inv li:eq(1) img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_camera")) >= 0){ //APAG
+                if($('div.infoBar ul.inv li:eq(2) img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_guide")) >= 0) job = 1;
+                else if($('div.infoBar ul.inv li:eq(2) img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_hood")) >= 0) job = 2;
                 else job = 0;
             }
             else{ // No APAG
-                if($('div.infoBar ul.inv li:eq(0) img').attr('onmouseover').indexOf('Manuel de survie') >= 0) job = 1;
-                else if($('div.infoBar ul.inv li:eq(0) img').attr('onmouseover').indexOf('Tenue de camouflage') >= 0) job = 2;
+                if($('div.infoBar ul.inv li:eq(1) img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_guide")) >= 0) job = 1;
+                else if($('div.infoBar ul.inv li:eq(1) img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_hood")) >= 0) job = 2;
                 else job = 0;
             }
         }
-        else{
-            if($('div.infoBar ul.inv li:eq(1) img').attr('onmouseover').indexOf('Appareil photo') >= 0){ //APAG
-                if($('div.infoBar ul.inv li:eq(2) img').attr('onmouseover').indexOf('Manuel de survie') >= 0) job = 1;
-                else if($('div.infoBar ul.inv li:eq(2) img').attr('onmouseover').indexOf('Tenue de camouflage') >= 0) job = 2;
-                else job = 0;
-            }
-            else{ // No APAG
-                if($('div.infoBar ul.inv li:eq(1) img').attr('onmouseover').indexOf('Manuel de survie') >= 0) job = 1;
-                else if($('div.infoBar ul.inv li:eq(1) img').attr('onmouseover').indexOf('Tenue de camouflage') >= 0) job = 2;
-                else job = 0;
-            }
-        }
-        var km = +$('div#scoutStatus div.scoutStatus p').text().split(" ")[2];
+        var kmregex = /([0-9]+) ?km/i;
+        var km = +$('div#scoutStatus div.scoutStatus p').text().match(kmregex)[1];
         var bat;
         if($('div.outSpot h2').text() !== null && $('div.outSpot h2').text() != '') bat = batList[$('div.outSpot h2').text()];
         else{
@@ -804,7 +900,6 @@ Module.register(function() {
         var pharVal = calcBonusPhare(phare);
         var devastVal = calcMalusDevast(devastated);
         
-
         var result = villeVal + kmVal + zoneVal + zombVal + ameVal + ODVal + cingVal + ceurVal + peauVal + tenteVal + tombVal + nuitVal + pharVal + devastVal;
 
         result = round100(result);
@@ -815,41 +910,41 @@ Module.register(function() {
 
         if (result >= 0)
         {
-            statut = "Optimal";
+            statut = I18N.get(MODULE_NAME + '_status_very_high');
         }
         else if (result < 0 && result > -2)
         {
-            statut = "Elevé";
-            }
+            statut = I18N.get(MODULE_NAME + '_status_high');
+        }
         else if (result <= -2 && result > -4)
         {
-            statut = "Correct";
+            statut = I18N.get(MODULE_NAME + '_status_decent');
         }
         else if (result <= -4 && result > -7)
         {
-            statut = "Satisfaisant";
+            statut = I18N.get(MODULE_NAME + '_status_medium');
         }
         else if (result <= -7 && result > -10)
         {
-            statut = "Limité";
+            statut = I18N.get(MODULE_NAME + '_status_decent');
         }
         else if (result <= -10 && result > -14)
         {
-            statut = "Faible";
+            statut = I18N.get(MODULE_NAME + '_status_limited');
         }
         else if (result <= -14 && result > -18)
         {
-            statut = "Très faible";
+            statut = I18N.get(MODULE_NAME + '_status_very_low');
         }
         else if (result <= -18)
         {
-            statut = "Quasi nul";
+            statut = I18N.get(MODULE_NAME + '_status_null');
         }
 
         var statut2 = statut;
         if (result >= -2)
         {
-            statut2 = "Correct max";
+            statut2 = I18N.get(MODULE_NAME + "_status_highest");
         }
 
         if(job == 1) finalStatut = statut;
@@ -867,47 +962,51 @@ Module.register(function() {
             console.log('CPI loaded.');
             
             loadChances();
-            
-            
+            /*
+            i18n[I18N.LANG.EN][MODULE_NAME + '_tomb'] = 'Tomb digged';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_night'] = 'Night';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_lighthouse'] = 'Lighthouse';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_devastated'] = 'Devastated';
+             */
             var toInject = '' + 
-    '<a class="refresh" id="cpedit" style="margin-left:150px;cursor:pointer;text-decoration:underline;" onmouseover="js.HordeTip.showSpecialTip(this, \'simpleTip\', \'\', \'Cliquez sur ce lien pour effectuer une recherche sur Camping Predict.\', event);" onmouseout="js.HordeTip.hide(event)">Rechercher</a>' + 
-    '<a class="refresh" style="width: auto;margin-left: 224px;cursor:pointer;text-decoration:underline;" id="cpreload" onmouseover="js.HordeTip.showSpecialTip(this, \'simpleTip\', \'\', \'Cliquez sur ce lien pour modifier vos paramètres Camping Predict.\', event);" onmouseout="js.HordeTip.hide(event)">Paramètres</a>' + 
+    '<div style="float: right;font-size: 8pt;"><a style="cursor:pointer;text-decoration:underline;" id="cpreload" onmouseover="js.HordeTip.showSpecialTip(this, \'simpleTip\', \'\', \'' + I18N.get(MODULE_NAME + "_settings_desc") + '\', event);" onmouseout="js.HordeTip.hide(event)">' + I18N.get(MODULE_NAME + "_settings_text") + '</a>' + 
+    '&nbsp;<a id="cpedit" style="cursor:pointer;text-decoration:underline;" onmouseover="js.HordeTip.showSpecialTip(this, \'simpleTip\', \'\', \'' + I18N.get(MODULE_NAME + "_search_desc") + '\', event);" onmouseout="js.HordeTip.hide(event)">' + I18N.get(MODULE_NAME + "_search_text") + '</a></div>' + 
     '<h2>Camping Predict</h2>' + 
     '<div id="cpiparam" style="background-color: #5c2b20;color: #f0d79e;font-weight:bold;font-variant: small-caps;font-family: \'Century Gothic\', \'Arial\', \'Trebuchet MS\', Verdana, sans-serif;margin-top:-13px;margin-bottom:-13px;display:none"><ul style="list-style-type:none;margin-left:-35px;">' + 
     '<li style="height:1px;"> </li>' + 
-    '<li id="permUpgrade" style="margin-top:5px"><input class="field tid_defParsed" style="width:15px;" value=""> Améliorations</li>' + 
-    '<li id="permOdUpgrade"><input class="field tid_defParsed" style="width:15px;" value=""> ODs d\'amélioration</li>' + 
-    '<li id="permAlreadyCamped"><input class="field tid_defParsed" style="width:15px;" value=""> Nuits campées</li>' + 
-    '<li id="permTomb" style="cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/small_gather.gif"> Tombe</span></li>' + 
-    '<li id="permNight" style="cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/r_doutsd.gif"> Nuit</span></li>' + 
-    '<li id="permCP" style="cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/small_camp.gif"> Campeur Pro</span></li>' + 
-    '<li id="permPhare" style="cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/small_lighthouse.gif"> Phare</span></li>' + 
-    '<li id="permDevastated" style="cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/item_out_def_broken.gif"> Dévasté</span></li>' + 
+    '<li id="permUpgrade" style="margin-top:5px"><input class="field tid_defParsed" style="width:15px;" value=""> ' + I18N.get(MODULE_NAME + "_improvements") + '</li>' + 
+    '<li id="permOdUpgrade"><input class="field tid_defParsed" style="width:15px;" value=""> ' +  I18N.get(MODULE_NAME + "_defense_objects") + '</li>' + 
+    '<li id="permAlreadyCamped"><input class="field tid_defParsed" style="width:15px;" value=""> ' + I18N.get(MODULE_NAME + "_nights_camped") + '</li>' + 
+    '<li id="permTomb" style="cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/small_gather.gif"> ' + I18N.get(MODULE_NAME + "_tomb") + '</span></li>' + 
+    '<li id="permNight" style="cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/r_doutsd.gif"> ' + I18N.get(MODULE_NAME + "_night") + '</span></li>' + 
+    '<li id="permCP" style="cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/small_camp.gif"> ' + I18N.get(MODULE_NAME + "_pro_camper") + '</span></li>' + 
+    '<li id="permPhare" style="cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/small_lighthouse.gif"> ' + I18N.get(MODULE_NAME + "_lighthouse") + '</span></li>' + 
+    '<li id="permDevastated" style="cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/item_out_def_broken.gif"> ' + I18N.get(MODULE_NAME + "_devastated") + '</span></li>' + 
     '</ul></div>' + 
-    '<div class="list" id="editor" style="background-color: #5c2b20;color: #f0d79e;font-weight:bold;font-variant: small-caps;font-family: \'Century Gothic\', \'Arial\', \'Trebuchet MS\', Verdana, sans-serif;margin-top:-13px;margin-bottom:-13px;display:none;"><ul style="list-style-type:none;margin-left:-35px;">' + 
-    '<li id="storedCityType" style="cursor:pointer;" ><span style="text-decoration:line-through;color:grey;" data-value="0">RE</span> <span style="text-decoration:line-through;color:grey;" data-value="1">RNE</span> <span style="text-decoration:line-through;color:grey;" data-value="2">Pandé</span> </li>' + 
+    '<div class="list" id="editor" style="background-color: #5c2b20;color: #f0d79e;font-weight:bold;font-variant: small-caps;font-family: \'Century Gothic\', \'Arial\', \'Trebuchet MS\', Verdana, sans-serif;display:none;"><ul style="list-style-type:none;margin-left:-35px;">' + 
+    '<li id="storedCityType" style="cursor:pointer;" ><span style="text-decoration:line-through;color:grey;" data-value="0">RE</span> <span style="text-decoration:line-through;color:grey;" data-value="1">RNE</span> <span style="text-decoration:line-through;color:grey;" data-value="2">' + I18N.get(MODULE_NAME + "_city_hard") + '</span> </li>' + 
     '<li id="storedJob" style="cursor:pointer;"><img style="opacity:0.4;margin-left:10px;" data-value="0" src="http://data.hordes.fr/gfx/icons/item_basic_suit.gif"><img style="opacity:0.4;margin-left:10px;" data-value="1" src="http://data.hordes.fr/gfx/icons/item_surv_book.gif"><img style="opacity:0.4;margin-left:10px;" data-value="2" src="http://data.hordes.fr/gfx/icons/item_vest_on.gif"></li>' + 
     '<li id="storedKm"><input class="field tid_defParsed" style="width:15px;" value=""> km </li>' + 
     '<li id="storedBat"><select></select></li>' + 
     '<li id="storedZomb"><input class="field tid_defParsed" style="width:15px;" value=""> <img src="http://data.hordes.fr/gfx/icons/small_zombie.gif"></li>' + 
-    '<li id="storedUpgrade"><input class="field tid_defParsed" style="width:15px;" value=""> Améliorations</li>' + 
-    '<li id="storedOdUpgrade"><input class="field tid_defParsed" style="width:15px;" value=""> ODs d\'amélioration</li>' + 
-    '<li id="storedAlreadyCamped"><input class="field tid_defParsed" style="width:15px;" value=""> Nuits campées</li>' + 
-    '<li id="storedAlreadyHidden"><input class="field tid_defParsed" style="width:15px;" value=""> Campeurs enterrés</li>' + 
+    '<li id="storedUpgrade"><input class="field tid_defParsed" style="width:15px;" value=""> ' + I18N.get(MODULE_NAME + "_improvements") + '</li>' + 
+    '<li id="storedOdUpgrade"><input class="field tid_defParsed" style="width:15px;" value=""> ' +  I18N.get(MODULE_NAME + "_defense_objects") + '</li>' + 
+    '<li id="storedAlreadyCamped"><input class="field tid_defParsed" style="width:15px;" value=""> ' + I18N.get(MODULE_NAME + "_nights_camped") + '</li>' + 
+    '<li id="storedAlreadyHidden"><input class="field tid_defParsed" style="width:15px;" value=""> ' + I18N.get(MODULE_NAME + "_hiding_citizens") + '</li>' + 
     '<li id="storedPelures"><input class="field tid_defParsed" style="width:15px;" value=""> <img src="http://data.hordes.fr/gfx/icons/item_smelly_meat.gif"></li>' + 
     '<li id="storedToiles"><input class="field tid_defParsed" style="width:15px;" value=""> <img src="http://data.hordes.fr/gfx/icons/item_sheet.gif"></li>' + 
-    '<li id="storedTomb" style="cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/small_gather.gif"> Tombe</span></li>' + 
-    '<li id="storedNight" style="cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/r_doutsd.gif"> Nuit</span></li>' + 
-    '<li id="storedFurtif" style="display:none;cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/r_jrangr.gif"></span></li>' + 
-    '<li id="storedCP" style="cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/small_camp.gif"> Campeur Pro</span></li>' + 
-    '<li id="storedPhare" style="cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/small_lighthouse.gif"> Phare</span></li>' + 
-    '<li id="storedDevastated" style="cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/item_out_def_broken.gif"> Dévasté</span></li>' + 
+    '<li id="storedTomb" style="cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/small_gather.gif"> ' + I18N.get(MODULE_NAME + "_tomb") + '</span></li>' + 
+    '<li id="storedNight" style="cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/r_doutsd.gif"> ' + I18N.get(MODULE_NAME + "_night") + '</span></li>' + 
+    '<li id="storedFurtif" style="display:none;cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/r_jrangr.gif"> Camouflé</span></li>' + 
+    '<li id="storedCP" style="cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/small_camp.gif"> ' + I18N.get(MODULE_NAME + "_pro_camper") + '</span></li>' + 
+    '<li id="storedPhare" style="cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/small_lighthouse.gif"> ' + I18N.get(MODULE_NAME + "_lighthouse") + '</span></li>' + 
+    '<li id="storedDevastated" style="cursor:pointer;"><input type="checkbox"> <span class="others"><img src="http://data.hordes.fr/gfx/icons/item_out_def_broken.gif"> ' + I18N.get(MODULE_NAME + "_devastated") + '</span></li>' + 
     '</ul></div>' + 
     '<ul style="background-image: url(http://data.hordes.fr/gfx/design/inv_ground.gif);color:#DAC69A" class="tools outInv">' + 
     '<li class="clear"></li>' + 
-    '<li class="empty" style="font-weight:bold;width:100%;text-align:left;margin-top:4px;color:inherit;">Statut : <span id="finalStatut">'+finalStatut+'</span> </li>' + 
+    '<li class="empty" style="font-weight:bold;width:100%;text-align:left;margin-top:4px;color:inherit;">' + I18N.get(MODULE_NAME + "_status_title") + ' : <span id="finalStatut">'+finalStatut+'</span> </li>' + 
     '<li class="clear"></li>' + 
-    '<li class="empty" style="width:100%;text-align:left;color:inherit;">Aménagements à faire : <span id="correct">'+correct+'</span> </li>' + 
+    '<li class="empty" style="width:100%;text-align:left;color:inherit;">' + I18N.get(MODULE_NAME + "_improvements_required") + ' : <span id="correct">'+correct+'</span> </li>' + 
     '<li class="clear">' + 
     '</li><li class="searchResult" style="text-align:right;display:none;">Résultat de la recherche</li></ul>';
             
@@ -918,7 +1017,7 @@ Module.register(function() {
                     
                     if($('#editor').is(":visible")){
                         $('#editor').slideUp('slow');
-                        $('#cpedit').text('Rechercher');
+                        $('#cpedit').text(I18N.get(MODULE_NAME + "_search_text"));
                     }
                     
                     updateParam();
@@ -1092,7 +1191,7 @@ Module.register(function() {
                     
                     if($('#cpiparam').is(":visible")) $('#cpiparam').slideUp('slow');
                     
-                    $('#cpedit').text('Fermer');
+                    $('#cpedit').text(I18N.get(MODULE_NAME + "_close"));
                     $('.searchResult').parent().next().css('margin-top','10px');
                     
                     updateSearch();
@@ -1433,7 +1532,7 @@ Module.register(function() {
                     $('.searchResult').hide();
                     $('#finalStatut').text(finalStatut);
                     $('#correct').text(correct);
-                    $('#cpedit').text('Rechercher');
+                    $('#cpedit').text(I18N.get(MODULE_NAME + "_search_text"));
                 }
                 
             });
@@ -1471,7 +1570,7 @@ Module.register(function() {
 
         actions: {
             can_run: function() {
-                return D2N.is_on_hordes();
+                return D2N.is_on_hordes() || D2N.is_on_die2nite();
             },
 
             init: function() {

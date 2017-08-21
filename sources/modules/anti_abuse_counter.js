@@ -97,7 +97,7 @@ Module.register(function() {
     {
         var current_time = Math.floor(+new Date() / 1000);
         if (current_time > this.properties.end_of_abuse) {
-            this.properties.attempt_left = 5;
+            this.properties.attempt_left = this.properties.max_attemps;
             this.properties.end_of_abuse = 0;
             this.save_properties();
         }
@@ -127,7 +127,8 @@ Module.register(function() {
         type: Module.TYPE.INTERFACE_ENHANCEMENT,
 
         properties: {
-            enabled: false
+            enabled: false,
+            max_attemps: 5
         },
 
         configurable: {
@@ -154,8 +155,12 @@ Module.register(function() {
                         'cursor: auto;' +
                     '}');
 
+                if(document.getElementsByClassName("chaos").length !== 0){
+                    this.properties.max_attemps = 10;
+                }
+
                 if (JS.is_defined(this.properties.attempt_left) !== true) {
-                    this.properties.attempt_left = 5;
+                    this.properties.attempt_left = this.properties.max_attemps;
                 }
                 if (JS.is_defined(this.properties.end_of_abuse) !== true) {
                     this.properties.end_of_abuse = 0;

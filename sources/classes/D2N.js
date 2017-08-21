@@ -263,6 +263,15 @@ var D2N = (function() {
         },
 
         /**
+         * Check if the player is outside the city, but still at the doors. Return false if user is
+         * outside but on the dorum
+         * @return string true if outside and at the doors, false otherwise
+         */
+        is_outside_at_doors: function(){
+        return (/^#outside\?(?:go=outside\/doors;)?sk=[a-z0-9]{5}$/).test(window.location.hash);
+        },
+
+        /**
          * Check if the given page is loaded (in or out of city).
          * @param string page The page to check (a key from pages_url_)
          * @return string true if on the selected page

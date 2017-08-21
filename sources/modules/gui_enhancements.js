@@ -21,8 +21,8 @@ Module.register(function() {
         i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Modifie l\'interface de Hordes pour améliorer certains aspects du jeu.';
         i18n[I18N.LANG.FR][MODULE_NAME + '_ok_save'] = 'Peut être sauvé.';
         i18n[I18N.LANG.FR][MODULE_NAME + '_nok_save'] = 'Ne peut pas être sauvé.';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_ok_escort'] = 'Escorte activée.';
-        i18n[I18N.LANG.FR][MODULE_NAME + '_nok_escort'] = 'Escorte désactivée.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_ok_escort'] = 'Escorte bien paramétrée.';
+        i18n[I18N.LANG.FR][MODULE_NAME + '_nok_escort'] = 'Escorte mal paramétrée.';
         i18n[I18N.LANG.FR][MODULE_NAME + '_distance_text'] = 'Le citoyen est à $[1] km.';
 
         i18n[I18N.LANG.EN] = {};
@@ -30,8 +30,8 @@ Module.register(function() {
         i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Add some graphical enhancements to the general UI of Die2Nite.';
         i18n[I18N.LANG.EN][MODULE_NAME + '_ok_save'] = 'Can be saved.';
         i18n[I18N.LANG.EN][MODULE_NAME + '_nok_save'] = 'Cannot be saved.';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_ok_escort'] = 'Escort options enabled.';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_nok_escort'] = 'Escort options disabled.';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_ok_escort'] = 'Good escort options set.';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_nok_escort'] = 'Good escort options not set.';
         i18n[I18N.LANG.EN][MODULE_NAME + '_distance_text'] = 'The citizen is $[1] km away.';
 
         I18N.set(i18n);
@@ -117,12 +117,19 @@ Module.register(function() {
                 if(escortInfos.length > 0){
     				imgEscort.setAttribute("src", NOKGIF);
 					imgEscort.setAttribute("alt", I18N.get(MODULE_NAME + '_nok_escort'));
-                    /*imgEscort.setAttribute("onmouseover", "js.HordeTip.showSpecialTip(this, 'helpTip', '', " + JSON.stringify(escortInfos[0].innerText) + ", event);");
-                    imgEscort.setAttribute("onomuseout", "js.HordeTip.hide(event);");*/
+                    var infos = "<p style='color: red;'>";
+                    for(var j = 0 ; j < escortInfos.length ; j++){
+                        infos += escortInfos[j].innerText + "<br />";
+                    }
+                    infos += "</p>";
+
+                    imgEscort.setAttribute("onmouseover", "js.HordeTip.showSpecialTip(this, 'helpTip', '', " + JSON.stringify(infos) + ", event);");
                 } else {
                     imgEscort.setAttribute("src", OKGIF);
                     imgEscort.setAttribute("alt", I18N.get(MODULE_NAME + '_ok_escort'));
+                    imgEscort.setAttribute("onmouseover", "js.HordeTip.showSpecialTip(this, 'helpTip', '', " + JSON.stringify(I18N.get(MODULE_NAME + '_ok_escort')) + ", event);");
                 }
+                imgEscort.setAttribute("onmouseout", "js.HordeTip.hide(event);");
 
     			if(document.getElementById("infoEscort" + i) !== null)
                     $("#infoEscort" + i).remove();
@@ -132,6 +139,15 @@ Module.register(function() {
                 i++; // to skip the "more" row
     		}
     	});
+    }
+
+    /**
+     * Make the citizen's table wider
+     */
+    function enhance_doors_interface(){
+        JS.wait_for_selector("div.left", function(node){
+            $(node).css("width", "300px");
+        });
     }
 
     function getDistance(x1,y1,x2,y2) {
@@ -179,9 +195,13 @@ Module.register(function() {
 	                    enhance_citizen_interface();
 	                }
 
-	                if(D2N.is_outside()){
+                    if (D2N.is_outside()){
 	                	enhance_outside_interface();
 	                }
+
+                    if (D2N.is_outside_at_doors()){
+                        enhance_doors_interface();
+                    }
                 }, false);
             }
         }

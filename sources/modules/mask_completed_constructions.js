@@ -34,8 +34,17 @@ Module.register(function() {
     function on_link_click()
     {
         this.properties.hide_completed_constructions = !this.properties.hide_completed_constructions;
+
+        $("#btnShowHide").text(this.properties.hide_completed_constructions ? I18N.get(MODULE_NAME + '_link_show') : I18N.get(MODULE_NAME + '_link_hide'));
+        if (this.properties.hide_completed_constructions) {
+            // Hide the constructions if needed
+            $("tr.building.done").css("display", "none");
+        } else {
+            // Else show the constructions
+            $("tr.building.done").css("display", "table-row");
+        }
+
         this.save_properties();
-        JS.reload();
     }
 
     /**
@@ -75,15 +84,15 @@ Module.register(function() {
             return;
         }
 
-        // Hide the constructions if needed
         if (this.properties.hide_completed_constructions) {
+            // Hide the constructions if needed
             JS.injectCSS(
                 'tr.building.done {' +
                     'display: none;' +
                 '}'
             );
-            // Else show the constructions
         } else {
+            // Else show the constructions
             JS.injectCSS(
                 'tr.building.done {' +
                     'display: table-row;' +
