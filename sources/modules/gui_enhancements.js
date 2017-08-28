@@ -139,6 +139,13 @@ Module.register(function() {
                 i++; // to skip the "more" row
     		}
     	});
+
+        JS.wait_for_selector('#campInfos div.actions', function(el) {
+            var actions = el.children;
+            for(var i = 0 ; i <= actions.length ; i++){
+                $(actions[i]).css("width", "auto");
+            }
+        });
     }
 
     /**
