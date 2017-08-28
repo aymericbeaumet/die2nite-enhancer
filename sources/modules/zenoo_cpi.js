@@ -812,8 +812,7 @@ Module.register(function() {
 		return C;
 	}
 
-	function campeur(ceur)
-	{
+	function campeur(ceur) {
 		var C;
 		if (ceur == 0)
 			C = 0;
@@ -840,8 +839,7 @@ Module.register(function() {
 	 * @param  {int} OD Nombre de peaux posées
 	 * @return {int}    Bonus total
 	 */
-	function calcBonusPeau(peau)
-	{
+	function calcBonusPeau(peau) {
 		var P = peau * 1;
 		return P;
 	}
@@ -851,8 +849,7 @@ Module.register(function() {
 	 * @param  {int} OD Nombre de tentes posées
 	 * @return {int}    Bonus total
 	 */
-	function calcBonusTente(tente)
-	{
+	function calcBonusTente(tente) {
 		var T = tente * 1;
 		return T;
 	}
@@ -862,8 +859,7 @@ Module.register(function() {
 	 * @param  {bool}	tomb	Tombe creusée
 	 * @return {int}			Bonus total
 	 */
-	function calcBonusTomb(tomb)
-	{
+	function calcBonusTomb(tomb) {
 		var T = tomb * 1.9;
 		return T;
 	}
@@ -873,8 +869,7 @@ Module.register(function() {
 	 * @param  {bool}   nuit    Nuit tombée
 	 * @return {int}			Bonus total
 	 */
-	function calcBonusNuit(nuit)
-	{
+	function calcBonusNuit(nuit) {
 		var N = nuit * 2;
 		return N;
 	}
@@ -884,8 +879,7 @@ Module.register(function() {
 	 * @param  {bool} phar Phare construit
 	 * @return {int}      Bonus total
 	 */
-	function calcBonusPhare(phar)
-	{
+	function calcBonusPhare(phar) {
 		var P = phar * 5;
 		return P;
 	}
@@ -895,13 +889,12 @@ Module.register(function() {
 	 * @param  {bool} devast Ville dévastée
 	 * @return {int}        Malus donné
 	 */
-	function calcMalusDevast(devast)
-	{
+	function calcMalusDevast(devast) {
 		var D = devast * -10;
 		return D;
 	}
 
-	function loadChances(){
+	function loadChances() {
 		// RE = 0 / RNE = 1 / PANDE = 2
 		var cityType;
 		if($('div#clock div.day span.hard').text() == '[' + I18N.get(MODULE_NAME + "_city_hard") + ']') cityType = 2;
