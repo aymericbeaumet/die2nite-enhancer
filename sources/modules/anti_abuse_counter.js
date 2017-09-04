@@ -157,6 +157,8 @@ Module.register(function() {
 
                 if(document.getElementsByClassName("chaos").length !== 0){
                     this.properties.max_attemps = 10;
+                } else {
+                    this.properties.max_attemps = 5;
                 }
 
                 if (JS.is_defined(this.properties.attempt_left) !== true) {

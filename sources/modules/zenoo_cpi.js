@@ -33,8 +33,6 @@ Module.register(function() {
 		i18n[I18N.LANG.FR][MODULE_NAME + '_devastated'] = 'Dévasté';
 		i18n[I18N.LANG.FR][MODULE_NAME + '_close'] = 'Fermer';
 
-		i18n[I18N.LANG.FR][MODULE_NAME + '_hero_guide'] = 'Manuel de survie';
-		i18n[I18N.LANG.FR][MODULE_NAME + '_hero_hood'] = 'Camouflage';
 		i18n[I18N.LANG.FR][MODULE_NAME + '_hero_camera'] = 'Appareil photo';
 
 		i18n[I18N.LANG.FR][MODULE_NAME + '_status_title'] = 'Statut';
@@ -82,8 +80,6 @@ Module.register(function() {
 		i18n[I18N.LANG.EN][MODULE_NAME + '_devastated'] = 'Devastated';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_close'] = 'Close';
 
-		i18n[I18N.LANG.EN][MODULE_NAME + '_hero_guide'] = 'Survival Guide';
-		i18n[I18N.LANG.EN][MODULE_NAME + '_hero_hood'] = 'Camouflage suit';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_hero_camera'] = 'Pre-war Camera';
 
 		i18n[I18N.LANG.EN][MODULE_NAME + '_status_title'] = 'Status';
@@ -905,36 +901,37 @@ Module.register(function() {
 
 		// Bonus de héros
 		if($('div.infoBar ul.inv li:first-child img[src*="small_more2.gif"]').length == 0) {
-			if($('div.infoBar ul.inv li:first-child img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_camera")) >= 0) {
+			if($('div.infoBar ul.inv li:first-child img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_camera")) > 0) {
 				// APAG
-				if($('div.infoBar ul.inv li:eq(1) img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_guide")) >= 0)
+				if($('div.infoBar ul.inv li:eq(1) img[onmouseover*="item_surv_book.gif"]').length > 0)
 					job = 1;
-				else if($('div.infoBar ul.inv li:eq(1) img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_hood")) >= 0)
+				else if($('div.infoBar ul.inv li:eq(1) img[onmouseover*="item_vest_on.gif"]').length > 0) // Eclaireur camouflé
 					job = 2;
 				else
 					job = 0;
 			} else {
 				// No APAG
-				if($('div.infoBar ul.inv li:eq(0) img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_guide")) >= 0)
+				if($('div.infoBar ul.inv li:eq(0) img[onmouseover*="item_surv_book.gif"]').length > 0)
 					job = 1;
-				else if($('div.infoBar ul.inv li:eq(0) img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_hood")) >= 0)
+				else if($('div.infoBar ul.inv li:eq(0) img[onmouseover*="item_vest_on.gif"]').length > 0) // Eclaireur camouflé
 					job = 2;
 				else
 					job = 0;
 			}
 		} else {
-			if($('div.infoBar ul.inv li:eq(1) img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_camera")) >= 0){ //APAG
-				if($('div.infoBar ul.inv li:eq(2) img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_guide")) >= 0)
+			if($('div.infoBar ul.inv li:eq(1) img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_camera")) > 0) { 
+				// APAG
+				if($('div.infoBar ul.inv li:eq(2) img[onmouseover*="item_surv_book.gif"]').length > 0)
 					job = 1;
-				else if($('div.infoBar ul.inv li:eq(2) img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_hood")) >= 0)
+				else if($('div.infoBar ul.inv li:eq(2) img[onmouseover*="item_vest_on.gif"]').length > 0) // Eclaireur camouflé
 					job = 2;
 				else
 					job = 0;
-			}
-			else{ // No APAG
-				if($('div.infoBar ul.inv li:eq(1) img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_guide")) >= 0)
+			} else {
+				// No APAG
+				if($('div.infoBar ul.inv li:eq(1) img[onmouseover*="item_surv_book.gif"]').length > 0)
 					job = 1;
-				else if($('div.infoBar ul.inv li:eq(1) img').attr('onmouseover').indexOf(I18N.get(MODULE_NAME + "_hero_hood")) >= 0)
+				else if($('div.infoBar ul.inv li:eq(1) img[onmouseover*="item_vest_on.gif"]').length > 0) // Eclaireur camouflé
 					job = 2;
 				else
 					job = 0;
@@ -956,6 +953,8 @@ Module.register(function() {
 		var upgrade = +permUpgrade;
 		var odUpgrade = +permOdUpgrade;
 		var alreadyCamped = +permAlreadyCamped;
+		// small_camp.gif ? (pour l'internationalisation)
+		// var alreadyHidden = $('div.who table.table tbody tr td img[src*="small_camp.gif"]').length;
 		var alreadyHidden = $('div.who table.table tbody tr td img[onmouseover*="pour passer la nuit ici"]').length;
 		var pelures = $('div.infoBar ul.inv li img[src*="item_smelly_meat.gif"]').length;
 		var toiles = $('div.infoBar ul.inv li img[src*="item_sheet.gif"]').length;
