@@ -167,12 +167,21 @@ Module.register(function() {
                 if (JS.is_defined(this.properties.end_of_abuse) !== true) {
                     this.properties.end_of_abuse = 0;
                 }
+
                 this.save_properties();
 
                 document.addEventListener('d2n_gamebody_reload', function() {
                     if (!D2N.is_on_page_in_city('bank')) {
                         return;
                     }
+
+                    if(document.getElementsByClassName("chaos").length !== 0){
+                        this.properties.max_attemps = 10;
+                    } else {
+                        this.properties.max_attemps = 5;
+                    }
+
+                    this.save_properties();
 
                     if (JS.is_defined(document.getElementById(ANTI_ABUSE_NOTIFIER_ID))) {
                         return;
