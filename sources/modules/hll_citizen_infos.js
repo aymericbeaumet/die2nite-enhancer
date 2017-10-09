@@ -37,14 +37,18 @@ Module.register(function() {
 
         // Adding HLL vote
         for(var i = 0 ; i < citizens.length ; i++){
+            var nodata  = citizens[i].getAttribute("no-data");
             var percent = citizens[i].getAttribute("percent");
-            var id = citizens[i].getAttribute("id");
+            var id      = citizens[i].getAttribute("id");
 
-            var red = 255;
+            var red   = 255;
             var green = 255;
-            var blue = 0;
+            var blue  = 0;
 
-            if(isNaN(percent)){
+            var details = "";
+            var info    = document.createElement("td");
+
+            if(isNaN(percent) || nodata !== null){
                 percent = I18N.get(MODULE_NAME + '_unknown');
                 red = 128;
                 green = 128;
@@ -58,44 +62,45 @@ Module.register(function() {
                     red = 255;
                     green = (100 + percent) / 100 * 255;
                 }
-            }
+                var councils   = citizens[i].getElementsByTagName("councils")[0];
+                var councilsNb = councils.getAttribute("nb");
+                
+                var complaints = citizens[i].getElementsByTagName("complaints")[0];
+                var complaintsNb = complaints.getAttribute("nb");
+                // Display the council number & the details
+                details    += "<div style='color: limegreen;'>" + I18N.get(MODULE_NAME + '_council_title') + " : " + councilsNb + "</div>";
+                var lstCouncils = councils.childNodes;
+                var j = 0;
+                if(lstCouncils.length > 0){
+                    details += "<ul>";
+                    for(j = 0 ; j < lstCouncils.length ; j++){
 
-            var details    = "<div>";
-            
-            var councils   = citizens[i].getElementsByTagName("councils")[0];
-            var councilsNb = councils.getAttribute("nb");
-            
-            var complaints = citizens[i].getElementsByTagName("complaints")[0];
-            var complaintsNb = complaints.getAttribute("nb");
-            // Display the council number & the details
-            details    += "<div style='color: limegreen;'>" + I18N.get(MODULE_NAME + '_council_title') + " : " + councilsNb + "</div>";
-            var lstCouncils = councils.childNodes;
-            var j = 0;
-            if(lstCouncils.length > 0){
-                details += "<ul>";
-                for(j = 0 ; j < lstCouncils.length ; j++){
-
-                    details += "<li>" + lstCouncils[j].getAttribute("lib") + " (" + lstCouncils[j].getAttribute("nb") + ")</li>";
+                        details += "<li>" + lstCouncils[j].getAttribute("lib") + " (" + lstCouncils[j].getAttribute("nb") + ")</li>";
+                    }
+                    details += "</ul>";
                 }
-                details += "</ul>";
-            }
-            // Display the complaints number & the details
-            details    += "<div style='color: red;'>" + I18N.get(MODULE_NAME + '_complain_title') + " : " + complaintsNb + "</div>";
-            var lstComplaints = complaints.childNodes;
-            if(lstComplaints.length > 0){
-                details += "<ul>";
-                for(j = 0 ; j < lstComplaints.length ; j++){
+                // Display the complaints number & the details
+                details    += "<div style='color: red;'>" + I18N.get(MODULE_NAME + '_complain_title') + " : " + complaintsNb + "</div>";
+                var lstComplaints = complaints.childNodes;
+                if(lstComplaints.length > 0){
+                    details += "<ul>";
+                    for(j = 0 ; j < lstComplaints.length ; j++){
 
-                    details += "<li>" + lstComplaints[j].getAttribute("lib") + " (" +  lstComplaints[j].getAttribute("nb") + ")</li>";
+                        details += "<li>" + lstComplaints[j].getAttribute("lib") + " (" +  lstComplaints[j].getAttribute("nb") + ")</li>";
+                    }
+                    details += "</ul>";
                 }
-                details += "</ul>";
             }
-            details    += "</div>";
-            var info = document.createElement("td");
+            
+            details = "<div>" + details + "</div>";
+
             info.setAttribute("data-id", id);
             info.setAttribute("style", "color: rgb(" + red + "," + green + "," + blue + ");");
-            info.setAttribute("onmouseover", "js.HordeTip.showSpecialTip(this, 'helpTip', '', " + JSON.stringify(details) + ", event);");
-            info.setAttribute("onmouseout", "js.HordeTip.hide(event);");
+            if(details !== "<div></div>"){
+                info.setAttribute("onmouseover", "js.HordeTip.showSpecialTip(this, 'helpTip', '', " + JSON.stringify(details) + ", event);");
+                info.setAttribute("onmouseout", "js.HordeTip.hide(event);");
+            }
+
             info.innerHTML = "<a href='https://hordes-la-loi.fr/users/" + id + "/' target='_blank' style='color: rgb(" + red + "," + green + "," + blue + ");'>" + percent + "</a>";
             tableCitizens[i+1].appendChild(info);
         }

@@ -160,6 +160,15 @@ Module.register(function() {
 		});
 	}
 
+	/**
+	 * Make the building table better
+	 */
+	function enhancement_buildings_interface(){
+		JS.wait_for_selector("table.table", function(node){
+			JS.injectCSS(".bvote table tr td.reco { background-color: #ff0; color: black;}");
+		});
+	}
+
 	function getDistance(x1,y1,x2,y2) {
 		var a = x1 - x2;
 		var b = y1 - y2;
@@ -211,6 +220,10 @@ Module.register(function() {
 
 					if (D2N.is_outside_at_doors()){
 						enhance_doors_interface();
+					}
+
+					if(D2N.is_on_page_in_city('buildings')) {
+						enhancement_buildings_interface();
 					}
 				}, false);
 			}
