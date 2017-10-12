@@ -90,6 +90,14 @@ Module.register(function() {
 		}
 	}
 
+	function getDistance(x1,y1,x2,y2) {
+		var a = x1 - x2;
+		var b = y1 - y2;
+
+		var c = Math.sqrt(a * a + b * b);
+		return Math.round(c);
+	}
+
 	/**
 	 * Add icon to quickly see if a citizen escorted has the good escort options
 	 */
@@ -169,14 +177,6 @@ Module.register(function() {
 		});
 	}
 
-	function getDistance(x1,y1,x2,y2) {
-		var a = x1 - x2;
-		var b = y1 - y2;
-
-		var c = Math.sqrt(a * a + b * b);
-		return Math.round(c);
-	}
-
 	/************************
 	 * Module configuration *
 	 ************************/
@@ -226,6 +226,16 @@ Module.register(function() {
 						enhancement_buildings_interface();
 					}
 				}, false);
+				JS.injectCSS(
+					".bigBg2 {" +
+						"background-attachment: fixed;" + 
+					"}" +
+					".newFooter {" +
+						"background-position: -1px 0;" + 
+					"}"
+				);
+
+				$("#tid_bar_down").appendTo(".bigBg2");
 			}
 		}
 	};

@@ -30,6 +30,10 @@
     "data.zenoo.fr"
   ],
 
+  "nav_permissions": [
+    "notification"
+  ],
+
   "compiled_script": "compiled.js",
 
   "userscript": {

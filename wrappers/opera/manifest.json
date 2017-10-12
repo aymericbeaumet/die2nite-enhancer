@@ -34,7 +34,9 @@
   "permissions": [
     <% for (var i = 0, max = cross_origin_xhr_permissions.length; i < max; i += 1) {
     %>"*://<%- cross_origin_xhr_permissions[i] %>/*"<% if (i < (max - 1)) { %>,
-    <% } %><% } %>
+    <% } %><% } %><% if (cross_origin_xhr_permissions.length > 0 && nav_permissions.length > 0) { %>,<% } %>
+     <% for (var i = 0, max = nav_permissions.length; i < max; i += 1) {
+    %>"<%- nav_permissions[i] %>"<% if (i < (max - 1)) { %>,<% } %><% } %>
   ],
 
   "web_accessible_resources": [
