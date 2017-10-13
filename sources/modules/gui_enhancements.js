@@ -175,6 +175,16 @@ Module.register(function() {
 		JS.wait_for_selector("table.table", function(node){
 			JS.injectCSS(".bvote table tr td.reco { background-color: #ff0; color: black;}");
 		});
+
+		js.wait_for_selector(".bvote div.reco", function(node){
+			JS.injectCSS(".bvote div.reco { cursor: pointer; }");
+			$(node).click(function(){
+				var obj = $(".bvote table tr td.reco"); // Page cible
+				var speed = 750; // Durée de l'animation (en ms)
+				$('html, body').animate( { scrollTop: $(obj).offset().top - $(window).height() / 2 }, speed ); // Go
+				return false;
+			});
+		});
 	}
 
 	/************************
@@ -226,6 +236,7 @@ Module.register(function() {
 						enhancement_buildings_interface();
 					}
 				}, false);
+
 				JS.injectCSS(
 					".bigBg2 {" +
 						"background-attachment: fixed;" + 
@@ -235,7 +246,8 @@ Module.register(function() {
 					"}"
 				);
 
-				$("#tid_bar_down").appendTo(".bigBg2");
+				if($("#tid_bar_down").parents(".bigBg2").length == 0)
+					$("#tid_bar_down").appendTo(".bigBg2");
 			}
 		}
 	};
