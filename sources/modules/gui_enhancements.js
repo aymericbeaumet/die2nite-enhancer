@@ -176,10 +176,10 @@ Module.register(function() {
 			JS.injectCSS(".bvote table tr td.reco { background-color: #ff0; color: black;}");
 		});
 
-		js.wait_for_selector(".bvote div.reco", function(node){
+		JS.wait_for_selector(".bvote div.reco", function(node){
 			JS.injectCSS(".bvote div.reco { cursor: pointer; }");
 			$(node).click(function(){
-				var obj = $(".bvote table tr td.reco"); // Page cible
+				var obj = $(".bvote table tr td.reco"); // Objet cible
 				var speed = 750; // Durée de l'animation (en ms)
 				$('html, body').animate( { scrollTop: $(obj).offset().top - $(window).height() / 2 }, speed ); // Go
 				return false;
