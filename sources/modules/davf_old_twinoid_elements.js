@@ -15,7 +15,7 @@ Module.register(function() {
 
         i18n[I18N.LANG.EN] = {};
         i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Old Twinoid elements (by Davf)';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'More information here [fr]: http://userstyles.org/styles/99207/hordes-elements-twinoidien. Script by Davf, integrated with his permission.. Click to open link.';
+        i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'More information here [fr]: http://userstyles.org/styles/99207/hordes-elements-twinoidien. Script by Davf, integrated with his permission. Click to open link.';
 
         i18n[I18N.LANG.FR] = {};
         i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Hordes Elements Twinoidien (par Davf)';

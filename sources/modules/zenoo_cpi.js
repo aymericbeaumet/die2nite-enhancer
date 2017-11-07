@@ -977,9 +977,6 @@ Module.register(function() {
 		// devastated = 1 / not(devastated) = 0
 		var devastated = +permDevastated;
 
-		var finalUrl = 'http://www.camping-predict.nadazone.fr/index.php?ville='+cityType+'&metier='+job+'&km='+km+'&bat='+bat+'&z='+zomb+'&ame='+upgrade+'&od='+odUpgrade+'&cg='+alreadyCamped+'&cr='+alreadyHidden+'&pdp='+pelures+'&tdt='+toiles+'&tomb='+tomb+'&nuit='+night+'&furtif='+furtif+'&pro='+CP+'&phar='+phare+'&devast='+devastated;
-		console.log(finalUrl);
-
 		var villeVal = typeVille(cityType);
 		var kmVal = distance(km);
 		var zoneVal = zone(bat);
@@ -1047,18 +1044,18 @@ Module.register(function() {
 
 		if(job == 1) correct = opti;
 
+		return 'http://www.camping-predict.nadazone.fr/index.php?ville='+cityType+'&metier='+job+'&km='+km+'&bat='+bat+'&z='+zomb+'&ame='+upgrade+'&od='+odUpgrade+'&cg='+alreadyCamped+'&cr='+alreadyHidden+'&pdp='+pelures+'&tdt='+toiles+'&tomb='+tomb+'&nuit='+night+'&furtif='+furtif+'&pro='+CP+'&phar='+phare+'&devast='+devastated;
+
 	}
 
 	var refresh = function() {
 		if($('div#sideMap').next().attr('class') == 'block tutorialBlock' && $('div.factions div.zombies').text() != '--' && $('#cpedit').length == 0){
 
-			console.log('CPI loaded.');
-
-			loadChances();
+			var cpUrl = loadChances();
 			var toInject = '' +
 			'<div style="float: right;font-size: 8pt;"><a style="cursor:pointer;text-decoration:underline;" id="cpreload" onmouseover="js.HordeTip.showSpecialTip(this, \'simpleTip\', \'\', \'' + I18N.get(MODULE_NAME + "_settings_desc") + '\', event);" onmouseout="js.HordeTip.hide(event)">' + I18N.get(MODULE_NAME + "_settings_text") + '</a>' +
 			'&nbsp;<a id="cpedit" style="cursor:pointer;text-decoration:underline;" onmouseover="js.HordeTip.showSpecialTip(this, \'simpleTip\', \'\', \'' + I18N.get(MODULE_NAME + "_search_desc") + '\', event);" onmouseout="js.HordeTip.hide(event)">' + I18N.get(MODULE_NAME + "_search_text") + '</a></div>' +
-			'<h2>Camping Predict</h2>' +
+			'<h2><a href="' + cpUrl + '" target="_blank">Camping Predict</a></h2>' +
 			'<div id="cpiparam" style="background-color: #5c2b20;color: #f0d79e;font-weight:bold;font-variant: small-caps;font-family: \'Century Gothic\', \'Arial\', \'Trebuchet MS\', Verdana, sans-serif;margin-top:-13px;margin-bottom:-13px;display:none"><ul style="list-style-type:none;margin-left:-35px;">' +
 			'<li style="height:1px;"> </li>' +
 			'<li id="permUpgrade" style="margin-top:5px"><input class="field tid_defParsed" style="width:15px;" value=""> ' + I18N.get(MODULE_NAME + "_improvements") + '</li>' +
@@ -1665,9 +1662,6 @@ Module.register(function() {
 			},
 
 			load: function() {
-				var method = this.properties.tool.update_method;
-				var url = this.properties.tool.update_url;
-
 				document.addEventListener('d2n_gamebody_reload', function() {
 					if(!D2N.is_outside()){
 						return;
