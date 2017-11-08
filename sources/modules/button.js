@@ -152,7 +152,7 @@ Module.register(function() {
 
                 ["ul", {},
                     ["li", {},
-                        ["a", { href: 'mailto:aymeric@beaumet.me?Subject=[D2NE]%20' },
+                        ["a", { href: 'mailto:ludofloria@aifesdespets.fr?Subject=[D2NE]%20' },
                             ["img", { src: '/gfx/icons/small_mail.gif' }],
                             ["span", {}, I18N.get(MODULE_NAME + '_contact_link')]
                         ]

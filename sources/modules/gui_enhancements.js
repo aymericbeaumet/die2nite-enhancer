@@ -1,9 +1,9 @@
 Module.register(function() {
 
 	var MODULE_NAME = 'gui_enhancement';
-	var OKGIF = browser.extension.getURL("images/ok.png");
-	var NOKGIF = browser.extension.getURL("images/nok.png");
-	var CAUTIONGIF = browser.extension.getURL("images/caution.png");
+	var OKGIF = chrome.extension.getURL("images/ok.png");
+	var NOKGIF = chrome.extension.getURL("images/nok.png");
+	var CAUTIONGIF = chrome.extension.getURL("images/caution.png");
 
 	/******************
 	 * Module context *
@@ -123,10 +123,28 @@ Module.register(function() {
 					continue;
 
 				var escortRow = citizensRows[i+1];
+
 				// We move the "Stop escort" button
 				var stopEscort = escortRow.querySelector("a[href^='#user/stopEscort']");
 				stopEscort.setAttribute("class", "uact");
 				$(stopEscort).insertBefore($(escortInfosBtn.parentNode.parentNode));
+				$('<span>').html("&nbsp;").insertBefore($(escortInfosBtn.parentNode.parentNode));
+
+				// We move the "Search Ground" button
+				var searchGround = escortRow.querySelector("a[href^='#outside/remoteSearchGround']");
+				searchGround.setAttribute("class", "uact");
+				$(searchGround).insertBefore($(escortInfosBtn.parentNode.parentNode));
+				$('<span>').html("&nbsp;").insertBefore($(escortInfosBtn.parentNode.parentNode));
+				
+				// If the citizen is already searching the ground, we disable the "search" button (as it is useless)
+				var searching = citizenRow.children[1].querySelector("img[src='http://data.hordes.fr/gfx/icons/small_gather.gif']");
+				if(searching != null){
+					searchGround.setAttribute("class", "uact uactOff off");
+					searchGround.setAttribute("href", "#");
+					searchGround.setAttribute("onclick", "return false;");
+					searchGround.setAttribute("onmouseover", searching.getAttribute("onmouseover"));
+				}
+
 
 				// We get the escort infos
 				var escortInfos = escortRow.querySelectorAll("div.extraInfos p");
