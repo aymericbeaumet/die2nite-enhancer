@@ -123,6 +123,12 @@ Module.register(function() {
 					continue;
 
 				var escortRow = citizensRows[i+1];
+				// We move the "Stop escort" button
+				var stopEscort = escortRow.querySelector("a[href^='#user/stopEscort']");
+				stopEscort.setAttribute("class", "uact");
+				$(stopEscort).insertBefore($(escortInfosBtn.parentNode.parentNode));
+
+				// We get the escort infos
 				var escortInfos = escortRow.querySelectorAll("div.extraInfos p");
 
 				if(escortInfos.length > 0){

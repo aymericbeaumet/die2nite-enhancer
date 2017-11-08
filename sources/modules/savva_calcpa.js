@@ -56,8 +56,11 @@ Module.register(function() {
 		i18n[I18N.LANG.FR][MODULE_NAME + "_current_ap"] = 'Vous possédez <strong>[NB]</strong> <img src=&quot;http://data.hordes.fr/gfx/loc/fr/small_pa.gif&quot;> en réserve.';
 		i18n[I18N.LANG.FR][MODULE_NAME + "_misc"] = 'Vous possédez <strong>[NB]</strong> objets de régénérations divers.';
 
-		i18n[I18N.LANG.FR][MODULE_NAME + '_text_ap_exact'] = 'Vous possédez <strong>[NB]</strong> <img src="http://data.hordes.fr/gfx/loc/fr/small_pa.gif" />.';		
-		i18n[I18N.LANG.FR][MODULE_NAME + '_text_ap_approx'] = 'Vous possédez de <strong>[NBMIN]</strong> à <strong>[NBMAX]</strong> <img src="http://data.hordes.fr/gfx/loc/fr/small_pa.gif"> potentiels.';		
+		i18n[I18N.LANG.FR][MODULE_NAME + '_text_ap_exact'] = 'Vous possédez <strong>[NB]</strong> <img src="http://data.hordes.fr/gfx/loc/fr/small_pa.gif" />.';
+		i18n[I18N.LANG.FR][MODULE_NAME + '_text_ap_approx'] = 'Vous possédez de <strong>[NBMIN]</strong> à <strong>[NBMAX]</strong> <img src="http://data.hordes.fr/gfx/loc/fr/small_pa.gif"> potentiels.';
+
+		i18n[I18N.LANG.FR][MODULE_NAME + '_text_pdc'] = 'Il a <strong>[NB]</strong> PDC.';
+		i18n[I18N.LANG.FR][MODULE_NAME + '_text_pdc_vs_zeds'] = 'Les humains sont à <strong>[PDC]</strong> contre <strong>[ZEDS]</strong>.';
 
 		i18n[I18N.LANG.EN] = {};
 		i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'APCalc';
@@ -93,7 +96,8 @@ Module.register(function() {
 		i18n[I18N.LANG.EN][MODULE_NAME + '_text_ap_exact'] = 'You have <strong>[NB]</strong> <img src="http://data.hordes.fr/gfx/loc/en/small_pa.gif" />.';		
 		i18n[I18N.LANG.EN][MODULE_NAME + '_text_ap_approx'] = 'You can have from <strong>[NBMIN]</strong> to <strong>[NBMAX]</strong> potential <img src="http://data.hordes.fr/gfx/loc/en/small_pa.gif">.';		
 
-
+		i18n[I18N.LANG.EN][MODULE_NAME + '_text_pdc'] = 'He has <strong>[NB]</strong> CP.';
+		i18n[I18N.LANG.EN][MODULE_NAME + '_text_pdc_vs_zeds'] = 'Humans are <strong>[PDC]</strong> vs <strong>[ZEDS]</strong>.';
 		I18N.set(i18n);
 	}
 
@@ -245,33 +249,34 @@ Module.register(function() {
 				$(toInject).insertAfter('div.sectionArt');
 			}
 
-			var LOL = 'ul.logs li.entry.CL_OutsideMessage';
 			var a;
 			var H;
 			var Z;
 			var Text = "";
-			$(LOL).each(function(){if($(this).children('span').length == 2){
-				a = $(this).children('span').next().text().indexOf('h');
-				H = $(this).children('span').next().text().substr(a+2,2)*1;
-				a = $(this).children('span').next().text().indexOf('z');
-				Z = $(this).children('span').next().text().substr(a+2,1)*1;
-			} else if($(this).children('strong').eq(1).text() == "rapatrié(e)"){
-				a = $(this).children('span').text().indexOf('h');
-				H = $(this).children('span').text().substr(a+2,2)*1;
-				a = $(this).children('span').text().indexOf('z');
-				Z = $(this).children('span').text().substr(a+2,1)*1;
-			} else {
-				a = $(this).children('span').text().indexOf('me');
-				var ME = $(this).children('span').text().substr(a+3,1*1);
-				a = $(this).children('span').text().indexOf('h');
-				H = $(this).children('span').text().substr(a+2,2)*1 + ME*1;
-				a = $(this).children('span').text().indexOf('z');
-				Z = $(this).children('span').text().substr(a+2,2)*1;
-				Text = ' Il a '+ME+' PDC.';
-			}
+			$('ul.logs li.entry.CL_OutsideMessage').each(function(){
+				if($(this).children('span').length == 2) {
+					a = $(this).children('span').next().text().indexOf('h');
+					H = $(this).children('span').next().text().substr(a+2,2)*1;
+					a = $(this).children('span').next().text().indexOf('z');
+					Z = $(this).children('span').next().text().substr(a+2,1)*1;
+				} else if($(this).children('strong').eq(1).text() == "rapatrié(e)"){
+					a = $(this).children('span').text().indexOf('h');
+					H = $(this).children('span').text().substr(a+2,2)*1;
+					a = $(this).children('span').text().indexOf('z');
+					Z = $(this).children('span').text().substr(a+2,1)*1;
+				} else {
+					a = $(this).children('span').text().indexOf('me');
+					var ME = $(this).children('span').text().substr(a+3,1*1);
+					a = $(this).children('span').text().indexOf('h');
+					H = $(this).children('span').text().substr(a+2,2)*1 + ME*1;
+					a = $(this).children('span').text().indexOf('z');
+					Z = $(this).children('span').text().substr(a+2,2)*1;
+					Text = I18N.get(MODULE_NAME + "_text_pdc").replace("[NB]", ME);
+				}
 
-		   Text += '<br />Les humains sont à '+H+' contre '+Z+'.';
-		   $(this).append('<span>'+Text+'<span>');});
+				Text += '<br />' + I18N.get(MODULE_NAME + "_text_pdc_vs_zeds").replace("[PDC]", H).replace("[ZEDS]", Z);
+				$(this).append('<span>'+Text+'<span>');
+			});
 		}
 	}
 
@@ -313,8 +318,11 @@ Module.register(function() {
 					}
 					refresh();
 					$('div.who table.table tbody tr td.name').each(function(){
-						var a = $(this).children('a').eq(0).attr('onmouseover');
-						$(this).children('a').eq(1).attr('onmouseover',a);
+						var mouseover = $(this).children('a').eq(0).attr('onmouseover');
+						$(this).children('a').eq(1).attr('onmouseover', mouseover);
+
+						var mouseout = $(this).children('a').eq(0).attr('onmouseout');
+						$(this).children('a').eq(1).attr('onmouseout', mouseout);
 					});
 				}, false);
 			}
