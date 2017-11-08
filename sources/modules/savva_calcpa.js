@@ -26,7 +26,7 @@ Module.register(function() {
 		var i18n = {};
 
 		i18n[I18N.LANG.FR] = {};
-		i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'CalcPA';
+		i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Affichage des PAs potentiels';
 		i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Calcule les PAs potentiels lors d\'une expédition (oui, c\'est inutile). Script par -SAVVA-, intégré et traduit avec sa permission.';
 
 		i18n[I18N.LANG.FR][MODULE_NAME + '_ap_icon'] = '<img src="http://data.hordes.fr/gfx/loc/fr/small_pa.gif" />';
@@ -63,7 +63,7 @@ Module.register(function() {
 		i18n[I18N.LANG.FR][MODULE_NAME + '_text_pdc_vs_zeds'] = 'Les humains sont à <strong>[PDC]</strong> contre <strong>[ZEDS]</strong>.';
 
 		i18n[I18N.LANG.EN] = {};
-		i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'APCalc';
+		i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Display potentials APs';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Calculate the potentials APs during an expedition (yes, this is useless). Script by -SAVVA-, integrated and translated with his permission.';
 
 		i18n[I18N.LANG.EN][MODULE_NAME + '_ap_icon'] = '<img src="http://data.hordes.fr/gfx/loc/en/small_pa.gif" />';
