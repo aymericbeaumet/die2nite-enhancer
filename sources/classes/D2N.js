@@ -264,7 +264,7 @@ var D2N = (function() {
 
         /**
          * Check if the player is outside the city, but still at the doors. Return false if user is
-         * outside but on the dorum
+         * outside but on the forum
          * @return string true if outside and at the doors, false otherwise
          */
         is_outside_at_doors: function(){

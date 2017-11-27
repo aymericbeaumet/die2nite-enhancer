@@ -102,7 +102,10 @@ Module.register(function() {
 	 * Add icon to quickly see if a citizen escorted has the good escort options
 	 */
 	function enhance_outside_interface(){
+
 		JS.wait_for_selector('div.who table', function(el) {
+
+			$(el).css("width", "350px");
 			var citizensRows = el.querySelectorAll("tr");
 			
 			// We go 2 by 2 because between each citizen row, there is a useless hidden row...
@@ -187,7 +190,7 @@ Module.register(function() {
 	 * Make the citizen's table wider
 	 */
 	function enhance_doors_interface(){
-		JS.wait_for_selector("div.left", function(node){
+		JS.wait_for_selector("div.who", function(node){
 			$(node).css("width", "300px");
 		});
 	}

@@ -1,6 +1,6 @@
 Module.register(function() {
 
-	var MODULE_NAME = 'savva-calcpa';
+	var MODULE_NAME = 'savva_calcpa';
 	var style = 'background-color: #5c2b20;';
 	style += 'outline: 1px solid black;';
 	style += 'border: 1px solid #ad8051;';
@@ -98,6 +98,7 @@ Module.register(function() {
 
 		i18n[I18N.LANG.EN][MODULE_NAME + '_text_pdc'] = 'He has <strong>[NB]</strong> CP.';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_text_pdc_vs_zeds'] = 'Humans are <strong>[PDC]</strong> vs <strong>[ZEDS]</strong>.';
+		
 		I18N.set(i18n);
 	}
 
