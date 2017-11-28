@@ -1,11 +1,11 @@
 Features:
 - Autosync
 - Remove warning when taking an object in bank (keep it if anti-abuse protection)
-- Add more filter in the gazette
+- Add filters in the gazette
 - Show chest objects from the citizen view (without mouse hover)
-- Move the escort buttons to a more conveniant place
 - Add moon/sun depending of the hour of the day
 - Set a correct tabindex in the configuration panel
+- Add days until feature unlock in Hero Mode (in the list)
 
 Improvment of existing features:
 - Replace the media links in the message preview
