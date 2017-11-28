@@ -8,7 +8,7 @@
 
   "description": "<%= description %>",
 
-  "author": {
+  "developer": {
     "name": "<%= author.name %> <<%= author.email %>>",
     "url": "<%= author.url %>"
   },

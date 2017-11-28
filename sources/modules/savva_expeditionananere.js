@@ -18,30 +18,40 @@ Module.register(function() {
 		i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Calcule les PAs à dépenser et dans quel ordre se ravitailler. Script par -SAVVA-, intégré et traduit avec sa permission.';
 		
 		i18n[I18N.LANG.FR][MODULE_NAME + '_ap_text'] = 'Points d\'action';
+		i18n[I18N.LANG.FR][MODULE_NAME + '_ap_icon'] = '<img src="http://data.hordes.fr/gfx/loc/fr/small_pa.gif" />';
+
 		i18n[I18N.LANG.FR][MODULE_NAME + '_advise_normal_text'] = 'Ordre conseillé pour expé à $[NB] PA normal';
 		i18n[I18N.LANG.FR][MODULE_NAME + '_advise_thirsty_text'] = 'Ordre conseillé pour expé à $[NB] PA en soif';
+
 		i18n[I18N.LANG.FR][MODULE_NAME + '_dehydration_title'] = 'Déshydratation';
 		i18n[I18N.LANG.FR][MODULE_NAME + '_return_normal_text'] = 'Vous rentrerez en ville en état normal.';
 		i18n[I18N.LANG.FR][MODULE_NAME + '_return_thirsty_text'] = 'Vous rentrerez en ville en étant assoiffé.';
 		i18n[I18N.LANG.FR][MODULE_NAME + '_return_dehydrated_text'] = 'Vous rentrerez en ville en étant déshydraté.';
 		i18n[I18N.LANG.FR][MODULE_NAME + '_return_died_text'] = 'Vous mourrez durant cet expédition !<br /><img src="//data.twinoid.com/proxy/www.hordes.fr/gfx/forum/smiley/h_warning.gif"> Le rationnement en eau est insuffisant !';
 
-		i18n[I18N.LANG.FR][MODULE_NAME + '_ap_icon'] = '<img src="http://data.hordes.fr/gfx/loc/fr/small_pa.gif" />';
+		i18n[I18N.LANG.FR][MODULE_NAME + '_weapons_title'] = 'Armes';
+		i18n[I18N.LANG.FR][MODULE_NAME + '_total_kills'] = 'Total approximatif : ';
+
 
 		i18n[I18N.LANG.EN] = {};
-		i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Expedition lalala';
+		i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Expedition helper';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Calculate the optimum order to regenerate APs while doing an expedition. Script by -SAVVA-, integrated and translated with his permission.';
 
 		i18n[I18N.LANG.EN][MODULE_NAME + '_ap_text'] = 'Action points';
+		i18n[I18N.LANG.EN][MODULE_NAME + '_ap_icon'] = '<img src="http://data.hordes.fr/gfx/loc/en/small_pa.gif" />';
+
 		i18n[I18N.LANG.EN][MODULE_NAME + '_advise_normal_text'] = 'Advised order to do an expe of $[NB] AP and coming back normal';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_advise_thirsty_text'] = 'Advised order to do an expe of $[NB] AP and coming back thirsty';
+
 		i18n[I18N.LANG.EN][MODULE_NAME + '_dehydration_title'] = 'Dehydration';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_return_normal_text'] = 'You\'ll get home being normal.';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_return_thirsty_text'] = 'You\'ll get home being thirsty.';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_return_dehydrated_text'] = 'You\'ll get home being dehydrated.';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_return_died_text'] = 'You\'ll die during this expedition !<br /><img src="//data.twinoid.com/proxy/www.hordes.fr/gfx/forum/smiley/h_warning.gif"> You don\'t have enough water !';
 
-		i18n[I18N.LANG.EN][MODULE_NAME + '_ap_icon'] = '<img src="http://data.hordes.fr/gfx/loc/en/small_pa.gif" />';
+		i18n[I18N.LANG.EN][MODULE_NAME + '_weapons_title'] = 'Weapons';
+		i18n[I18N.LANG.EN][MODULE_NAME + '_total_kills'] = 'Rough total: ';
+
 
 		I18N.set(i18n);
 	}
@@ -596,30 +606,42 @@ Module.register(function() {
 
 			var toInject = '<h2 style="margin-top: -7px !important; margin-bottom: 10px; text-align: center;"><strong>' + I18N.get(MODULE_NAME + "_short_desc") +'</strong></h2>';
 			toInject += '<h2 style="margin-top: 0px !important;margin-bottom: 10px;">' + I18N.get(MODULE_NAME + "_ap_text") + '</h2>';
-			toInject += I18N.get(MODULE_NAME + "_ap_icon") + outEau + outBouffe + outAlcool + outStero + outTwino + outDrogueRisk + outCafe + outCidre + outSport + ' = ' + expe + I18N.get(MODULE_NAME + "_ap_icon") + ' totaux' + outBlesse;
-			toInject += '<h2 style="margin-top: 0px !important;margin-bottom: 10px;">' + I18N.get(MODULE_NAME + "_dehydration_title") + '</h2>'+introEau+':<br />'+ordreEau;
-			toInject += '<h2 style="margin-top: 0px !important;margin-bottom: 10px;">Armes</h2>'+listeArme+'Total approximatif: '+cclArmes+' <img src="/gfx/icons/small_zombie.gif">';
+			toInject += I18N.get(MODULE_NAME + "_ap_icon") + outEau + outBouffe + outAlcool + outStero + outTwino + outDrogueRisk + outCafe + outCidre + outSport + ' = ' + expe + " " + I18N.get(MODULE_NAME + "_ap_icon") + outBlesse;
+			toInject += '<h2 style="margin-top: 0px !important;margin-bottom: 10px;">' + I18N.get(MODULE_NAME + "_dehydration_title") + '</h2>' + introEau + ':<br />'+ordreEau;
+			toInject += '<h2 style="margin-top: 0px !important;margin-bottom: 10px;">' + I18N.get(MODULE_NAME + "_weapons_title") + '</h2>' + listeArme + I18N.get(MODULE_NAME + "_total_kills") + cclArmes +' <img src="/gfx/icons/small_zombie.gif">';
 
-			if($('div#Expedition').length == 0){
-				// Aux portes mais dedans
-				if(D2N.is_on_page_in_city('doors')) {
+			var inject = $('#Expedition').length == 0;
+
+			// Aux portes mais dedans
+			if(D2N.is_on_page_in_city('doors')) {
+				if(inject)
 					$("<div id='Expedition'>" + toInject + "</div>").insertAfter('p.ambiant');
-				}
+				else
+					$('#Expedition').html(toInject);
+			}
 
-				// À la banque
-				if(D2N.is_on_page_in_city('bank')) {
+			// À la banque
+			if(D2N.is_on_page_in_city('bank')) {
+				if(inject)
 					$("<div id='Expedition'>" + toInject + "</div>").appendTo('div.right');
-				}
+				else
+					$('#Expedition').html(toInject);
+			}
 
-				// Dans la maison
-				if(D2N.is_on_page_in_city('home')) {
+			// Dans la maison
+			if(D2N.is_on_page_in_city('home')) {
+				if(inject)
 					$('<ul id="Expedition" class="tools shortTools homeInv">' + toInject + '</ul>').insertAfter('div.right ul.tools.shortTools.homeInv');
-				}
+				else
+					$('#Expedition').html(toInject);
+			}
 
-				// Dehors
-				if(D2N.is_outside()) {
-					$('<div class="block" id="Expedition" style="margin-top: 8px;"><div class="header"></div><div class="bg">'+toInject+'</div><div class="footer"></div></div>').appendTo('.sidePanel');
-				}
+			// Dehors
+			if(D2N.is_outside()) {
+				if(inject)
+					$('<div class="block" id="Expedition" style="margin-top: 8px;"><div class="header"></div><div class="bg">' + toInject + '</div><div class="footer"></div></div>').appendTo('.sidePanel');
+				else
+					$('#Expedition').html('<div class="header"></div><div class="bg">' + toInject + '</div><div class="footer"></div>');
 			}
 		}
 	}
