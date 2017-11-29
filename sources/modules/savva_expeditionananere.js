@@ -604,44 +604,70 @@ Module.register(function() {
 				cclArmes = 'de '+zombiesTuesMin+' à '+zombiesTuesMax;
 			}
 
-			var toInject = '<h2 style="margin-top: -7px !important; margin-bottom: 10px; text-align: center;"><strong>' + I18N.get(MODULE_NAME + "_short_desc") +'</strong></h2>';
-			toInject += '<h2 style="margin-top: 0px !important;margin-bottom: 10px;">' + I18N.get(MODULE_NAME + "_ap_text") + '</h2>';
+			var toInject = '<h2 style="text-align: center;"><strong>' + I18N.get(MODULE_NAME + "_short_desc") +'</strong></h2>';
+			toInject += '<h2>' + I18N.get(MODULE_NAME + "_ap_text") + '</h2>';
 			toInject += I18N.get(MODULE_NAME + "_ap_icon") + outEau + outBouffe + outAlcool + outStero + outTwino + outDrogueRisk + outCafe + outCidre + outSport + ' = ' + expe + " " + I18N.get(MODULE_NAME + "_ap_icon") + outBlesse;
-			toInject += '<h2 style="margin-top: 0px !important;margin-bottom: 10px;">' + I18N.get(MODULE_NAME + "_dehydration_title") + '</h2>' + introEau + ':<br />'+ordreEau;
-			toInject += '<h2 style="margin-top: 0px !important;margin-bottom: 10px;">' + I18N.get(MODULE_NAME + "_weapons_title") + '</h2>' + listeArme + I18N.get(MODULE_NAME + "_total_kills") + cclArmes +' <img src="/gfx/icons/small_zombie.gif">';
+			toInject += '<h2>' + I18N.get(MODULE_NAME + "_dehydration_title") + '</h2>' + introEau + ':<br />'+ordreEau;
+			toInject += '<h2>' + I18N.get(MODULE_NAME + "_weapons_title") + '</h2>' + listeArme + I18N.get(MODULE_NAME + "_total_kills") + cclArmes +' <img src="/gfx/icons/small_zombie.gif">';
 
 			var inject = $('#Expedition').length == 0;
 
+			var css = "";
+
 			// Aux portes mais dedans
 			if(D2N.is_on_page_in_city('doors')) {
-				if(inject)
+				if(inject) {
 					$("<div id='Expedition'>" + toInject + "</div>").insertAfter('p.ambiant');
-				else
+					css = "#Expedition {";
+					css += "margin-bottom: 10px;";
+					css += "}";
+				} else {
 					$('#Expedition').html(toInject);
+				}
 			}
 
 			// À la banque
 			if(D2N.is_on_page_in_city('bank')) {
-				if(inject)
+				if(inject) {
 					$("<div id='Expedition'>" + toInject + "</div>").appendTo('div.right');
-				else
+					css = "#Expedition {";
+					css += "margin-top: 10px;";
+					css += "}";
+				} else {
 					$('#Expedition').html(toInject);
+				}
 			}
 
 			// Dans la maison
 			if(D2N.is_on_page_in_city('home')) {
-				if(inject)
+				if(inject) {
 					$('<ul id="Expedition" class="tools shortTools homeInv">' + toInject + '</ul>').insertAfter('div.right ul.tools.shortTools.homeInv');
-				else
+					css = "#Expedition h2 {";
+					css += "margin-top: 0 !important;";
+					css += "background-image: none !important;";
+					css += "}";
+				} else {
 					$('#Expedition').html(toInject);
+				}
 			}
 
 			// Dehors
 			if(D2N.is_outside()) {
-				if(inject)
+				if(inject) {
 					$('<div class="block" id="Expedition" style="margin-top: 8px;"><div class="header"></div><div class="bg">' + toInject + '</div><div class="footer"></div></div>').appendTo('.sidePanel');
-				else
+					css = "#Expedition h2 {";
+					css += "margin-bottom: 10px;";
+					css += "}";
+					css += "#Expedition h2:first-child {";
+					css += "margin-top: -7px !important;";
+					css += "}";
+				} else {
 					$('#Expedition').html('<div class="header"></div><div class="bg">' + toInject + '</div><div class="footer"></div>');
+				}
+			}
+
+			if (css != ""){
+				JS.injectCSS(css);
 			}
 		}
 	}
