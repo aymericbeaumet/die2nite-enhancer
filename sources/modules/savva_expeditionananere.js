@@ -99,22 +99,22 @@ Module.register(function() {
 
 			var outCidre = '';
 			if(cidre >= 1) {
-				outCidre = ' + '+cidre+'<img src="http://data.hordes.fr/gfx/icons/item_hmbrew.gif?v=44">';
+				outCidre = ' + '+cidre+' <img src="http://data.hordes.fr/gfx/icons/item_hmbrew.gif?v=44">';
 			}
 
 			var outStero = '';
 			if(stero >= 1) {
-				outStero = ' + '+stero+'<img src="http://data.hordes.fr/gfx/icons/item_drug.gif?v=44">';
+				outStero = ' + '+stero+' <img src="http://data.hordes.fr/gfx/icons/item_drug.gif?v=44">';
 			}
 
 			var outTwino = '';
 			if(twino >= 1) {
-				outTwino = ' + '+twino+'<img src="http://data.hordes.fr/gfx/icons/item_drug_hero.gif?v=44">';
+				outTwino = ' + '+twino+' <img src="http://data.hordes.fr/gfx/icons/item_drug_hero.gif?v=44">';
 			}
 
 			var outDrogueRisk = '';
 			if(drogueRisk >= 1) {
-				outDrogueRisk = ' + '+drogueRisk+'<img src="http://data.hordes.fr/gfx/icons/item_drug_random.gif?v=44">';
+				outDrogueRisk = ' + '+drogueRisk+' <img src="http://data.hordes.fr/gfx/icons/item_drug_random.gif?v=44">';
 			}
 
 			expe += stero*(6-blesse) + twino*(8-blesse) + drogueRisk*(6-blesse) + cidre*(6-blesse);

@@ -10,7 +10,7 @@
 
   "default_locale": "<%= default_locale %>",
 
-  "developer": {
+  "author": {
     "name": "<%= author.name %> <<%= author.email %>>",
     "url": "<%= author.url %>"
   },
@@ -41,5 +41,6 @@
 
   "web_accessible_resources": [
     "images/*"
-  ]
+  ],
+  "converted_from_user_script": true
 }
