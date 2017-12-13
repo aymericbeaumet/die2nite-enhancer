@@ -111,8 +111,9 @@ Module.register(function() {
 	function enhance_outside_interface(){
 
 		JS.wait_for_selector('div.who table', function(el) {
-
-			$(el).css("width", "350px");
+			if(D2N.is_outside_at_doors()){
+				$(el).css("width", "350px");
+			}
 			var citizensRows = el.querySelectorAll("tr");
 			
 			// We go 2 by 2 because between each citizen row, there is a useless hidden row...
