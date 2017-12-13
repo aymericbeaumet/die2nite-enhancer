@@ -37,6 +37,14 @@ Module.register(function() {
 		I18N.set(i18n);
 	}
 
+	function getDistance(x1,y1,x2,y2) {
+		var a = x1 - x2;
+		var b = y1 - y2;
+
+		var c = Math.sqrt(a * a + b * b);
+		return Math.round(c);
+	}
+
 	/**
 	 * Add icon if citizen is outside and beyong reach (for the hero action "Rescue")
 	 */
@@ -45,20 +53,27 @@ Module.register(function() {
 			// If we're a hero, shows a green or red sign if the citizen can be rescued
 			JS.wait_for_selector('div.citizens table', function(el) {
 				var citizensRows = el.querySelectorAll("tr");
-				for(var i = 1 ; i < citizensRows.length ; i++){
+				for(var i = 1 ; i < citizensRows.length ; i += 1){
 					var row = citizensRows[i];
 					// No coordinates columns (dead citizen)
-					if(row.children[4] === undefined) continue;
-					
+					if(row.children[4] === undefined) {
+						continue;
+					}
+
 					// Get the citizen's location, and if it's "--", then he is in town
-					var location = row.children[4].innerText;
-					if(location.trim() === "--") continue;
+					var location = row.children[4].innerText.trim();
+					if(location === "--") {
+						continue;
+					}
+
+					location = location.split(',');
 
 					// Here, the citizen is outside
 					// It's time to see if he is farther than 11km (for the Rescue)
-					/* jshint ignore:start */
-					var coordinates = eval(location);
-					/* jshint ignore:end */
+					var coordinates = [];
+					coordinates[0] = location[0].substr(1);
+					coordinates[1] = location[1].substr(0, location[1].length - 1);
+
 					var distance = getDistance(0, 0, coordinates[0], coordinates[1]);
 
 					var imgSauvetage = null;
@@ -90,14 +105,6 @@ Module.register(function() {
 		}
 	}
 
-	function getDistance(x1,y1,x2,y2) {
-		var a = x1 - x2;
-		var b = y1 - y2;
-
-		var c = Math.sqrt(a * a + b * b);
-		return Math.round(c);
-	}
-
 	/**
 	 * Add icon to quickly see if a citizen escorted has the good escort options
 	 */
@@ -114,7 +121,9 @@ Module.register(function() {
 				var actions = citizenRow.children[2];
 
 				// If there is no actions possibles, it may be possible that the row is the player himself
-				if(actions === undefined || actions === null || actions.innerHTML.trim() === "&nbsp;") continue;
+				if(actions === undefined || actions === null || actions.innerHTML.trim() === "&nbsp;") {
+					continue;
+				}
 
 				var escortInfosBtn = actions.querySelector('a img[src^="/gfx/icons/small_more.gif"]');
 
@@ -122,8 +131,9 @@ Module.register(function() {
 				imgEscort.setAttribute("id", "infoEscort" + i);
 
 				// We cannot know if the good escort options are set
-				if(escortInfosBtn === null)
+				if(escortInfosBtn === null){
 					continue;
+				}
 
 				var escortRow = citizensRows[i+1];
 
@@ -141,7 +151,7 @@ Module.register(function() {
 				
 				// If the citizen is already searching the ground, we disable the "search" button (as it is useless)
 				var searching = citizenRow.children[1].querySelector("img[src='http://data.hordes.fr/gfx/icons/small_gather.gif']");
-				if(searching != null){
+				if(searching !== null && searching !== undefined){
 					searchGround.setAttribute("class", "uact uactOff off");
 					searchGround.setAttribute("href", "#");
 					searchGround.setAttribute("onclick", "return false;");
@@ -156,7 +166,7 @@ Module.register(function() {
 					imgEscort.setAttribute("src", NOKGIF);
 					imgEscort.setAttribute("alt", I18N.get(MODULE_NAME + '_nok_escort'));
 					var infos = "<p style='color: red;'>";
-					for(var j = 0 ; j < escortInfos.length ; j++){
+					for(var j = 0 ; j < escortInfos.length ; j += 1){
 						infos += escortInfos[j].innerText + "<br />";
 					}
 					infos += "</p>";
@@ -169,18 +179,19 @@ Module.register(function() {
 				}
 				imgEscort.setAttribute("onmouseout", "js.HordeTip.hide(event);");
 
-				if(document.getElementById("infoEscort" + i) !== null)
+				if(document.getElementById("infoEscort" + i) !== null) {
 					$("#infoEscort" + i).remove();
+				}
 
 				actions.appendChild(imgEscort);
 
-				i++; // to skip the "more" row
+				i += 1; // to skip the "more" row
 			}
 		});
 
 		JS.wait_for_selector('#campInfos div.actions', function(el) {
 			var actions = el.children;
-			for(var i = 0 ; i <= actions.length ; i++){
+			for(var i = 0 ; i <= actions.length ; i += 1){
 				$(actions[i]).css("width", "auto");
 			}
 		});
@@ -200,7 +211,7 @@ Module.register(function() {
 	 */
 	function enhancement_buildings_interface(){
 		JS.wait_for_selector("table.table", function(node){
-			JS.injectCSS(".bvote table tr td.reco { background-color: #ff0; color: black;}");
+			JS.injectCSS(".bvote table tr td.reco { background-color: #ff0; color: black;} .bvote table tr.reco a.button {outline: 2px solid #ff0;}");
 		});
 
 		JS.wait_for_selector(".bvote div.reco", function(node){
@@ -273,8 +284,9 @@ Module.register(function() {
 					"}"
 				);
 
-				if($("#tid_bar_down").parents(".bigBg2").length == 0)
+				if($("#tid_bar_down").parents(".bigBg2").length === 0) {
 					$("#tid_bar_down").appendTo(".bigBg2");
+				}
 			}
 		}
 	};

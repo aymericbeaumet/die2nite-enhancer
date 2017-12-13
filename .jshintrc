@@ -39,7 +39,7 @@
     "plusplus"      : true,     // Prohibit use of `++` & `--`.
     "regexp"        : true,     // Prohibit `.` and `[^...]` in regular expressions.
     "undef"         : true,     // Require all non-global variables be declared before they are used.
-    "strict"        : true,     // Require `use strict` pragma in every file.
+    "strict"        : false,     // Require `use strict` pragma in every file.
     "trailing"      : true,     // Prohibit trailing whitespaces.
 
     // == Relaxing Options ================================================
@@ -54,7 +54,7 @@
     "eqnull"        : false,    // Tolerate use of `== null`.
     "es5"           : false,    // Allow EcmaScript 5 syntax.
     "esnext"        : false,    // Allow ES.next specific features such as `const` and `let`.
-    "evil"          : false,    // Tolerate use of `eval`.
+    "evil"          : true,    // Tolerate use of `eval`.
     "expr"          : false,    // Tolerate `ExpressionStatement` as Programs.
     "funcscope"     : false,    // Tolerate declarations of variables inside of control structures while accessing them later from the outside.
     "globalstrict"  : false,    // Allow global "use strict" (also enables "strict").
@@ -80,13 +80,13 @@
     // popular JavaScript libraries and runtime environments—such as
     // browser or node.js.
 
-    "browser"       : false,     // Standard browser globals e.g. `window`, `document`.
+    "browser"       : true,     // Standard browser globals e.g. `window`, `document`.
     "couch"         : false,    // Enable globals exposed by CouchDB.
-    "devel"         : false,    // Allow development statements e.g. `console.log();`.
+    "devel"         : true,     // Allow development statements e.g. `console.log();`.
     "dojo"          : false,    // Enable globals exposed by Dojo Toolkit.
-    "jquery"        : false,    // Enable globals exposed by jQuery JavaScript library.
+    "jquery"        : true,     // Enable globals exposed by jQuery JavaScript library.
     "mootools"      : false,    // Enable globals exposed by MooTools JavaScript framework.
-    "node"          : false,    // Enable globals available when code is running inside of the NodeJS runtime environment.
+    "node"          : true,     // Enable globals available when code is running inside of the NodeJS runtime environment.
     "nonstandard"   : false,    // Define non-standard but widely adopted globals such as escape and unescape.
     "prototypejs"   : false,    // Enable globals exposed by Prototype JavaScript framework.
     "rhino"         : false,    // Enable globals available when your code is running inside of the Rhino runtime environment.
@@ -113,6 +113,13 @@
     "predef"        : [         // Extra globals.
         "GM_xmlhttpRequest",
         "safari"
-    ]//,
-    //"indent"        : 4         // Specify indentation spacing
+    ],
+    "indent"        : 1,         // Specify indentation spacing
+    "globals": {
+        "Module": true,
+        "I18N": true,
+        "D2N": true,
+        "JS": true,
+        "chrome": true
+    }
 }

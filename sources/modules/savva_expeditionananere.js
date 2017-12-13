@@ -14,7 +14,7 @@ Module.register(function() {
 		var i18n = {};
 
 		i18n[I18N.LANG.FR] = {};
-		i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Expéditionananère';
+		i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Expéditionananère (par -SAVVA)';
 		i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Calcule les PAs à dépenser et dans quel ordre se ravitailler. Script par -SAVVA-, intégré et traduit avec sa permission.';
 		
 		i18n[I18N.LANG.FR][MODULE_NAME + '_ap_text'] = 'Points d\'action';
@@ -30,11 +30,13 @@ Module.register(function() {
 		i18n[I18N.LANG.FR][MODULE_NAME + '_return_died_text'] = 'Vous mourrez durant cet expédition !<br /><img src="//data.twinoid.com/proxy/www.hordes.fr/gfx/forum/smiley/h_warning.gif"> Le rationnement en eau est insuffisant !';
 
 		i18n[I18N.LANG.FR][MODULE_NAME + '_weapons_title'] = 'Armes';
+		i18n[I18N.LANG.FR][MODULE_NAME + '_discharge'] = 'déchargé';
+		i18n[I18N.LANG.FR][MODULE_NAME + '_charge'] = 'charge';
 		i18n[I18N.LANG.FR][MODULE_NAME + '_total_kills'] = 'Total approximatif : ';
 
 
 		i18n[I18N.LANG.EN] = {};
-		i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Expedition helper';
+		i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Expedition helper (By -SAVVA-)';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Calculate the optimum order to regenerate APs while doing an expedition. Script by -SAVVA-, integrated and translated with his permission.';
 
 		i18n[I18N.LANG.EN][MODULE_NAME + '_ap_text'] = 'Action points';
@@ -50,6 +52,8 @@ Module.register(function() {
 		i18n[I18N.LANG.EN][MODULE_NAME + '_return_died_text'] = 'You\'ll die during this expedition !<br /><img src="//data.twinoid.com/proxy/www.hordes.fr/gfx/forum/smiley/h_warning.gif"> You don\'t have enough water !';
 
 		i18n[I18N.LANG.EN][MODULE_NAME + '_weapons_title'] = 'Weapons';
+		i18n[I18N.LANG.EN][MODULE_NAME + '_discharge'] = 'discharged';
+		i18n[I18N.LANG.EN][MODULE_NAME + '_chargee'] = 'load';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_total_kills'] = 'Rough total: ';
 
 
@@ -519,7 +523,7 @@ Module.register(function() {
 			arme = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_watergun_opt_empty.gif"]').length+$('div.infoBar ul.inv li img[src*="/gfx/icons/item_watergun_opt_1.gif"]').length+$('div.infoBar ul.inv li img[src*="/gfx/icons/item_watergun_opt_2.gif"]').length+$('div.infoBar ul.inv li img[src*="/gfx/icons/item_watergun_opt_3.gif"]').length+$('div.infoBar ul.inv li img[src*="/gfx/icons/item_watergun_opt_4.gif"]').length+$('div.infoBar ul.inv li img[src*="/gfx/icons/item_watergun_opt_5.gif"]').length;
 			if(arme > 0) {
 				arme = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_watergun_opt_empty.gif"]').length*0+$('div.infoBar ul.inv li img[src*="/gfx/icons/item_watergun_opt_1.gif"]').length*1+$('div.infoBar ul.inv li img[src*="/gfx/icons/item_watergun_opt_2.gif"]').length*2+$('div.infoBar ul.inv li img[src*="/gfx/icons/item_watergun_opt_3.gif"]').length*3+$('div.infoBar ul.inv li img[src*="/gfx/icons/item_watergun_opt_4.gif"]').length*4+$('div.infoBar ul.inv li img[src*="/gfx/icons/item_watergun_opt_5.gif"]').length*5 + eau*5;
-				listeArme += '<img src="/gfx/icons/item_watergun_opt_empty.gif"> Aqua-splash ('+arme+'), 1 zombie, 100% -1 charge<br />';
+				listeArme += '<img src="/gfx/icons/item_watergun_opt_empty.gif"> Aqua-splash ('+arme+'), 1 zombie, 100% -1 ' + I18N.get(MODULE_NAME + '_charge') + '<br />';
 				zombiesTuesMin += 1*arme;
 				zombiesTuesMax += 1*arme;
 			}
@@ -527,7 +531,7 @@ Module.register(function() {
 			arme = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_watergun_empty.gif"]').length+$('div.infoBar ul.inv li img[src*="/gfx/icons/item_watergun_1.gif"]').length+$('div.infoBar ul.inv li img[src*="/gfx/icons/item_watergun_2.gif"]').length+$('div.infoBar ul.inv li img[src*="/gfx/icons/item_watergun_3.gif"]').length;
 			if(arme > 0) {
 				arme = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_watergun_empty.gif"]').length*0+$('div.infoBar ul.inv li img[src*="/gfx/icons/item_watergun_1.gif"]').length*1+$('div.infoBar ul.inv li img[src*="/gfx/icons/item_watergun_2.gif"]').length*2+$('div.infoBar ul.inv li img[src*="/gfx/icons/item_watergun_3.gif"]').length*3+eau*3;
-				listeArme += '<img src="/gfx/icons/item_watergun_empty.gif"> Pistolet à eau ('+arme+'), 1 zombie, 100% -1 charge<br />';
+				listeArme += '<img src="/gfx/icons/item_watergun_empty.gif"> Pistolet à eau ('+arme+'), 1 zombie, 100% -1 ' + I18N.get(MODULE_NAME + '_charge') + '<br />';
 				zombiesTuesMin += 1*arme;
 				zombiesTuesMax += 1*arme;
 			} 
@@ -536,7 +540,7 @@ Module.register(function() {
 			arme = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_mixergun.gif"]').length + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_mixergun_empty.gif"]').length;
 			if(arme > 0) {
 				arme = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_mixergun.gif"]').length*1 + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_mixergun_empty.gif"]').length*0 + pile;
-				listeArme += '<img src="/gfx/icons/item_mixergun_empty.gif"> Batteur électrique ('+arme+'), 1 zombie, 40% déchargé<br />';
+				listeArme += '<img src="/gfx/icons/item_mixergun_empty.gif"> Batteur électrique ('+arme+'), 1 zombie, 40% ' + I18N.get(MODULE_NAME + '_discharge') + '<br />';
 				zombiesTuesMin += 1*arme;
 				zombiesTuesMax += 2*arme;
 			}
@@ -544,7 +548,7 @@ Module.register(function() {
 			arme = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_big_pgun.gif"]').length + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_big_pgun_empty.gif"]').length;
 			if(arme > 0) {
 				arme = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_big_pgun.gif"]').length*1 + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_big_pgun_empty.gif"]').length*0 + pile;
-				listeArme += '<img src="/gfx/icons/item_big_pgun_empty.gif"> Devastator ('+arme+'), 2 zombies, 100% déchargé<br />';
+				listeArme += '<img src="/gfx/icons/item_big_pgun_empty.gif"> Devastator ('+arme+'), 2 zombies, 100% ' + I18N.get(MODULE_NAME + '_discharge') + '<br />';
 				zombiesTuesMin += 2*arme;
 				zombiesTuesMax += 2*arme;
 			}
@@ -552,7 +556,7 @@ Module.register(function() {
 			arme = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_pilegun.gif"]').length + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_pilegun_empty.gif"]').length;
 			if(arme > 0) {
 				arme = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_pilegun_empty.gif"]').length*0 + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_pilegun.gif"]').length*1 + pile;
-				listeArme += '<img src="/gfx/icons/item_pilegun_empty.gif"> Lance-Pile 1-PDTG ('+arme+'), 0 à 1 zombie, 100% déchargé<br />';
+				listeArme += '<img src="/gfx/icons/item_pilegun_empty.gif"> Lance-Pile 1-PDTG ('+arme+'), 0 à 1 zombie, 100% ' + I18N.get(MODULE_NAME + '_discharge') + '<br />';
 				zombiesTuesMin += 0;
 				zombiesTuesMax += 1*arme;
 			}
@@ -560,7 +564,7 @@ Module.register(function() {
 			arme = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_pilegun_up.gif"]').length + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_pilegun_up_empty.gif"]').length;
 			if(arme > 0) {
 				arme = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_pilegun_up_empty.gif"]').length*0 + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_pilegun_up.gif"]').length*1 + pile;
-				listeArme += '<img src="/gfx/icons/item_pilegun_up_empty.gif"> Lance-Pile Mark II ('+arme+'), 1 zombie, 20% déchargé<br />';
+				listeArme += '<img src="/gfx/icons/item_pilegun_up_empty.gif"> Lance-Pile Mark II ('+arme+'), 1 zombie, 20% ' + I18N.get(MODULE_NAME + '_discharge') + '<br />';
 				zombiesTuesMin += 1*arme;
 				zombiesTuesMax += 5*arme;
 			}
@@ -568,7 +572,7 @@ Module.register(function() {
 			arme = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_taser.gif"]').length + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_taser_empty.gif"]').length;
 			if(arme > 0) {
 				arme = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_taser.gif"]').length*1 + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_taser_empty.gif"]').length*0 + pile;
-				listeArme += '<img src="/gfx/icons/item_taser_empty.gif"> Taser d\'auto-défense ('+arme+'), 0 à 1 zombie, 100% déchargé<br />';
+				listeArme += '<img src="/gfx/icons/item_taser_empty.gif"> Taser d\'auto-défense ('+arme+'), 0 à 1 zombie, 100% ' + I18N.get(MODULE_NAME + '_discharge') + '<br />';
 				zombiesTuesMin += 0*arme;
 				zombiesTuesMax += 1*arme;
 			}
@@ -576,7 +580,7 @@ Module.register(function() {
 			arme = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_chainsaw.gif"]').length + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_chainsaw_empty.gif"]').length;
 			if(arme > 0) {
 				arme = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_chainsaw_empty.gif"]').length*0 + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_pc.gif"]').length*1 + pile;
-				listeArme += '<img src="/gfx/icons/item_chainsaw_empty.gif> Tronçonneuse ('+arme+'), 3 zombies, 30% déchargé<br />';
+				listeArme += '<img src="/gfx/icons/item_chainsaw_empty.gif> Tronçonneuse ('+arme+'), 3 zombies, 30% ' + I18N.get(MODULE_NAME + '_discharge') + '<br />';
 				zombiesTuesMin += 3*arme;
 				zombiesTuesMax += 9*arme;
 			}
@@ -584,7 +588,7 @@ Module.register(function() {
 			arme = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_lpoint.gif"]').length + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_lpoint1.gif"]').length + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_lpoint2.gif"]').length + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_lpoint3.gif"]').length + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_lpoint4.gif"]').length;
 			if(arme > 0) {
 				arme = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_lpoint.gif"]').length*0 + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_lpoint1.gif"]').length*1 + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_lpoint2.gif"]').length*2 + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_lpoint3.gif"]').length*3 + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_lpoint4.gif"]').length*4 + pile*4;
-				listeArme += '<img src="/gfx/icons/item_lpoint.gif"> Pointeur Laser Brûlant ('+arme+'), 2 zombies, 100% -1 charge<br />';
+				listeArme += '<img src="/gfx/icons/item_lpoint.gif"> Pointeur Laser Brûlant ('+arme+'), 2 zombies, 100% -1 ' + I18N.get(MODULE_NAME + '_charge') + '<br />';
 				zombiesTuesMin += 2*arme;
 				zombiesTuesMax += 2*arme;
 			}
@@ -592,7 +596,7 @@ Module.register(function() {
 			arme = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_jerrygun.gif"]').length + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_jerrygun_off.gif"]').length;
 			if(arme > 0) {
 				arme = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_jerrygun.gif"]').length*1 + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_jerrycan.gif"]').length*1;
-				listeArme += '<img src="/gfx/icons/item_jerrygun.gif"> Pompe à Jerrycan ('+arme+'), 1 zombie, 15% déchargé<br />';
+				listeArme += '<img src="/gfx/icons/item_jerrygun.gif"> Pompe à Jerrycan ('+arme+'), 1 zombie, 15% ' + I18N.get(MODULE_NAME + '_discharge') + '<br />';
 				zombiesTuesMin += 1*arme;
 				zombiesTuesMax += 6*arme;
 			}
