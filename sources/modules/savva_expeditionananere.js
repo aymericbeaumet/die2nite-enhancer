@@ -14,8 +14,9 @@ Module.register(function() {
 		var i18n = {};
 
 		i18n[I18N.LANG.FR] = {};
-		i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Expéditionananère (par -SAVVA)';
+		i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Expéditionananère (par -SAVVA-)';
 		i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Calcule les PAs à dépenser et dans quel ordre se ravitailler. Script par -SAVVA-, intégré et traduit avec sa permission.';
+		i18n[I18N.LANG.FR][MODULE_NAME + '_title'] = 'Expéditionananère';
 		
 		i18n[I18N.LANG.FR][MODULE_NAME + '_ap_text'] = 'Points d\'action';
 		i18n[I18N.LANG.FR][MODULE_NAME + '_ap_icon'] = '<img src="http://data.hordes.fr/gfx/loc/fr/small_pa.gif" />';
@@ -38,6 +39,7 @@ Module.register(function() {
 		i18n[I18N.LANG.EN] = {};
 		i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Expedition helper (By -SAVVA-)';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Calculate the optimum order to regenerate APs while doing an expedition. Script by -SAVVA-, integrated and translated with his permission.';
+		i18n[I18N.LANG.EN][MODULE_NAME + '_title'] = 'Expedition helper';
 
 		i18n[I18N.LANG.EN][MODULE_NAME + '_ap_text'] = 'Action points';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_ap_icon'] = '<img src="http://data.hordes.fr/gfx/loc/en/small_pa.gif" />';
@@ -608,7 +610,7 @@ Module.register(function() {
 				cclArmes = 'de '+zombiesTuesMin+' à '+zombiesTuesMax;
 			}
 
-			var toInject = '<h2 style="text-align: center;"><strong>' + I18N.get(MODULE_NAME + "_short_desc") +'</strong></h2>';
+			var toInject = '<h2 style="text-align: center;"><strong>' + I18N.get(MODULE_NAME + "_title") +'</strong></h2>';
 			toInject += '<h2>' + I18N.get(MODULE_NAME + "_ap_text") + '</h2>';
 			toInject += I18N.get(MODULE_NAME + "_ap_icon") + outEau + outBouffe + outAlcool + outStero + outTwino + outDrogueRisk + outCafe + outCidre + outSport + ' = ' + expe + " " + I18N.get(MODULE_NAME + "_ap_icon") + outBlesse;
 			toInject += '<h2>' + I18N.get(MODULE_NAME + "_dehydration_title") + '</h2>' + introEau + ':<br />'+ordreEau;
