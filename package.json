@@ -24,7 +24,13 @@
   "license": "Zlib",
   "scripts": {
     "postinstall": "sh .githooks/install.sh",
-    "test": "grunt test"
+    "test": "grunt test",
+    "package:all": "grunt pack",
+    "package:firefox": "grunt pack --firefox",
+    "package:chrome": "grunt pack --chrome",
+    "package:chrome_zip": "grunt pack --chrome_zip",
+    "package:opera": "grunt pack --opera",
+    "package:userscript": "grunt pack --userscript"
   },
   "dependencies": {
     "grunt": "^1.0.1",
@@ -50,7 +56,8 @@
     "karma-coverage": "^1.1.1",
     "karma-firefox-launcher": "^1.0.1",
     "karma-jasmine": "^1.1.0",
-    "karma-phantomjs-launcher": "^1.0.4"
+    "karma-phantomjs-launcher": "^1.0.4",
+    "web-ext": "^2.0.4"
   },
   "config": {
     "unsafe-perm": true

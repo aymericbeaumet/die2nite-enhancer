@@ -31,6 +31,26 @@ In case of a problem, please be sure all your softwares (browser and extensions)
 Explain here how to reproduce the problem...
 ```
 
+### Contribute
+
+If you would like to contribute, you should :
+
+1. Install NodeJS 9.x
+2. Install grunt 
+3. Make sure the "zip" command is available (i.e. in the PATH)
+4. Make sure the "make" command is available (i.e. in the PATH)
+
+If you're building on Windows, make sure that "bash" is available (Windows 10 has it natively, otherwise you should install it)
+
+Then, clone this repo, run "npm install" in the folder and enjoy :)
+
+To build the extention for all browsers, just run "npm run package:all". For a specific brower, it's "npm run package:<BROWER>". Available browers are :
+	* firefox
+	* chrome
+	* chrome_zip (to have a zip instead of a crx file)
+	* opera
+	* usersript (to use it with Tampermonkey or GreaseMonkey)
+
 ### License
 
 zlib/libpng © [Aymeric Beaumet](http://beaumet.me)
