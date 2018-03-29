@@ -382,6 +382,7 @@ var D2N = (function() {
          */
         get_number_of_cp: function(callback)
         {
+            // TODO: do not return the number of PM if shaman...
             JS.wait_for_selector('#movesCounter > div:nth-child(2)', function(node) {
                 var cp = parseInt(node.textContent.split('/')[0]);
                 callback(cp);

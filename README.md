@@ -31,6 +31,19 @@ In case of a problem, please be sure all your softwares (browser and extensions)
 Explain here how to reproduce the problem...
 ```
 
+### Contribute
+
+If you would like to contribute, you should :
+
+1. Install NodeJS 9.x
+2. Install grunt 
+3. Make sure the "zip" command is available (i.e. in the PATH)
+4. Make sure the "make" command is available (i.e. in the PATH)
+
+Then, clone this repo, run "npm install" in the folder and enjoy :)
+
+To build the firefox extention, just run "grunt pack --firefox". For chrome, it's "grunt pack --chrome"
+
 ### License
 
 zlib/libpng © [Aymeric Beaumet](http://beaumet.me)
