@@ -24,7 +24,12 @@
   "license": "Zlib",
   "scripts": {
     "postinstall": "sh .githooks/install.sh",
-    "test": "grunt test"
+    "test": "grunt test",
+    "package:firefox": "grunt pack --firefox",
+    "package:chrome": "grunt pack --chrome",
+    "package:chrome_zip": "grunt pack --chrome_zip",
+    "package:opera": "grunt pack --opera",
+    "package:userscript": "grunt pack --userscript"
   },
   "dependencies": {
     "grunt": "^1.0.1",
