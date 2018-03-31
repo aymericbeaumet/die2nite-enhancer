@@ -36,9 +36,8 @@ Explain here how to reproduce the problem...
 If you would like to contribute, you should :
 
 1. Install NodeJS 9.x
-2. Install grunt 
-3. Make sure the "zip" command is available (i.e. in the PATH)
-4. Make sure the "make" command is available (i.e. in the PATH)
+2. Make sure the "zip" command is available (i.e. in the PATH)
+3. Make sure the "make" command is available (i.e. in the PATH)
 
 If you're building on Windows, make sure that "bash" is available (Windows 10 has it natively, otherwise you should install it)
 
