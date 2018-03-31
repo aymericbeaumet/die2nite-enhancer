@@ -369,8 +369,8 @@ var D2N = (function() {
          */
         get_number_of_ap: function(callback)
         {
-            JS.wait_for_selector('#movesCounter > div:nth-child(1)', function(node) {
-                var ap = parseInt(node.textContent.split('/')[0]);
+            JS.wait_for_selector('#movesCounter > div img[src*="small_pa.gif"]', function(node) {
+                var ap = parseInt(node.parentNode.textContent.split('/')[0]);
                 callback(ap);
             });
         },
@@ -382,9 +382,8 @@ var D2N = (function() {
          */
         get_number_of_cp: function(callback)
         {
-            // TODO: do not return the number of PM if shaman...
-            JS.wait_for_selector('#movesCounter > div:nth-child(2)', function(node) {
-                var cp = parseInt(node.textContent.split('/')[0]);
+            JS.wait_for_selector('#movesCounter > div img[src*="small_pc.gif"]', function(node) {
+                var cp = parseInt(node.parentNode.textContent.split('/')[0]);
                 callback(cp);
             }, 1, function onNotfound() {
                 callback(null);
