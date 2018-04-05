@@ -1,3 +1,16 @@
+v0.2.4
+- The Antiabuse counter is now enabled on the well (if the pump is built)
+- The antiabuse counter now works properly in chaos (10 attempts instead of 5)
+- When clicking on the recommended building, the page automatically scroll to the building
+- The recommended building is highlighted in yellow (more visilibity !)
+- (eventually) Fixed AP + CP detection (if you where shaman but not tech, the plugin gave you AP + PM, which was wront !)
+- Added Zenoo's script Camping Predict Injector
+- Added -SAVVA-'s CalcPA script. It shows ow you use your stuff to do the best expedition
+- Improved the escort system (moved some buttons)
+- Normalized all manifest.json
+- Added an icon to easily see if a citizen can be rescued (if you are hero)
+- Updated socket.io
+
 v0.2.3
 - Add a default background to the configuration panel
 - Added Chatty, a easy to use chat system

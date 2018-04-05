@@ -101,7 +101,7 @@ Module.register(function() {
 				el.click(function(ev){
 					if(confirm('Confirmer ?')){
 						on_object_click.bind(this)(ev);
-						js.XmlHttp.get('city/well_water?sk=c0e4c',null);
+						js.XmlHttp.get('city/well_water?sk=c0e4c', null);
 					}
 					return false;
 				}.bind(this));
@@ -125,7 +125,7 @@ Module.register(function() {
 		// Add notifier
 		var selector = "div.right";
 		if (D2N.is_on_page_in_city('well')) {
-			selector = "p.book";
+			selector = "div.wellPane";
 		}
 		JS.wait_for_selector(selector, function(el) {
 			el.insertBefore(get_notifier_div.call(this), el.firstChild);
