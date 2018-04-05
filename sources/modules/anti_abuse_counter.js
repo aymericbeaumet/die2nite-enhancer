@@ -68,7 +68,6 @@ Module.register(function() {
 	{
 		// The click must occur on the object icon, the object number or the
 		// link
-		
 		if (['IMG', 'SPAN', 'A'].indexOf(event.target.nodeName) < 0) {
 			return;
 		}
@@ -93,7 +92,21 @@ Module.register(function() {
 	function inject_click_listener()
 	{
 		// Add listener
-		document.querySelector('.tools.stocks.cityInv').addEventListener('click', on_object_click.bind(this), true);
+		if (D2N.is_on_page_in_city('bank')) {
+			document.querySelector('.tools.stocks.cityInv').addEventListener('click', on_object_click.bind(this), true);
+		} else if (D2N.is_on_page_in_city('well')) {
+			var el = $(".button[href*='well_water']");
+			if(el.attr("onclick").indexOf("confirm") > 0){
+				el.attr("onclick", "");
+				el.click(function(ev){
+					if(confirm('Confirmer ?')){
+						on_object_click.bind(this)(ev);
+						js.XmlHttp.get('city/well_water?sk=c0e4c',null);
+					}
+					return false;
+				}.bind(this));
+			}
+		}
 	}
 
 	function on_each_second(event)
@@ -110,7 +123,11 @@ Module.register(function() {
 	function inject_notifier()
 	{
 		// Add notifier
-		JS.wait_for_selector('div.right', function(el) {
+		var selector = "div.right";
+		if (D2N.is_on_page_in_city('well')) {
+			selector = "p.book";
+		}
+		JS.wait_for_selector(selector, function(el) {
 			el.insertBefore(get_notifier_div.call(this), el.firstChild);
 
 			if (_time_interval === null) {
@@ -174,7 +191,7 @@ Module.register(function() {
 				this.save_properties();
 
 				document.addEventListener('d2n_gamebody_reload', function() {
-					if (!D2N.is_on_page_in_city('bank')) {
+					if (!D2N.is_on_page_in_city('bank') && !D2N.is_on_page_in_city('well')) {
 						return;
 					}
 
