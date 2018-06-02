@@ -16,7 +16,7 @@ You can directly install this plugin as an extension for the following browsers:
 
 ### Install as a script
 
-It is also possible to install this plugin as a script. Natively supported in Google Chrome, or with the GreaseMonkey extension under Mozilla Firefox. If you want to do it like so, I consider you know what you are doing: the script can be found [here](http://userscripts.org/scripts/show/242398).
+It is also possible to install this plugin as a script. Natively supported in Google Chrome, or with the GreaseMonkey extension under Mozilla Firefox. If you want to do it like so, I consider you know what you are doing: the script can be found [here](http://userscripts-mirror.org/scripts/show/242398).
 
 ### Feedback
 
