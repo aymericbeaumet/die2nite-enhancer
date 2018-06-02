@@ -1,6 +1,6 @@
 ## Die2Nite Enhancer
 
-[![Build Status](https://travis-ci.org/aymericbeaumet/die2nite-enhancer.png?branch=dev)](https://travis-ci.org/aymericbeaumet/die2nite_enhancer) [![Coverage Status](https://coveralls.io/repos/aymericbeaumet/die2nite_enhancer/badge.png?branch=dev)](https://coveralls.io/r/aymericbeaumet/die2nite_enhancer?branch=dev) [![Dependency Status](https://david-dm.org/aymericbeaumet/die2nite_enhancer.png?theme=shields.io)](https://david-dm.org/aymericbeaumet/die2nite_enhancer) [![devDependency Status](https://david-dm.org/aymericbeaumet/die2nite_enhancer/dev-status.png?theme=shields.io)](https://david-dm.org/aymericbeaumet/die2nite_enhancer#info=devDependencies)
+[![Build Status](https://api.travis-ci.org/aymericbeaumet/die2nite-enhancer.svg?branch=dev)](https://travis-ci.org/aymericbeaumet/die2nite-enhancer) [![Coverage Status](https://coveralls.io/repos/github/aymericbeaumet/die2nite_enhancer/badge.svg?branch=dev)](https://coveralls.io/github/aymericbeaumet/die2nite_enhancer?branch=dev) [![Dependency Status](https://david-dm.org/aymericbeaumet/die2nite_enhancer.png?theme=shields.io)](https://david-dm.org/aymericbeaumet/die2nite_enhancer) [![devDependency Status](https://david-dm.org/aymericbeaumet/die2nite_enhancer/dev-status.png?theme=shields.io)](https://david-dm.org/aymericbeaumet/die2nite_enhancer#info=devDependencies)
 
 Die2Nite Enhancer is an extension allowing you to improve your game experience on the browser game [Die2Nite](http://www.die2nite.com/).
 
@@ -16,7 +16,7 @@ You can directly install this plugin as an extension for the following browsers:
 
 ### Install as a script
 
-It is also possible to install this plugin as a script. Natively supported in Google Chrome, or with the GreaseMonkey extension under Mozilla Firefox. If you want to do it like so, I consider you know what you are doing: the script can be found [here](http://userscripts.org/scripts/show/242398).
+It is also possible to install this plugin as a script. Natively supported in Google Chrome, or with the GreaseMonkey extension under Mozilla Firefox. If you want to do it like so, I consider you know what you are doing: the script can be found [here](http://userscripts-mirror.org/scripts/show/242398).
 
 ### Feedback
 
