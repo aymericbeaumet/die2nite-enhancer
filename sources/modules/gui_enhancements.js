@@ -226,6 +226,21 @@ Module.register(function() {
 		});
 	}
 
+	/**
+	 * Make some general design better
+	 */
+	function enhance_general_interface(){
+		JS.wait_for_selector("#serverTime", function(node){
+			var currentHour = node.innerText.split(":")[0];
+			// From 20:00 to 09:00, it's the night
+			if(currentHour >= 20 || currentHour <= 9){
+				// TODO: add a moon
+			} else {
+				// TODO: add a sun
+			}
+		});
+	}
+
 	/************************
 	 * Module configuration *
 	 ************************/
@@ -274,6 +289,8 @@ Module.register(function() {
 					if(D2N.is_on_page_in_city('buildings')) {
 						enhancement_buildings_interface();
 					}
+
+					enhance_general_interface();
 				}, false);
 
 				JS.injectCSS(

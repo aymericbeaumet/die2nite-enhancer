@@ -1,9 +1,8 @@
 Features:
 - Remove warning when taking an object in bank (keep it if anti-abuse protection)
 - Add filters in the gazette
-- Show chest objects from the citizen view (without mouse hover)
+- Show chest objects from the citizen view (without mouse hover) -> It is a hero capacity :|
 - Add moon/sun depending of the hour of the day
-- Set a correct tabindex in the configuration panel
 - Add days until feature unlock in Hero Mode (in the list)
 
 Improvment of existing features:
