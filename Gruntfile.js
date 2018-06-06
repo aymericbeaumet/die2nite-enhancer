@@ -63,7 +63,6 @@ module.exports = function(grunt) {
     var config = {
         buildDir: path.join(path.resolve(), "build"), // Use an absolute path to fix problems when using the external extension compilers
         iconsDir: path.join(path.resolve(), "icons"),
-        imagesDir: path.join(path.resolve(), "images"),
         testsDir: path.join(path.resolve(), "tests"),
         wrappersDir: path.join(path.resolve(), "wrappers"),
         jQueryDir: path.join(path.resolve(), "node_modules", "jquery", "dist"),
@@ -226,13 +225,6 @@ module.exports = function(grunt) {
                         expand: true
                     },
                     {
-                        cwd: config.imagesDir,
-                        src: ["**"],
-                        dest: path.join(config.chrome.workingDir, "images"),
-                        filter: "isFile",
-                        expand: true
-                    },
-                    {
                         cwd: config.jQueryDir,
                         src: ["jquery.min.js"],
                         dest: config.chrome.workingDir,
@@ -261,13 +253,6 @@ module.exports = function(grunt) {
                         cwd: config.iconsDir,
                         src: ["icon48.png", "icon128.png"],
                         dest: config.chrome_zip.workingDir,
-                        filter: "isFile",
-                        expand: true
-                    },
-                    {
-                        cwd: config.imagesDir,
-                        src: ["**"],
-                        dest: path.join(config.chrome_zip.workingDir, "images"),
                         filter: "isFile",
                         expand: true
                     },
@@ -304,13 +289,6 @@ module.exports = function(grunt) {
                         expand: true
                     },
                     {
-                        cwd: config.imagesDir,
-                        src: ["**"],
-                        dest: path.join(config.firefox.workingDir, "images"),
-                        filter: "isFile",
-                        expand: true
-                    },
-                    {
                         cwd: config.jQueryDir,
                         src: ["jquery.min.js"],
                         dest: config.firefox.workingDir,
@@ -339,13 +317,6 @@ module.exports = function(grunt) {
                         cwd: config.iconsDir,
                         src: ["icon48.png", "icon128.png"],
                         dest: config.opera.workingDir,
-                        filter: "isFile",
-                        expand: true
-                    },
-                    {
-                        cwd: config.imagesDir,
-                        src: ["**"],
-                        dest: path.join(config.opera.workingDir, "images"),
                         filter: "isFile",
                         expand: true
                     },

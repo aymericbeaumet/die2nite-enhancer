@@ -1,9 +1,9 @@
 Module.register(function() {
 
 	var MODULE_NAME = 'gui_enhancement';
-	var OKGIF = chrome.extension.getURL("images/ok.png");
-	var NOKGIF = chrome.extension.getURL("images/nok.png");
-	var CAUTIONGIF = chrome.extension.getURL("images/caution.png");
+	var OKGIF = "https://d2ne.datw.tf/ok.png";
+	var NOKGIF = "https://d2ne.datw.tf/nok.png";
+	var CAUTIONGIF = "https://d2ne.datw.tf/caution.png";
 
 	/******************
 	 * Module context *
@@ -231,12 +231,16 @@ Module.register(function() {
 	 */
 	function enhance_general_interface(){
 		JS.wait_for_selector("#serverTime", function(node){
-			var currentHour = node.innerText.split(":")[0];
-			// From 20:00 to 09:00, it's the night
-			if(currentHour >= 20 || currentHour <= 9){
-				// TODO: add a moon
+			var currentHour = +node.innerText.split(":")[0];
+			var currentMinutes = +node.innerText.split(":")[1];
+
+			// From 19:00 to 07:00, it's the night
+			if(currentHour >= 19 || currentHour < 7 ){
+				// Use the default background (mono-chromatic)
+				JS.injectCSS(".bigBg2 { background-image: url(http://data.hordes.fr/gfx/design/bg_big2.jpg); }");
 			} else {
-				// TODO: add a sun
+				// Use the login background (ful of colors)
+				JS.injectCSS(".bigBg2 { background-image: url(http://data.hordes.fr/gfx/design/bg_big.jpg); }");
 			}
 		});
 	}

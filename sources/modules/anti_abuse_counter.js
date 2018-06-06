@@ -80,13 +80,20 @@ Module.register(function() {
 			return;
 		}
 
-		this.properties.attempt_left -= 1;
-		if (this.properties.attempt_left < 0) {
-			this.properties.attempt_left = 0;
-		}
-		this.properties.end_of_abuse = (+new Date() / 1000) + (15 * 60);
-		this.save_properties();
-		refresh_notifier.call(this);
+		// We check after the reload if the backpack has changed
+		var oldBackPack = $("#myBag li img:not([src*='small_empty_inv.gif'])").length;
+		document.addEventListener('d2n_gamebody_reload', function() {
+			var newBackPack = $("#myBag li img:not([src*='small_empty_inv.gif'])").length;
+			if(newBackPack != oldBackPack) {
+				this.properties.attempt_left -= 1;
+				if (this.properties.attempt_left < 0) {
+					this.properties.attempt_left = 0;
+				}
+				this.properties.end_of_abuse = (+new Date() / 1000) + (15 * 60);
+				this.save_properties();
+				refresh_notifier.call(this);
+			}
+		});
 	}
 
 	function inject_click_listener()
