@@ -230,6 +230,13 @@ module.exports = function(grunt) {
                         dest: config.chrome.workingDir,
                         filter: "isFile",
                         expand: true
+                    },
+                    {
+                        cwd: path.join(config.compiled_script.inputDir, "libs"),
+                        src: ["*.js.map"],
+                        dest: config.chrome.workingDir,
+                        filter: "isFile",
+                        expand: true
                     }
                 ]
             },
@@ -259,6 +266,13 @@ module.exports = function(grunt) {
                     {
                         cwd: config.jQueryDir,
                         src: ["jquery.min.js"],
+                        dest: config.chrome_zip.workingDir,
+                        filter: "isFile",
+                        expand: true
+                    },
+                    {
+                        cwd: path.join(config.compiled_script.inputDir, "libs"),
+                        src: ["*.js.map"],
                         dest: config.chrome_zip.workingDir,
                         filter: "isFile",
                         expand: true
@@ -294,6 +308,13 @@ module.exports = function(grunt) {
                         dest: config.firefox.workingDir,
                         filter: "isFile",
                         expand: true
+                    },
+                    {
+                        cwd: path.join(config.compiled_script.inputDir, "libs"),
+                        src: ["*.js.map"],
+                        dest: config.firefox.workingDir,
+                        filter: "isFile",
+                        expand: true
                     }
                 ]
             },
@@ -323,6 +344,13 @@ module.exports = function(grunt) {
                     {
                         cwd: config.jQueryDir,
                         src: ["jquery.min.js"],
+                        dest: config.opera.workingDir,
+                        filter: "isFile",
+                        expand: true
+                    },
+                    {
+                        cwd: path.join(config.compiled_script.inputDir, "libs"),
+                        src: ["*.js.map"],
                         dest: config.opera.workingDir,
                         filter: "isFile",
                         expand: true
