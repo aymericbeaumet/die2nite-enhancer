@@ -9,6 +9,7 @@ Module.register(function() {
 	var ANTI_ABUSE_NOTIFIER_ID = 'd2ne_abuse_counter';
 
 	var _time_interval = null;
+	var _oldBackPack = 0;
 
 	/**
 	 * Add the i18n strings for this module.
@@ -64,6 +65,31 @@ Module.register(function() {
 		}
 	}
 
+	function updateAttemptLeft(){
+		if (!D2N.is_on_page_in_city('bank') && !D2N.is_on_page_in_city('well')) {
+			return;
+		}
+
+		console.log("reloaded");
+		console.log(this);
+
+		var newBackPack = $("#myBag li img:not([src*='small_empty_inv.gif'])").length;
+		console.log("old / new : " + _oldBackPack + " / " + newBackPack);
+		if(newBackPack !== _oldBackPack) {
+			this.properties.attempt_left -= 1;
+			if (this.properties.attempt_left < 0) {
+				this.properties.attempt_left = 0;
+			}
+			this.properties.end_of_abuse = (+new Date() / 1000) + (15 * 60);
+			this.save_properties();
+			refresh_notifier.call(this);
+		}
+
+		_oldBackPack = newBackPack;
+
+		document.removeEventListener('d2n_gamebody_reload', updateAttemptLeft.bind(this));
+	}
+
 	function on_object_click(event)
 	{
 		// The click must occur on the object icon, the object number or the
@@ -81,19 +107,9 @@ Module.register(function() {
 		}
 
 		// We check after the reload if the backpack has changed
-		var oldBackPack = $("#myBag li img:not([src*='small_empty_inv.gif'])").length;
-		document.addEventListener('d2n_gamebody_reload', function() {
-			var newBackPack = $("#myBag li img:not([src*='small_empty_inv.gif'])").length;
-			if(newBackPack != oldBackPack) {
-				this.properties.attempt_left -= 1;
-				if (this.properties.attempt_left < 0) {
-					this.properties.attempt_left = 0;
-				}
-				this.properties.end_of_abuse = (+new Date() / 1000) + (15 * 60);
-				this.save_properties();
-				refresh_notifier.call(this);
-			}
-		});
+		_oldBackPack = $("#myBag li img:not([src*='small_empty_inv.gif'])").length;
+
+		document.addEventListener('d2n_gamebody_reload', updateAttemptLeft.bind(this));
 	}
 
 	function inject_click_listener()
@@ -120,7 +136,7 @@ Module.register(function() {
 	{
 		var current_time = Math.floor(+new Date() / 1000);
 		if (current_time > this.properties.end_of_abuse) {
-			this.properties.attempt_left = this.properties.max_attemps;
+			this.properties.attempt_left = this.properties.max_attempts;
 			this.properties.end_of_abuse = 0;
 			this.save_properties();
 		}
@@ -155,7 +171,7 @@ Module.register(function() {
 
 		properties: {
 			enabled: false,
-			max_attemps: 5
+			max_attempts: 5
 		},
 
 		configurable: {
@@ -183,13 +199,13 @@ Module.register(function() {
 					'}');
 
 				if(document.getElementsByClassName("chaos").length !== 0){
-					this.properties.max_attemps = 10;
+					this.properties.max_attempts = 10;
 				} else {
-					this.properties.max_attemps = 5;
+					this.properties.max_attempts = 5;
 				}
 
 				if (JS.is_defined(this.properties.attempt_left) !== true) {
-					this.properties.attempt_left = this.properties.max_attemps;
+					this.properties.attempt_left = this.properties.max_attempts;
 				}
 				if (JS.is_defined(this.properties.end_of_abuse) !== true) {
 					this.properties.end_of_abuse = 0;
@@ -203,9 +219,9 @@ Module.register(function() {
 					}
 
 					if(document.getElementsByClassName("chaos").length !== 0){
-						this.properties.max_attemps = 10;
+						this.properties.max_attempts = 10;
 					} else {
-						this.properties.max_attemps = 5;
+						this.properties.max_attempts = 5;
 					}
 
 					this.save_properties();
