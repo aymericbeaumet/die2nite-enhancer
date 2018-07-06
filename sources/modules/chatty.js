@@ -49,7 +49,7 @@ Module.register(function() {
 		var container = document.getElementById('messages-room-' + room);
 		var li = JS.jsonToDOM(['li', {},
 			['span', { title: dateObject.toLocaleDateString() + ' ' + dateObject.toLocaleTimeString() }, '[' + hours + ':' + minutes + ']'],
-			' ' + user + ': ' + content
+			' ' + user + ' : ' + content
 		], document);
 
 		if (!container) {
@@ -58,6 +58,8 @@ Module.register(function() {
 
 		container.appendChild(li);
 		JS.scroll_to_bottom(container.parentNode);
+
+		$("#notif").text("*");
 	}
 
 	/**
@@ -245,14 +247,20 @@ Module.register(function() {
 
 	function insert_chat_dom()
 	{
-		var json = ["table", { id: 'd2ne_chatty' },
+		// The chat is already here
+		if(document.getElementById('d2ne_chatty')) return;
+
+		var json = [
+		"table", { id: 'd2ne_chatty' },
 			["tr", { "class": 'd2ne_chatty_header', onclick: on_header_click },
 				["td", {},
-					I18N.get(MODULE_NAME + '_title')
+					['span', {}, I18N.get(MODULE_NAME + '_title')],
+					['span', {id: 'notif'}, ""]
 				]
 			],
 			["tr", { "class": 'd2ne_chatty_rooms' },
-				["td", {}]],
+				["td", {}]
+			],
 			["tr", { "class": 'd2ne_chatty_messages' },
 				["td", {},
 					["div", {}]
@@ -338,6 +346,9 @@ Module.register(function() {
 						'padding: 0px;' +
 						'width: 85px;' +
 						'text-align: center;' +
+					'}' +
+					'.d2ne_chatty_input input {' +
+						'width: 90%;' +
 					'}'
 		);
 	}

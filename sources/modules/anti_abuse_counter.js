@@ -70,12 +70,8 @@ Module.register(function() {
 			return;
 		}
 
-		console.log("reloaded");
-		console.log(this);
-
 		var newBackPack = $("#myBag li img:not([src*='small_empty_inv.gif'])").length;
-		console.log("old / new : " + _oldBackPack + " / " + newBackPack);
-		if(newBackPack !== _oldBackPack) {
+		if(newBackPack > _oldBackPack) {
 			this.properties.attempt_left -= 1;
 			if (this.properties.attempt_left < 0) {
 				this.properties.attempt_left = 0;
@@ -92,6 +88,10 @@ Module.register(function() {
 
 	function on_object_click(event)
 	{
+		if (!D2N.is_on_page_in_city('bank') && !D2N.is_on_page_in_city('well')) {
+			return;
+		}
+		
 		// The click must occur on the object icon, the object number or the
 		// link
 		if (['IMG', 'SPAN', 'A'].indexOf(event.target.nodeName) < 0) {

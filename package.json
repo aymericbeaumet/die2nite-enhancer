@@ -25,6 +25,7 @@
   "scripts": {
     "postinstall": "sh .githooks/install.sh",
     "test": "grunt test",
+    "package:all": "grunt pack",
     "package:firefox": "grunt pack --firefox",
     "package:chrome": "grunt pack --chrome",
     "package:chrome_zip": "grunt pack --chrome_zip",

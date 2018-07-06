@@ -239,7 +239,7 @@ Module.register(function() {
 				// Use the default background (mono-chromatic)
 				JS.injectCSS(".bigBg2 { background-image: url(http://data.hordes.fr/gfx/design/bg_big2.jpg); }");
 			} else {
-				// Use the login background (ful of colors)
+				// Use the login background (full of colors)
 				JS.injectCSS(".bigBg2 { background-image: url(http://data.hordes.fr/gfx/design/bg_big.jpg); }");
 			}
 		});
