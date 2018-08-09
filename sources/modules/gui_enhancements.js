@@ -227,6 +227,25 @@ Module.register(function() {
 	}
 
 	/**
+	 * Make the bank display compatible with >999 items stacked
+	 */
+	function enhancement_bank_interface(){
+		JS.wait_for_selector('ul.tools.stocks.cityInv', function(node){
+			JS.injectCSS(
+				"ul.stocks li.multi," +
+				"ul.stocks li.multi a {" +
+					"width: 42px;" +
+				"}" +
+				"ul.stocks li.multi img {"+
+					"margin-right: -1px;" +
+				"}" +
+				"ul.stocks li {" +
+					"margin-right: 0;" +
+				"}");
+		});
+	}
+
+	/**
 	 * Make some general design better
 	 */
 	function enhance_general_interface(){
@@ -292,6 +311,10 @@ Module.register(function() {
 
 					if(D2N.is_on_page_in_city('buildings')) {
 						enhancement_buildings_interface();
+					}
+
+					if(D2N.is_on_page_in_city('bank')) {
+						enhancement_bank_interface();
 					}
 
 					enhance_general_interface();

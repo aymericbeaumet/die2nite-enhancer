@@ -118,13 +118,18 @@ Module.register(function() {
 		if (D2N.is_on_page_in_city('bank')) {
 			document.querySelector('.tools.stocks.cityInv').addEventListener('click', on_object_click.bind(this), true);
 		} else if (D2N.is_on_page_in_city('well')) {
+			var session = null;
+			D2N.get_session_key(function(sk) {
+				session = sk;
+            });
+
 			var el = $(".button[href*='well_water']");
 			if(el.attr("onclick").indexOf("confirm") > 0){
 				el.attr("onclick", "");
 				el.click(function(ev){
 					if(confirm('Confirmer ?')){
 						on_object_click.bind(this)(ev);
-						js.XmlHttp.get('city/well_water?sk=c0e4c', null);
+						js.XmlHttp.get('city/well_water?sk=' + session, null);
 					}
 					return false;
 				}.bind(this));
