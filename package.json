@@ -25,12 +25,12 @@
   "scripts": {
     "postinstall": "sh .githooks/install.sh",
     "test": "grunt test",
-    "package:all": "grunt pack",
-    "package:firefox": "grunt pack --firefox",
-    "package:chrome": "grunt pack --chrome",
-    "package:chrome_zip": "grunt pack --chrome_zip",
-    "package:opera": "grunt pack --opera",
-    "package:userscript": "grunt pack --userscript"
+    "pack:all": "grunt pack",
+    "pack:firefox": "grunt pack --firefox",
+    "pack:chrome": "grunt pack --chrome",
+    "pack:chrome_zip": "grunt pack --chrome_zip",
+    "pack:opera": "grunt pack --opera",
+    "pack:userscript": "grunt pack --userscript"
   },
   "dependencies": {
     "grunt": "^1.0.1",
