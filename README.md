@@ -16,7 +16,7 @@ You can directly install this plugin as an extension for the following browsers:
 
 ### Install as a script
 
-It is also possible to install this plugin as a script. Natively supported in Google Chrome, or with the GreaseMonkey extension under Mozilla Firefox. If you want to do it like so, I consider you know what you are doing: the script can be found [here](http://userscripts-mirror.org/scripts/show/242398).
+It is also possible to install this plugin as a script. Natively supported in Google Chrome, or with the TamperMonkey extension. If you want to do it like so, I consider you know what you are doing: the script can be found [here](http://userscripts-mirror.org/scripts/show/242398).
 
 ### Feedback
 
@@ -26,7 +26,7 @@ In case of a problem, please be sure all your softwares (browser and extensions)
 
 ```
 - **Operating System:** OS + version
-- **Browser:** Browser + version (indicate GreaseMonkey version if relevant)
+- **Browser:** Browser + version (indicate TamperMonkey version if relevant)
 
 Explain here how to reproduce the problem...
 ```
@@ -38,10 +38,13 @@ If you would like to contribute, you should :
 1. Install NodeJS 9.x
 2. Make sure the "zip" command is available (i.e. in the PATH)
 3. Make sure the "make" command is available (i.e. in the PATH)
+4. Make sure the "sh" command is available (i.e. in the PATH) (This is mainly for windows)
+5. Generate a privatekey file with Chrome (follow [this tutorial](http://www.adambarth.com/experimental/crx/docs/packaging.html) to know how to do it) and place it in ~/.d2ne/chrome.pem
+6. Done
 
 Then, clone this repo, run "npm install" in the folder and enjoy :)
 
-To build the firefox extention, just run "grunt pack --firefox". For chrome, it's "grunt pack --chrome"
+To build the firefox extention, just run "npm run pack:firefox". For chrome, it's "npm run pack;chrome"
 
 ### License
 

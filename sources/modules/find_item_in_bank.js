@@ -24,7 +24,7 @@ Module.register(function() {
 		i18n[I18N.LANG.FR] = {};
 		i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Trouver un objet en banque';
 		i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Sur la page de la banque, affiche une liste des objets présent pour les repérer plus facilement.';
-		i18n[I18N.LANG.FR][MODULE_NAME + '_label'] = "Sélectionnez l'objet que vous recherchez :";
+		i18n[I18N.LANG.FR][MODULE_NAME + '_label'] = "Sélectionnez l'objet que vous recherchez";
 		i18n[I18N.LANG.FR][MODULE_NAME + '_select_item'] = "--- Veuillez choisir ---";
 
 		I18N.set(i18n);
@@ -39,19 +39,13 @@ Module.register(function() {
 			["select", { "id": "finderSelect" }, ["option", {"value": ""}, I18N.get(MODULE_NAME + "_select_item")]]
 		];
 
-		$("ul.stocks li.multi a").each(function(idx){
+		$("ul.stocks li.multi a").each(function(){
 			var mouseover = $(this).attr("onmouseover");
-			mouseover = mouseover.substring(27).trim();
+			mouseover = mouseover.substring(26).trim();
 			mouseover = mouseover.substring(0, mouseover.indexOf("', '"));
-			var infos = mouseover.split("\t");
-			var datas = [];
-			for(var i = infos.length - 1 ; i > -1 ; i--) {
-				infos[i] = infos[i].trim();
-				if(infos[i] != "") {
-					datas.push(infos[i]);
-				}
-			}
-			json[4].push(["option", {"value": datas[1]}, datas[1]]);
+			var title = mouseover.substring(0, mouseover.indexOf("<img")).trim();
+			var img = mouseover.substring(mouseover.indexOf("<img")).trim();
+			json[4].push(["option", {"value": title}, title]);
 		});
 		return JS.jsonToDOM(json, document);
 	}
@@ -77,7 +71,7 @@ Module.register(function() {
 		}.bind(this));
 		
 		JS.injectCSS(
-			".finderSelect {" +
+			"#finderSelect {" +
 				"width: 100%;" +
 			"}" + 
 			".itemLookup {" +
@@ -86,6 +80,7 @@ Module.register(function() {
 			"}" +
 			"#" + FIND_ITEM_ID + " { " +
 				"cursor: auto;" +
+				"padding-right: 6px;"  +
 			"}"
 		);
 	}

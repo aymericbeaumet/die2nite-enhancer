@@ -1,8 +1,5 @@
 // ==UserScript==
 //
-// You need Google Chrome 13+ or Mozilla Firefox with Greasemonkey 0.9.8+ to use
-// this script.
-//
 // @name <%= full_name %>
 // @version <%= version %>
 // @description <%= description %>
