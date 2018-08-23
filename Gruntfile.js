@@ -308,7 +308,7 @@ module.exports = function(grunt) {
             },
             pack_chrome: {
                 command: function() {
-                    var cmd = "bash " + config.path.chrome + " " + config.chrome.workingDir + " " + config.path.chrome_pem + " " + config.buildDir + "";
+                    var cmd = "sh " + config.path.chrome + " " + config.chrome.workingDir + " " + config.path.chrome_pem + " " + config.buildDir + "";
 					return cmd;
                 }
             },
@@ -328,7 +328,7 @@ module.exports = function(grunt) {
             pack_opera: {
                 command: function() {
                     var cmd =
-                        "bash " + config.path.chrome + " " + config.opera.workingDir + " " + config.path.chrome_pem + " " + config.buildDir + " && " +
+                        "sh " + config.path.chrome + " " + config.opera.workingDir + " " + config.path.chrome_pem + " " + config.buildDir + " && " +
 						"mv " + path.join(config.buildDir, "opera.crx") + " " + config.opera.outputFile + "";
                     return cmd;
                 }
