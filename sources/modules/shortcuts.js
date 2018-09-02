@@ -67,7 +67,8 @@ Module.register(function() {
                 tower: 84, // 'T'
                 refine: 77, // 'M'
                 guard: 76 // 'L'
-            }
+            },
+            isProtected: false
         },
 
         configurable: {

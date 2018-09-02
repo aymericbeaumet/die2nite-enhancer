@@ -57,7 +57,8 @@ Module.register(function() {
         type: Module.TYPE.CONTAINER,
 
         properties: {
-            enabled: false
+            enabled: false,
+            isProtected: false
         },
 
         configurable: {

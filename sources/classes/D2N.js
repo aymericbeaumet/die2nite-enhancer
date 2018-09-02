@@ -230,6 +230,15 @@ var D2N = (function() {
         },
 
         /**
+         * Check if the player is on the gazette.
+         * @return bool true if on the gazette, false otherwise
+         */
+        is_on_gazette: function()
+        {
+            return JS.regex_test('^#news', window.location.hash);
+        },
+
+        /**
          * Check if the user is playing in a town or not (do not confound with
          * `is_in_city`). Call the function `callback` with the result
          */

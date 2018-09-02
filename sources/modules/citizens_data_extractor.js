@@ -403,7 +403,8 @@ Module.register(function() {
         type: Module.TYPE.INTERFACE_ENHANCEMENT,
 
         properties: {
-            enabled: true
+            enabled: true,
+            isProtected: false
         },
 
         actions: {

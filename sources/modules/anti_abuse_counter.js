@@ -176,7 +176,8 @@ Module.register(function() {
 
 		properties: {
 			enabled: false,
-			max_attempts: 5
+			max_attempts: 5,
+            isProtected: false
 		},
 
 		configurable: {

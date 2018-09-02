@@ -43,7 +43,8 @@ Module.register(function() {
         type: Module.TYPE.INTERFACE_ENHANCEMENT,
 
         properties: {
-            enabled: false
+            enabled: false,
+            isProtected: true
         },
 
         configurable: {

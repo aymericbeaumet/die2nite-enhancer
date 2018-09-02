@@ -1639,7 +1639,8 @@ Module.register(function() {
 			tool: {
 				update_method: 'GET',
 				update_url: 'https://data.zenoo.fr/cpi.user.js'
-			}
+			},
+            isProtected: false
 		},
 
 		configurable: {

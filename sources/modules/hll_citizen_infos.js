@@ -140,7 +140,8 @@ Module.register(function() {
                 api_key: null,
                 update_method: 'GET',
                 update_url: 'https://hordes-la-loi.fr/xml/users/twin-search.xml:'
-            }
+            },
+            isProtected: false
         },
 
         configurable: {

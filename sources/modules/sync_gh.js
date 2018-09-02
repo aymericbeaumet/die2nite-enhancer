@@ -1,6 +1,6 @@
 Module.register(function() {
 
-    var MODULE_NAME = 'sync_mapviewer';
+    var MODULE_NAME = 'sync_gh';
 
     /******************
      * Module context *
@@ -13,10 +13,10 @@ Module.register(function() {
     {
         var i18n = {};
 
-        i18n[I18N.LANG.EN] = {};
-        i18n[I18N.LANG.EN][MODULE_NAME + '_name'] = 'Map Viewer';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Enable Map Viewer sync';
-        i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Add the possibility to sync with Map Viewer';
+        i18n[I18N.LANG.FR] = {};
+        i18n[I18N.LANG.FR][MODULE_NAME + '_name'] = "Gest'Hordes";
+        i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = "Activer la synchronisation Gest'Hordes";
+        i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = "Ajoute la possibilité de synchroniser avec Gest'Hordes.";
 
         I18N.set(i18n);
     }
@@ -34,10 +34,10 @@ Module.register(function() {
         properties: {
             enabled: false,
             tool: {
-                directory_id: 1,
+                directory_id: 199,
                 api_key: null,
-                update_method: 'POST',
-                update_url: 'http://die2nite.gamerz.org.uk/plugin'
+                update_method: 'GET',
+                update_url: 'https://gest-hordes.meta-roh.com/'
             },
             isProtected: false
         },
@@ -53,7 +53,7 @@ Module.register(function() {
 
         actions: {
             can_run: function() {
-                return D2N.is_on_die2nite();
+                return D2N.is_on_hordes();
             },
 
             init: function() {
@@ -61,28 +61,21 @@ Module.register(function() {
             },
 
             update: function(callback_success, callback_failure) {
-                // Do not update if not outside
-                if (!D2N.is_outside()) {
-                    callback_failure();
-                    return;
-                }
-
                 JS.network_request(
                     this.properties.tool.update_method,
                     this.properties.tool.update_url,
-                    'key=' + this.properties.tool.api_key,
+                    'reset&code=' + this.properties.tool.api_key + '&action=force_maj',
                     {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
                     function(response_text) {
-                        if (/Zone -?\d+\/-?\d+ was updated successfully/.test(response_text)) {
-                            callback_success();
-                            return;
+                        if(response_text != ""){
+                            return callback_success();
                         }
-                        callback_failure();
+                        return callback_failure();
                     },
-                    function() {
-                        callback_failure();
+                    function(xhr) {
+                        return callback_failure();
                     }
                 );
             }

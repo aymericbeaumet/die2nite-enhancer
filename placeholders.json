@@ -26,6 +26,7 @@
 
     "bbh.fred26.fr",
     "hordes-la-loi.fr",
+    "gest-hordes.meta-roh.com",
 
     "data.zenoo.fr"
   ],
@@ -37,7 +38,7 @@
   "compiled_script": "compiled.js",
 
   "userscript": {
-    "download_url": "http://userscripts.org/scripts/source/242398.user.js",
+    "download_url": "https://d2ne.datw.tf/beta.d2ne.user.js",
     "icon": "http://www.die2nite.com/gfx/forum/smiley/h_city_up.gif"
   },
 

@@ -508,7 +508,7 @@ Module.register(function() {
 			
 			arme = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_pc.gif"]').length;
 			if(arme > 0) {
-				listeArme += '<img src="/gfx/icons/item_pc.gif"> Unité centrale (<img src="/gfx/icons/small_heavy">), 1 zombie, 55% cassé<br />';
+				listeArme += '<img src="/gfx/icons/item_pc.gif"> Unité centrale (<img src="/gfx/icons/small_heavy.gif">), 1 zombie, 55% cassé<br />';
 				zombiesTuesMin += 1;
 				zombiesTuesMax += 2*arme;
 			}
@@ -688,7 +688,8 @@ Module.register(function() {
 		type: Module.TYPE.INTERFACE_ENHANCEMENT,
 
 		properties: {
-			enabled: false
+			enabled: false,
+            isProtected: false
 		},
 
 		configurable: {

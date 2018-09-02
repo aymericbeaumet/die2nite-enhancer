@@ -38,7 +38,8 @@ Module.register(function() {
                 api_key: null,
                 update_method: 'POST',
                 update_url: 'http://d2n.duskdawn.net/zone/extended'
-            }
+            },
+            isProtected: false
         },
 
         configurable: {

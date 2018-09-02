@@ -176,16 +176,23 @@ Module.register(function() {
 			if (typeof module.configurable === 'undefined') {
 				return;
 			}
+			var css = "";
+			if(module.properties.isProtected) {
+				css = "protected";
+			}
 
 			JS.each(module.configurable, function(key, value) {
 				var input_id = 'd2ne_module_' + module.name + '_' + key;
 				var input_value = module.properties[key];
 				var onclick = "";
+
 				if(value.url !== undefined){
 					onclick = "window.open('" + value.url + "');";
 				}
 				var json_node =
-					["div", {},
+					["div", {
+						"class": css
+					},
 						null,
 						["label", { "for": input_id }, I18N.get(value.short_desc_I18N)],
 						["a", { 
@@ -388,6 +395,10 @@ Module.register(function() {
 				'margin: 0 auto;' +
 				'margin-top: 11px;' +
 				'text-align: center;' +
+			'}' +
+
+			'#d2ne_configuration_panel .protected {' +
+				'color: orange;' +
 			'}'
 		);
 	}

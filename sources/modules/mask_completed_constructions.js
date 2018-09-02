@@ -118,7 +118,8 @@ Module.register(function() {
 
         properties: {
             enabled: true,
-            hide_completed_constructions: false
+            hide_completed_constructions: false,
+            isProtected: false
         },
 
         configurable: {
