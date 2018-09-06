@@ -253,14 +253,49 @@ Module.register(function() {
 			var currentHour = +node.innerText.split(":")[0];
 			var currentMinutes = +node.innerText.split(":")[1];
 
+			var startNight = 19;
+			var endNight = 7;
+			if(D2N.is_on_die2nite) {
+				startNight = 18;
+				endNight = 6;
+			}
+
 			// From 19:00 to 07:00, it's the night
-			if(currentHour >= 19 || currentHour < 7 ){
+			if(currentHour >= startNight || currentHour < endNight ){
 				// Use the default background (mono-chromatic)
 				JS.injectCSS(".bigBg2 { background-image: url(http://data.hordes.fr/gfx/design/bg_big2.jpg); }");
 			} else {
 				// Use the login background (full of colors)
 				JS.injectCSS(".bigBg2 { background-image: url(http://data.hordes.fr/gfx/design/bg_big.jpg); }");
 			}
+		});
+
+		// Change the classic notification to a less intrusive one
+		JS.wait_for_selector("#notificationText", function(node){
+			var text = node.innerHTML;
+
+			if(!document.getElementById("discreteNotif")) {
+				var dom = JS.jsonToDOM(["div", {"id": "discreteNotif"}, text], document);
+
+				JS.wait_for_selector("#body", function(node){
+					node.appendChild(dom);
+				});
+			} else {
+				$("#discreteNotif").html(text);
+			}
+
+			if($("#notification").hasClass("showNotif")) {
+				$("#discreteNotif").css("opacity", "1");
+				setTimeout(function(){
+					$("#discreteNotif").css("opacity", "0");
+				}, 3000);
+			} else {
+				$("#discreteNotif").css("opacity", "0");
+			}
+
+			$('#body').removeClass('hideSwf'); 
+			$('#notification').removeClass();
+
 		});
 	}
 
@@ -327,6 +362,16 @@ Module.register(function() {
 					"}" +
 					".newFooter {" +
 						"background-position: -1px 0;" + 
+					"}" +
+					"#discreteNotif {" +
+						"position: fixed;" +
+						"top: 30px;" +
+						"z-index: 99;" +
+						"background-color: #5c2b20;" +
+						"width: 100%;" +
+						"padding: 10px;" +
+						"opacity: 0;" +
+						"transition: all 0.5s ease;" +
 					"}"
 				);
 
