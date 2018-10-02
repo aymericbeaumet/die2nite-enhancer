@@ -85,7 +85,7 @@ Module.register(function() {
 		i18n[I18N.LANG.EN][MODULE_NAME + '_coffee_available'] = 'You have <strong>[NB]</strong> coffee(s).';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_coffee_none'] = 'You don\\\'t have any coffee.';
 
-		i18n[I18N.LANG.EN][MODULE_NAME + '_hurt'] = 'You are hurt ! (Your recovery 1 less AP).';
+		i18n[I18N.LANG.EN][MODULE_NAME + '_hurt'] = 'You are hurt ! (Your AP recovery is 1 less).';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_not_hurt'] = 'You are not hurt.';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_not_hurt_sport'] = 'You are not hurt and you have a charged EMS System.';
 

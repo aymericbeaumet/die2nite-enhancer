@@ -4,6 +4,7 @@ Module.register(function() {
 	var OKGIF = "https://d2ne.datw.tf/ok.png";
 	var NOKGIF = "https://d2ne.datw.tf/nok.png";
 	var CAUTIONGIF = "https://d2ne.datw.tf/caution.png";
+	var timer;
 
 	/******************
 	 * Module context *
@@ -285,12 +286,28 @@ Module.register(function() {
 			}
 
 			if($("#notification").hasClass("showNotif")) {
+				$("#discreteNotif").css("height", "");
 				$("#discreteNotif").css("opacity", "1");
-				setTimeout(function(){
+				$("#discreteNotif").css("padding-top", "10px");
+				$("#discreteNotif").css("padding-bottom", "10px");
+				clearTimeout(timer);
+
+				var timeout = node.innerText.length * 50;
+
+				if (timeout < 2000)
+					timeout = 2000;
+
+				timer = setTimeout(function(){
+					$("#discreteNotif").css("height", "0");
 					$("#discreteNotif").css("opacity", "0");
-				}, 3000);
+					$("#discreteNotif").css("padding-top", "0");
+					$("#discreteNotif").css("padding-bottom", "0");
+				}, timeout);
 			} else {
+				$("#discreteNotif").css("height", "0");
 				$("#discreteNotif").css("opacity", "0");
+				$("#discreteNotif").css("padding-top", "0");
+				$("#discreteNotif").css("padding-bottom", "0");
 			}
 
 			$('#body').removeClass('hideSwf'); 
@@ -365,13 +382,17 @@ Module.register(function() {
 					"}" +
 					"#discreteNotif {" +
 						"position: fixed;" +
-						"top: 30px;" +
+						"top: " + $("#tid_bar").height() + "px;" +
 						"z-index: 99;" +
+						"overflow: hidden;" +
 						"background-color: #5c2b20;" +
 						"width: 100%;" +
-						"padding: 10px;" +
 						"opacity: 0;" +
+						"padding-left: 10px;" +
+						"padding-right: 10px;" +
 						"transition: all 0.5s ease;" +
+						"outline: 1px solid black;" +
+						"border: 1px solid #ad8051;" +
 					"}"
 				);
 
