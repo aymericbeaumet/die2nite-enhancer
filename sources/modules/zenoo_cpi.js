@@ -1049,7 +1049,7 @@ Module.register(function() {
 	}
 
 	var refresh = function() {
-		if($('div#sideMap').next().attr('class') == 'block tutorialBlock' && $('div.factions div.zombies').text() != '--' && $('#cpedit').length == 0){
+		if($('div#sideMap').next().attr('class') == 'block' && $('div.factions div.zombies').text() != '--' && $('#cpedit').length == 0){
 
 			var cpUrl = loadChances();
 			var toInject = '' +
