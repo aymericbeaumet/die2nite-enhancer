@@ -37,7 +37,7 @@ Module.register(function() {
                 directory_id: 199,
                 api_key: null,
                 update_method: 'GET',
-                update_url: 'https://gest-hordes.meta-roh.com/'
+                update_url: 'https://gest-hordes.eragaming.fr/'
             },
             isProtected: false
         },

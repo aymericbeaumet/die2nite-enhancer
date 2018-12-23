@@ -259,6 +259,9 @@ Module.register(function() {
 			if(D2N.is_on_die2nite) {
 				startNight = 18;
 				endNight = 6;
+			} else if(D2N.is_on_zombinoia) {
+				startNight = 20;
+				endNight = 8;
 			}
 
 			// From 19:00 to 07:00, it's the night
