@@ -149,7 +149,7 @@ var JS = (function() {
                     url: uri,
                     data: '' + data,
                     headers: headers,
-                    onload: function(r) { on_success(r.responseText); },
+                    onload: function(r) { on_success(r.responseText, r.responseHeaders); },
                     onerror: function(r) { on_failure(); }
                 });
             }
@@ -213,7 +213,7 @@ var JS = (function() {
             xmlhttp.onreadystatechange = function() {
                 if (xmlhttp.readyState === 4) {
                     if (xmlhttp.status >= 200 && xmlhttp.status < 300) {
-                        return on_success(xmlhttp.responseText);
+                        return on_success(xmlhttp.responseText, xmlhttp.responseHeaders);
                     }
                     return on_failure();
                 }

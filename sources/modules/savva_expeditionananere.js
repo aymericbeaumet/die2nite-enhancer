@@ -67,7 +67,7 @@ Module.register(function() {
 			var pa = +$('div.counter').text().substr(1,1);
 
 			var pasAlcool = $('div.infoBar ul.status li img[src*="/gfx/icons/status_drunk.gif"]').length + $('ul.status img[src*="/gfx/icons/status_hung_over.gif"]').length;
-			var dejaMange = $('div.infoBar ul.status li img[src*="/gfx/icons/status_hasEaten.gif"]').length
+			var dejaMange = $('div.infoBar ul.status li img[src*="/gfx/icons/status_hasEaten.gif"]').length;
 			var soif = $('div.infoBar ul.status li img[src*="/gfx/icons/status_thirst.gif"]').length;
 			var goule = $('div.infoBar ul.status li img[src*="/gfx/icons/status_ghoul.gif"]').length;
 			var blesse = $('div.infoBar ul.status li img[src*="/gfx/icons/status_wound.gif"]').length;

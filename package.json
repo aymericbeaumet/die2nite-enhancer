@@ -25,6 +25,7 @@
   "scripts": {
     "postinstall": "sh .githooks/install.sh",
     "test": "grunt test",
+    "watch": "grunt devfast",
     "pack:all": "grunt pack",
     "pack:firefox": "grunt pack --firefox",
     "pack:chrome": "grunt pack --chrome",
