@@ -1,6 +1,7 @@
 Module.register(function() {
 
     var MODULE_NAME = 'hll_citizen_infos';
+    var COLUMN_ID = 'hll_column';
 
     /******************
      * Module context *
@@ -32,6 +33,7 @@ Module.register(function() {
         // Adding header
         var tableCitizens = document.querySelectorAll("div.citizens table tr");
         var head = document.createElement("th");
+        head.id = COLUMN_ID;
         head.innerHTML = I18N.get(MODULE_NAME + '_column_head');
         tableCitizens[0].appendChild(head);
 
@@ -169,6 +171,10 @@ Module.register(function() {
                 
                 document.addEventListener('d2n_gamebody_reload', function() {
                     if (!D2N.is_on_page_in_city('citizens')) {
+                        return;
+                    }
+
+                    if($("#" + COLUMN_ID).length > 0){
                         return;
                     }
 
