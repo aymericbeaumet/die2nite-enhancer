@@ -17,5 +17,6 @@
 <% for (var i = 0, max = cross_origin_xhr_permissions.length; i < max; i += 1) {
 %>// @match http://<%- cross_origin_xhr_permissions[i] %>/*
 // @exclude http://<%- cross_origin_xhr_permissions[i] %>/*
+// @connect http://<%- cross_origin_xhr_permissions[i] %>/*
 <% } %>//
 // ==/UserScript==
