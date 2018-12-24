@@ -18,5 +18,6 @@
 %>// @match http://<%- cross_origin_xhr_permissions[i] %>/*
 // @exclude http://<%- cross_origin_xhr_permissions[i] %>/*
 // @connect http://<%- cross_origin_xhr_permissions[i] %>/*
+// @connect <%- cross_origin_xhr_permissions[i] %>
 <% } %>//
 // ==/UserScript==
