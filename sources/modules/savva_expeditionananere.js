@@ -66,9 +66,13 @@ Module.register(function() {
 		if($('div.sectionArt').length == 1){
 			var pa = +$('div.counter').text().substr(1,1);
 
+			var noPASuppBouffe = $('div.infoBar ul.status li img[src*="/gfx/icons/status_hasEaten.gif"]').length;
+			var noPASuppEau = $('div.infoBar ul.status li img[src*="/gfx/icons/status_hasDrunk.gif"]').length;
+
 			var pasAlcool = $('div.infoBar ul.status li img[src*="/gfx/icons/status_drunk.gif"]').length + $('ul.status img[src*="/gfx/icons/status_hung_over.gif"]').length;
-			var dejaMange = $('div.infoBar ul.status li img[src*="/gfx/icons/status_hasEaten.gif"]').length;
 			var soif = $('div.infoBar ul.status li img[src*="/gfx/icons/status_thirst.gif"]').length;
+			var deshy = $('div.infoBar ul.status li img[src*="/gfx/icons/status_dehyd.gif"]').length;
+
 			var goule = $('div.infoBar ul.status li img[src*="/gfx/icons/status_ghoul.gif"]').length;
 			var blesse = $('div.infoBar ul.status li img[src*="/gfx/icons/status_wound.gif"]').length;
 			var eau = $('div.infoBar ul.inv li img[src*="/gfx/icons/item_water.gif"]').length + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_potion.gif"]').length + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_water_can_1.gif"]').length + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_water_can_2.gif"]').length*2 + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_water_can_3.gif"]').length*3 + $('div.infoBar ul.inv li img[src*="/gfx/icons/item_water_cup.gif"]').length;
@@ -85,15 +89,18 @@ Module.register(function() {
 			var expe = pa;
 			var outEau = "";
 			if(eau >= 1) {
-				outEau = ' + <img src="http://data.hordes.fr/gfx/icons/item_water.gif?v=44">'; expe += 6-blesse;
+				outEau = ' + <img src="http://data.hordes.fr/gfx/icons/item_water.gif?v=44">';
+				if(noPASuppEau == 0) {
+					expe += 6-blesse;
+				}
 			}
 
 			var outBouffe = "";
-			if(dejaMange == 0) {
+			if(noPASuppBouffe == 0) {
 				if(b6 >= 1 && b7 == 0) {
 					outBouffe = ' + <img src="http://data.hordes.fr/gfx/icons/item_can_open.gif?v=44">'; expe += 6-blesse;
 				}
-				if(b7 >=1) {
+				if(b7 >= 1) {
 					outBouffe = ' + <img src="http://data.hordes.fr/gfx/icons/item_meat.gif?v=44">'; expe += 7-blesse; b7 = 1; b6 = 0;
 				}
 			}
@@ -163,11 +170,13 @@ Module.register(function() {
 			var Cafe = '<img src="http://data.hordes.fr/gfx/icons/item_coffee.gif?v=44">';
 			var Sport = '<img src="http://data.hordes.fr/gfx/icons/item_sport_elec.gif?v=44">';
 			var e = ' <img src="//data.twinoid.com/proxy/www.hordes.fr/gfx/forum/smiley/h_arrow.gif"> ';
-			var dejaBu = 0;
+			var dejaBu = noPASuppEau == 1;
 			var dejaBouffe = 0;
 			var assoiffement = 0;
 
-			if(soif == 1) {
+			if(deshy == 1){
+				assoiffement = 22 + pa;
+			}else if(soif == 1) {
 				assoiffement = 11 + pa;
 			} else {
 				assoiffement = 0 + pa;

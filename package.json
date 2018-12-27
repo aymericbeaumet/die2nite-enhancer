@@ -1,6 +1,6 @@
 {
   "name": "die2nite_enhancer",
-  "version": "0.2.4-beta5",
+  "version": "0.2.4-beta6",
   "homepage": "https://github.com/aymericbeaumet/die2nite_enhancer/",
   "description": "Die2Nite Enhancer improves your game experience on Die2Nite.",
   "author": {
@@ -26,7 +26,12 @@
     "postinstall": "sh .githooks/install.sh",
     "test": "grunt test",
     "watch": "grunt devfast",
-    "pack:all": "grunt pack",
+    "watch:firefox": "grunt devfast --firefox",
+    "watch:chrome": "grunt devfast --chrome",
+    "watch:chrome_zip": "grunt devfast --chrome_zip",
+    "watch:opera": "grunt devfast --opera",
+    "watch:userscript": "grunt devfast --userscript",
+    "pack": "grunt pack",
     "pack:firefox": "grunt pack --firefox",
     "pack:chrome": "grunt pack --chrome",
     "pack:chrome_zip": "grunt pack --chrome_zip",
