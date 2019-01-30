@@ -396,6 +396,9 @@ Module.register(function() {
 						"transition: all 0.5s ease;" +
 						"outline: 1px solid black;" +
 						"border: 1px solid #ad8051;" +
+					"}" +
+					"#loading_section {" +
+						"position: fixed;" +
 					"}"
 				);
 

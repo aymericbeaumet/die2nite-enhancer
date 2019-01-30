@@ -113,7 +113,11 @@ Module.register(function() {
 			}
 
 			info.innerHTML = "<a href='https://hordes-la-loi.fr/users/" + id + "/' target='_blank' style='color: rgb(" + red + "," + green + "," + blue + ");'>" + percent + "</a>";
-			tableCitizens[i].appendChild(info);
+			if (D2N.is_on_page_in_city('citizens')) {
+				tableCitizens[i+1].appendChild(info);
+			} else {
+				tableCitizens[i].appendChild(info);
+			}
 		}
 		document.getElementById("loading_section").style.display = "none";
 	}
