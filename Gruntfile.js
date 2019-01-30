@@ -66,6 +66,7 @@ module.exports = function(grunt) {
         testsDir: path.join(path.resolve(), "tests"),
         wrappersDir: path.join(path.resolve(), "wrappers"),
         jQueryDir: path.join(path.resolve(), "node_modules", "jquery", "dist"),
+        jQueryUiDir: path.join(path.resolve(), "node_modules", "jquery-ui-dist"),
 
         path: {
             firefox: "web-ext", // npm install web-ext
@@ -232,6 +233,13 @@ module.exports = function(grunt) {
                         expand: true
                     },
                     {
+                        cwd: config.jQueryUiDir,
+                        src: ["jquery-ui.min.js"],
+                        dest: config.chrome.workingDir,
+                        filter: "isFile",
+                        expand: true
+                    },
+                    {
                         cwd: path.join(config.compiled_script.inputDir, "libs"),
                         src: ["*.js.map"],
                         dest: config.chrome.workingDir,
@@ -267,6 +275,13 @@ module.exports = function(grunt) {
                         cwd: config.jQueryDir,
                         src: ["jquery.min.js"],
                         dest: config.chrome_zip.workingDir,
+                        filter: "isFile",
+                        expand: true
+                    },
+                    {
+                        cwd: config.jQueryUiDir,
+                        src: ["jquery-ui.min.js"],
+                        dest: config.chrome.workingDir,
                         filter: "isFile",
                         expand: true
                     },
@@ -310,6 +325,13 @@ module.exports = function(grunt) {
                         expand: true
                     },
                     {
+                        cwd: config.jQueryUiDir,
+                        src: ["jquery-ui.min.js"],
+                        dest: config.chrome.workingDir,
+                        filter: "isFile",
+                        expand: true
+                    },
+                    {
                         cwd: path.join(config.compiled_script.inputDir, "libs"),
                         src: ["*.js.map"],
                         dest: config.firefox.workingDir,
@@ -345,6 +367,13 @@ module.exports = function(grunt) {
                         cwd: config.jQueryDir,
                         src: ["jquery.min.js"],
                         dest: config.opera.workingDir,
+                        filter: "isFile",
+                        expand: true
+                    },
+                    {
+                        cwd: config.jQueryUiDir,
+                        src: ["jquery-ui.min.js"],
+                        dest: config.chrome.workingDir,
                         filter: "isFile",
                         expand: true
                     },

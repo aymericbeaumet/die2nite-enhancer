@@ -1,6 +1,6 @@
 {
   "name": "die2nite_enhancer",
-  "version": "0.2.4-beta6",
+  "version": "0.2.4-beta7",
   "homepage": "https://github.com/aymericbeaumet/die2nite_enhancer/",
   "description": "Die2Nite Enhancer improves your game experience on Die2Nite.",
   "author": {
@@ -56,7 +56,8 @@
     "grunt-karma-coveralls": "^2.5.4",
     "jasmine-core": "^2.6.4",
     "jasmine-jquery": "git://github.com/velesin/jasmine-jquery.git#2.1.1",
-    "jquery": "^3.2.1",
+    "jquery": "latest",
+    "jquery-ui-dist": "latest",
     "jquery-simulate-ext": "git://github.com/j-ulrich/jquery-simulate-ext.git#93e47e",
     "karma": "^1.7.0",
     "karma-coverage": "^1.1.1",
