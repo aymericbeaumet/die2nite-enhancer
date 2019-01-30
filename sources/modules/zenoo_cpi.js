@@ -162,6 +162,7 @@ Module.register(function() {
 		batList["Vieil hôpital de campagne"] = 54;
 		batList["Avant-poste militaire"] = 55;
 		batList["Camion mairie-mobile"] = 56;
+        batList["Camion « mairie-mobile »"] = 56;
 		batList["Caverne anciennement habitée"] = 57;
 		batList["Char d'assaut en panne"] = 58;
 		batList["Un étrange appareil circulaire"] = 59;
