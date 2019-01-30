@@ -651,8 +651,10 @@ Module.register(function() {
 	function typeVille(ville) {
 		var villeVal;
 		if (ville == 0 || ville == 1) {
+			// RE / RNE
 			villeVal = 0;
 		} else if (ville == 2) {
+			// Pandé
 			villeVal = -14;
 		}
 

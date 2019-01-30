@@ -27,7 +27,8 @@ var D2N = (function() {
         // in/out of town
         ghost: 'ghost/user',
         ghost_exp: 'ghost/heroUpgrades',
-        settings: 'ghost/options'
+        settings: 'ghost/options',
+        maps: 'ghost/maps'
     };
 
     var websites_language_ = {
@@ -308,7 +309,7 @@ var D2N = (function() {
          */
         is_on_page_out_of_city: function(page)
         {
-            return JS.regex_test('^#ghost\\?go=' + pages_url_[page].replace('/', '\\/') + ';sk=[a-z0-9]{5}$', window.location.hash);
+            return JS.regex_test('^#ghost\\?go=' + pages_url_[page].replace('/', '\\/') + '(.+);sk=[a-z0-9]{5}$', window.location.hash);
         },
 
         /**
