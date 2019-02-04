@@ -83,6 +83,7 @@ Module.register(function() {
 				if(!D2N.is_on_forum()){
 					return;
 				}
+				
 				document.addEventListener('d2n_forum_topic', function() {
 					if(!D2N.is_on_forum()){
 						return;

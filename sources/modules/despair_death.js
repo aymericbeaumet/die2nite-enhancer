@@ -77,7 +77,7 @@ Module.register(function() {
 					if($("#" + DESPAIR_DEATH_ID).length == 0) {
 						$("#sideMap").after("<div id='" + DESPAIR_DEATH_ID+ "' class='block'><div class='header'></div><div class='bg content'>" + I18N.get(MODULE_NAME + "_to_kill") + " : " + nbKills + "</div><div class='footer'></div></div>");
 					} else {
-						$("#" + DESPAIR_DEATH_ID + " .content").text("Zombies à tuer : " + nbKills);
+						$("#" + DESPAIR_DEATH_ID + " .content").text(I18N.get(MODULE_NAME + "_to_kill") + " : " + nbKills);
 					}
 				}, false);
 			}

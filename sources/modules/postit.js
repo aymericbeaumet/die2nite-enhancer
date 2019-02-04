@@ -7,6 +7,7 @@ Module.register(function() {
 	 ******************/
 
 	var POSTIT_BASE_CLASS = 'd2ne_postit';
+	var ADD_POSTIT_BTN_ID = 'add_d2ne_postit';
 
 	/**
 	 * Add the i18n strings for this module.
@@ -18,13 +19,78 @@ Module.register(function() {
 		i18n[I18N.LANG.EN] = {};
 		i18n[I18N.LANG.EN][MODULE_NAME + '_short_desc'] = 'Post-it';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_full_desc'] = 'Display some post-its where you need them.';
+		i18n[I18N.LANG.EN][MODULE_NAME + '_add_new'] = 'New post-it';
 
 		i18n[I18N.LANG.FR] = {};
 		i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = 'Ajouter des post-its';
 		i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = 'Ajoute des post-its où vous en avez besoin.';
-
+		i18n[I18N.LANG.FR][MODULE_NAME + '_add_new'] = "Nouveau post-it";
 
 		I18N.set(i18n);
+	}
+
+	function add_new_postit(content){
+		this.properties.cpt++;
+		this.save_properties();
+
+		if($("#postit-" + this.properties.cpt).length > 0) return;
+
+		// Le premier postit est à 40px du haut (a cause de la toolbar Twinoid)
+		var toppx = 40;
+
+		// Si on a des postits
+		if($("." + POSTIT_BASE_CLASS).length > 0) {
+			// On cherche la première place disponible
+			for(var i = 1 ; i <= this.properties.cpt ; i++) {
+				if($("#postit-" + i).length) {
+					// Le postit I existe, on ajoute sa hauteur + la marge entre 2 postit
+					toppx += $("." + POSTIT_BASE_CLASS).height() + 10;
+				} else {
+					// il n'existe pas, on se casse
+					break;
+				}
+			}
+		}
+
+		var postit = $("#main").append("<div class='" + POSTIT_BASE_CLASS + "' id='postit-" + this.properties.cpt + "' style='top: " + toppx + "px;'>");
+		$("#postit-" + this.properties.cpt).append("<textarea data-target='" + this.properties.cpt + "'>");
+		$("#postit-" + this.properties.cpt).append("<a style='position: relative;right: 15px;top: -200px;color: black;cursor: pointer;' data-target='" + this.properties.cpt + "'>X</a>");
+
+		if(content != null){
+			$("#postit-" + this.properties.cpt + " textarea").val(content);
+		}
+
+		$("#postit-" + this.properties.cpt + " textarea").keyup(function(ev){
+			var cpttarget = $(ev.target).data("target");
+			this.properties.postits[cpttarget] = $("#postit-" + cpttarget + " textarea").val();
+			this.save_properties();
+		}.bind(this));
+
+		$("#postit-" + this.properties.cpt + " a").click(function(ev){
+			var cpttarget = $(ev.target).data("target");
+			$("#postit-" + cpttarget).remove();
+			this.properties.postits[cpttarget] = null;
+			this.save_properties();
+		}.bind(this));
+	}
+
+	function add_button(){
+		if($("#" + ADD_POSTIT_BTN_ID).length > 0) 
+			return;
+		var clss = "";
+
+		if(D2N.is_on_forum()) {
+			$("#backReboot").after("<div id='" + ADD_POSTIT_BTN_ID + "'>");
+			clss = "postit_add_btn";
+		} else {
+			$(".left").append("<div id='" + ADD_POSTIT_BTN_ID + "'>");
+			clss = "button";
+		}
+		var link = $("<a class='" + clss + "'>").click(function(){
+			add_new_postit.call(this);
+		}.bind(this)).html("<img src='//data.hordes.fr/gfx/icons/small_rp.gif'> " + I18N.get(MODULE_NAME + "_add_new"));
+
+		$("#" + ADD_POSTIT_BTN_ID).append(link);
 	}
 
 	/************************
@@ -38,6 +104,8 @@ Module.register(function() {
 
 		properties: {
 			enabled: false,
+			cpt: 0,
+			postits: []
 		},
 
 		configurable: {
@@ -60,15 +128,75 @@ Module.register(function() {
 
 			load: function() {
 				JS.injectCSS(
-					'#' + POSTIT_BASE_CLASS + ' {' +
-						'cursor: auto;' +
-					'}');
+					'.postit_add_btn {' +
+						'cursor: pointer;' +
+						'background-image: url("http://data.hordes.fr/gfx/design/button.gif");' +
+						'border: 1px solid black;' +
+					'}' +
+					'.' + POSTIT_BASE_CLASS + ' {' +
+						'position: absolute;' +
+					    'left: 1440px;' +
+					'}' +
+					'.' + POSTIT_BASE_CLASS + ' textarea {' +
+						'width: 200px;' +
+						'height: 200px;' +
+					'}'
+				);
 
-				document.addEventListener('d2n_gamebody_reload', function() {
-					
-				}.bind(this), false);
+				if(D2N.is_on_forum()){
+					JS.injectCSS(
+						'#' + ADD_POSTIT_BTN_ID + ' {' +
+							'position: absolute;' +
+							'top: 210px;' +
+							'margin-left: 110px;' +
+							'padding-top: 9px;' +
+						'}' +
+						'.postit_add_btn {' +
+							'color: #f0d79e;' + 
+							'padding: 2px 5px;' +
+							'font-size: 8pt;' +
+							'font-variant: small-caps;' +
+						'}'
+					);
+					add_button.call(this);
+
+					this.properties.cpt = 0;
+
+					for(var i = this.properties.postits.length - 1 ; i > 0 ; i--){
+						var value = this.properties.postits[i];
+						if(value == undefined || value == null || value == ""){
+							this.properties.postits.splice(i, 1);
+						}
+					}
+
+					for(var post = 1 ; post < this.properties.postits.length ; post++){
+						add_new_postit.call(this, this.properties.postits[post]);
+					}
+
+					this.save_properties();
+				} else {
+					document.addEventListener('d2n_gamebody_reload', function() {
+						add_button.call(this);
+
+						this.properties.cpt = 0;
+
+						for(var i = this.properties.postits.length - 1 ; i > 0 ; i--){
+							var value = this.properties.postits[i];
+							if(value == undefined || value == null || value == ""){
+								this.properties.postits.splice(i, 1);
+							}
+						}
+
+						$(this.properties.postits).each(function(index, value){
+							if(value != undefined && value != null && value != ""){
+								add_new_postit.call(this, value);
+							}
+						}.bind(this));
+
+						this.save_properties();
+					}.bind(this), false);
+				}
 			}
 		}
-
 	};
 });
