@@ -36,7 +36,7 @@ Module.register(function() {
 		if($("#postit-" + this.properties.cpt).length > 0) return;
 
 		// Le premier postit est à 40px du haut (a cause de la toolbar Twinoid)
-		var toppx = 40;
+		var toppx = $("#tid_bar").height() + 10;
 
 		// Si on a des postits
 		if($("." + POSTIT_BASE_CLASS).length > 0) {
@@ -82,8 +82,25 @@ Module.register(function() {
 		if(D2N.is_on_forum()) {
 			$("#backReboot").after("<div id='" + ADD_POSTIT_BTN_ID + "'>");
 			clss = "postit_add_btn";
-		} else {
+		} else if (D2N.is_outside()) {
 			$(".left").append("<div id='" + ADD_POSTIT_BTN_ID + "'>");
+			clss = "button";
+		} else {
+			if(D2N.is_on_page_in_city("overview") || D2N.is_on_page_in_city("bank")) {
+				$(".right").append("<div id='" + ADD_POSTIT_BTN_ID + "'>");
+			} else if (D2N.is_on_page_in_city("home")) {
+				$(".home > .left").append("<div id='" + ADD_POSTIT_BTN_ID + "'>");
+			} else if (D2N.is_on_page_in_city("well")) {
+				$(".wellPane").append("<div id='" + ADD_POSTIT_BTN_ID + "'>");
+			} else if (D2N.is_on_page_in_city("buildings")) {
+				$("#generic_section .button:first").after("<div id='" + ADD_POSTIT_BTN_ID + "'>");
+			} else if (D2N.is_on_page_in_city("doors")) {
+				$("#generic_section .button:last").after("<div id='" + ADD_POSTIT_BTN_ID + "'>");
+			} else if (D2N.is_on_page_in_city("tower")) {
+				$(".tower").append("<div id='" + ADD_POSTIT_BTN_ID + "'>");
+			} else if (D2N.is_on_page_in_city("upgrades") || D2N.is_on_page_in_city("refine")) {
+				$("#generic_section .button").after("<div id='" + ADD_POSTIT_BTN_ID + "'>");
+			}
 			clss = "button";
 		}
 		var link = $("<a class='" + clss + "'>").click(function(){
@@ -136,6 +153,7 @@ Module.register(function() {
 					'.' + POSTIT_BASE_CLASS + ' {' +
 						'position: absolute;' +
 					    'left: 1440px;' +
+					    "z-index: 999;" +
 					'}' +
 					'.' + POSTIT_BASE_CLASS + ' textarea {' +
 						'width: 200px;' +

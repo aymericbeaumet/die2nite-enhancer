@@ -28,6 +28,8 @@ var D2N = (function() {
         ghost: 'ghost/user',
         ghost_exp: 'ghost/heroUpgrades',
         settings: 'ghost/options',
+
+        // Not in a game
         maps: 'ghost/maps'
     };
 
