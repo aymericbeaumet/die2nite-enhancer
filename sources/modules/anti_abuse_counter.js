@@ -220,6 +220,14 @@ Module.register(function() {
 				this.save_properties();
 
 				document.addEventListener('d2n_gamebody_reload', function() {
+					// We must check the end of abuse, even if we are outside (we likely are going to spend more than 15 minutes outside)
+					var current_time = Math.floor(+new Date() / 1000);
+					if (current_time > this.properties.end_of_abuse) {
+						this.properties.attempt_left = this.properties.max_attempts;
+						this.properties.end_of_abuse = 0;
+						this.save_properties();
+					}
+
 					if (!D2N.is_on_page_in_city('bank') && !D2N.is_on_page_in_city('well')) {
 						return;
 					}
