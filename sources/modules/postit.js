@@ -52,9 +52,12 @@ Module.register(function() {
 			}
 		}
 
-		var postit = $("#main").append("<div class='" + POSTIT_BASE_CLASS + "' id='postit-" + this.properties.cpt + "' style='top: " + toppx + "px;'>");
-		$("#postit-" + this.properties.cpt).append("<textarea data-target='" + this.properties.cpt + "'>");
-		$("#postit-" + this.properties.cpt).append("<a style='position: relative;right: 15px;top: -200px;color: black;cursor: pointer;' data-target='" + this.properties.cpt + "'>X</a>");
+		var leftpx = $("#contentBg").offset().left + $("#contentBg").width() + 20;
+
+		var postit = $("#main").append("<div class='" + POSTIT_BASE_CLASS + "' id='postit-" + this.properties.cpt + "' style='top: " + toppx + "px;left:"+leftpx+"px;'>");
+		var wrapper = $("#postit-" + this.properties.cpt).append("<div class='d2ne_postit_wrapper'>");
+		wrapper.append("<textarea data-target='" + this.properties.cpt + "'>");
+		wrapper.append("<a style='position: absolute;right: 5px;top: 5px;color: black;cursor: pointer;' data-target='" + this.properties.cpt + "'>X</a>");
 
 		if(content != null){
 			$("#postit-" + this.properties.cpt + " textarea").val(content);
@@ -152,14 +155,21 @@ Module.register(function() {
 					'}' +
 					'.' + POSTIT_BASE_CLASS + ' {' +
 						'position: absolute;' +
-					    'left: 1440px;' +
 					    "z-index: 999;" +
 					'}' +
 					'.' + POSTIT_BASE_CLASS + ' textarea {' +
 						'width: 200px;' +
 						'height: 200px;' +
+					'}' +
+					'.d2ne_postit_wrapper {' +
+						'position: absolute;' +
+					    "z-index: 999;" +
 					'}'
 				);
+
+				$(window).resize(function() {
+					$("." + POSTIT_BASE_CLASS).css("left", ($("#contentBg").offset().left + $("#contentBg").width() + 20) + "px");
+				});
 
 				if(D2N.is_on_forum()){
 					JS.injectCSS(
