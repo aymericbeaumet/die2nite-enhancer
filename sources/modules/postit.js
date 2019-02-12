@@ -97,11 +97,11 @@ Module.register(function() {
 				$(".wellPane").append("<div id='" + ADD_POSTIT_BTN_ID + "'>");
 			} else if (D2N.is_on_page_in_city("buildings")) {
 				$("#generic_section .button:first").after("<div id='" + ADD_POSTIT_BTN_ID + "'>");
-			} else if (D2N.is_on_page_in_city("doors")) {
+			} else if (D2N.is_on_page_in_city("doors") || D2N.is_on_page_in_city("refine")) {
 				$("#generic_section .button:last").after("<div id='" + ADD_POSTIT_BTN_ID + "'>");
 			} else if (D2N.is_on_page_in_city("tower")) {
 				$(".tower").append("<div id='" + ADD_POSTIT_BTN_ID + "'>");
-			} else if (D2N.is_on_page_in_city("upgrades") || D2N.is_on_page_in_city("refine")) {
+			} else if (D2N.is_on_page_in_city("upgrades")) {
 				$("#generic_section .button").after("<div id='" + ADD_POSTIT_BTN_ID + "'>");
 			}
 			clss = "button";
