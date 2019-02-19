@@ -154,7 +154,7 @@ Module.register(function() {
 						'border: 1px solid black;' +
 					'}' +
 					'.' + POSTIT_BASE_CLASS + ' {' +
-						'position: absolute;' +
+						'position: fixed;' +
 					    "z-index: 999;" +
 					'}' +
 					'.' + POSTIT_BASE_CLASS + ' textarea {' +
