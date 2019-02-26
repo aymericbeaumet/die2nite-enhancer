@@ -104,6 +104,12 @@ Module.register(function() {
 				}
 			});
 		}
+
+		JS.injectCSS(
+			".citizens table th:nth-child(4) {" +
+				"width: 60px;" +
+			"}"
+		);
 	}
 
 	/**
@@ -242,7 +248,8 @@ Module.register(function() {
 				"}" +
 				"ul.stocks li {" +
 					"margin-right: 0;" +
-				"}");
+				"}"
+			);
 		});
 	}
 

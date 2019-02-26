@@ -37,6 +37,7 @@ Module.register(function() {
 			var head = document.createElement("th");
 			head.id = COLUMN_ID;
 			head.innerHTML = I18N.get(MODULE_NAME + '_column_head');
+			head.style.width = "60px";
 			tableCitizens[0].appendChild(head);
 		} else if (D2N.is_on_page_out_of_city("maps")) {
 			tableCitizens = document.querySelectorAll("td.list li");
@@ -199,7 +200,7 @@ Module.register(function() {
 						document.getElementById("loading_section").style.display = "block";
 
 						JS.wait_for_selector('div.citizens', function(el) {
-							var citizens = extract_citizens_id('a.tid_user[href^="/#ghost/city?go=ghost/user?uid="]');
+							var citizens = extract_citizens_id('a[href^="/#ghost/city?go=ghost/user?uid="]');
 							JS.network_request(
 								method,
 								url + citizens.join(','),

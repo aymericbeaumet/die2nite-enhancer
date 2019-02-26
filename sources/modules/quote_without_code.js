@@ -58,7 +58,7 @@ Module.register(function() {
 
 		properties: {
 			enabled: false,
-            isProtected: false
+			isProtected: false
 		},
 
 		configurable: {
