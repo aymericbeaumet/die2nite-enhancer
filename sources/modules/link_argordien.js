@@ -1,6 +1,6 @@
 Module.register(function() {
 
-	var MODULE_NAME = 'gesthordes_link';
+	var MODULE_NAME = 'link_argordien';
 
 	/******************
 	 * Module context *
@@ -14,8 +14,8 @@ Module.register(function() {
 		var i18n = {};
 
 		i18n[I18N.LANG.FR] = {};
-		i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = "Lien Gest'Hordes dans l'annuaire";
-		i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = "Rajoute un lien vers Gest'Hordes dans l'annuaire.";
+		i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = "Lien Argordien dans l'annuaire";
+		i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = "Rajoute un lien vers l'Argordien dans l'annuaire.";
 
 		I18N.set(i18n);
 	}
@@ -33,9 +33,9 @@ Module.register(function() {
 			enabled: false,
 			isProtected: false,
 			link: {
-                url: 'https://gest-hordes.eragaming.fr',
-                icon: "https://gest-hordes.eragaming.fr/images/favicon.gif",
-                title: "Gest'Hordes"
+                url: 'https://d2ne.datw.tf/argordien/',
+                icon: "https://d2ne.datw.tf/argordien/favicon.png",
+                title: "Argordien"
             },
 		},
 

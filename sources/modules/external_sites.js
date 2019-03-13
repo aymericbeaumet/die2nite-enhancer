@@ -96,11 +96,6 @@ Module.register(function() {
 
 				// inject the button if at least one external tool is enabled
 				Module.iterate_on_type(Module.TYPE.EXTERNAL_SITE, function(module) {
-					// if already loaded, abort
-					if (loaded) {
-						return;
-					}
-
 					// if module is enabled, then the external tools bar has to
 					// be enabled
 					if (module.is_enabled()) {
