@@ -19,7 +19,8 @@ var D2NE = (function() {
         'BUSINESS_LOGIC', // Used by business logic modules
         'CONTAINER', // Used by the containers modules
         'INTERFACE_ENHANCEMENT', // Used to customise the interface
-        'EXTERNAL_TOOL' // Used to synchronise with external tools
+        'EXTERNAL_TOOL', // Used to synchronise with external tools
+        'EXTERNAL_SITE' // Used to add external sites
     ];
 
     /**
@@ -27,6 +28,7 @@ var D2NE = (function() {
      */
     var MODULE_PROPERTY_CATEGORIES = [
         'GENERAL',
+        'SITES',
         'BANK',
         'CONSTRUCTION',
         'SOUL',

@@ -29,6 +29,7 @@ Module.register(function() {
 		i18n[I18N.LANG.EN][MODULE_NAME + '_title'] = 'Die2Nite Enhancer - Configuration Panel';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_help_image_url'] = '/gfx/loc/en/helpLink.gif';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_general_category'] = 'General';
+		i18n[I18N.LANG.EN][MODULE_NAME + '_sites_category'] = 'External sites';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_bank_category'] = 'Bank';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_construction_category'] = 'Construction Sites';
 		i18n[I18N.LANG.EN][MODULE_NAME + '_citizens_category'] = 'Citizens';
@@ -45,6 +46,7 @@ Module.register(function() {
 		i18n[I18N.LANG.FR][MODULE_NAME + '_title'] = 'Die2Nite Enhancer - Panneau de configuration';
 		i18n[I18N.LANG.FR][MODULE_NAME + '_help_image_url'] = '/gfx/loc/fr/helpLink.gif';
 		i18n[I18N.LANG.FR][MODULE_NAME + '_general_category'] = 'Général';
+		i18n[I18N.LANG.FR][MODULE_NAME + '_sites_category'] = 'Sites externes';
 		i18n[I18N.LANG.FR][MODULE_NAME + '_bank_category'] = 'Banque';
 		i18n[I18N.LANG.FR][MODULE_NAME + '_construction_category'] = 'Chantiers';
 		i18n[I18N.LANG.FR][MODULE_NAME + '_citizens_category'] = 'Citoyens';
@@ -118,6 +120,10 @@ Module.register(function() {
 			case Module.PROPERTY_CATEGORY.GENERAL:
 				icon = '/gfx/icons/item_chair.gif';
 				text = I18N.get(MODULE_NAME + '_general_category');
+				break;
+			case Module.PROPERTY_CATEGORY.SITES:
+				icon = '/gfx/forum/smiley/h_human.gif';
+				text = I18N.get(MODULE_NAME + '_sites_category');
 				break;
 			case Module.PROPERTY_CATEGORY.BANK:
 				icon = '/gfx/icons/item_money.gif';
