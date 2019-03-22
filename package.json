@@ -39,32 +39,31 @@
     "pack:userscript": "grunt pack --userscript"
   },
   "dependencies": {
-    "grunt": "^1.0.1",
-    "grunt-cli": "^1.2.0",
-    "grunt-contrib-clean": "^1.1.0",
-    "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-shell": "^2.1.0",
-    "merge": "^1.2.0",
-    "userhome": "^1.0.0"
+    "grunt": "latest",
+    "grunt-cli": "latest",
+    "grunt-contrib-clean": "latest",
+    "grunt-contrib-concat": "latest",
+    "grunt-contrib-copy": "latest",
+    "grunt-shell": "latest",
+    "merge": "latest",
+    "userhome": "latest"
   },
   "devDependencies": {
-    "grunt-contrib-jshint": "^1.1.0",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-jsvalidate": "~0.2.2",
-    "grunt-karma": "^2.0.0",
-    "grunt-karma-coveralls": "^2.5.4",
-    "jasmine-core": "^2.6.4",
+    "grunt-contrib-jshint": "latest",
+    "grunt-contrib-watch": "latest",
+    "grunt-jsvalidate": "latest",
+    "grunt-karma": "latest",
+    "grunt-karma-coveralls": "latest",
+    "jasmine-core": "latest",
     "jasmine-jquery": "git://github.com/velesin/jasmine-jquery.git#2.1.1",
     "jquery": "latest",
-    "jquery-ui-dist": "latest",
     "jquery-simulate-ext": "git://github.com/j-ulrich/jquery-simulate-ext.git#93e47e",
-    "karma": "^1.7.0",
-    "karma-coverage": "^1.1.1",
-    "karma-firefox-launcher": "^1.0.1",
-    "karma-jasmine": "^1.1.0",
-    "karma-phantomjs-launcher": "^1.0.4",
-    "web-ext": "^2.0.0"
+    "karma": "latest",
+    "karma-coverage": "latest",
+    "karma-firefox-launcher": "latest",
+    "karma-jasmine": "latest",
+    "karma-phantomjs-launcher": "latest",
+    "web-ext": "latest"
   },
   "config": {
     "unsafe-perm": true
