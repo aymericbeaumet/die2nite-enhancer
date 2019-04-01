@@ -253,19 +253,22 @@ Module.register(function() {
 			var a;
 			var H;
 			var Z;
-			var Text = "";
 			$('ul.logs li.entry.CL_OutsideMessage').each(function(){
+				var Text = "";
 				if($(this).children('span').length == 2) {
+					// Départ
 					a = $(this).children('span').next().text().indexOf('h');
 					H = $(this).children('span').next().text().substr(a+2,2)*1;
 					a = $(this).children('span').next().text().indexOf('z');
 					Z = $(this).children('span').next().text().substr(a+2,1)*1;
 				} else if($(this).children('strong').eq(1).text() == "rapatrié(e)"){
+					// Rapatriement
 					a = $(this).children('span').text().indexOf('h');
 					H = $(this).children('span').text().substr(a+2,2)*1;
 					a = $(this).children('span').text().indexOf('z');
 					Z = $(this).children('span').text().substr(a+2,1)*1;
 				} else {
+					// Arrivée
 					a = $(this).children('span').text().indexOf('me');
 					var ME = $(this).children('span').text().substr(a+3,1*1);
 					a = $(this).children('span').text().indexOf('h');
