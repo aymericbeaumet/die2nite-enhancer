@@ -147,7 +147,7 @@ Module.register(function() {
 		batList["Silos à l'abandon"] = 39;
 		batList["Meubles kiela"] = 40;
 		batList["Epicerie Fargo"] = 41;
-		batList["Mini-Market"] = 42;
+		batList["Mini-market"] = 42;
 		batList["Abri de chantier"] = 43;
 		batList["Cabane de jardin"] = 44;
 		batList["Bibliothèque de quartier"] = 45;
@@ -547,7 +547,7 @@ Module.register(function() {
 			}
 
 			if (km >= 8 && km <= 11) {
-				liste += '<option value="42">Mini-Market</option>';
+				liste += '<option value="42">Mini-market</option>';
 			}
 
 			if (km >= 12 && km <= 15) {
