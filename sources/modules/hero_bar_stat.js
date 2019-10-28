@@ -75,10 +75,12 @@ Module.register(function() {
                     }
 
                     JS.wait_for_selector('#ghostImg img', function(node) {
+
                         // abort if not hero
                         if (node.alt !== 'ghost red') {
                             return;
                         }
+
 
                         JS.wait_for_selector('#ghost_pages img.hbar', function(node) {
                             var width = parseFloat(node.style.width);

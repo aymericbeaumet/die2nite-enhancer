@@ -39,6 +39,9 @@ Module.register(function() {
                 return;
             }
 
+            // En attendant d'avoir une solution pour synchro uniquement quand on se déplace
+            return;
+
             var module = Module.get("external_tools_bar");
             JS.wait_for_id(module.container_id, function(node){
 

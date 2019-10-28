@@ -263,10 +263,10 @@ Module.register(function() {
 
 			var startNight = 19;
 			var endNight = 7;
-			if(D2N.is_on_die2nite) {
+			if(D2N.is_on_die2nite()) {
 				startNight = 18;
 				endNight = 6;
-			} else if(D2N.is_on_zombinoia) {
+			} else if(D2N.is_on_zombinoia()) {
 				startNight = 20;
 				endNight = 8;
 			}
@@ -406,6 +406,7 @@ Module.register(function() {
 					"}" +
 					"#loading_section {" +
 						"position: fixed;" +
+						"z-index: 9999;" +
 					"}"
 				);
 
