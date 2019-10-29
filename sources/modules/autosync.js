@@ -75,7 +75,7 @@ Module.register(function() {
 
         actions: {
             can_run: function() {
-                return true;
+                return false;
             },
 
             init: function(){
