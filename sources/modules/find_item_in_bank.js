@@ -52,12 +52,12 @@ Module.register(function() {
 
 	function inject_finder()
 	{
-		// Add notifier
+		// Add finder
 		var selector = "div.right";
 
 		JS.wait_for_selector(selector, function(el) {
 			var refNode = el.firstChild;
-			if($("d2ne_abuse_counter")) {
+			if($("#d2ne_abuse_counter")) {
 				refNode = refNode.nextSibling;
 			}
 			el.insertBefore(get_finder_div.call(this), refNode);
