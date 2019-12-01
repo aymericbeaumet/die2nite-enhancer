@@ -194,7 +194,6 @@ var D2N = (function() {
         }, 10);
     }
 
-
 /*
  * public:
  */

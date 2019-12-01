@@ -50,7 +50,6 @@ Module.register(function() {
                         module.actions.refresh();
                     });
                 }
-                alert(url);
                 this._d2ne_onStart();
             };
         }.bind(this), true);
