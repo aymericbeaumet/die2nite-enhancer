@@ -45,7 +45,7 @@ Module.register(function() {
 			link.addClass("d2n_protect_btn");
 			link.html(I18N.get(MODULE_NAME + "_protect"));
 
-			$("#tid_forumReplyForm form button").after(div);
+			$(".tid_postForm form button").after(div);
 			div.append(link);
 		})
 	}
@@ -56,13 +56,19 @@ Module.register(function() {
 
 		var text = $("#tid_forumMsg").val();
 
-		console.log(text);
-
-		JS.network_request("GET", "https://qaz.wtd/u/convert.cgi?text=" + text, null, null, function(response) {
-			console.log(response);
-		}, null);
+		text = text.replace(/\n/gi, "=====");
 
 		// Requête GET sur https://qaz.wtf/u/convert.cgi?text=[Contenu du champ texte]
+		JS.network_request("GET", "https://qaz.wtf/u/convert.cgi?text=" + text, null, null, function(response) {
+			var doc = document.createElement("html");
+			doc.innerHTML = response;
+			var line = doc.querySelector("table tr:nth-child(9)");
+			var textChanged = line.cells[1].innerText;
+			textChanged = textChanged.replace(/=====/gi, "\n").trim();
+			$("#tid_forumMsg").val(textChanged);
+		}, function(response){
+			alert("Impossible de protéger ce texte");
+		});
 	}
 
 
@@ -111,6 +117,10 @@ Module.register(function() {
 					'}');
 
 				console.log("On forum :)");
+
+				JS.wait_for_selector("#tid_forum_left .tid_actionBar a:nth-child(4)", function(node){
+					$(node).click(add_button);
+				})
 				
 				document.addEventListener('d2n_forum_topic', function() {
 					JS.wait_for_selector_all("#tid_forum_right .tid_actions .tid_buttonBar a:first-child", function(node){
