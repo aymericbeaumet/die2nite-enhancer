@@ -22,7 +22,7 @@ Module.register(function() {
 		i18n[I18N.LANG.FR] = {};
 		i18n[I18N.LANG.FR][MODULE_NAME + '_short_desc'] = "Protéger contre les effets sur les messages du forum";
 		i18n[I18N.LANG.FR][MODULE_NAME + '_full_desc'] = "Empêche le message posté sur le forum d'être altéré par les effets de l'alcool ou de la terreur.";
-		i18n[I18N.LANG.EN][MODULE_NAME + '_protect'] = 'Protéger mon texte';
+		i18n[I18N.LANG.FR][MODULE_NAME + '_protect'] = 'Protéger mon texte';
 
 		I18N.set(i18n);
 	}
