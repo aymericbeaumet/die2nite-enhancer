@@ -29,10 +29,7 @@ Module.register(function() {
 
 	function add_button(){
 		JS.wait_for_id("tid_forumMsg", function(node){
-			console.log("Reply form loaded !");
-
 			if($("#" + CHANGE_TEXT_ID).length > 0)  {
-				console.log("#" + CHANGE_TEXT_ID + " already there, leaving.");
 				return;
 			}
 
@@ -43,6 +40,7 @@ Module.register(function() {
 			var link = $("<a>");
 			link.click(protect.bind(this));
 			link.addClass("d2n_protect_btn");
+			link.attr("id", CHANGE_TEXT_ID);
 			link.html(I18N.get(MODULE_NAME + "_protect"));
 
 			$(".tid_postForm form button").after(div);
@@ -113,18 +111,26 @@ Module.register(function() {
 					'.d2n_protect_btn {' +
 						'cursor: pointer;' +
 						'background-image: url("http://data.hordes.fr/gfx/design/button.gif");' +
-						'border: 1px solid black;' +
+						'border: 1px solid #98341c !important;' +
+						'outline: 1px solid black !important;' +
+						'padding: 1px 10px;' +
+						'font-weight: bold;' +
+						'font-size: 12pt;' +
+						'color: #f0d79e !important;' +
 					'}');
-
-				console.log("On forum :)");
 
 				JS.wait_for_selector("#tid_forum_left .tid_actionBar a:nth-child(4)", function(node){
 					$(node).click(add_button);
 				})
+
 				
 				document.addEventListener('d2n_forum_topic', function() {
-					JS.wait_for_selector_all("#tid_forum_right .tid_actions .tid_buttonBar a:first-child", function(node){
-						$(node).click(add_button);
+					JS.wait_for_selector_all("#tid_forum_right .tid_actions .tid_buttonBar a:first-child", function(nodes){
+						$(nodes).click(add_button);
+					});
+
+					JS.wait_for_selector_all('.tid_tools a[onclick^="_tid.forum.cite"]', function(nodes) {
+						$(nodes).click(add_button);
 					});
 				}, false);
 			}
