@@ -212,9 +212,8 @@ Module.register(function() {
 						});
 						return;
 					} else if (D2N.is_on_page_out_of_city("maps")) {
-						document.getElementById("loading_section").style.display = "block";
-
 						JS.wait_for_selector('td.list', function(el) {
+							document.getElementById("loading_section").style.display = "block";
 							var citizens = extract_citizens_id('td.list a[href^="#ghost/user?uid="]');
 							JS.network_request(
 								method,
