@@ -144,7 +144,7 @@ var JS = (function() {
 
             // Google Chrome script / GreaseMonkey
             if (typeof GM_xmlhttpRequest !== 'undefined') {
-                return new GM_xmlhttpRequest({
+                return GM_xmlhttpRequest({
                     method: method,
                     url: uri,
                     data: '' + data,

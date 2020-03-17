@@ -52,6 +52,10 @@ Module.register(function() {
 
 	function inject_finder()
 	{
+		if (!D2N.is_on_page_in_city('bank')) {
+			return;
+		}
+
 		// Add finder
 		var selector = "div.right";
 
@@ -121,7 +125,7 @@ Module.register(function() {
 
 			load: function() {
 				document.addEventListener('d2n_gamebody_reload', function() {
-					if (!D2N.is_on_page_in_city('bank') && !D2N.is_on_page_in_city('well')) {
+					if (!D2N.is_on_page_in_city('bank')) {
 						return;
 					}
 

@@ -155,6 +155,7 @@ Module.register(function() {
 		if (D2N.is_on_page_in_city('well')) {
 			selector = "div.wellPane";
 		}
+
 		JS.wait_for_selector(selector, function(el) {
 			el.insertBefore(get_notifier_div.call(this), el.firstChild);
 
