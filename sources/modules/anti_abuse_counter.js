@@ -65,13 +65,19 @@ Module.register(function() {
 		}
 	}
 
-	function updateAttemptLeft(){
+	function updateAttemptLeft()
+	{
 		if (!D2N.is_on_page_in_city('bank') && !D2N.is_on_page_in_city('well')) {
+			// If we are not in the bank
+			// NOR in the well
+			// our backpack can still be modified (in our home for instance)
+			_oldBackPack = $("#myBag li img:not([src*='small_empty_inv.gif'])").length;
 			return;
 		}
 
 		var newBackPack = $("#myBag li img:not([src*='small_empty_inv.gif'])").length;
 		if(newBackPack > _oldBackPack) {
+			console.log("Update AA :)");
 			this.properties.attempt_left -= 1;
 			if (this.properties.attempt_left < 0) {
 				this.properties.attempt_left = 0;
