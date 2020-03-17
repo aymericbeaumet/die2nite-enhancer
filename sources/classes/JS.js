@@ -144,14 +144,25 @@ var JS = (function() {
 
             // Google Chrome script / GreaseMonkey
             if (typeof GM_xmlhttpRequest !== 'undefined') {
-                return GM_xmlhttpRequest({
-                    method: method,
-                    url: uri,
-                    data: '' + data,
-                    headers: headers,
-                    onload: function(r) { on_success(r.responseText, r.responseHeaders); },
-                    onerror: function(r) { on_failure(); }
-                });
+                if(typeof GM_xmlhttpRequest === 'function') {
+                    return GM_xmlhttpRequest({
+                        method: method,
+                        url: uri,
+                        data: '' + data,
+                        headers: headers,
+                        onload: function(r) { on_success(r.responseText, r.responseHeaders); },
+                        onerror: function(r) { on_failure(); }
+                    });
+                } else {
+                    return new GM_xmlhttpRequest({
+                        method: method,
+                        url: uri,
+                        data: '' + data,
+                        headers: headers,
+                        onload: function(r) { on_success(r.responseText, r.responseHeaders); },
+                        onerror: function(r) { on_failure(); }
+                    });
+                }
             }
 
             // Safari needs to dispatch the request to the global page if the
