@@ -254,28 +254,30 @@ Module.register(function() {
 			var H;
 			var Z;
 			$('ul.logs li.entry.CL_OutsideMessage').each(function(){
+				var messageContent = "";
 				var Text = "";
+				var regex = /\(h=([0-9]+) z=([0-9]+)(?: me=([0-9]+))?\)/;
 				if($(this).children('span').length == 2) {
 					// Départ
-					a = $(this).children('span').next().text().indexOf('h');
-					H = $(this).children('span').next().text().substr(a+2,2)*1;
-					a = $(this).children('span').next().text().indexOf('z');
-					Z = $(this).children('span').next().text().substr(a+2,1)*1;
+					messageContent = $(this).children('span').next().text();
+					var matches = messageContent.match(regex);
+					H = matches[1]*1;
+					Z = matches[2]*1;
 				} else if($(this).children('strong').eq(1).text() == "rapatrié(e)"){
 					// Rapatriement
-					a = $(this).children('span').text().indexOf('h');
-					H = $(this).children('span').text().substr(a+2,2)*1;
-					a = $(this).children('span').text().indexOf('z');
-					Z = $(this).children('span').text().substr(a+2,1)*1;
+					messageContent = $(this).children('span').text();
+					var matches = messageContent.match(regex);
+					H = matches[1]*1;
+					Z = matches[2]*1;
 				} else {
 					// Arrivée
-					a = $(this).children('span').text().indexOf('me');
-					var ME = $(this).children('span').text().substr(a+3,1*1);
-					a = $(this).children('span').text().indexOf('h');
-					H = $(this).children('span').text().substr(a+2,2)*1 + ME*1;
-					a = $(this).children('span').text().indexOf('z');
-					Z = $(this).children('span').text().substr(a+2,2)*1;
+					messageContent = $(this).children('span').text();
+					var matches = messageContent.match(regex);
+					H = matches[1]*1;
+					Z = matches[2]*1;
+					var ME = matches[3]*1;
 					Text = I18N.get(MODULE_NAME + "_text_pdc").replace("[NB]", ME);
+					H = H + ME;
 				}
 
 				Text += '<br />' + I18N.get(MODULE_NAME + "_text_pdc_vs_zeds").replace("[PDC]", H).replace("[ZEDS]", Z);
