@@ -263,22 +263,19 @@ Module.register(function() {
 					var matches = messageContent.match(regex);
 					H = matches[1]*1;
 					Z = matches[2]*1;
-				} else if($(this).children('strong').eq(1).text() == "rapatrié(e)"){
-					// Rapatriement
-					messageContent = $(this).children('span').text();
-					var matches = messageContent.match(regex);
-					H = matches[1]*1;
-					Z = matches[2]*1;
 				} else {
-					// Arrivée
+					// Arrivée ou rappat
 					messageContent = $(this).children('span').text();
 					var matches = messageContent.match(regex);
 					H = matches[1]*1;
 					Z = matches[2]*1;
-					var ME = matches[3]*1;
-					Text = I18N.get(MODULE_NAME + "_text_pdc").replace("[NB]", ME);
-					H = H + ME;
-				}
+					if(matches[3] !== undefined){
+						// 4 matches (toute la string, H,Z et ME, c'est une arrivée)
+						var ME = matches[3]*1;
+						Text = I18N.get(MODULE_NAME + "_text_pdc").replace("[NB]", ME);
+						H = H + ME;
+					}
+				} 
 
 				Text += '<br />' + I18N.get(MODULE_NAME + "_text_pdc_vs_zeds").replace("[PDC]", H).replace("[ZEDS]", Z);
 				$(this).append('<span>'+Text+'<span>');
