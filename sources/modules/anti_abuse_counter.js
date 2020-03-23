@@ -77,7 +77,6 @@ Module.register(function() {
 
 		var newBackPack = $("#myBag li img:not([src*='small_empty_inv.gif'])").length;
 		if(newBackPack > _oldBackPack) {
-			console.log("Update AA :)");
 			this.properties.attempt_left -= 1;
 			if (this.properties.attempt_left < 0) {
 				this.properties.attempt_left = 0;
@@ -133,6 +132,13 @@ Module.register(function() {
 			if(el.attr("onclick").indexOf("confirm") > 0){
 				el.attr("onclick", "");
 				el.click(function(ev){
+					if (this.properties.attempt_left < 1) {
+						event.cancelBubble = true;
+						event.stopPropagation();
+						event.preventDefault();
+						alert(I18N.get(MODULE_NAME + '_prevent'));
+						return;
+					}
 					if(confirm('Confirmer ?')){
 						on_object_click.bind(this)(ev);
 						js.XmlHttp.get('city/well_water?sk=' + session, null);
