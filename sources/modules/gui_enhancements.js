@@ -158,7 +158,7 @@ Module.register(function() {
 				$('<span>').html("&nbsp;").insertBefore($(escortInfosBtn.parentNode.parentNode));
 				
 				// If the citizen is already searching the ground, we disable the "search" button (as it is useless)
-				var searching = citizenRow.children[1].querySelector("img[src='http://data.hordes.fr/gfx/icons/small_gather.gif']");
+				var searching = citizenRow.children[1].querySelector("img[src$='gfx/icons/small_gather.gif']");
 				if(searching !== null && searching !== undefined){
 					searchGround.setAttribute("class", "uact uactOff off");
 					searchGround.setAttribute("href", "#");
