@@ -219,7 +219,7 @@ Module.register(function() {
 	 */
 	function enhancement_buildings_interface(){
 		JS.wait_for_selector("table.table", function(node){
-			JS.injectCSS(".bvote table tr td.reco { background-color: #ff0; color: black;} .bvote table tr.reco a.button {outline: 2px solid #ff0;}");
+			JS.injectCSS(".bvote table tr td.reco, .bvote table tr.reco td.rsc, .bvote table tr.reco td.act { background-color: #ff0; color: black;} .bvote table tr.reco a.button {outline: 2px solid #ff0;}");
 		});
 
 		JS.wait_for_selector(".bvote div.reco", function(node){
