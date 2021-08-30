@@ -63,7 +63,7 @@ Module.register(function() {
             update: function(callback_success, callback_failure) {
                 JS.network_request(
                     this.properties.tool.update_method,
-                    this.properties.tool.update_url,
+                    this.properties.tool.update_url + "?sid=1",
                     'key=' + this.properties.tool.api_key + '&action=force_maj',
                     {
                         'Content-Type': 'application/x-www-form-urlencoded'

@@ -123,7 +123,6 @@ Module.register(function() {
 			},
 
 			refresh: function(){
-				on_update_button_click();
 			}
 		}
 
