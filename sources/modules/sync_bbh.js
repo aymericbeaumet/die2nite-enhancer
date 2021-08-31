@@ -71,7 +71,7 @@ Module.register(function() {
                     function(response_text) {
                         var parsed_xml = JS.parse_xml(response_text);
                         var hordes_node = parsed_xml.firstChild;
-                        var answer = hordes_node.childNodes[1];
+                        var answer = hordes_node.childNodes[0];
 
                         if (answer && answer.tagName === 'error' && answer.getAttribute('code') === 'ok') {
                             return callback_success();

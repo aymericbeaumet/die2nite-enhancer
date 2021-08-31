@@ -258,16 +258,17 @@ Module.register(function() {
 				var messageContent = "";
 				var Text = "";
 				var regex = /\(h=([0-9]+) z=([0-9]+)(?: me=([0-9]+))?\)/;
+				var matches;
 				if($(this).children('span').length == 2) {
 					// Départ
 					messageContent = $(this).children('span').next().text();
-					var matches = messageContent.match(regex);
+					matches = messageContent.match(regex);
 					H = matches[1]*1;
 					Z = matches[2]*1;
 				} else {
 					// Arrivée ou rappat
 					messageContent = $(this).children('span').text();
-					var matches = messageContent.match(regex);
+					matches = messageContent.match(regex);
 					H = matches[1]*1;
 					Z = matches[2]*1;
 					if(matches[3] !== undefined){

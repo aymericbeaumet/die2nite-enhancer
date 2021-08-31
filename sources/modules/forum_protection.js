@@ -45,7 +45,7 @@ Module.register(function() {
 
 			$(".tid_postForm form button").after(div);
 			div.append(link);
-		})
+		});
 	}
 
 	function protect(event){
@@ -121,7 +121,7 @@ Module.register(function() {
 
 				JS.wait_for_selector("#tid_forum_left .tid_actionBar a:nth-child(4)", function(node){
 					$(node).click(add_button);
-				})
+				});
 
 				
 				document.addEventListener('d2n_forum_topic', function() {
