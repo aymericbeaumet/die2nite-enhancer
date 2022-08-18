@@ -1,3 +1,7 @@
+# This project is now unmaintained. You might be interested into this active fork: https://depot.vwa.re/ludofloria/myhordes-enhancer/
+
+---
+
 ## Die2Nite Enhancer
 
 [![Build Status](https://travis-ci.org/aymericbeaumet/die2nite_enhancer.png?branch=master)](https://travis-ci.org/aymericbeaumet/die2nite_enhancer) [![Coverage Status](https://coveralls.io/repos/aymericbeaumet/die2nite_enhancer/badge.png?branch=master)](https://coveralls.io/r/aymericbeaumet/die2nite_enhancer?branch=master) [![Dependency Status](https://david-dm.org/aymericbeaumet/die2nite_enhancer.png?theme=shields.io)](https://david-dm.org/aymericbeaumet/die2nite_enhancer) [![devDependency Status](https://david-dm.org/aymericbeaumet/die2nite_enhancer/dev-status.png?theme=shields.io)](https://david-dm.org/aymericbeaumet/die2nite_enhancer#info=devDependencies)
